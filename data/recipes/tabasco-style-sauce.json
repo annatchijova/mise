@@ -1,0 +1,109 @@
+{
+  "category": "sauce",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "tabasco-style-sauce",
+  "ingredients": [
+    {
+      "id": "tomato",
+      "name_es": "tomate",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "dientes de ajo",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "clove"
+    },
+    {
+      "id": "jalapeno",
+      "name_es": "ajíes jalapeños sin las semillas",
+      "note": "2-3, sin semillas; lower bound recorded",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "sun-dried-tomato",
+      "name_es": "tomate deshidratado",
+      "note": null,
+      "qty": 50,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "raw",
+      "unit": "g"
+    },
+    {
+      "id": "chimichurri-seasoning",
+      "name_es": "chimichurri",
+      "note": "a gusto (dry chimichurri seasoning mix)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vinegar",
+      "name_es": "vinagre de alcohol",
+      "note": "de alcohol (white spirit vinegar)",
+      "qty": 0.25,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "raw",
+      "unit": "cup"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "step duration estimated",
+      "jalapeno stated as range 2-3, lower bound recorded",
+      "chimichurri quantity 'a gusto'"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Pan alemán de cerveza', before 'Paté de hongos'",
+    "original_text": "Salsa tipo tabasco\n\nSoy fanática de lo picante es por eso que les comparto esta sencilla salsa para unas papas bravas ¡Al horno y con cáscara! (TIP: ponerles romero! les da un toque de frescura!)\n\nProcesar 1 tomate, 2 dientes de ajo, 2-3 ajíes jalapeños sin las semillas, 50 gr de tomate deshidratado, chimichirri a gusto y un cuarto taza de vinagre de alcohol."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Process 1 tomato, 2 garlic cloves, 2-3 jalapeno peppers without the seeds, 50 g of sun-dried tomato, chimichurri seasoning to taste and a quarter cup of spirit vinegar.",
+      "text_es": "Procesar 1 tomate, 2 dientes de ajo, 2-3 ajíes jalapeños sin las semillas, 50 gr de tomate deshidratado, chimichirri a gusto y un cuarto taza de vinagre de alcohol.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "no-cook",
+    "spicy",
+    "condiment"
+  ],
+  "title": "Tabasco-style sauce",
+  "title_es": "Salsa tipo tabasco"
+}

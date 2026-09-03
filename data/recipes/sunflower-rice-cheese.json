@@ -1,0 +1,222 @@
+{
+  "category": "sauce",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Book says it also works with walnuts, peanuts, almonds or cashews instead of sunflower; the original recipe used tofu instead of rice.",
+      "Gluten-free as listed (check the nutritional yeast product)."
+    ],
+    "vegan": true
+  },
+  "id": "sunflower-rice-cheese",
+  "ingredients": [
+    {
+      "id": "sunflower-seed",
+      "name_es": "Girasol",
+      "note": "Tip 1 del libro: si hidratás las semillas, va a ser más fácil procesar",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "rice",
+      "name_es": "Arroz",
+      "note": "recomienda arroz blanco 'porque da más cremosidad'; no aclara si cocido",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "onion-powder",
+      "name_es": "Cebolla en polvo",
+      "note": "si tenés",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "lemon",
+      "name_es": "Gotitas de limón",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "carrot",
+      "name_es": "Zanahoria rallada",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-onion",
+      "name_es": "cebolla de verdeo picada",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive",
+      "name_es": "aceitunas",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "sun-dried-tomato",
+      "name_es": "tomate deshidratado",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "parsley",
+      "name_es": "perejil",
+      "note": "opcional; 'hierbas como perejil, albahaca, rúcula'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "basil",
+      "name_es": "albahaca",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "arugula",
+      "name_es": "rúcula",
+      "note": "opcional",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutritional-yeast",
+      "name_es": "Levadura Titán",
+      "note": "'cantidad a gusto, unas 2 cucharadas para orientarte'",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "season",
+      "unit": "tbsp"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "aceite de oliva",
+      "note": "Tip 2 del libro: 'añadí un poco de aceite de oliva'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "step duration estimated",
+      "most optional add-ins unspecified",
+      "book does not say whether the rice is cooked",
+      "book's serving idea (filling with creamed corn) kept only in original_text"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 44 of 50, page headed 'queso girasol' (between 'mayonesa raw' and 'ceviche de palmitos')",
+    "original_text": "queso girasol\nEs mi queso favorito, también lo podés hacer con nueces, maní, almendras o cajú.\nPara el queso vas a necesitar:\nMinipimer. Sí o sí. Si no tenés, corré a comprarte una porque la vas a tener que usar para muchas recetas.\nGirasol 2 tazas.\nArroz (1 taza) recomiendo usar arroz blanco porque da más cremosidad. La receta original trabajaba con TOFU, pero a mi me gusta más como queda con arroz. Cebolla en polvo si tenés y todos los condimentos que quieras. Gotitas de limón\nZanahoria rallada, ajo, cebolla de verdeo picada, morrón, aceitunas, tomate deshidratado, hierbas como perejil, albahaca, rúcula. (Todo es opcional, pero le da otro sabor!) Levadura Titán cantidad a gusto, unas 2 cucharadas para orientarte. Sal/pimienta\nProcedimiento:\n¡Minipimerear todo!\nTip 1. Si hidratás las semillas de girasol, va a ser más fácil procesar. Tip 2. Añadí un poco de aceite de oliva ;)\nReceta con el queso de girasol. Es una fiesta al paladar. ¿No sabés cómo rellenar tu tarta o tus empanadas? Relax, mezclá choclo cremoso, con este queso y saltealo con cebolla y zanahoria y dejá que tu paladar te aplauda."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Blend everything with the stick blender!",
+      "text_es": "¡Minipimerear todo!",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "spread",
+    "cheese",
+    "quick",
+    "raw"
+  ],
+  "title": "Sunflower seed cheese",
+  "title_es": "queso girasol"
+}

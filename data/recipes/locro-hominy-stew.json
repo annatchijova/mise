@@ -1,0 +1,449 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Soy sauce (final mushrooms) usually contains wheat; the stew itself is gluten-free.",
+      "Book: 'materia grasa (aceite de coco o aceite de oliva)'."
+    ],
+    "vegan": true
+  },
+  "id": "locro-hominy-stew",
+  "ingredients": [
+    {
+      "id": "onion",
+      "name_es": "cebollas medianas",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón rojo",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "celery",
+      "name_es": "rama apio",
+      "note": "1 rama",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "diente de ajo",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "clove"
+    },
+    {
+      "id": "leek",
+      "name_es": "puerro",
+      "note": "'Un poco de puerro'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "potato",
+      "name_es": "papas medianas",
+      "note": "en cubos",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "sweet-potato",
+      "name_es": "batatas",
+      "note": "en cubos",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "squash",
+      "name_es": "zapallo sin cáscara",
+      "note": "1/2 zapallo, en cubos",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "hominy",
+      "name_es": "maíz mote",
+      "note": "'se puede optar por otro/s tipos de maíz'; hervido aparte",
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "grain",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "black-bean",
+      "name_es": "porotos negros",
+      "note": "'se puede utilizar otro tipo de frijoles'; hervidos aparte",
+      "qty": 200,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": "cantidad necesaria",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "aceite (de coco o de oliva)",
+      "note": "'materia grasa (aceite de coco o aceite de oliva)'; cantidad necesaria",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "bay-leaf",
+      "name_es": "laurel",
+      "note": "solo en el método",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "paprika",
+      "name_es": "pimentón",
+      "note": "solo en el método",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chimichurri-seasoning",
+      "name_es": "chimichurri",
+      "note": "mezcla seca argentina; solo en el método",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cumin",
+      "name_es": "comino",
+      "note": "solo en el método",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "oregano",
+      "name_es": "orégano",
+      "note": "solo en el método",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua (o caldo casero de verduras)",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "oyster-mushroom",
+      "name_es": "gírgolas",
+      "note": "salteadas al final en aceite de oliva, ajo y salsa de soja",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "soy-sauce",
+      "name_es": "salsa de soja",
+      "note": "para las gírgolas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "paprika",
+      "name_es": "Pimentón",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-onion",
+      "name_es": "Cebolla de verdeo",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "diente de ajo",
+      "note": "para la salsa quiquirimichi",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "clove"
+    },
+    {
+      "id": "chili",
+      "name_es": "chiles picantes",
+      "note": "para la salsa quiquirimichi; picados finito",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "Aceite de oliva",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vinegar",
+      "name_es": "Vinagre",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "muscovado-sugar",
+      "name_es": "Azúcar mascabo",
+      "note": "para la salsa quiquirimichi: 'pizca de azúcar'",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "season",
+      "unit": "pinch"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "para la salsa quiquirimichi",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 150,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "all step durations estimated (pre-boil of hominy/beans and final simmer are open-ended in the book)",
+      "page layout splits the first method sentence around the ingredient list; steps 1-2 are the two verbatim fragments",
+      "method ingredients (bay leaf, paprika, chimichurri, cumin, oregano, water/broth, oyster mushrooms, soy sauce) have no stated quantity",
+      "quiquirimichi sauce structured as step 10 with its own ingredient entries (noted 'para la salsa quiquirimichi')"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 38 of 50, page headed 'locro' (between 'mousakka' and 'Bibimbap'); page layout interleaves the ingredient list into the first method sentence",
+    "original_text": "locro\ningredientes Procedimiento Procedimiento: Hervir por separado el maíz mote\n2 cebollas medianas 1 morrón rojo 1 rama apio 1 diente de ajo Un poco de puerro 3 papas medianas 2 batatas 1/2 zapallo sin cáscara 500 gr de maíz mote (se puede optar por otro/s tipos de maíz) 200 gr de porotos negros (se puede utilizar otro tipo de frijoles) Sal, aceite y condimento cantidad necesaria.\nPara la salsa:\nPimentón Cebolla de verdeo 1 diente de ajo 3 chiles picantes Sal Aceite de oliva Vinagre Azúcar mascabo\ny los porotos negros hasta que ablanden un poco, ya que luego se terminarán de cocer en el locro. Picar cebolla, morrón, apio, ajo y puerro en cubitos. En una olla grande colocar materia grasa (aceite de coco o aceite de oliva) y sofreír las verduras base previamente picadas. Cuando empiece a dorar, agregar laurel, pimentón y chimichurri. Luego añadir la papa, batata y zapallo cortados en cubos. Volver a\ncondimentar: añadir comino, orégano y sal. Agregar el agua (o caldo casero de verduras). Revolver y agregar el maíz mote y porotos negros ya cocidos. Tapar la olla hasta que rompa el hervor, luego destapar y bajar el fuego. Cocinar hasta que ablande todo y si hace falta agregar más sal. Salsa quiquirimichi: En una sartén con aceite de oliva colocar cebolla de verdeo picada, con pimentón, chiles picados finito sal, ajo. Sofreír un poco y añadir agua y vinagre, pizca de azúcar. Si se desea se puede procesar y el sabor se integra más.\nAñadir luego gírgolas salteadas en aceite de oliva, ajo y salsa de soja."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Boil the hominy separately",
+      "text_es": "Hervir por separado el maíz mote",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 2700,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "and the black beans until they soften a little, since they will finish cooking in the locro.",
+      "text_es": "y los porotos negros hasta que ablanden un poco, ya que luego se terminarán de cocer en el locro.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Dice the onion, pepper, celery, garlic and leek.",
+      "text_es": "Picar cebolla, morrón, apio, ajo y puerro en cubitos.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 480,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "In a large pot put the fat (coconut oil or olive oil) and sweat the previously diced base vegetables.",
+      "text_es": "En una olla grande colocar materia grasa (aceite de coco o aceite de oliva) y sofreír las verduras base previamente picadas.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "When it starts to brown, add bay leaf, paprika and chimichurri.",
+      "text_es": "Cuando empiece a dorar, agregar laurel, pimentón y chimichurri.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Then add the potato, sweet potato and squash cut into cubes.",
+      "text_es": "Luego añadir la papa, batata y zapallo cortados en cubos.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "Season again: add cumin, oregano and salt.",
+      "text_es": "Volver a condimentar: añadir comino, orégano y sal.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2,
+        7
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "Add the water (or homemade vegetable broth). Stir and add the already cooked hominy and black beans.",
+      "text_es": "Agregar el agua (o caldo casero de verduras). Revolver y agregar el maíz mote y porotos negros ya cocidos.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        8
+      ],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 9,
+      "text": "Cover the pot until it comes to a boil, then uncover and lower the heat. Cook until everything is soft, and add more salt if needed.",
+      "text_es": "Tapar la olla hasta que rompa el hervor, luego destapar y bajar el fuego. Cocinar hasta que ablande todo y si hace falta agregar más sal.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 10,
+      "text": "Quiquirimichi sauce: In a pan with olive oil put chopped spring onion, with paprika, finely chopped chilies, salt, garlic. Sweat a little and add water and vinegar, a pinch of sugar. If you like, it can be processed and the flavour integrates more.",
+      "text_es": "Salsa quiquirimichi: En una sartén con aceite de oliva colocar cebolla de verdeo picada, con pimentón, chiles picados finito sal, ajo. Sofreír un poco y añadir agua y vinagre, pizca de azúcar. Si se desea se puede procesar y el sabor se integra más.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        9
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 11,
+      "text": "Then add oyster mushrooms sauteed in olive oil, garlic and soy sauce.",
+      "text_es": "Añadir luego gírgolas salteadas en aceite de oliva, ajo y salsa de soja.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "stew",
+    "argentine",
+    "long",
+    "legume",
+    "one-pot"
+  ],
+  "title": "Locro (hominy and black bean stew)",
+  "title_es": "locro"
+}

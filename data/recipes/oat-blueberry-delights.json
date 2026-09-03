@@ -1,0 +1,145 @@
+{
+  "category": "dessert",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Oat flour: gluten-free only if certified oats are used; not stated."
+    ],
+    "vegan": true
+  },
+  "id": "oat-blueberry-delights",
+  "ingredients": [
+    {
+      "id": "oat-flour",
+      "name_es": "harina de avena",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "cup"
+    },
+    {
+      "id": "muscovado-sugar",
+      "name_es": "azúcar mascabo o azúcar orgánica",
+      "note": "o azúcar orgánica",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "cup"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bake",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vanilla",
+      "name_es": "extracto de vainilla",
+      "note": "Bastante extracto de vainilla",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "blueberry",
+      "name_es": "arándanos",
+      "note": "1 cajita (150 gr)",
+      "qty": 150,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "baking-powder",
+      "name_es": "polvo de hornear",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "tsp"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón",
+      "note": "unas gotas de jugo de limón",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "de a poco agregamos agua hasta obtener una masa semiespesa y bien integrada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bind-cold",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 45,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves estimated from stated yield (1 loaf, 4 mini cakes or 6 large muffins)",
+      "vanilla, lemon juice and water quantities unspecified in the book",
+      "step 1 duration estimated; total minutes estimated (bake time stated 30 min, 45 for a loaf)",
+      "blueberry recorded with role 'vegetable' because the vocabulary has no 'fruit' role"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "estimated",
+  "source": {
+    "also_in": [
+      "aplv",
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Frutos Rojos', lines 52-69",
+    "original_text": "Delicias de Avena y Arándanos A\n\nEsta masa es apta para 1 budín, 4 mini tortitas o 6 muffins grandes.\nLa verdad es que el resultado es riquísimo y hay que aprovechar la época de arándanos!\nIngredientes:\n1 taza de harina de avena\n1/2 taza de azúcar mascabo o azúcar orgánica\n3 cucharadas aceite\nBastante extracto de vainilla\n1 cajita de arándanos (150 gr)\n1 cucharadita de polvo de hornear\nunas gotas de jugo de limón\n \nProcedimiento:\n \nTamizamos la harina de avena, le agregamos todos los ingredientes, revolvemos y de a poco agregamos agua hasta obtener una masa semiespesa y bien integrada. Horneamos 30 min a temperatura 180°C. Si hacen budín, puede tardar 45 min.\n \nEsta receta se lleva mis aplausos, ayer fui de compras, vi harina de avena y me dije ¿por qué no?"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Sift the oat flour, add all the ingredients, stir and gradually add water until you get a semi-thick, well-integrated batter.",
+      "text_es": "Tamizamos la harina de avena, le agregamos todos los ingredientes, revolvemos y de a poco agregamos agua hasta obtener una masa semiespesa y bien integrada.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 1800,
+      "dur_source": "stated",
+      "order": 2,
+      "text": "Bake 30 min at 180°C. If you make a loaf, it may take 45 min.",
+      "text_es": "Horneamos 30 min a temperatura 180°C. Si hacen budín, puede tardar 45 min.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "baking",
+    "muffins",
+    "blueberry",
+    "oat"
+  ],
+  "title": "Oat and blueberry delights",
+  "title_es": "Delicias de Avena y Arándanos A"
+}

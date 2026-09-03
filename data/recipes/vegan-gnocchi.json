@@ -1,0 +1,149 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "vegan-gnocchi",
+  "ingredients": [
+    {
+      "id": "flour-0000",
+      "name_es": "harina 0000",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "potato",
+      "name_es": "papas medianas hervidas",
+      "note": "medianas, hervidas",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "pc"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla salteada",
+      "note": "cantidad no indicada; salteada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bind-cold",
+      "unit": "tbsp"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal entrefina",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "si hace falta",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bind-cold",
+      "unit": "to_taste"
+    },
+    {
+      "id": "provencal-herbs",
+      "name_es": "provenzal",
+      "note": "opcional, si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "opcional, si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutmeg",
+      "name_es": "nuez moscada",
+      "note": "opcional, si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 40,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "all step durations estimated",
+      "onion quantity unspecified",
+      "book gives no shaping or cooking step for the gnocchi; only the dough is described"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "section 'Escabechados y fermentos', after 'Chucrut'",
+    "original_text": "Ñoquis veganos\n2 tazas de harina 0000\n2 papas medianas hervidas\nCebolla salteada\n3 cucharadas de aceite\n1 cucharadita de sal entrefina\n\nMezclar los ingredientes hasta obtener una masa manipulable e incorporar agua si hace falta. Si se desea se puede condimentar con provenzal, pimienta blanca y nuez moscada."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Mix the ingredients until you get a workable dough, adding water if needed.",
+      "text_es": "Mezclar los ingredientes hasta obtener una masa manipulable e incorporar agua si hace falta.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "If you like, season with Provencal herbs, white pepper and nutmeg.",
+      "text_es": "Si se desea se puede condimentar con provenzal, pimienta blanca y nuez moscada.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "dough",
+    "pasta"
+  ],
+  "title": "Vegan gnocchi",
+  "title_es": "Ñoquis veganos"
+}

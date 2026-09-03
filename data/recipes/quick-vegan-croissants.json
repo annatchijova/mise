@@ -1,0 +1,266 @@
+{
+  "category": "bread",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "uses vegetable margarine instead of butter; no lamination ('sin empaste')"
+    ],
+    "vegan": true
+  },
+  "id": "quick-vegan-croissants",
+  "ingredients": [
+    {
+      "id": "flour-0000",
+      "name_es": "harina 0000",
+      "note": null,
+      "qty": 700,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar",
+      "note": null,
+      "qty": 125,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "g"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": 15,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "g"
+    },
+    {
+      "id": "yeast",
+      "name_es": "levadura en polvo",
+      "note": "levadura seca en polvo (un sobre)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "sachet"
+    },
+    {
+      "id": "cornstarch",
+      "name_es": "almidón de maíz o mandioca",
+      "note": "o almidón de mandioca",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "tbsp"
+    },
+    {
+      "id": "margarine",
+      "name_es": "margarina vegetal blanda (no derretida)",
+      "note": "blanda, no derretida",
+      "qty": 200,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bind-cold",
+      "unit": "g"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": null,
+      "qty": 275,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "bind-cold",
+      "unit": "ml"
+    },
+    {
+      "id": "vanilla",
+      "name_es": "esencia de vainilla",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "none",
+      "unit": "tbsp"
+    },
+    {
+      "id": "orange-blossom-water",
+      "name_es": "agua de azahar",
+      "note": "ojo, es muy invasiva",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "none",
+      "unit": "tsp"
+    },
+    {
+      "id": "lemon",
+      "name_es": "ralladura de 1 limón",
+      "note": "solo la ralladura",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "none",
+      "unit": "pc"
+    },
+    {
+      "id": "food-coloring",
+      "name_es": "colorante amarillo para tortas líquido",
+      "note": "regular al color deseado; se puede usar cúrcuma",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "garnish",
+      "technique": "none",
+      "unit": "tsp"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar (almíbar)",
+      "note": "1 tacita tamaño café (small coffee cup, not a full cup)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "dissolve",
+      "unit": "cup"
+    },
+    {
+      "id": "water",
+      "name_es": "agua (almíbar)",
+      "note": "1/2 tacita tamaño café (small coffee cup, not a full cup)",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "cup"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón (almíbar)",
+      "note": "jugo",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "dissolve",
+      "unit": "tbsp"
+    },
+    {
+      "id": "margarine",
+      "name_es": "margarina para el molde",
+      "note": "para enmargarinar las placas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "none",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 180,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "minutes estimated (stated chill/proof/bake plus estimated handling)",
+      "prep and syrup durations estimated",
+      "'tacita tamaño café' mapped to unit cup with note (it is a small coffee cup)",
+      "margarine for trays unspecified"
+    ]
+  },
+  "serves": 14,
+  "serves_source": "stated",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Ñoquis veganos', before 'Torta sin tacc de naranja'",
+    "original_text": "Medialunas\n(muy simples y rápidas, sin empaste)\n\nIngredientes: (14 medialunas grandes)\nHarina 0000, 700 gr.\nAzúcar, 125 gr.\nSal, 15 gr.\nLevadura en polvo, un sobre\nAlmidón de maíz o mandioca, 3 cdas\nMargarina vegetal blanda (no derretida), 200 gr\nAgua, 275 cc.\nEsecia de Vainilla, 2 cdas\nAgua de Azahar, 1/2 cdta. (ojo! es muy invasiva!)\nRalladura de 1 limón\nColorante amarillo para tortas líquido, 1 cdta. (ir regulando el color deseado, también se puede usar cúrcuma)\nAlmíbar: 1 tacita tamaño café de azúcar, 1/2 tacita de agua, 1 cda de jugo de limón\nMargarina para el molde.\n\nProcedimiento:\nEn un bol, tamizar la harina, la fecula y la sal, agregar el azúcar y la levadura en polvo. Revolver. Hacer un hueco e incorporar el agua, el colorante, la esencia, el agua de azahar, la ralladura, y la margarina blanda. Con la ayuda de una cuchara de madera, formar un bollo y amasar hasta que resulte suave.\nCubrir la masa con papel film o bolsa y llevar a enfriar a la heladera mínimo una hora.\nUna vez fría, estirarla espolvoreando con harina, con un espesor de aprox medio centímetro. Si querés que te queden todas iguales, preparar un triángulo de cartón (el mío es de 10 cm de base y 15 cm de alto) para usar de patrón, cortando la masa con una cuchilla afilada. Una vez cortado el triángulo, volverlo a estirar lo más posible. y enrollar desde la base hacia el vértice. El vértice debe quedar para abajo para que no se abra en el horno. Curvar. (Ver las fotos del paso a paso)\nUbicar sobre placas enmargarinadas, no muy juntas ya que duplican su tamaño. (aplastar las puntitas contra la placa)\nDejar levar 30 minutos en un lugar cálido.\nLlevarlo a un horno precalentado a 200° C. durante 20 minutos aprox. hasta dorar ligeramente.\nEl almíbar se prepara colocando el azúcar, el agua y la cucharada de limón, en una jarrita, a fuego mínimo, sin revolver, hasta espesar ligeramente. Es muy importante saber que para pintar las medialunas, si están calientes, el almíbar tiene que estar frío. Y si las medialunas están frías, el amíbar debe estar caliente, para no lograr que se azucare. Al pincelar las medialunas, van a ver que va absorviendo almíbar, de ser necesario, volver a pincelar"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "In a bowl, sift the flour, the starch and the salt, add the sugar and the powdered yeast. Stir. Make a well and add the water, the colouring, the essence, the orange-blossom water, the zest and the soft margarine. With the help of a wooden spoon, form a ball and knead until smooth.",
+      "text_es": "En un bol, tamizar la harina, la fecula y la sal, agregar el azúcar y la levadura en polvo. Revolver. Hacer un hueco e incorporar el agua, el colorante, la esencia, el agua de azahar, la ralladura, y la margarina blanda. Con la ayuda de una cuchara de madera, formar un bollo y amasar hasta que resulte suave.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 3600,
+      "dur_source": "stated",
+      "order": 2,
+      "text": "Cover the dough with cling film or a bag and chill in the fridge for at least one hour.",
+      "text_es": "Cubrir la masa con papel film o bolsa y llevar a enfriar a la heladera mínimo una hora.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Once cold, roll it out, dusting with flour, to a thickness of about half a centimetre. If you want them all the same, prepare a cardboard triangle (mine is 10 cm at the base and 15 cm high) to use as a template, cutting the dough with a sharp knife. Once the triangle is cut, stretch it again as much as possible and roll from the base towards the tip. The tip must end up underneath so it does not open in the oven. Curve. (See the step-by-step photos)",
+      "text_es": "Una vez fría, estirarla espolvoreando con harina, con un espesor de aprox medio centímetro. Si querés que te queden todas iguales, preparar un triángulo de cartón (el mío es de 10 cm de base y 15 cm de alto) para usar de patrón, cortando la masa con una cuchilla afilada. Una vez cortado el triángulo, volverlo a estirar lo más posible. y enrollar desde la base hacia el vértice. El vértice debe quedar para abajo para que no se abra en el horno. Curvar. (Ver las fotos del paso a paso)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Place on margarine-greased trays, not too close together since they double in size. (press the tips down against the tray)",
+      "text_es": "Ubicar sobre placas enmargarinadas, no muy juntas ya que duplican su tamaño. (aplastar las puntitas contra la placa)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 1800,
+      "dur_source": "stated",
+      "order": 5,
+      "text": "Let rise for 30 minutes in a warm place.",
+      "text_es": "Dejar levar 30 minutos en un lugar cálido.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 1200,
+      "dur_source": "stated",
+      "order": 6,
+      "text": "Bake in an oven preheated to 200 C for about 20 minutes, until lightly golden.",
+      "text_es": "Llevarlo a un horno precalentado a 200° C. durante 20 minutos aprox. hasta dorar ligeramente.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "The syrup is made by putting the sugar, the water and the tablespoon of lemon in a small jug over minimum heat, without stirring, until it thickens slightly. It is very important to know that to brush the croissants, if they are hot the syrup must be cold, and if the croissants are cold the syrup must be hot, so it does not crystallise. As you brush the croissants you will see them absorbing syrup; if necessary, brush again.",
+      "text_es": "El almíbar se prepara colocando el azúcar, el agua y la cucharada de limón, en una jarrita, a fuego mínimo, sin revolver, hasta espesar ligeramente. Es muy importante saber que para pintar las medialunas, si están calientes, el almíbar tiene que estar frío. Y si las medialunas están frías, el amíbar debe estar caliente, para no lograr que se azucare. Al pincelar las medialunas, van a ver que va absorviendo almíbar, de ser necesario, volver a pincelar",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "baked",
+    "yeast-dough",
+    "breakfast",
+    "long"
+  ],
+  "title": "Quick vegan croissants (medialunas)",
+  "title_es": "Medialunas"
+}

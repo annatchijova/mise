@@ -1,0 +1,255 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "andean-potatoes-with-fresh-salad",
+  "ingredients": [
+    {
+      "id": "andean-potato",
+      "name_es": "papines andinos",
+      "note": null,
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "rosemary",
+      "name_es": "Romero",
+      "note": "c/n",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "Aceite de oliva",
+      "note": "un chorrito",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "fennel",
+      "name_es": "hinojo",
+      "note": "Vegetales para grillar: en nuestro caso usamos hinojo, morrón y tomate",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón",
+      "note": "Vegetales para grillar",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "tomato",
+      "name_es": "tomate",
+      "note": "Vegetales para grillar",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "red-cabbage",
+      "name_es": "Repollo colorado",
+      "note": "en tiras finas",
+      "qty": 0.25,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "avocado",
+      "name_es": "paltas maduras",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "cucumber",
+      "name_es": "pepino o 1 morrón rojo",
+      "note": "o 1 morrón rojo",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "dientes de ajo",
+      "note": "picados",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "clove"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal marina",
+      "note": "cucharadita al ras",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de 1 limón pequeño",
+      "note": "jugo de 1 limón pequeño",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "season",
+      "unit": "pc"
+    },
+    {
+      "id": "jalapeno",
+      "name_es": "jalapeño",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "raw",
+      "unit": "pc"
+    },
+    {
+      "id": "sunflower-oil",
+      "name_es": "aceite de girasol",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vinegar",
+      "name_es": "vinagre",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "emulsify",
+      "unit": "tbsp"
+    }
+  ],
+  "minutes": 45,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "rosemary, olive oil and grilling vegetables quantities unspecified",
+      "the grilled vegetables are listed but the method gives no step for grilling them; none added",
+      "lemon juice is listed among ingredients but not used in the method as written",
+      "durations estimated except the 5-minute blanch"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "stated",
+  "source": {
+    "also_in": [
+      "aplv"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Papa', lines 351-374",
+    "original_text": "– Papines Andinos con acompañamiento de ensalada fresca y vegetales grillados. A\n(Para 2 platos)\n\nVas a necesitar:\n500 gr papines andinos\nRomero c/n\nAceite de oliva\nVegetales para grillar: en nuestro caso usamos hinojo, morrón y tomate\n\nPara la ensalada:\n1/4 Repollo colorado\n2 paltas maduras\n1 pepino o 1 morrón rojo\n2 dientes de ajo\n1 cucharadita al ras de sal marina\njugo de 1 limón pequeño\n1 jalapeño\n3 cucharadas de aceite de girasol\n3 cucharadas de vinagre\n\nProcedimiento:\nBlanquear las papas hirviéndolas 5 minutos. Luego colocarlas en placa para horno con un chorrito de aceite de oliva y sal. Cuando estén a punto de hacerse (se arrugan), agregarle romero.\nPara la ensalada cortar en tiras finas el repollo, la palta y el pepino o morrón. Por otro lado en un mortero agregar los dos dientes de ajo picados, el jalapeño, la sal, el aceite y el vinagre. Pisar con el mortero hasta que se integre bien y luego colocar en la ensalada. Con las manos limpias, aplastar y machucar la ensalada para que integre bien.\nEmplatar y servir."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "stated",
+      "order": 1,
+      "text": "Blanch the potatoes by boiling them 5 minutes.",
+      "text_es": "Blanquear las papas hirviéndolas 5 minutos.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Then put them on an oven tray with a drizzle of olive oil and salt. When they are about done (they wrinkle), add rosemary.",
+      "text_es": "Luego colocarlas en placa para horno con un chorrito de aceite de oliva y sal. Cuando estén a punto de hacerse (se arrugan), agregarle romero.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "For the salad, cut the cabbage, the avocado and the cucumber or pepper into thin strips.",
+      "text_es": "Para la ensalada cortar en tiras finas el repollo, la palta y el pepino o morrón.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Separately, in a mortar put the two chopped garlic cloves, the jalapeño, the salt, the oil and the vinegar. Pound with the mortar until well integrated and then put it on the salad.",
+      "text_es": "Por otro lado en un mortero agregar los dos dientes de ajo picados, el jalapeño, la sal, el aceite y el vinagre. Pisar con el mortero hasta que se integre bien y luego colocar en la ensalada.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "With clean hands, crush and bruise the salad so it integrates well.",
+      "text_es": "Con las manos limpias, aplastar y machucar la ensalada para que integre bien.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2,
+        5
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Plate and serve.",
+      "text_es": "Emplatar y servir.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "potato",
+    "salad",
+    "roast",
+    "avocado"
+  ],
+  "title": "Andean baby potatoes with fresh salad and grilled vegetables",
+  "title_es": "Papines Andinos con acompañamiento de ensalada fresca y vegetales grillados. A"
+}

@@ -1,0 +1,235 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Gluten-free if the chimichurri and red curry used contain no wheat."
+    ],
+    "vegan": true
+  },
+  "id": "broad-bean-red-lentil-stew",
+  "ingredients": [
+    {
+      "id": "broad-bean",
+      "name_es": "habas",
+      "note": "Cocinar aparte",
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebollas",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "red-onion",
+      "name_es": "cebollas moradas",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "pumpkin",
+      "name_es": "rodajas de calabaza",
+      "note": null,
+      "qty": 4,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "slice"
+    },
+    {
+      "id": "zucchini",
+      "name_es": "zapallito",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "corn",
+      "name_es": "choclo hecho granos",
+      "note": "kernels cut off one cob",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "potato",
+      "name_es": "papa",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "sweet-potato",
+      "name_es": "baratas",
+      "note": "book reads 'baratas'; read as 'batatas' (sweet potatoes) - judgment call",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "kg"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "Agregar de a poco agua; luego agua filtrada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "smoked-paprika",
+      "name_es": "pimentón español ahumado y/o picante",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chimichurri",
+      "name_es": "Chimichurri",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "red-curry-paste",
+      "name_es": "curry rojo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "red-lentil",
+      "name_es": "lentejas turcas",
+      "note": null,
+      "qty": 250,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "g"
+    }
+  ],
+  "minutes": 90,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "all durations estimated; total minutes estimated",
+      "'1 kilo de baratas' interpreted as batatas (sweet potatoes)",
+      "water and seasoning quantities unspecified"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "stated",
+  "source": {
+    "also_in": [
+      "aplv"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Lentejas', lines 159-171",
+    "original_text": "Guiso de habas y lentejas turcas /6 porciones enormes . \nCocinar aparte las habas (500gr) . Mientras saltear\n- 3 cebollas\n- 2 cebollas moradas\n- 4 rodajas de calabaza\n- 1 zapallito\n- 1 choclo hecho granos\n- 1 papa\n- 1 kilo de baratas\nAgregar de a poco agua y condimentos : pimentón español ahumado y/o picante\nChimichurri, curry rojo, sal.\nLuego añadir las habas semicocidas, agregar agua filtrada y las lentejas turcas (250gr)\nCuidar la cocción para que no se pegue, cocinar hasta que ablande y sea rico."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 1800,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Cook the broad beans (500 g) separately.",
+      "text_es": "Cocinar aparte las habas (500gr) .",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Meanwhile sauté 3 onions, 2 red onions, 4 slices of pumpkin, 1 zucchini, the kernels of 1 corn cob, 1 potato, 1 kilo of sweet potatoes.",
+      "text_es": "Mientras saltear\n- 3 cebollas\n- 2 cebollas moradas\n- 4 rodajas de calabaza\n- 1 zapallito\n- 1 choclo hecho granos\n- 1 papa\n- 1 kilo de baratas",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Gradually add water and seasonings: Spanish smoked and/or hot paprika, chimichurri, red curry, salt.",
+      "text_es": "Agregar de a poco agua y condimentos : pimentón español ahumado y/o picante\nChimichurri, curry rojo, sal.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Then add the half-cooked broad beans, add filtered water and the red lentils (250 g).",
+      "text_es": "Luego añadir las habas semicocidas, agregar agua filtrada y las lentejas turcas (250gr)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 1800,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Watch the cooking so it does not stick; cook until soft and tasty.",
+      "text_es": "Cuidar la cocción para que no se pegue, cocinar hasta que ablande y sea rico.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "stew",
+    "legumes",
+    "one-pot",
+    "long"
+  ],
+  "title": "Broad bean and red lentil stew",
+  "title_es": "Guiso de habas y lentejas turcas"
+}

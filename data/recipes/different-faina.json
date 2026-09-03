@@ -1,0 +1,258 @@
+{
+  "category": "bread",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Chickpea and hominy-corn based; gluten-free if the 'Italian' seasoning blend is."
+    ],
+    "vegan": true
+  },
+  "id": "different-faina",
+  "ingredients": [
+    {
+      "id": "hominy-corn",
+      "name_es": "harina de maíz de mote",
+      "note": "made at home in the blender",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chickpea",
+      "name_es": "garbanzos (que fermentaron 2 días) ya cocidos",
+      "note": "fermented 2 days, cooked",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "protein",
+      "technique": "bind-hot",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bind-hot",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "aceite de oliva",
+      "note": "bastante",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "dientes de ajo",
+      "note": "un par de dientes de ajo",
+      "qty": 2,
+      "qty_source": "estimated",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "clove"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cashew-cream",
+      "name_es": "crema de caju (caju activado, agua y sal)",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "bind-hot",
+      "unit": "to_taste"
+    },
+    {
+      "id": "italian-seasoning",
+      "name_es": "Italian (condimento a base de: romero, estragón, sal, tomillo y albahaca)",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cumin",
+      "name_es": "comino",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "parsley",
+      "name_es": "perejil",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 75,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "no quantities stated ('un par de dientes de ajo' recorded as 2 cloves, estimated)",
+      "all durations estimated; bake time not stated; the 2-day chickpea fermentation is excluded from total minutes"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "aplv",
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Garbanzos', lines 320-331",
+    "original_text": "Fainá Diferente\n\nHacer harina de maíz de mote (con licuadora) \nProcesar garbanzos (que fermentaron 2 días) ya cocidos con agua, bastante aceite de oliva y un par de dientes de ajo.\nSofreír cebolla hasta dorar\nPrecalentar el horno. Calentar una placa con aceite para que no se pegue\nAgregar al sofrito la pasta de garbanzos. Integrar. \nLuego agregar crema de caju (caju activado, agua y sal)\nAgregar Italian (condimento a base de: romero, estragón, sal, tomillo y albahaca)\nRevolver y revisar la sal. \nIncorporar la harina de maíz mote. Revolver. Corregir sal. Agregar pimienta, comino y perejil\nColocar la mezcla en la asadera y hornear a temperatura de 250°C"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Make hominy corn flour (with a blender).",
+      "text_es": "Hacer harina de maíz de mote (con licuadora) ",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Process chickpeas (fermented for 2 days), already cooked, with water, plenty of olive oil and a couple of garlic cloves.",
+      "text_es": "Procesar garbanzos (que fermentaron 2 días) ya cocidos con agua, bastante aceite de oliva y un par de dientes de ajo.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Sauté onion until golden.",
+      "text_es": "Sofreír cebolla hasta dorar",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Preheat the oven. Heat a tray with oil so it does not stick.",
+      "text_es": "Precalentar el horno. Calentar una placa con aceite para que no se pegue",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2,
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Add the chickpea paste to the sofrito. Integrate.",
+      "text_es": "Agregar al sofrito la pasta de garbanzos. Integrar. ",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Then add cashew cream (activated cashews, water and salt).",
+      "text_es": "Luego agregar crema de caju (caju activado, agua y sal)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "Add Italian (a seasoning based on: rosemary, tarragon, salt, thyme and basil). Stir and check the salt.",
+      "text_es": "Agregar Italian (condimento a base de: romero, estragón, sal, tomillo y albahaca)\nRevolver y revisar la sal. ",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        7
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "Incorporate the hominy corn flour. Stir. Correct salt. Add pepper, cumin and parsley.",
+      "text_es": "Incorporar la harina de maíz mote. Revolver. Corregir sal. Agregar pimienta, comino y perejil",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4,
+        8
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 9,
+      "text": "Put the mixture in the baking tray and bake at 250°C.",
+      "text_es": "Colocar la mezcla en la asadera y hornear a temperatura de 250°C",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "faina",
+    "chickpea",
+    "gluten-free",
+    "baking"
+  ],
+  "title": "Different fainá",
+  "title_es": "Fainá Diferente"
+}

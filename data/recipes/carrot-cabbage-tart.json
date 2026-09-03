@@ -1,0 +1,235 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "dough is bound with a raw carrot 'mayonnaise' (carrot + oil + garlic + onion), no egg"
+    ],
+    "vegan": true
+  },
+  "id": "carrot-cabbage-tart",
+  "ingredients": [
+    {
+      "id": "carrot",
+      "name_es": "zanahoria (relleno)",
+      "note": "'varios kilos' en la heladera; cantidad usada no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cabbage",
+      "name_es": "trozo de repollo",
+      "note": "un trozo",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "onion",
+      "name_es": "media cebolla",
+      "note": "media cebolla, repartida entre relleno y masa",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutmeg",
+      "name_es": "nuez moscada",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal entrefina",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (relleno)",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "carrot",
+      "name_es": "zanahorias ralladas (masa)",
+      "note": "ralladas, para la mayonesa de zanahoria",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "binder",
+      "technique": "emulsify",
+      "unit": "pc"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (mayonesa)",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "dientes de ajo",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "clove"
+    },
+    {
+      "id": "onion-flakes",
+      "name_es": "cebolla en escamas",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "flour-0000",
+      "name_es": "harina 0000",
+      "note": "2-3 tazas, hasta que se pueda amasar sin que se pegue; lower bound recorded",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (masa)",
+      "note": "una cucharada más",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bind-cold",
+      "unit": "tbsp"
+    }
+  ],
+  "minutes": 80,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "all step durations estimated",
+      "baking is implied by 'quedó bien doradita' but no explicit bake instruction, temperature or time",
+      "filling quantities unspecified",
+      "flour stated as range 2-3 cups, lower bound recorded"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Borsch I', before 'Trufas súper rápidas y nutritivas'",
+    "original_text": "Tarta de zanahoria y repollo\n\nEl otro día estaba apurada y no sabía qué comer, en la heladera tenía varios kilos de zanahoria, media cebolla y un trozo de repollo.\nSe me ocurrió saltear la zanahoria junto con el repollo y la cebolla! Quedó buenísimo. Condimenté con pimienta blanca, nuez moscada, sal entrefina y aceite.\nPor otro lado rallé 2 zanahorias y las procesé con aceite, sal, 2 dientes de ajo, el trocito de cebolla y un poco de cebolla en escamas. Me quedó una mayonesa de zanahorias cruda. A eso le agregué 2-3 tazas de harina 0000 (hasta que puedas amasar sin que se te pegué) y una cucharada más de aceite.\nAmasé hasta obtener una consistencia manejable e hice dos tapas para la tarta. Rellené y armé.\nLa tarta quedó bien doradita y de color naranja, no tengo fotos porque estaba demasiado rica y se acabó enseguida!"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "I thought of sauteing the carrot together with the cabbage and the onion! It came out great. I seasoned with white pepper, nutmeg, fine salt and oil.",
+      "text_es": "Se me ocurrió saltear la zanahoria junto con el repollo y la cebolla! Quedó buenísimo. Condimenté con pimienta blanca, nuez moscada, sal entrefina y aceite.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Separately, I grated 2 carrots and processed them with oil, salt, 2 garlic cloves, the small piece of onion and a little onion flakes. I ended up with a raw carrot mayonnaise.",
+      "text_es": "Por otro lado rallé 2 zanahorias y las procesé con aceite, sal, 2 dientes de ajo, el trocito de cebolla y un poco de cebolla en escamas. Me quedó una mayonesa de zanahorias cruda.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "To that I added 2-3 cups of 0000 flour (until you can knead without it sticking) and one more tablespoon of oil.",
+      "text_es": "A eso le agregué 2-3 tazas de harina 0000 (hasta que puedas amasar sin que se te pegué) y una cucharada más de aceite.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "I kneaded until I got a manageable consistency and made two crusts for the tart.",
+      "text_es": "Amasé hasta obtener una consistencia manejable e hice dos tapas para la tarta.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        4
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "I filled and assembled it.",
+      "text_es": "Rellené y armé.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 1800,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "The tart came out nicely golden and orange in color; I have no photos because it was too tasty and was gone right away!",
+      "text_es": "La tarta quedó bien doradita y de color naranja, no tengo fotos porque estaba demasiado rica y se acabó enseguida!",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "baked",
+    "tart",
+    "carrot-mayo-dough"
+  ],
+  "title": "Carrot and cabbage tart",
+  "title_es": "Tarta de zanahoria y repollo"
+}

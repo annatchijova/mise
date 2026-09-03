@@ -1,0 +1,113 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Gluten-free only with a wheat-free soy sauce (tamari).",
+      "Book instruction kept as a note, not a step: 'Hacer esto en una sartén y no en un wok para que no larguen agua.'"
+    ],
+    "vegan": true
+  },
+  "id": "oyster-mushroom-lomito",
+  "ingredients": [
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "ginger",
+      "name_es": "dip de jengibre",
+      "note": "'dip de jengibre' is not defined anywhere in the book",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "oyster-mushroom",
+      "name_es": "gírgolas",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "soy-sauce",
+      "name_es": "salsa de soja orgánica y fermentada",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "no quantities stated",
+      "serves unspecified",
+      "durations estimated",
+      "'dip de jengibre' undefined in the book; recorded under id 'ginger' with the book wording",
+      "title_es taken from the heading 'Girgolas: lomito de gírgolas:'"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Hongos', lines 81-84 ('Girgolas: lomito de gírgolas:')",
+    "original_text": "Girgolas: lomito de gírgolas:\n\nCalentar aceite en una sartén, esperar a que esté bien caliente, tirar el dip de jengibre. Luego las gírgolas. Dar vuelta todo a la vez. Agregar salsa de soja orgánica y fermentada.\nHacer esto en una sartén y no en un wok para que no larguen agua."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Heat oil in a frying pan, wait until it is very hot, throw in the ginger dip.",
+      "text_es": "Calentar aceite en una sartén, esperar a que esté bien caliente, tirar el dip de jengibre.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Then the oyster mushrooms. Turn everything over at once.",
+      "text_es": "Luego las gírgolas. Dar vuelta todo a la vez.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add organic fermented soy sauce.",
+      "text_es": "Agregar salsa de soja orgánica y fermentada.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "mushroom",
+    "quick",
+    "pan-sear"
+  ],
+  "title": "Oyster mushroom 'lomito'",
+  "title_es": "lomito de gírgolas"
+}

@@ -1,0 +1,142 @@
+{
+  "category": "dessert",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Cocoa butter is the plant fat of the cacao bean."
+    ],
+    "vegan": true
+  },
+  "id": "homemade-chocolate",
+  "ingredients": [
+    {
+      "id": "cocoa-butter",
+      "name_es": "manteca de cacao",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cardamom",
+      "name_es": "cardamomo molido",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cocoa",
+      "name_es": "cacao amargo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "bind-cold",
+      "unit": "to_taste"
+    },
+    {
+      "id": "sweetener",
+      "name_es": "endulzante elegido",
+      "note": "sweetener of choice; the book advises against water-based ones (vanilla extract, alcohols)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chili",
+      "name_es": "chiles",
+      "note": "optional add-in",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "almond",
+      "name_es": "almendras tostadas",
+      "note": "optional add-in",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "none",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 75,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "no quantities stated",
+      "serves unspecified",
+      "durations estimated (setting time not stated)",
+      "sweetener is unspecified 'endulzante elegido'"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Chocolate', lines 175-180",
+    "original_text": "Chocolate casero\n\nFundir manteca de cacao\nagregar cardamomo molido (y todo lo que se desee: chiles, almendras tostadas, etc) \nen Licuadora poner la manteca de cacao, cacao amargo y endulzante elegido. No es conveniente usar base acuosa (ejemplo vainilla o alcoholes)\nVolcar en molde para chocolates y dejar solidificar."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Melt cocoa butter.",
+      "text_es": "Fundir manteca de cacao",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Add ground cardamom (and anything else you like: chilies, toasted almonds, etc.).",
+      "text_es": "agregar cardamomo molido (y todo lo que se desee: chiles, almendras tostadas, etc) ",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "In a blender put the cocoa butter, unsweetened cocoa and the chosen sweetener. It is not advisable to use a water-based ingredient (e.g. vanilla or alcohols).",
+      "text_es": "en Licuadora poner la manteca de cacao, cacao amargo y endulzante elegido. No es conveniente usar base acuosa (ejemplo vainilla o alcoholes)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Pour into a chocolate mould and let set.",
+      "text_es": "Volcar en molde para chocolates y dejar solidificar.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "chocolate",
+    "dessert",
+    "no-bake"
+  ],
+  "title": "Homemade chocolate",
+  "title_es": "Chocolate casero"
+}

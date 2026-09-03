@@ -1,0 +1,113 @@
+{
+  "category": "soup",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Plant milk (cashew, almond or coconut) per the book; no dairy."
+    ],
+    "vegan": true
+  },
+  "id": "roast-pumpkin-cream-soup",
+  "ingredients": [
+    {
+      "id": "pumpkin",
+      "name_es": "calabaza asada",
+      "note": "una taza y media de calabaza asada",
+      "qty": 1.5,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "bake",
+      "unit": "cup"
+    },
+    {
+      "id": "cashew-milk",
+      "name_es": "leche de cajú, almendras o coco",
+      "note": "cuanto más espesa sea la leche, mejor; almond or coconut milk are book-stated alternatives",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "thicken",
+      "unit": "cup"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "un poco de sal",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 50,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "recipe is embedded in a prose paragraph; title_es taken from the book's own words 'sopa de calabaza'",
+      "serves unspecified",
+      "total minutes and all step durations estimated",
+      "roasting time/temperature not given by the book"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "abc-vegan-ideas"
+    ],
+    "book": "aplv",
+    "locator": "section 'Zapallo / Calabaza', prose paragraph beginning 'El zapallo y la calabaza se llevan excelente con el ajo y el cilantro'",
+    "original_text": "Mi versión favorita es sopa de calabaza. Si bien, yo prefiero las sopas con verduras a las sopas cremosas, la calabaza se lleva todos los puntos en sopas crema. Recordá hornear la calabaza antes de hacer la sopa para que el sabor sea increíble. Dos ideas ¡luego jugá con tus sentidos y lo que sea de estación! Licuar una taza y media de calabaza asada con una taza de leche de cajú, almendras o coco, cuanto más espesa sea la leche, mejor. Agregale un poco de sal, pimienta y listo, tan simple, tenés una sopa dulzona y cremosa para disfrutar a toda hora. Podrías agregarle menos leche y usarla como salsa para acompañar un arroz."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 2400,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Remember to roast the pumpkin before making the soup so the flavor is incredible.",
+      "text_es": "Recordá hornear la calabaza antes de hacer la sopa para que el sabor sea increíble.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Blend a cup and a half of roasted pumpkin with a cup of cashew, almond or coconut milk; the thicker the milk, the better.",
+      "text_es": "Licuar una taza y media de calabaza asada con una taza de leche de cajú, almendras o coco, cuanto más espesa sea la leche, mejor.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add a little salt, pepper, and that is it; so simple, you have a sweetish, creamy soup to enjoy at any hour.",
+      "text_es": "Agregale un poco de sal, pimienta y listo, tan simple, tenés una sopa dulzona y cremosa para disfrutar a toda hora.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick-assembly",
+    "creamy"
+  ],
+  "title": "Pumpkin soup",
+  "title_es": "sopa de calabaza"
+}

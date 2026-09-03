@@ -1,0 +1,172 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Despite the title, the recipe is tofu with kala namak (black salt); no egg is used.",
+      "Gluten depends on the curry product used; tofu and the rest are gluten-free."
+    ],
+    "vegan": true
+  },
+  "id": "tofu-scramble",
+  "ingredients": [
+    {
+      "id": "kala-namak",
+      "name_es": "Sal “kala namak”",
+      "note": null,
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tbsp"
+    },
+    {
+      "id": "tofu",
+      "name_es": "Tofu Soyana",
+      "note": "1 bloque (brand Soyana in the book)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "Aceite de oliva",
+      "note": "c/n (un par de cucharadas)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-peppercorn",
+      "name_es": "Pimienta verde",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "merken",
+      "name_es": "merkén ahumado",
+      "note": "opcional",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "pinch"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo picado",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "clove"
+    },
+    {
+      "id": "curry",
+      "name_es": "Curry a elección",
+      "note": "a elección; el libro prefiere curry amarillo; puede ser en pasta",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal de mesa",
+      "note": "para corregir al final si hace falta",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 15,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "all step durations estimated",
+      "oil, curry and pepper quantities unspecified"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 29 of 50, page headed 'huevos revueltos' (between 'ñoquis' and 'Habas al vino')",
+    "original_text": "huevos\nrevueltos\ningredientes Procedimiento\nSal “kala namak” 1/2 cucharada Tofu Soyana 1 bloque.\nAceite de oliva c/n (un par de cucharadas)\nPimienta verde\nPizca merkén ahumado – opcional –\n1 diente de ajo picado.\nCurry a elección. Nosotros para esta receta preferimos curry amarillo.\nTrocear el tofu y ayudar a desgranar con las manos haciendo movimiento mecánico. En una sartén poner un poco de aceite de oliva, dejar unos segundos y disolver el curry si es en pasta. Agregar el tofu\ntroceado, los condimentos elegidos y el ajo. Revolver. Agregar la sal negra (kala\nnamak) y cocinar un poco más. Revisar luego si hace falta más sal y corregir con sal de mesa."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Break up the tofu and help crumble it with your hands using a mechanical motion.",
+      "text_es": "Trocear el tofu y ayudar a desgranar con las manos haciendo movimiento mecánico.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Put a little olive oil in a pan, wait a few seconds and dissolve the curry if it is a paste.",
+      "text_es": "En una sartén poner un poco de aceite de oliva, dejar unos segundos y disolver el curry si es en pasta.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add the crumbled tofu, the chosen seasonings and the garlic. Stir.",
+      "text_es": "Agregar el tofu troceado, los condimentos elegidos y el ajo. Revolver.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Add the black salt (kala namak) and cook a little longer.",
+      "text_es": "Agregar la sal negra (kala namak) y cocinar un poco más.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Then check whether it needs more salt and correct with table salt.",
+      "text_es": "Revisar luego si hace falta más sal y corregir con sal de mesa.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "breakfast",
+    "tofu"
+  ],
+  "title": "Tofu scramble ('scrambled eggs')",
+  "title_es": "huevos revueltos"
+}

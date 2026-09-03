@@ -1,0 +1,197 @@
+{
+  "category": "soup",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Gluten-free if the curry blend and broth contain no wheat."
+    ],
+    "vegan": true
+  },
+  "id": "mushroom-basmati-soup",
+  "ingredients": [
+    {
+      "id": "onion",
+      "name_es": "cebolla",
+      "note": "Base sopa (las verduras que tengas en casa, puede ser morrón, cebolla, apio, zanahoria, calabaza); en nuestro caso sólo con cebolla y zanahoria",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "carrot",
+      "name_es": "zanahoria",
+      "note": "Base sopa; en nuestro caso sólo con cebolla y zanahoria",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "coconut-oil",
+      "name_es": "aceite de coco",
+      "note": "Un poco de aceite de coco (o cualquier otro)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "una cabeza (nosotros usamos una cabeza)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "dried-mushroom",
+      "name_es": "hongos secos: de pino, shitakee y gírgolas",
+      "note": "Puñado",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "basmati-rice",
+      "name_es": "arroz basmati",
+      "note": "arroz basmati al curry",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "grain",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "curry-powder",
+      "name_es": "curry",
+      "note": "un poco de curry",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-broth",
+      "name_es": "caldo casero de verduras",
+      "note": "Opcional; en su defecto agua",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-peppercorn",
+      "name_es": "pimienta verde",
+      "note": "condimento (puede ser pimienta verde)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 45,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "no quantities stated except garlic (one head)",
+      "all durations estimated",
+      "soup base is 'whatever vegetables you have'; onion and carrot recorded as the author's own choice"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "aplv",
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Hongos', lines 86-101",
+    "original_text": "Sopa de Hongos y Basmati A\n\nPara la sopa vas a necesitar:\n\nBase sopa (las verduras que tengas en casa, puede ser morrón, cebolla, apio, zanahoria, calabaza)\nUn poco de aceite de coco (o cualquier otro)\nAjo (nosotros usamos una cabeza)\nPuñado de hongos secos: de pino, shitakee y gírgolas.\nArroz basmati al curry.\nOpcional: caldo casero de verduras.\nSal y condimento (puede ser pimienta verde)\n\nProcedimiento:\nCortar en cubitos la base de la sopa, en nuestro caso queríamos hacerla sólo con cebolla y zanahoria. Sofreír en el aceite de coco en la olla que se va a utilizar.\nEn otra olla poner a cocinar el arroz basmati con un poco de curry.\nLuego agregar al sofrito, los hongos secos y el ajo cortado; revolver con cuchara de madera, salar un poco. Cuando libere jugo, agregar el agua o caldo de verduras casero. Tapar olla, cuando los hongos ablanden, agregar el arroz ya cocido en la sopa y cocer un poco más. Salar si hace falta y condimentar a gusto."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Dice the soup base; in our case we wanted to make it with onion and carrot only. Sweat in the coconut oil in the pot that will be used.",
+      "text_es": "Cortar en cubitos la base de la sopa, en nuestro caso queríamos hacerla sólo con cebolla y zanahoria. Sofreír en el aceite de coco en la olla que se va a utilizar.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "In another pot, cook the basmati rice with a little curry.",
+      "text_es": "En otra olla poner a cocinar el arroz basmati con un poco de curry.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Then add the dried mushrooms and the chopped garlic to the sofrito; stir with a wooden spoon, salt a little.",
+      "text_es": "Luego agregar al sofrito, los hongos secos y el ajo cortado; revolver con cuchara de madera, salar un poco.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2,
+        3
+      ],
+      "dur_s": 1200,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "When it releases juice, add the water or homemade vegetable broth. Cover the pot; when the mushrooms soften, add the already cooked rice to the soup and cook a little more.",
+      "text_es": "Cuando libere jugo, agregar el agua o caldo de verduras casero. Tapar olla, cuando los hongos ablanden, agregar el arroz ya cocido en la sopa y cocer un poco más.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Salt if needed and season to taste.",
+      "text_es": "Salar si hace falta y condimentar a gusto.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "soup",
+    "mushroom",
+    "rice",
+    "curry"
+  ],
+  "title": "Mushroom and basmati soup",
+  "title_es": "Sopa de Hongos y Basmati A"
+}

@@ -1,0 +1,217 @@
+{
+  "category": "bread",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Margarine and powdered milk are specified as vegan by the book ('margarina', 'leche vegana en polvo').",
+      "Wheat flour 000 and beer: contains gluten."
+    ],
+    "vegan": true
+  },
+  "id": "beer-bread",
+  "ingredients": [
+    {
+      "id": "flour-000",
+      "name_es": "harina 000",
+      "note": null,
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "fresh-yeast",
+      "name_es": "levadura fresca desgranada",
+      "note": null,
+      "qty": 50,
+      "qty_source": "stated",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "g"
+    },
+    {
+      "id": "beer",
+      "name_es": "cerveza (sin espuma)",
+      "note": "sin espuma",
+      "qty": 200,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "ml"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "alternativa del libro: en lugar de los 100 ml de agua usar 150 ml de leche de soja",
+      "qty": 100,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "ml"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": 10,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "g"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar",
+      "note": null,
+      "qty": 25,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "leaven",
+      "unit": "g"
+    },
+    {
+      "id": "plant-milk-powder",
+      "name_es": "leche vegana en polvo",
+      "note": "o reemplazar los 100 ml de agua por 150 ml de leche de soja (Ades en el libro)",
+      "qty": 20,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "dissolve",
+      "unit": "g"
+    },
+    {
+      "id": "margarine",
+      "name_es": "margarina",
+      "note": "vegetal (recetario vegano)",
+      "qty": 30,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "water",
+      "name_es": "agua (para rociar y pintar)",
+      "note": "rociar antes de hornear; pintar al salir",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "none",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 150,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified (book: three loaves)",
+      "fermentation durations estimated ('hasta que duplique')",
+      "bake stated as 25-30 min; 30 min recorded",
+      "total minutes estimated"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 40 of 50, page headed 'pan de cerveza' (between 'Bibimbap' and 'salsa tabasco')",
+    "original_text": "pan de\ncerveza\nMezclar 500 gr de harina 000 con 50 gr de levadura fresca desgranada. Hacer un hueco en el centro y verter 200 ml de cerveza (sin espuma), 100 cc de agua, 10 gr de sal, 25 gr de azúcar, 20 gr de leche vegana en polvo (o en lugar de los 100 ml de agua usar 150 ml de leche de soja Ades), 30 gr de margarina.\nCon cuchara de madera ir mezclando del centro a los costados hasta hacer un bollo.\nAmasar.\nCortar la masa en tres partes iguales. Bollarlos y dejarlos fermentar hasta que dupliquen su volumen.\nEstirar cada bollo y enroscar. Practicarles cortes transversales. Dejar fermentar hasta que duplique el volumen.\nHumedecer rociando los panes con agua y llevarlos a horno de 180ºC durante 25-30 minutos. Duplicarán su volumen.\nAl retirarlos del horno, pintarlos inmediatamente con agua."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Mix 500 g of flour 000 with 50 g of crumbled fresh yeast.",
+      "text_es": "Mezclar 500 gr de harina 000 con 50 gr de levadura fresca desgranada.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Make a well in the centre and pour in 200 ml of beer (without foam), 100 ml of water, 10 g of salt, 25 g of sugar, 20 g of vegan powdered milk (or instead of the 100 ml of water use 150 ml of Ades soy milk), 30 g of margarine.",
+      "text_es": "Hacer un hueco en el centro y verter 200 ml de cerveza (sin espuma), 100 cc de agua, 10 gr de sal, 25 gr de azúcar, 20 gr de leche vegana en polvo (o en lugar de los 100 ml de agua usar 150 ml de leche de soja Ades), 30 gr de margarina.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "With a wooden spoon, mix from the centre outwards until you have a ball of dough.",
+      "text_es": "Con cuchara de madera ir mezclando del centro a los costados hasta hacer un bollo.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Knead.",
+      "text_es": "Amasar.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 2700,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Cut the dough into three equal parts. Shape them into balls and let them ferment until doubled in volume.",
+      "text_es": "Cortar la masa en tres partes iguales. Bollarlos y dejarlos fermentar hasta que dupliquen su volumen.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 2400,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Roll out each ball and coil it. Make transverse cuts. Let ferment until doubled in volume.",
+      "text_es": "Estirar cada bollo y enroscar. Practicarles cortes transversales. Dejar fermentar hasta que duplique el volumen.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 1800,
+      "dur_source": "stated",
+      "order": 7,
+      "text": "Moisten the loaves by spraying them with water and put them in a 180 C oven for 25-30 minutes. They will double in volume.",
+      "text_es": "Humedecer rociando los panes con agua y llevarlos a horno de 180ºC durante 25-30 minutos. Duplicarán su volumen.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        7
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "As soon as you take them out of the oven, brush them with water.",
+      "text_es": "Al retirarlos del horno, pintarlos inmediatamente con agua.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "bread",
+    "yeast",
+    "long"
+  ],
+  "title": "Beer bread",
+  "title_es": "pan de cerveza"
+}

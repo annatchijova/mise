@@ -1,0 +1,150 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Only 'harina 0000' is a gluten source."
+    ],
+    "vegan": true
+  },
+  "id": "potato-onion-gnocchi",
+  "ingredients": [
+    {
+      "id": "flour-0000",
+      "name_es": "harina 0000",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "potato",
+      "name_es": "papas medianas hervidas",
+      "note": "medianas, hervidas",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "pc"
+    },
+    {
+      "id": "onion",
+      "name_es": "Cebolla salteada",
+      "note": "cantidad no indicada; va salteada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "none",
+      "unit": "tbsp"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal entrefina",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "incorporar agua si hace falta",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bind-cold",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic-parsley-mix",
+      "name_es": "provenzal",
+      "note": "opcional: 'si se desea'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "opcional: 'si se desea'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutmeg",
+      "name_es": "nuez moscada",
+      "note": "opcional: 'si se desea'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 30,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "all step durations estimated",
+      "onion and water quantities unspecified",
+      "book gives no shaping or boiling step for the gnocchi; not added"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 28 of 50, page headed 'ñoquis' (between 'Croquetas' and 'huevos revueltos')",
+    "original_text": "ñoquis\ningredientes Procedimiento\n2 tazas de harina 0000 2 papas medianas hervidas\nCebolla salteada\n3 cucharadas de aceite 1 cucharadita de sal entrefina\nMezclar los ingredientes hasta obtener una masa manipulable e incorporar agua si hace falta. Si se desea se puede\ncondimentar con\nprovenzal, pimienta blanca y nuez moscada."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Mix the ingredients until you get a workable dough, and add water if needed.",
+      "text_es": "Mezclar los ingredientes hasta obtener una masa manipulable e incorporar agua si hace falta.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "If you like, you can season with provenzal (garlic and parsley), white pepper and nutmeg.",
+      "text_es": "Si se desea se puede condimentar con provenzal, pimienta blanca y nuez moscada.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "pasta",
+    "argentine"
+  ],
+  "title": "Gnocchi",
+  "title_es": "ñoquis"
+}

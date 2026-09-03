@@ -1,0 +1,211 @@
+{
+  "category": "side",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Raw recipe (the book calls it 'otra receta RAW')."
+    ],
+    "vegan": true
+  },
+  "id": "spinach-salad-raw-carrot-mayo",
+  "ingredients": [
+    {
+      "id": "spinach",
+      "name_es": "hojas de espinaca (sin cortar, ya secas)",
+      "note": "whole leaves, dried after washing",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla cortada",
+      "note": "massaged with salt, lemon and oil (raw 'maceración')",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "marinate",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "marinate",
+      "unit": "to_taste"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón",
+      "note": "for the onion and for the carrot mayonnaise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "marinate",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "aceite de oliva",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "marinate",
+      "unit": "to_taste"
+    },
+    {
+      "id": "walnut",
+      "name_es": "nueces picadas",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "sprouted-lentil",
+      "name_es": "lentejas germinadas",
+      "note": "si desean (optional)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "protein",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "carrot",
+      "name_es": "zanahoria cruda (mayonesa de zanahorias raw)",
+      "note": "blended raw into the mayonnaise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "in the carrot mayonnaise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "in the carrot mayonnaise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "un poco de aceite",
+      "note": "in the carrot mayonnaise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 15,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "no quantities given",
+      "serves unspecified",
+      "all durations estimated",
+      "the book's single paragraph was split into steps; step 6 begins mid-sentence"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "recetario-diferente",
+    "locator": "section 'Espinaca / Acelga', before 'Soufflé de espinacas'",
+    "original_text": "Ensalada de espinacas. Vamos a aclarar una cosa, soy cocinera y mis dos platos favoritos en la Tierra son las sopas y las ensaladas, así que saquense el estigma de que las ensaladas son para dietas y las sopas para enfermos porque se están perdiendo un mundo de sabores. Para la ensalada de espinacas, vamos a usar las hojas sin cortar, ya secas. Ya que lo mencionamos anteriormente, esta es otra receta RAW. En el bol donde vamos a trabajar, ponemos la cebolla cortada y haremos una técnica que en la comida cruda es de maceración. Vamos a agregarle un poco de sal, jugo de limón y aceite de oliva y con la mano empezamos a masajear la cebolla dejando que libere un poco sus jugos. Pruebenla, van a pensar que está levemente cocida y le cambia totalmente el sabor a las ensaladas, guacamoles o preparaciones donde la usás en crudo. Luego agregamos un poco de nueces picadas y si desean lentejas germinadas, las hojas de espinaca y para darle vida, vamos a hacer una mayonesa de zanahorias raw, donde simplemente licuamos zanahoria cruda, con jugo de limón, ajo, agua y un poco de aceite. Queda buenísima esta combinación."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "For the spinach salad, we will use the leaves uncut, already dry.",
+      "text_es": "Para la ensalada de espinacas, vamos a usar las hojas sin cortar, ya secas.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "In the bowl we will work in, put the cut onion and apply a technique that in raw cuisine is called maceration.",
+      "text_es": "En el bol donde vamos a trabajar, ponemos la cebolla cortada y haremos una técnica que en la comida cruda es de maceración.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add a little salt, lemon juice and olive oil and with your hand start massaging the onion, letting it release some of its juices.",
+      "text_es": "Vamos a agregarle un poco de sal, jugo de limón y aceite de oliva y con la mano empezamos a masajear la cebolla dejando que libere un poco sus jugos.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Taste it; you will think it is slightly cooked, and it completely changes the flavour of salads, guacamoles or preparations where you use it raw.",
+      "text_es": "Pruebenla, van a pensar que está levemente cocida y le cambia totalmente el sabor a las ensaladas, guacamoles o preparaciones donde la usás en crudo.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Then add a few chopped walnuts and, if you wish, sprouted lentils, and the spinach leaves.",
+      "text_es": "Luego agregamos un poco de nueces picadas y si desean lentejas germinadas, las hojas de espinaca",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "And to bring it to life, we make a raw carrot mayonnaise, where we simply blend raw carrot with lemon juice, garlic, water and a little oil. This combination is great.",
+      "text_es": "y para darle vida, vamos a hacer una mayonesa de zanahorias raw, donde simplemente licuamos zanahoria cruda, con jugo de limón, ajo, agua y un poco de aceite. Queda buenísima esta combinación.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "raw",
+    "salad"
+  ],
+  "title": "Spinach salad with raw carrot mayonnaise",
+  "title_es": "Ensalada de espinacas"
+}

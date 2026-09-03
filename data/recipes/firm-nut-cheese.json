@@ -1,0 +1,213 @@
+{
+  "category": "side",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "plant-based cheese set with agar; keeps 7 days per the book"
+    ],
+    "vegan": true
+  },
+  "id": "firm-nut-cheese",
+  "ingredients": [
+    {
+      "id": "rice",
+      "name_es": "arroz blanco cocido",
+      "note": "cocido; alternativa: un bloque de tofu orgánico",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "nutritional-yeast",
+      "name_es": "Titán (levadura de cerveza en copos)",
+      "note": "brewer's yeast flakes; 4 si te gusta",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "season",
+      "unit": "tbsp"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de 1/2 limón",
+      "note": "jugo",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "season",
+      "unit": "pc"
+    },
+    {
+      "id": "onion-powder",
+      "name_es": "cebolla en polvo",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "mustard",
+      "name_es": "mostaza",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "emulsify",
+      "unit": "tbsp"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "no más, queda muy salado",
+      "qty": 1.5,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "almond",
+      "name_es": "almendras o castañas de cajú",
+      "note": "o cajú; activar en remojo 8 horas",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "bind-cold",
+      "unit": "cup"
+    },
+    {
+      "id": "agar-agar",
+      "name_es": "agar agar",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "thickener",
+      "technique": "dissolve",
+      "unit": "tbsp"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "para el agar",
+      "qty": 1.5,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "cup"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (para el envase)",
+      "note": "para aceitar el molde",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "none",
+      "unit": "to_taste"
+    },
+    {
+      "id": "paprika",
+      "name_es": "pimentón ahumado",
+      "note": "ahumado; opcional, para condimentar el molde",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 120,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated and exclude the 8 h nut soak",
+      "step 2 duration estimated (only the 4 min simmer is stated)",
+      "setting time not stated",
+      "Titán mapped to nutritional-yeast id (brewer's yeast flakes)"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Pastas caseras', before 'Ceviche de Palmitos'",
+    "original_text": "Queso firme de nueces\n\n1 taza de arroz blanco cocido o un bloque de tofu orgánico\n3 cucharadas de Titán (es levadura de cerveza en copos) (si te gusta, podés ponerle 4)\nJugo de 1/2 limón\n1 cucharadita de cebolla en polvo\n2cucharadas de mostaza\n1 1/2 cucharaditas de sal (No más porque va a quedar muy salado)\n1/2 taza de almendras o castañas de cajú (No te olvides de activarlas: dejándolas en remojo por 8 horas)\n\n    1. Procesar todo con minipimer. \n    2. En otro recipiente disolver 2 cucharadas de AGAR AGAR en 1 1/2 tazas de agua, llevar al fuego máximo hasta el hervor, luego 4 minutos en fuego mínimo, batir siempre. Ojo no pasarse de esos minutos porque solidifica muuuuy rápido.\n    3. Tener preparado envase de plástico aceitado y condimentado (por ejemplo con pimentón ahumado).\n    4. Procesar primera mezcla junto al agar agar, volcar en el molde.\n    5. Esperar que endurezca y guardar en la heladera.\n    6. Desmoldar y disfrutar,\nTener en cuenta que dura 7 días."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Process everything with a stick blender.",
+      "text_es": "Procesar todo con minipimer.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "In another container dissolve 2 tablespoons of AGAR AGAR in 1 1/2 cups of water, bring to the boil on maximum heat, then 4 minutes on minimum heat, whisking all the time. Careful not to exceed those minutes because it sets very fast.",
+      "text_es": "En otro recipiente disolver 2 cucharadas de AGAR AGAR en 1 1/2 tazas de agua, llevar al fuego máximo hasta el hervor, luego 4 minutos en fuego mínimo, batir siempre. Ojo no pasarse de esos minutos porque solidifica muuuuy rápido.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Have a plastic container ready, oiled and seasoned (for example with smoked paprika).",
+      "text_es": "Tener preparado envase de plástico aceitado y condimentado (por ejemplo con pimentón ahumado).",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2,
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Process the first mixture together with the agar agar and pour into the mould.",
+      "text_es": "Procesar primera mezcla junto al agar agar, volcar en el molde.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Wait for it to set and keep it in the fridge.",
+      "text_es": "Esperar que endurezca y guardar en la heladera.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Unmould and enjoy,",
+      "text_es": "Desmoldar y disfrutar,",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "cheese",
+    "agar",
+    "make-ahead"
+  ],
+  "title": "Firm nut cheese",
+  "title_es": "Queso firme de nueces"
+}

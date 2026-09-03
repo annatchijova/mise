@@ -1,0 +1,110 @@
+{
+  "category": "sauce",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "The book says curry is used at the start, in the fat ('se usa en el medio graso')."
+    ],
+    "vegan": true
+  },
+  "id": "green-curry-paste",
+  "ingredients": [
+    {
+      "id": "lemon",
+      "name_es": "Piel de limón o lima",
+      "note": "peel only; lemon or lime",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "ginger",
+      "name_es": "jengibre fresco",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-chili",
+      "name_es": "chile picante verde",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cilantro",
+      "name_es": "cilantro",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "coconut-oil",
+      "name_es": "Aceite de coco u oliva (opcional)",
+      "note": "optional; coconut or olive oil",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "no quantities stated for any ingredient",
+      "serves unspecified",
+      "duration estimated",
+      "book gives ingredient list plus 'Licuar' only; single step"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Curry y Masala', lines 530-531 (context on curry use in fat, lines 524-528)",
+    "original_text": "Curry Verde: \nPiel de limón o lima, ajo, jengibre fresco, chile picante verde y cilantro. Aceite de coco u oliva (opcional) Licuar"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Lemon or lime peel, garlic, fresh ginger, hot green chili and cilantro. Coconut or olive oil (optional). Blend.",
+      "text_es": "Piel de limón o lima, ajo, jengibre fresco, chile picante verde y cilantro. Aceite de coco u oliva (opcional) Licuar",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "curry",
+    "paste",
+    "raw",
+    "quick"
+  ],
+  "title": "Green curry paste",
+  "title_es": "Curry Verde"
+}

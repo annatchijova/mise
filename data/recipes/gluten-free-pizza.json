@@ -1,0 +1,153 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "uses a coeliac-safe premix"
+    ],
+    "vegan": true
+  },
+  "id": "gluten-free-pizza",
+  "ingredients": [
+    {
+      "id": "gluten-free-premix",
+      "name_es": "pre-mezcla para pizzas/panadería apta para celíacos",
+      "note": null,
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "fresh-yeast",
+      "name_es": "levadura prensada",
+      "note": null,
+      "qty": 50,
+      "qty_source": "stated",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "g"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "provencal-herbs",
+      "name_es": "provenzal",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bind-cold",
+      "unit": "tbsp"
+    },
+    {
+      "id": "water",
+      "name_es": "agua tibia",
+      "note": "cantidad necesaria; tibia",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebollas salteadas",
+      "note": "topping; cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    }
+  ],
+  "minutes": 100,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "all step durations estimated",
+      "water quantity 'cantidad necesaria'",
+      "oven temperature and bake time not stated"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Calabaza a la napolitana', before 'Bombones de chocolate rellenos de menta'",
+    "original_text": "Pizza sin tacc\n\nUsamos 500 gr de pre-mezcla para pizzas/panadería apta para celíacos, 50 gr de levadura prensada, una cucharadita de sal, provenzal, 3 cucharadas de aceite y agua tibia cantidad necesaria.\nAmasamos hasta obtener una masa homogénea.\nDejamos leudar hasta que duplique el tamaño.\nHacemos las prepizzas en el horno y luego le agregamos lo que querramos. En este caso fueron cebollas salteadas, se le puede poner queso de papa además!"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "We use 500 g of coeliac-safe pizza/bakery premix, 50 g of fresh yeast, a teaspoon of salt, Provencal herbs, 3 tablespoons of oil and as much warm water as needed.",
+      "text_es": "Usamos 500 gr de pre-mezcla para pizzas/panadería apta para celíacos, 50 gr de levadura prensada, una cucharadita de sal, provenzal, 3 cucharadas de aceite y agua tibia cantidad necesaria.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "We knead until we get a homogeneous dough.",
+      "text_es": "Amasamos hasta obtener una masa homogénea.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "We let it rise until it doubles in size.",
+      "text_es": "Dejamos leudar hasta que duplique el tamaño.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "We bake the pizza bases in the oven and then add whatever we like. In this case it was sauteed onions; you can also add potato cheese!",
+      "text_es": "Hacemos las prepizzas en el horno y luego le agregamos lo que querramos. En este caso fueron cebollas salteadas, se le puede poner queso de papa además!",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "gluten-free",
+    "yeast-dough",
+    "baked"
+  ],
+  "title": "Gluten-free pizza",
+  "title_es": "Pizza sin tacc"
+}

@@ -1,0 +1,120 @@
+{
+  "category": "breakfast",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Plant milk unspecified; choose a gluten-free one if that matters."
+    ],
+    "vegan": true
+  },
+  "id": "chia-pudding",
+  "ingredients": [
+    {
+      "id": "chia",
+      "name_es": "chía",
+      "note": "ratio stated: 1 parte de chía por 3 de leche vegetal; absolute amount not given",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "binder",
+      "technique": "thicken",
+      "unit": "to_taste"
+    },
+    {
+      "id": "plant-milk",
+      "name_es": "leche vegetal",
+      "note": "3 partes per 1 of chia",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "walnut",
+      "name_es": "nueces (topping)",
+      "note": "optional topping",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "banana",
+      "name_es": "banana (topping)",
+      "note": "optional topping",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "peach",
+      "name_es": "durazno (topping)",
+      "note": "optional topping",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "raw",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 65,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "quantities given only as a 1:3 ratio ('partes'); no unit in the vocabulary fits, so qty left null with the ratio in the note",
+      "serves unspecified",
+      "rest time stated (at least one hour); total minutes estimated"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "recetario-diferente",
+    "locator": "section '¿Comés semillas?', second recipe (after 'Crackers de semillas')",
+    "original_text": "Chía pudding: la importancia de comer chía es fundamental. La receta es muy fácil y la textura puede variar, de más cremoso a más durito. Como básico para una parte de chía, usamos 3 de leche vegetal. Revolvemos y ya está, dejamos esperar al menos una hora para que endurezca. Le podemos agregar toppings como nueces, banana, durazno, etc."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "As a base, for one part chia we use 3 of plant milk. Stir and that is it,",
+      "text_es": "Como básico para una parte de chía, usamos 3 de leche vegetal. Revolvemos y ya está,",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 3600,
+      "dur_source": "stated",
+      "order": 2,
+      "text": "let it wait at least one hour so it firms up.",
+      "text_es": "dejamos esperar al menos una hora para que endurezca.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "We can add toppings such as walnuts, banana, peach, etc.",
+      "text_es": "Le podemos agregar toppings como nueces, banana, durazno, etc.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick-prep",
+    "no-cook",
+    "make-ahead"
+  ],
+  "title": "Chia pudding",
+  "title_es": "Chía pudding"
+}

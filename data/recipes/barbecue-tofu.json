@@ -1,0 +1,186 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Gluten-free only if the barbecue sauce used is; check the label."
+    ],
+    "vegan": true
+  },
+  "id": "barbecue-tofu",
+  "ingredients": [
+    {
+      "id": "tofu",
+      "name_es": "tofu duro",
+      "note": "1 bloque; puede ser marca Soyana, Soyarroz o Defu",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "marinate",
+      "unit": "pc"
+    },
+    {
+      "id": "barbecue-sauce",
+      "name_es": "buena barbacoa",
+      "note": "1 pote (one tub)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "marinate",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "cabeza de ajo picada",
+      "note": "1 cabeza, picada; más ajo al final",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "marinate",
+      "unit": "pc"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": "c/n",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "smoked-paprika",
+      "name_es": "pimentón ahumado",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-peppercorn",
+      "name_es": "pimienta verde",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "kaffir-lime-leaf",
+      "name_es": "hojas de lima kaffir molidas",
+      "note": "molidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "Aceite de oliva o de girasol saborizado de manera artesanal con aceitunas",
+      "note": "o de girasol saborizado con aceitunas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 1470,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "salt, seasonings and oil quantities unspecified; sauce given as '1 pote'",
+      "durations estimated except the stated 24 h rest; total minutes includes the rest"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "aplv"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Tofu', lines 385-399",
+    "original_text": "Tofu a la barbacoa\n\n1 bloque de tofu duro /puede ser marca Soyana, Soyarroz o Defu\n1 pote de buena barbacoa\n1 cabeza de ajo picada\nSal c/n\nCondimentos: pimentón ahumado, pimienta verde, pimienta blanca, hojas de lima kaffir molidas.\nAceite de oliva o de girasol saborizado de manera artesanal con aceitunas\n\nProcedimiento\nCortar el tofu en cubos o rectángulos\nPoner una capa en un tupper, luego cubrir con una capa fina de barbacoa, sal, ajo picado, condimentos y un poco de aceite, volver a repetir el proceso hasta que se acabe el tofu.\nDejar reposar 24 hs en heladera\nCalentar una sartén y volcar el tofu a fuego muy alto, ir salteando y sacudiendo la sartén para que se le haga una capita crocante.\nAñadir más ajo."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Cut the tofu into cubes or rectangles.",
+      "text_es": "Cortar el tofu en cubos o rectángulos",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Put a layer in a container, then cover with a thin layer of barbecue sauce, salt, chopped garlic, seasonings and a little oil; repeat the process until the tofu runs out.",
+      "text_es": "Poner una capa en un tupper, luego cubrir con una capa fina de barbacoa, sal, ajo picado, condimentos y un poco de aceite, volver a repetir el proceso hasta que se acabe el tofu.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 86400,
+      "dur_source": "stated",
+      "order": 3,
+      "text": "Let it rest 24 h in the fridge.",
+      "text_es": "Dejar reposar 24 hs en heladera",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Heat a frying pan and tip in the tofu over very high heat, sautéing and shaking the pan so it gets a little crispy crust.",
+      "text_es": "Calentar una sartén y volcar el tofu a fuego muy alto, ir salteando y sacudiendo la sartén para que se le haga una capita crocante.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Add more garlic.",
+      "text_es": "Añadir más ajo.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "tofu",
+    "marinade",
+    "overnight",
+    "protein"
+  ],
+  "title": "Barbecue tofu",
+  "title_es": "Tofu a la barbacoa"
+}

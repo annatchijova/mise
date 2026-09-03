@@ -1,0 +1,142 @@
+{
+  "category": "dessert",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Chocolate type not specified; must be dairy-free to stay vegan.",
+      "Gluten-free if the chocolate is."
+    ],
+    "vegan": true
+  },
+  "id": "chocolate-soy-mousse",
+  "ingredients": [
+    {
+      "id": "dark-chocolate",
+      "name_es": "chocolate",
+      "note": "tipo no especificado",
+      "qty": 80,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "dissolve",
+      "unit": "g"
+    },
+    {
+      "id": "soy-milk",
+      "name_es": "leche de soja",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "cup"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vanilla",
+      "name_es": "esencia de vainilla",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tsp"
+    },
+    {
+      "id": "cornstarch",
+      "name_es": "almidón de maíz",
+      "note": "diluidas en 1/4 taza de leche de soja",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "thickener",
+      "technique": "thicken",
+      "unit": "tbsp"
+    },
+    {
+      "id": "soy-milk",
+      "name_es": "leche de soja (para diluir el almidón)",
+      "note": null,
+      "qty": 0.25,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "cup"
+    }
+  ],
+  "minutes": 135,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "total minutes estimated (short active time + stated 2 h chill)",
+      "steps 1-2 durations estimated"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 24 of 50, page headed 'mousse de chocolate' (between 'lemon pie' and 'Pepas')",
+    "original_text": "mousse de chocolate\nMousse de chocolate\nVas a necesitar:\n80 gr de chocolate\n1 taza de leche de soja\n3 cucharadas de azúcar\n2 cucharaditas de esencia de vainilla\n2 cucharadas de almidón de maíz diluidas en 1/4 taza de leche de soja.\nProcedimiento:\nPoner a hervir todo menos el almidón de maíz diluido. Mezclando bien.\nUna vez que hierve, incorporar el almidón.\nHervir 4 minutos más ¡No olvidarse de revolver para que no se queme!\nDejar en la heladera 2 hs para que solidifique"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Bring everything except the diluted cornstarch to a boil, mixing well.",
+      "text_es": "Poner a hervir todo menos el almidón de maíz diluido. Mezclando bien.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Once it boils, add the cornstarch.",
+      "text_es": "Una vez que hierve, incorporar el almidón.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 240,
+      "dur_source": "stated",
+      "order": 3,
+      "text": "Boil 4 more minutes. Do not forget to stir so it does not burn!",
+      "text_es": "Hervir 4 minutos más ¡No olvidarse de revolver para que no se queme!",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 7200,
+      "dur_source": "stated",
+      "order": 4,
+      "text": "Leave in the fridge 2 h to set",
+      "text_es": "Dejar en la heladera 2 hs para que solidifique",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "dessert",
+    "quick-prep",
+    "chill"
+  ],
+  "title": "Chocolate mousse",
+  "title_es": "Mousse de chocolate"
+}

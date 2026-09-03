@@ -1,0 +1,222 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Chocolate must be dark (book: ideally 80% cacao) to stay vegan; check the label.",
+      "Gluten-free if broth and curry are."
+    ],
+    "vegan": true
+  },
+  "id": "lentil-chocolate-stew",
+  "ingredients": [
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla mediana",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "tomato",
+      "name_es": "tomate perita",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "carrot",
+      "name_es": "zanahoria",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "broccoli",
+      "name_es": "brócoli",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "potato",
+      "name_es": "papas",
+      "note": "en cubos",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "kabocha-squash",
+      "name_es": "zapallo cabutia",
+      "note": "1/4 de zapallo, en cubos",
+      "qty": 0.25,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "lentil",
+      "name_es": "lenteja o lentejón",
+      "note": null,
+      "qty": 300,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "dark-chocolate",
+      "name_es": "chocolate amargo",
+      "note": "idealmente 80% cacao",
+      "qty": 100,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "dissolve",
+      "unit": "g"
+    },
+    {
+      "id": "green-curry",
+      "name_es": "curry verde",
+      "note": "sugerido; las verduras se saltean 'en el curry'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chili",
+      "name_es": "picantes",
+      "note": "sugerido",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "aceite de oliva",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua filtrada o caldo casero",
+      "note": "o caldo casero",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 60,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "total minutes estimated",
+      "all step durations estimated",
+      "seasoning, oil and liquid quantities unspecified"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "stated",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 47 of 50, page headed 'guiso lenteja y chocolate' (between 'sopa de quinua roja' and 'hamburguesas de hongos')",
+    "original_text": "guiso lenteja y chocolate\nIngredientes para 4 porciones:\n1 morrón\n1 cebolla mediana\n1 tomate perita\n1 zanahoria\n1 brócoli\n2 papas\n1/4 de zapallo cabutia\n300 gr de lenteja o lentejón\n100 gr de chocolate amargo (idealmente 80% cacao)\nCondimentos a gusto: sugeridos los picantes y un curry verde. Sal y aceite de oliva.\nProcedimiento:\nSaltear morrón, cebolla, tomate, zanahoria y brócoli en el curry hasta que doren.\nAgregar papas y zapallo en cubos. Añadir condimentos deseados, luego la lenteja o lentejón, agua filtrada o caldo casero y el chocolate. Cocinar hasta que esté blanda la lenteja y corregir condimentos si hace falta."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Saute the pepper, onion, tomato, carrot and broccoli in the curry until golden.",
+      "text_es": "Saltear morrón, cebolla, tomate, zanahoria y brócoli en el curry hasta que doren.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Add the potatoes and squash in cubes.",
+      "text_es": "Agregar papas y zapallo en cubos.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add the seasonings you want, then the lentils, filtered water or homemade broth, and the chocolate.",
+      "text_es": "Añadir condimentos deseados, luego la lenteja o lentejón, agua filtrada o caldo casero y el chocolate.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 2100,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Cook until the lentils are soft and correct the seasoning if needed.",
+      "text_es": "Cocinar hasta que esté blanda la lenteja y corregir condimentos si hace falta.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "stew",
+    "legume",
+    "one-pot"
+  ],
+  "title": "Lentil and chocolate stew",
+  "title_es": "guiso lenteja y chocolate"
+}

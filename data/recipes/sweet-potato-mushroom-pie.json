@@ -1,0 +1,283 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Soy sauce usually contains wheat; otherwise gluten-free."
+    ],
+    "vegan": true
+  },
+  "id": "sweet-potato-mushroom-pie",
+  "ingredients": [
+    {
+      "id": "sweet-potato",
+      "name_es": "Batata",
+      "note": "pelados y hervidos",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-hot",
+      "unit": "kg"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrones rojos",
+      "note": "'verduras a gusto'",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "yellow-bell-pepper",
+      "name_es": "morrón amarillo",
+      "note": "'amarillo' sin cantidad; 'verduras a gusto'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "red-onion",
+      "name_es": "cebollas moradas",
+      "note": null,
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebollas blancas",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "green-onion",
+      "name_es": "cebolla de verdeo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta negra",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "merken",
+      "name_es": "merkén ahumado",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "mushroom",
+      "name_es": "hongos frescos (portobellos)",
+      "note": "portobellos, en fetas",
+      "qty": 300,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "brown",
+      "unit": "g"
+    },
+    {
+      "id": "tomato",
+      "name_es": "Tomates",
+      "note": "a gusto; en rodajas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "tomato-sauce",
+      "name_es": "Salsa de tomates tipo fileto casero con mucho ajo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-olive",
+      "name_es": "Olivas negras",
+      "note": "para decorar",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo rallado",
+      "note": "para los hongos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "soy-sauce",
+      "name_es": "salsa de soja de fermentación natural",
+      "note": "marca MOA en el libro",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "oregano",
+      "name_es": "orégano",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "bake",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 90,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "total minutes estimated",
+      "all step durations estimated",
+      "many quantities 'a gusto' / unspecified",
+      "no cooking fat stated for the saute; none added"
+    ]
+  },
+  "serves": 12,
+  "serves_source": "stated",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 33 of 50, page headed 'pastel de batata' (between 'papas a la huancaína' and 'mermelada ajo')",
+    "original_text": "pastel de\nbatata\nPastel de Batata relleno de Hongos\nBuenas! Esta es una variante que hice y amé del clásico pastel de papas. Realmente queda alucinante. Es una de las recetas propias que hice que más me gustaron en toda mi vida de cocinera! Espero que les guste también.\nPara 12 porciones:\nBatata 3 kilos pelados y hervidos\nVerduras a gusto: 3 morrones rojos, amarillo, 3 cebollas moradas y 2 blancas. Además cebolla de verdeo.\nCondimentos (pimienta blanca, sal, pimienta negra y merkén ahumado)\n300 gr de hongos frescos (portobellos)\nTomates a gusto\nSalsa de tomates tipo fileto casero con mucho ajo.\nOlivas negras para decorar\nProcedimiento:\nHacer puré con la batata. Reservar\nSaltear las verduras elegidas.\nMezclar con el puré de batata.\nPoner una capa esta mezcla en fuente para horno.\nPor otro lado, sellar los hongos cortados en fetas y agregar ajo rallado y salsa de soja de fermentación natural (nosotros usamos la marca MOA que es orgánica)\nPoner esa capa en la fuente y tapar con otra capa de batata.\nAgregar la salsa de tomate. Luego rodajas de tomate, aceitunas negras y orégano. Hornear hasta que dore levemente."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Mash the sweet potato. Set aside",
+      "text_es": "Hacer puré con la batata. Reservar",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Saute the chosen vegetables.",
+      "text_es": "Saltear las verduras elegidas.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Mix with the sweet potato mash.",
+      "text_es": "Mezclar con el puré de batata.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Put a layer of this mixture in an oven dish.",
+      "text_es": "Poner una capa esta mezcla en fuente para horno.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Separately, sear the sliced mushrooms and add grated garlic and naturally fermented soy sauce (we use the MOA brand, which is organic)",
+      "text_es": "Por otro lado, sellar los hongos cortados en fetas y agregar ajo rallado y salsa de soja de fermentación natural (nosotros usamos la marca MOA que es orgánica)",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4,
+        5
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Put that layer in the dish and cover with another layer of sweet potato.",
+      "text_es": "Poner esa capa en la fuente y tapar con otra capa de batata.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "Add the tomato sauce. Then tomato slices, black olives and oregano. Bake until lightly golden.",
+      "text_es": "Agregar la salsa de tomate. Luego rodajas de tomate, aceitunas negras y orégano. Hornear hasta que dore levemente.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "bake",
+    "long",
+    "batch"
+  ],
+  "title": "Sweet potato pie filled with mushrooms",
+  "title_es": "Pastel de Batata relleno de Hongos"
+}

@@ -1,0 +1,261 @@
+{
+  "category": "dessert",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "sweet-apple-curry",
+  "ingredients": [
+    {
+      "id": "apple",
+      "name_es": "manzanas",
+      "note": "en rodajas iguales",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "star-anise",
+      "name_es": "anís estrellado",
+      "note": "especias elegidas, molidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cardamom",
+      "name_es": "cardamomo",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "ginger",
+      "name_es": "jengibre",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "turmeric",
+      "name_es": "cúrcuma",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "clove",
+      "name_es": "clavo de olor",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutmeg",
+      "name_es": "nuez moscada",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cinnamon",
+      "name_es": "canela",
+      "note": "especias elegidas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "coconut-oil",
+      "name_es": "aceite de coco",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vanilla",
+      "name_es": "vainilla",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "muscovado-sugar",
+      "name_es": "azúcar mascabo",
+      "note": "se sugiere para la versión al horno",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "sweetener",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "walnut",
+      "name_es": "nueces",
+      "note": "tostadas, para servir",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "un poco, para las nueces",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": "rociar",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "icing-sugar",
+      "name_es": "azúcar impalpable",
+      "note": "para las nueces",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "sweetener",
+      "technique": "bake",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chili",
+      "name_es": "chili picante",
+      "note": "para las nueces",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 40,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "no quantities stated for any ingredient",
+      "all durations estimated; pan and oven versions are alternatives (steps 3 and 4), both kept as written",
+      "apple recorded with role 'vegetable' because the vocabulary has no 'fruit' role"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Manzana', lines 192-199",
+    "original_text": "Curry dulce de manzanas\n\nCortar las manzanas en rodajas iguales. Moler las especias elegidas: anís estrellado, cardamomo, jengibre, cúrcuma, clavo de olor, nuez moscada, cúrcuma, canela.\nPoner en sartén aceite de coco, agregar especias, luego la vainilla y finalmente las manzanas.\nSe puede hacer al horno, se sugiere agregar azúcar mascabo y tapar con aluminio para que se cocine en su propio jugo.\n\nServir con nueces tostadas:\nColocar las nueces en un bowl con un poco de sal, rociar con agua, agregar azúcar impalpable y vainilla, agitar. Acariciar las nueces con un chili picante. Hornear."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Cut the apples into even slices.",
+      "text_es": "Cortar las manzanas en rodajas iguales.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Grind the chosen spices: star anise, cardamom, ginger, turmeric, clove, nutmeg, turmeric, cinnamon.",
+      "text_es": "Moler las especias elegidas: anís estrellado, cardamomo, jengibre, cúrcuma, clavo de olor, nuez moscada, cúrcuma, canela.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2
+      ],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Put coconut oil in a frying pan, add the spices, then the vanilla and finally the apples.",
+      "text_es": "Poner en sartén aceite de coco, agregar especias, luego la vainilla y finalmente las manzanas.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1,
+        2
+      ],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "It can be done in the oven; it is suggested to add muscovado sugar and cover with foil so it cooks in its own juice.",
+      "text_es": "Se puede hacer al horno, se sugiere agregar azúcar mascabo y tapar con aluminio para que se cocine en su propio jugo.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Serve with toasted walnuts: put the walnuts in a bowl with a little salt, sprinkle with water, add icing sugar and vanilla, shake.",
+      "text_es": "Servir con nueces tostadas:\nColocar las nueces en un bowl con un poco de sal, rociar con agua, agregar azúcar impalpable y vainilla, agitar.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Stroke the walnuts with a hot chili. Bake.",
+      "text_es": "Acariciar las nueces con un chili picante. Hornear.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "apple",
+    "spiced",
+    "warm-dessert",
+    "walnut"
+  ],
+  "title": "Sweet apple curry",
+  "title_es": "Curry dulce de manzanas"
+}

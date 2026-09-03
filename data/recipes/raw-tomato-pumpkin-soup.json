@@ -1,0 +1,152 @@
+{
+  "category": "soup",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Raw / no-cook soup."
+    ],
+    "vegan": true
+  },
+  "id": "raw-tomato-pumpkin-soup",
+  "ingredients": [
+    {
+      "id": "sun-dried-tomato",
+      "name_es": "tomates deshidratados (ya hidratados)",
+      "note": "unos; rehydrated beforehand",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "pumpkin",
+      "name_es": "calabaza sin piel",
+      "note": "peeled, raw",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cashew-cream",
+      "name_es": "crema de castañas de cajú",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "spinach",
+      "name_es": "puñado de espinaca",
+      "note": "'un puñado' (a handful)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "lemon",
+      "name_es": "pizca de jugo de limón",
+      "note": "the book literally says 'pizca' of lemon juice",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "season",
+      "unit": "pinch"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua tibia",
+      "note": "lukewarm; top up the blender",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "title 'Sopa RAW' taken from the text's own phrase; the book gives no formal heading",
+      "no quantities given",
+      "serves unspecified",
+      "rehydrating the tomatoes and making the cashew cream are not steps in the book",
+      "original_text includes the introductory paragraph on raw food for context"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "recetario-diferente",
+    "locator": "section 'Recetas e ideas', first item (before 'Espinaca / Acelga')",
+    "original_text": "¿Querés aprovechar mejor sus nutrientes? ¡Hacete una sopa RAW! ¿Sabés lo que es la alimentación viva? Propone sólo alimentarse de alimentos crudos o no llevados a una temperatura superior a 41°C (Podés hacer tus propios crackers raw de lino cocidos por el Sol, tu propia cebolla en polvo, entre otras cosas muy interesantes) La alimentación crudívora no es para nada aburrida, se pueden elaborar platos muy complejos de sabores que nunca olvidarían, pero es para cocineros “más avanzados” porque se necesita mucha técnica y mucho costo de ingredientes caros para alcanzar el sabor umami.\nEntonces vamos a hacer una sopa que es impresionante y se hace rápidísimo, porque lo único que tenés que hacer es lavar verduras y licuarlas. En la licuadora, vas a poner unos tomates deshidratados (ya hidratados), junto a calabaza sin piel, crema de castañas de cajú, sal, un puñado de espinaca, pizca de jugo de limón, ajo y lo completás con agua tibia. Licuás y tenés una sopa espectacular en segundos."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "So we are going to make a soup that is impressive and is made very fast, because the only thing you have to do is wash vegetables and blend them.",
+      "text_es": "Entonces vamos a hacer una sopa que es impresionante y se hace rápidísimo, porque lo único que tenés que hacer es lavar verduras y licuarlas.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "In the blender, put some sun-dried tomatoes (already rehydrated), together with peeled pumpkin, cashew cream, salt, a handful of spinach, a pinch of lemon juice, garlic, and top up with lukewarm water.",
+      "text_es": "En la licuadora, vas a poner unos tomates deshidratados (ya hidratados), junto a calabaza sin piel, crema de castañas de cajú, sal, un puñado de espinaca, pizca de jugo de limón, ajo y lo completás con agua tibia.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Blend and you have a spectacular soup in seconds.",
+      "text_es": "Licuás y tenés una sopa espectacular en segundos.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "raw",
+    "no-cook"
+  ],
+  "title": "Raw soup",
+  "title_es": "sopa RAW"
+}

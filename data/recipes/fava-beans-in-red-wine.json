@@ -1,0 +1,182 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Wine fining agents are not stated by the book; it is presented as vegan."
+    ],
+    "vegan": true
+  },
+  "id": "fava-beans-in-red-wine",
+  "ingredients": [
+    {
+      "id": "fava-bean",
+      "name_es": "habas frescas",
+      "note": "hervidas apenas antes",
+      "qty": 200,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "cherry-tomato",
+      "name_es": "tomates cherry",
+      "note": null,
+      "qty": 150,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "g"
+    },
+    {
+      "id": "garlic-oil",
+      "name_es": "aceite saborizado a ajo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo cortado en láminas",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "red-wine",
+      "name_es": "vino",
+      "note": "apróx 355 cc; the author used Cabernet Sauvignon; 'usen vino bueno'",
+      "qty": 355,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "ml"
+    },
+    {
+      "id": "green-peppercorn",
+      "name_es": "pimienta verde",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "coriander-seed",
+      "name_es": "coriandro",
+      "note": "apenas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 15,
+  "minutes_source": "stated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "all step durations estimated; total 15 min is stated by the book",
+      "recipe is narrated in first person; steps are verbatim fragments of the narration",
+      "oil, salt, garlic and spice quantities unspecified"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 30 of 50, page headed 'Habas al vino' (between 'huevos revueltos' and 'strudel')",
+    "original_text": "Habas al vino\nEsta receta es ideal cuando querés comer en 15 minutos!\nAyerr me cociné de todo y lo que más éxito tuvo fueron las habas al vino tinto. Creanme: NI llegaron a la foto y eso que yo saco fotos de todo, todo el tiempo. Hacerlas fue re sencillo, me inspiré en una receta que leí de un chef X que no recuerdo en un grupo muy genial y le agregué mi toque mágico: el vino. Cuando uno cocina, tiene que dejar su marca en su comida. Por eso nunca sigo receta al-pie-de-la-letra.\nCómo las hice? Bueno, herví habas frescas por un lado (apenas, porque luego tienen otra cocción) y puse a quemar tomates cherry (150 gr) en una sartén con aceite saborizado a ajo. Luego añadí las habas (200 gr), sal, ajo cortado en láminas y esperé a que calentara mucho. Agregué el vino (apróx 355 cc) y dejé cocinar. Condimenté: pimienta verde y blanca, apenas coriandro.\nNota: Para cocinar, usen vino bueno. El resultado cambia mucho. Ni tira hacer una receta para jugar con los sentidos o quedar bien con alguien o uno mismo y usar vino medio pelo. La cepa que yo usé fue Cabernet Sauvignon."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "I boiled fresh fava beans on one side (just barely, because they get cooked again later)",
+      "text_es": "herví habas frescas por un lado (apenas, porque luego tienen otra cocción)",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "and set cherry tomatoes (150 g) to char in a pan with garlic-flavoured oil.",
+      "text_es": "puse a quemar tomates cherry (150 gr) en una sartén con aceite saborizado a ajo.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Then I added the fava beans (200 g), salt, sliced garlic and waited for it to get very hot.",
+      "text_es": "Luego añadí las habas (200 gr), sal, ajo cortado en láminas y esperé a que calentara mucho.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "I added the wine (approx. 355 ml) and let it cook.",
+      "text_es": "Agregué el vino (apróx 355 cc) y dejé cocinar.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 30,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "I seasoned: green and white pepper, just a touch of coriander seed.",
+      "text_es": "Condimenté: pimienta verde y blanca, apenas coriandro.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "wine",
+    "legume"
+  ],
+  "title": "Fava beans in red wine",
+  "title_es": "Habas al vino"
+}

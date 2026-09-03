@@ -1,0 +1,143 @@
+{
+  "category": "side",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Optional mayonnaise is 'mayonesa vegetal' as written."
+    ],
+    "vegan": true
+  },
+  "id": "vinegret-beet-salad",
+  "ingredients": [
+    {
+      "id": "beetroot",
+      "name_es": "Remolacha hervida en cubos",
+      "note": "hervida, en cubos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "andean-potato",
+      "name_es": "Papa andina hervida en cubos",
+      "note": "hervida, en cubos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "starch",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "pea",
+      "name_es": "Arvejas",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "protein",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "pickled-gherkin",
+      "name_es": "Pepinillos en vinagre, o en su defecto aceitunas",
+      "note": "o en su defecto aceitunas",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cherry-tomato",
+      "name_es": "Tomate cherry en mitades",
+      "note": "en mitades",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "carrot",
+      "name_es": "Zanahoria hervida en cubos",
+      "note": "hervida, en cubos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "green-onion",
+      "name_es": "Cebolla de verdeo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "Condimentos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegan-mayonnaise",
+      "name_es": "mayonesa vegetal",
+      "note": "si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 40,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "no quantities stated for any ingredient",
+      "boiling of beetroot, potato and carrot is implied in the ingredient list, not given as a step; total minutes estimated to include it",
+      "'Condimentos' recorded as salt only (the only seasoning named in the method)"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Remolacha', lines 276-289",
+    "original_text": "Vinegret A:\n\nIngredientes: \n\nRemolacha hervida en cubos\nPapa andina hervida en cubos\nArvejas \nPepinillos en vinagre, o en su defecto aceitunas.\nTomate cherry en mitades\nZanahoria hervida en cubos\nCebolla de verdeo\nCondimentos. \n\nPoner los ingredientes en un bol, salar y si se desea agregar mayonesa vegetal."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Put the ingredients in a bowl, salt, and if desired add plant-based mayonnaise.",
+      "text_es": "Poner los ingredientes en un bol, salar y si se desea agregar mayonesa vegetal.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "salad",
+    "beet",
+    "russian",
+    "quick-assembly"
+  ],
+  "title": "Vinegret",
+  "title_es": "Vinegret A"
+}

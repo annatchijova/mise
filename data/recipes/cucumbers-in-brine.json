@@ -1,0 +1,153 @@
+{
+  "category": "preserve",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "cucumbers-in-brine",
+  "ingredients": [
+    {
+      "id": "cucumber",
+      "name_es": "pepinos",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "ferment",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "agua",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "l"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "dissolve",
+      "unit": "tbsp"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "dissolve",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vinegar",
+      "name_es": "vinagre",
+      "note": "5-6 cucharadas",
+      "qty": 5,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "ferment",
+      "unit": "tbsp"
+    },
+    {
+      "id": "dill",
+      "name_es": "eneldo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "ferment",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta en granos",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "ferment",
+      "unit": "to_taste"
+    },
+    {
+      "id": "mustard-seed",
+      "name_es": "mostaza en granos",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "ferment",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 4335,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "cucumber, dill, peppercorn and mustard seed quantities unspecified; vinegar stated as a 5-6 tbsp range (5 recorded)",
+      "'unos días' recorded as 3 days, estimated; total minutes estimated"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "aplv",
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Pepino', item 1, line 427",
+    "original_text": "    1. Pepinos en Salmuera Para un litro de agua 2 cucharadas de sal, 2 cucharadas de azúcar y 5-6 cucharadas de vinagre. Poner en un frasco los pepinos, con eneldo, pimienta en granos, mostaza en granos y esperar unos días para consumir. "
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "For one litre of water: 2 tablespoons of salt, 2 tablespoons of sugar and 5-6 tablespoons of vinegar.",
+      "text_es": "Para un litro de agua 2 cucharadas de sal, 2 cucharadas de azúcar y 5-6 cucharadas de vinagre.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Put the cucumbers in a jar with dill, peppercorns and mustard seeds.",
+      "text_es": "Poner en un frasco los pepinos, con eneldo, pimienta en granos, mostaza en granos",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 259200,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "And wait a few days before eating.",
+      "text_es": "y esperar unos días para consumir.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "pickle",
+    "ferment",
+    "preserve",
+    "long"
+  ],
+  "title": "Cucumbers in brine",
+  "title_es": "Pepinos en Salmuera"
+}

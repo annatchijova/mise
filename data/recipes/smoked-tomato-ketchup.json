@@ -1,0 +1,193 @@
+{
+  "category": "preserve",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Glucose syrup is plant-derived (corn) in Argentina; book lists it as 'Glucosa'."
+    ],
+    "vegan": true
+  },
+  "id": "smoked-tomato-ketchup",
+  "ingredients": [
+    {
+      "id": "canned-tomato",
+      "name_es": "Tomate en lata",
+      "note": null,
+      "qty": 2.5,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "kg"
+    },
+    {
+      "id": "onion",
+      "name_es": "Cebolla",
+      "note": null,
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "g"
+    },
+    {
+      "id": "canned-red-pepper",
+      "name_es": "Pimiento rojo en lata",
+      "note": null,
+      "qty": 500,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "g"
+    },
+    {
+      "id": "garlic",
+      "name_es": "Ajo",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "simmer",
+      "unit": "clove"
+    },
+    {
+      "id": "clove",
+      "name_es": "Clavo de olor",
+      "note": "2 unidades",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "white-wine-vinegar",
+      "name_es": "Vinagre de Torrontés",
+      "note": "de uva Torrontés",
+      "qty": 300,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "season",
+      "unit": "g"
+    },
+    {
+      "id": "smoked-paprika",
+      "name_es": "Pimentón ahumado",
+      "note": null,
+      "qty": 75,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "simmer",
+      "unit": "g"
+    },
+    {
+      "id": "sugar",
+      "name_es": "Azúcar",
+      "note": null,
+      "qty": 400,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "g"
+    },
+    {
+      "id": "cinnamon",
+      "name_es": "Canela en rama",
+      "note": "en rama, cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "glucose-syrup",
+      "name_es": "Glucosa",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "tbsp"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": "'finalizar a sal con gusto'",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 170,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified (large batch, ~3.5 kg of solids)",
+      "total minutes estimated around the stated 2.5 h simmer",
+      "no cooking fat stated for 'rehogar'; none added",
+      "cinnamon and salt quantities unspecified"
+    ]
+  },
+  "serves": 30,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 26 of 50, page headed 'ketchup' (between 'Pepas' and 'Croquetas')",
+    "original_text": "ketchup\ningredientes Procedimiento\nTomate en lata 2.5 kg Cebolla 500 gr\nPimiento rojo en lata 500 gr Ajo 2 dientes\nClavo de olor 2 unidades Vinagre de Torrontés 300 gr Pimentón ahumado 75 gr Azúcar 400 gr\nCanela en rama\nGlucosa 2 cucharadas\nRehogar la cebolla y el pimiento, luego procesar el tomate y agregárselo. Incorporar el ajo y el pimentón, cocinar a fuego lento durante 2.5 horas. Agregar los condimentos restantes y procesar. Finalizar a sal con gusto."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Sweat the onion and the pepper, then process the tomato and add it.",
+      "text_es": "Rehogar la cebolla y el pimiento, luego procesar el tomate y agregárselo.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 9000,
+      "dur_source": "stated",
+      "order": 2,
+      "text": "Add the garlic and the paprika, cook over low heat for 2.5 hours.",
+      "text_es": "Incorporar el ajo y el pimentón, cocinar a fuego lento durante 2.5 horas.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Add the remaining seasonings and process.",
+      "text_es": "Agregar los condimentos restantes y procesar.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Finish with salt to taste.",
+      "text_es": "Finalizar a sal con gusto.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "preserve",
+    "long",
+    "batch",
+    "sauce"
+  ],
+  "title": "Smoked ketchup",
+  "title_es": "ketchup"
+}

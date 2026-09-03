@@ -1,0 +1,289 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Egg replaced by flax mucilage whipped to stiff peaks ('falso huevo de lino'); dairy replaced by cashew cream. Book declares all its recipes 100% vegan."
+    ],
+    "vegan": true
+  },
+  "id": "spinach-souffle",
+  "ingredients": [
+    {
+      "id": "flax",
+      "name_es": "lino (mucílago de lino)",
+      "note": "boiled 15 min, strained, rested overnight, then whipped to stiff peaks",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "binder",
+      "technique": "whip",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cashew",
+      "name_es": "crema de cajú",
+      "note": "as cashew cream",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "thicken",
+      "unit": "to_taste"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla",
+      "note": "brunoise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "brunoise",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "to_taste"
+    },
+    {
+      "id": "basil",
+      "name_es": "albahaca",
+      "note": "chiffonade; also added at the end",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "spinach",
+      "name_es": "espinaca",
+      "note": "chiffonade, added fresh",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "coconut-oil",
+      "name_es": "aceite de coco",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "hominy-corn",
+      "name_es": "harina de maíz mote",
+      "note": "ground and sifted",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "starch",
+      "technique": "bind-hot",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic-powder",
+      "name_es": "polvo de ajo",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "italian-seasoning",
+      "name_es": "italian",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "black-pepper",
+      "name_es": "pimienta negra",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "parsley",
+      "name_es": "perejil",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "baking-powder",
+      "name_es": "polvo de hornear",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 80,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "no quantities given by the book",
+      "total minutes estimated (active time; step 1 overnight rest excluded)",
+      "all step durations estimated; step 1 states 15 min boil plus an unquantified overnight rest",
+      "oven temperature and baking time not given"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "recetario-diferente"
+    ],
+    "book": "aplv",
+    "locator": "section 'Espinaca / Acelga', after 'Tarta de espinacas'",
+    "original_text": "Soufflé de espinacas\n1. Hacer mucílago de lino (hervir lino durante 15 minutos y colar) Dejar una noche en heladera\n2. Batir a punto nieve.\n3. Hacer crema de cajú\n4. Picar en brunoise cebolla y ajo. Y albahaca y espinaca en chiffonade.\n5. Saltear con un poco de aceite de coco.\n6. Hacer harina de maíz mote y tamizar\n7. Cuando se dore la preparación, agregar la crema de cajú, condimentar con polvo de ajo e italian. Incorporar en el punto cremoso la harina de maíz mote. Integrar, salar. Agregar la espinaca fresca, revolver un minuto. Apagar el fuego. Agregar pimienta negra, albahaca y perejil.\n8. Colocar sobre molde aceitado y precalentado. Volcar la mezcla en el molde antes añadiendo polvo de hornear.\n9. Añadir el falso huevo de lino.\n10. Hornear y disfrutar"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 32400,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Make flax mucilage (boil flax seeds for 15 minutes and strain). Leave overnight in the fridge.",
+      "text_es": "Hacer mucílago de lino (hervir lino durante 15 minutos y colar) Dejar una noche en heladera",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Whip to stiff peaks.",
+      "text_es": "Batir a punto nieve.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Make cashew cream.",
+      "text_es": "Hacer crema de cajú",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Chop onion and garlic in brunoise, and basil and spinach in chiffonade.",
+      "text_es": "Picar en brunoise cebolla y ajo. Y albahaca y espinaca en chiffonade.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Sauté with a little coconut oil.",
+      "text_es": "Saltear con un poco de aceite de coco.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Make hominy-corn flour and sift it.",
+      "text_es": "Hacer harina de maíz mote y tamizar",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3,
+        5,
+        6
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "When the preparation browns, add the cashew cream, season with garlic powder and Italian seasoning. At the creamy point, add the hominy-corn flour. Combine, salt. Add the fresh spinach, stir one minute. Turn off the heat. Add black pepper, basil and parsley.",
+      "text_es": "Cuando se dore la preparación, agregar la crema de cajú, condimentar con polvo de ajo e italian. Incorporar en el punto cremoso la harina de maíz mote. Integrar, salar. Agregar la espinaca fresca, revolver un minuto. Apagar el fuego. Agregar pimienta negra, albahaca y perejil.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        7
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "Place in an oiled, preheated mold. Pour the mixture into the mold, first adding baking powder.",
+      "text_es": "Colocar sobre molde aceitado y precalentado. Volcar la mezcla en el molde antes añadiendo polvo de hornear.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2,
+        8
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 9,
+      "text": "Add the flax 'false egg'.",
+      "text_es": "Añadir el falso huevo de lino.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        9
+      ],
+      "dur_s": 1800,
+      "dur_source": "estimated",
+      "order": 10,
+      "text": "Bake and enjoy.",
+      "text_es": "Hornear y disfrutar",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "oven",
+    "egg-substitute",
+    "overnight"
+  ],
+  "title": "Spinach soufflé",
+  "title_es": "Soufflé de espinacas"
+}

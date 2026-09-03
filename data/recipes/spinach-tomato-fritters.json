@@ -1,0 +1,160 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Self-rising wheat flour: contains gluten."
+    ],
+    "vegan": true
+  },
+  "id": "spinach-tomato-fritters",
+  "ingredients": [
+    {
+      "id": "spinach",
+      "name_es": "espinacas",
+      "note": "1 atado",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "bunch"
+    },
+    {
+      "id": "tomato",
+      "name_es": "tomates frescos",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "rallado",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "clove"
+    },
+    {
+      "id": "self-rising-flour",
+      "name_es": "Harina leudante",
+      "note": "1/2 taza aprox",
+      "qty": 0.5,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bind-hot",
+      "unit": "cup"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "water",
+      "name_es": "Agua",
+      "note": "un poco de agua",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "bind-hot",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 30,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "all step durations estimated",
+      "salt, pepper and water quantities unspecified",
+      "book names a non-stick pan but no cooking fat; none added"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 27 of 50, page headed 'Croquetas' (between 'ketchup' and 'ñoquis')",
+    "original_text": "Croquetas\ningredientes Procedimiento\n1 atado de espinacas 2 tomates frescos\n2 dientes de ajo\nHarina leudante (1/2 taza aprox)\nSal, pimienta blanca. Agua\nLavar la espinaca y trocearla. Lavar y cortar en cubos los tomates. Rallar el ajo. Colocar todo en un recipiente hondo y agregar la sal, la harina leudante y los condimentos y un poco de agua. Tiene que quedar una masa más sólida que para hacer panqueques.\nEn una sartén antiadherente, hacer una por una las croquetas del tamaño deseado. Disfrutar en familia, solx o con amigxs."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Wash the spinach and chop it.",
+      "text_es": "Lavar la espinaca y trocearla.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Wash the tomatoes and cut them into cubes.",
+      "text_es": "Lavar y cortar en cubos los tomates.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Grate the garlic.",
+      "text_es": "Rallar el ajo.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2,
+        3
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Put everything in a deep bowl and add the salt, the self-rising flour, the seasonings and a little water. It should be a batter firmer than for pancakes.",
+      "text_es": "Colocar todo en un recipiente hondo y agregar la sal, la harina leudante y los condimentos y un poco de agua. Tiene que quedar una masa más sólida que para hacer panqueques.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "In a non-stick pan, make the fritters one by one, in the size you like. Enjoy with family, alone or with friends.",
+      "text_es": "En una sartén antiadherente, hacer una por una las croquetas del tamaño deseado. Disfrutar en familia, solx o con amigxs.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "pan"
+  ],
+  "title": "Spinach and tomato fritters",
+  "title_es": "Croquetas"
+}

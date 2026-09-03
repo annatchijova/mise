@@ -1,0 +1,255 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "chickpeas-chinese-eggplant-split-pea-soup",
+  "ingredients": [
+    {
+      "id": "chickpea",
+      "name_es": "Garbanzos ya hervidos",
+      "note": "ya hervidos",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "protein",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "chinese-eggplant",
+      "name_es": "berenjenas chinas",
+      "note": "son alargadas y finitas; cortada en láminas",
+      "qty": 4,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "pc"
+    },
+    {
+      "id": "onion",
+      "name_es": "cebolla grande",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón u otra verdura a elección",
+      "note": "u otra verdura a elección",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "parsley",
+      "name_es": "Perejil",
+      "note": "a gusto",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "pine-mushroom",
+      "name_es": "Hongos de pino hidratados",
+      "note": "hidratados, picados",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "Aceite de oliva",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "split-pea",
+      "name_es": "Arvejas partidas",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "protein",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "Sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "merken",
+      "name_es": "merkén ahumado",
+      "note": "Condimentos a elección (recomendamos merkén ahumado, pimentón, pimienta blanca y pizca de cúrcuma)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "paprika",
+      "name_es": "pimentón",
+      "note": "Condimentos a elección",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "Condimentos a elección",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "turmeric",
+      "name_es": "pizca de cúrcuma",
+      "note": "pizca",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "named only in the method",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "seaweed",
+      "name_es": "Algas para decorar",
+      "note": "si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "none",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 50,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "chickpea, mushroom, oil, split pea and seasoning quantities unspecified",
+      "all durations estimated",
+      "recipe is two preparations (sauté + soup) structured as one; steps 5-6 are independent of 1-4"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "aplv",
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Garbanzos', lines 299-317",
+    "original_text": "Garbanzos con berenjena china y sopa de arvejas A\n\nVas a necesitar:\nGarbanzos ya hervidos\n4 berenjenas chinas (son alargadas y finitas)\n1 cebolla grande\n1 morrón u otra verdura a elección\nPerejil a gusto\nHongos de pino hidratados\nAceite de oliva\nArvejas partidas\nSal\nCondimentos a elección (recomendamos merkén ahumado, pimentón, pimienta blanca y pizca de cúrcuma)\nAlgas para decorar\nProcedimiento:\nEn una sartén colocar un poco de aceite, y saltear la cebolla, el morrón cortadas en cubos hasta que doren levemente, luego incorporar la berenjena china cortada en láminas. Saltear y agregar los garbanzos. Añadir los condimentos, ajo, sal y los hongos picados.\nDejar en el fuego unos minutos revolviendo cada tanto.\nEn el plato decorar con perejil para dar frescura y añadir algas si se desea.\nPara la sopa, hervir arvejas hasta que estén blandas. Minipimerear o procesar la preparación, con ajo, condimentos, aceite de oliva y media cebolla. Se va a lograr una sopa muy cremosa!"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "In a frying pan put a little oil and sauté the onion and the pepper, cut into cubes, until lightly golden, then add the Chinese eggplant cut into slices.",
+      "text_es": "En una sartén colocar un poco de aceite, y saltear la cebolla, el morrón cortadas en cubos hasta que doren levemente, luego incorporar la berenjena china cortada en láminas.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Sauté and add the chickpeas. Add the seasonings, garlic, salt and the chopped mushrooms.",
+      "text_es": "Saltear y agregar los garbanzos. Añadir los condimentos, ajo, sal y los hongos picados.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Leave on the heat a few minutes, stirring every so often.",
+      "text_es": "Dejar en el fuego unos minutos revolviendo cada tanto.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "On the plate, garnish with parsley for freshness and add seaweed if desired.",
+      "text_es": "En el plato decorar con perejil para dar frescura y añadir algas si se desea.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 1800,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "For the soup, boil split peas until soft.",
+      "text_es": "Para la sopa, hervir arvejas hasta que estén blandas.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Blend with a stick blender or process the mixture with garlic, seasonings, olive oil and half an onion. You will get a very creamy soup!",
+      "text_es": "Minipimerear o procesar la preparación, con ajo, condimentos, aceite de oliva y media cebolla. Se va a lograr una sopa muy cremosa!",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "chickpea",
+    "eggplant",
+    "soup",
+    "two-course"
+  ],
+  "title": "Chickpeas with Chinese eggplant and split pea soup",
+  "title_es": "Garbanzos con berenjena china y sopa de arvejas A"
+}

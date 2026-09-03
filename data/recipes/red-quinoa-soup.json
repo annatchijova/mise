@@ -1,0 +1,262 @@
+{
+  "category": "soup",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Gluten-free if the homemade broth is."
+    ],
+    "vegan": true
+  },
+  "id": "red-quinoa-soup",
+  "ingredients": [
+    {
+      "id": "sweet-potato",
+      "name_es": "batatas",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "red-onion",
+      "name_es": "cebolla morada",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "vegetable-broth",
+      "name_es": "caldo casero",
+      "note": "hecho con cabitos de verduras y sobras; el del libro tenía eneldo; si no hay caldo, enriquecer el agua con hierbas frescas",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "l"
+    },
+    {
+      "id": "red-quinoa",
+      "name_es": "quinoa roja ya cocida",
+      "note": "ya cocida; se agrega al servir",
+      "qty": 200,
+      "qty_source": "stated",
+      "role": "grain",
+      "technique": "none",
+      "unit": "g"
+    },
+    {
+      "id": "bell-pepper",
+      "name_es": "morrón rojo",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "corn-cob",
+      "name_es": "choclo grande",
+      "note": "desgranado",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "tomato",
+      "name_es": "tomates",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "bay-leaf",
+      "name_es": "hojas de laurel",
+      "note": "recomendado",
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "herb",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "merken",
+      "name_es": "merkén ahumado",
+      "note": "'una pizca de algo picoso'; recomendado",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "pinch"
+    },
+    {
+      "id": "cumin",
+      "name_es": "comino",
+      "note": "pizca pequeña; recomendado",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "pinch"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "olive-oil",
+      "name_es": "oliva",
+      "note": "'oliva' en los condimentos; 'aceite' para la olla",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "celery-powder",
+      "name_es": "apio en polvo",
+      "note": "utilizamos bastante",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 60,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "total minutes estimated (prep + stated 2 min + stated 30 min)",
+      "prep step durations estimated",
+      "salt, oil and celery powder quantities unspecified"
+    ]
+  },
+  "serves": 6,
+  "serves_source": "stated",
+  "source": {
+    "book": "solidario-50",
+    "locator": "recipe 46 of 50, page headed 'sopa de quinua roja' (between 'ceviche de palmitos' and 'guiso lenteja y chocolate')",
+    "original_text": "sopa de\nquinua roja\nSopa de quinoa roja\nIngredientes para 6 porciones\n2 batatas\n1 cebolla morada\n2 litros de caldo casero (hecho con cabitos de verduras y “sobras” que se hierve y se cuela) Nuestro caldo tenía eneldo, por lo que si no tienen un caldo armado, enriquezcan el agua con hierbas frecas (eneldo va excelente para este plato)\n200 gr de quinoa roja ya cocida\n1 morrón rojo\n1 choclo grande\n2 tomates\nCondimentos a gusto. Recomendamos 2 hojas de laurel, una pizca de algo picoso (nosotros utilizamos merkén ahumado), pizca pequeña de comino, sal, oliva, apio en polvo utilizamos bastante.\nProcedimiento:\nPicar la cebolla y el morrón en cubos iguales.\nCortar los granos del choclo.\nCortar en cubos medianos el tomate.\nCortar las batatas.\nEn la olla que vamos a utilizar agregamos aceite, tiramos la cebolla y el morrón hasta que doren levemente, agregamos el choclo, la batata y los tomates. Revolvemos 2 minutos más a fuego alto y agregamos nuestro caldo. Luego agregamos los condimentos y dejamos cocer una media hora. Probar la sopa y corregir la sal si hace falta.\nAl momento de servir la sopa, agregar la quinoa"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Dice the onion and the pepper into even cubes.",
+      "text_es": "Picar la cebolla y el morrón en cubos iguales.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Cut the kernels off the corn cob.",
+      "text_es": "Cortar los granos del choclo.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Cut the tomato into medium cubes.",
+      "text_es": "Cortar en cubos medianos el tomate.",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Cut the sweet potatoes.",
+      "text_es": "Cortar las batatas.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "dur_s": 480,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "In the pot we are going to use, add oil, throw in the onion and pepper until lightly golden, add the corn, sweet potato and tomatoes.",
+      "text_es": "En la olla que vamos a utilizar agregamos aceite, tiramos la cebolla y el morrón hasta que doren levemente, agregamos el choclo, la batata y los tomates.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 120,
+      "dur_source": "stated",
+      "order": 6,
+      "text": "Stir 2 more minutes over high heat and add our broth.",
+      "text_es": "Revolvemos 2 minutos más a fuego alto y agregamos nuestro caldo.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 1800,
+      "dur_source": "stated",
+      "order": 7,
+      "text": "Then add the seasonings and let it cook about half an hour.",
+      "text_es": "Luego agregamos los condimentos y dejamos cocer una media hora.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        7
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "Taste the soup and correct the salt if needed.",
+      "text_es": "Probar la sopa y corregir la sal si hace falta.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        8
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 9,
+      "text": "When serving the soup, add the quinoa",
+      "text_es": "Al momento de servir la sopa, agregar la quinoa",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "soup",
+    "medium"
+  ],
+  "title": "Red quinoa soup",
+  "title_es": "Sopa de quinoa roja"
+}

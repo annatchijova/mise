@@ -1,0 +1,202 @@
+{
+  "category": "main",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "'queso de papa' is a blended potato cheese; no dairy involved"
+    ],
+    "vegan": true
+  },
+  "id": "napolitana-squash",
+  "ingredients": [
+    {
+      "id": "squash",
+      "name_es": "calabaza chica",
+      "note": "chica",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "vegetable",
+      "technique": "bake",
+      "unit": "pc"
+    },
+    {
+      "id": "potato",
+      "name_es": "papa",
+      "note": "para el queso de papa; cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "starch",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón",
+      "note": "un poco",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "acid",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal entrefina",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "to_taste"
+    },
+    {
+      "id": "onion-flakes",
+      "name_es": "cebolla en escamas",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutritional-yeast",
+      "name_es": "levadura nutricional",
+      "note": "si se desea",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "umami",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "nutmeg",
+      "name_es": "nuez moscada",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "tomato",
+      "name_es": "tomate",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "bake",
+      "unit": "pc"
+    }
+  ],
+  "minutes": 70,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "most quantities unspecified",
+      "oven temperature and first bake time not stated"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Pepinos en conserva I', before 'Pizza sin tacc'",
+    "original_text": "Calabaza a la napolitana\n\nElegir una calabaza chica cortarla en dos y sacarle la cáscara con rallador. Mandala al horno hasta que se cocine!\nHacer queso de papa:\nHervir papa, minipimerear con un poco de jugo de limón, sal entrefina, aceite, cebolla en escamas, ajo, levadura nutricional si se desea, nuez moscada y pimienta blanca.\nAgregar a la calabaza y ponerle tomate.\nLlevar al horno 5 min más y disfrutar."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Choose a small squash, cut it in two and remove the skin with a grater.",
+      "text_es": "Elegir una calabaza chica cortarla en dos y sacarle la cáscara con rallador.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 2400,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Put it in the oven until it is cooked!",
+      "text_es": "Mandala al horno hasta que se cocine!",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 1500,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Make the potato cheese: boil potato, then blend with a stick blender with a little lemon juice, fine salt, oil, onion flakes, garlic, nutritional yeast if you like, nutmeg and white pepper.",
+      "text_es": "Hacer queso de papa:\nHervir papa, minipimerear con un poco de jugo de limón, sal entrefina, aceite, cebolla en escamas, ajo, levadura nutricional si se desea, nuez moscada y pimienta blanca.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2,
+        3
+      ],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "Add it to the squash and top with tomato.",
+      "text_es": "Agregar a la calabaza y ponerle tomate.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        4
+      ],
+      "dur_s": 300,
+      "dur_source": "stated",
+      "order": 5,
+      "text": "Return to the oven for 5 more minutes and enjoy.",
+      "text_es": "Llevar al horno 5 min más y disfrutar.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "baked",
+    "potato-cheese",
+    "gluten-free"
+  ],
+  "title": "Napolitana-style squash",
+  "title_es": "Calabaza a la napolitana"
+}

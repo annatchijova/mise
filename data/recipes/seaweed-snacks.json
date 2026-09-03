@@ -1,0 +1,98 @@
+{
+  "category": "snack",
+  "diet": {
+    "gluten_free": true,
+    "notes": [],
+    "vegan": true
+  },
+  "id": "seaweed-snacks",
+  "ingredients": [
+    {
+      "id": "seaweed",
+      "name_es": "algas",
+      "note": "planchas (sheets)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "vegetable",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "sesame-oil",
+      "name_es": "aceite de sésamo",
+      "note": "rociar",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "fry",
+      "unit": "to_taste"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "no quantities stated",
+      "serves unspecified",
+      "durations estimated"
+    ]
+  },
+  "serves": 2,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Algas', lines 502-505",
+    "original_text": "Snacks de Algas en honor a Bora A\n\nEntre capa y capa de algas rociar con aceite de sésamo y sal. Poner todas las las planchas juntas en una sartén caliente y dar vueltas cada dos segundos hasta sentirlas crocantes. \nCortar con tijera en tiras y disfrutar. "
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Between each layer of seaweed, sprinkle with sesame oil and salt.",
+      "text_es": "Entre capa y capa de algas rociar con aceite de sésamo y sal.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Put all the sheets together in a hot frying pan and turn every two seconds until they feel crisp.",
+      "text_es": "Poner todas las las planchas juntas en una sartén caliente y dar vueltas cada dos segundos hasta sentirlas crocantes. ",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Cut into strips with scissors and enjoy.",
+      "text_es": "Cortar con tijera en tiras y disfrutar. ",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "snack",
+    "seaweed",
+    "quick"
+  ],
+  "title": "Seaweed snacks",
+  "title_es": "Snacks de Algas en honor a Bora A"
+}

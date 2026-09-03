@@ -1,0 +1,237 @@
+{
+  "category": "soup",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "Broth is the book's vegan '\"carne\"' (in quotes) stock; the referenced borsch recipe in this book does not contain that stock recipe.",
+      "Cheese is 'queso vegetal' (plant-based) as written."
+    ],
+    "vegan": true
+  },
+  "id": "french-onion-soup",
+  "ingredients": [
+    {
+      "id": "onion",
+      "name_es": "cebollas",
+      "note": "en juliana",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "pc"
+    },
+    {
+      "id": "garlic",
+      "name_es": "dientes de ajo",
+      "note": null,
+      "qty": 2,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "brown",
+      "unit": "clove"
+    },
+    {
+      "id": "coconut-oil",
+      "name_es": "aceite de coco",
+      "note": "3 cucharadas soperas; 'muchísima materia grasa'",
+      "qty": 3,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "brown",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vegetable-broth",
+      "name_es": "caldo base “carne”",
+      "note": "receta en sopa borsch fermentado (not present in this book)",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "cashew-milk",
+      "name_es": "leche de cajú",
+      "note": "Preparar leche de cajú",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "bay-leaf",
+      "name_es": "hoja de laurel",
+      "note": null,
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "herb",
+      "technique": "simmer",
+      "unit": "pc"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    },
+    {
+      "id": "brandy",
+      "name_es": "brandy o vino blanco",
+      "note": "brandy o vino blanco en su defecto",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "to_taste"
+    },
+    {
+      "id": "flour-0000",
+      "name_es": "harina",
+      "note": "para espesar",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "thickener",
+      "technique": "thicken",
+      "unit": "tbsp"
+    },
+    {
+      "id": "dill",
+      "name_es": "eneldo entero",
+      "note": "sacarlo al momento de servir",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "herb",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegan-cheese",
+      "name_es": "queso vegetal",
+      "note": null,
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "none",
+      "unit": "to_taste"
+    },
+    {
+      "id": "bread",
+      "name_es": "tostadas de pan",
+      "note": "Se sirve con tostadas de pan",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "none",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 50,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "broth, cashew milk, salt, brandy/wine, dill, cheese, bread quantities unspecified",
+      "all durations estimated",
+      "broth cross-reference ('receta en sopa borsch fermentado') is not resolvable in this book"
+    ]
+  },
+  "serves": 4,
+  "serves_source": "unspecified",
+  "source": {
+    "also_in": [
+      "recetario-diferente"
+    ],
+    "book": "abc-vegan-ideas",
+    "locator": "section 'Cebollas', lines 108-120",
+    "original_text": "Sopa francesa de cebolla\n\nSe sirve con tostadas de pan. Sopa de origen humilde, de borrachos.\n\nPicar 3 cebollas en juliana\nPicar 2 dientes de ajo\nUsar muchísima materia grasa (aceite de coco)\nComo caldo base usar el de “carne” (receta en sopa borsch fermentado)\nPreparar leche de cajú\n\nEn una olla colocar 3 cucharadas soperas de aceite de coco. Caramelizar cebollas (sin que cambie el color, sólo para que libere el azúcar) Agregar una hoja de laurel. Revolver y añadir el ajo. Dejar ablandar la preparación. Agregarle sal. Ponerle brandy o vino blanco en su defecto.\nPoner una cucharada de harina para espesar. Luego agregar la leche de cajú\nAgregar eneldo entero (y luego sacarlo al momento de servir) Agregar el caldo, condimentar. Corregir la sal y agregar queso vegetal. "
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Slice 3 onions into julienne.",
+      "text_es": "Picar 3 cebollas en juliana",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Chop 2 cloves of garlic.",
+      "text_es": "Picar 2 dientes de ajo",
+      "timer": false
+    },
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Prepare cashew milk.",
+      "text_es": "Preparar leche de cajú",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 4,
+      "text": "In a pot put 3 tablespoons of coconut oil. Caramelise the onions (without letting them change colour, only so they release their sugar). Add a bay leaf.",
+      "text_es": "En una olla colocar 3 cucharadas soperas de aceite de coco. Caramelizar cebollas (sin que cambie el color, sólo para que libere el azúcar) Agregar una hoja de laurel.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2,
+        4
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "Stir and add the garlic. Let the mixture soften. Add salt. Add brandy, or white wine failing that.",
+      "text_es": "Revolver y añadir el ajo. Dejar ablandar la preparación. Agregarle sal. Ponerle brandy o vino blanco en su defecto.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3,
+        5
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Put in a tablespoon of flour to thicken. Then add the cashew milk.",
+      "text_es": "Poner una cucharada de harina para espesar. Luego agregar la leche de cajú",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        6
+      ],
+      "dur_s": 900,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "Add whole dill (and remove it when serving). Add the broth, season. Correct the salt and add plant-based cheese.",
+      "text_es": "Agregar eneldo entero (y luego sacarlo al momento de servir) Agregar el caldo, condimentar. Corregir la sal y agregar queso vegetal.",
+      "timer": true
+    }
+  ],
+  "tags": [
+    "soup",
+    "onion",
+    "caramelised"
+  ],
+  "title": "French onion soup",
+  "title_es": "Sopa francesa de cebolla"
+}

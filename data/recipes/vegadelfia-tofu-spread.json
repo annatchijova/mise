@@ -1,0 +1,129 @@
+{
+  "category": "sauce",
+  "diet": {
+    "gluten_free": true,
+    "notes": [
+      "Tofu-based cream-cheese-style spread; 'Titán' is a brand of nutritional yeast. Book declares all its recipes 100% vegan."
+    ],
+    "vegan": true
+  },
+  "id": "vegadelfia-tofu-spread",
+  "ingredients": [
+    {
+      "id": "tofu",
+      "name_es": "tofu blando",
+      "note": "soft tofu",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "protein",
+      "technique": "emulsify",
+      "unit": "kg"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón",
+      "note": "juice",
+      "qty": 60,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "emulsify",
+      "unit": "ml"
+    },
+    {
+      "id": "salt",
+      "name_es": "sal entrefina",
+      "note": "al ras (level)",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "spice",
+      "technique": "season",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite neutro",
+      "note": null,
+      "qty": 250,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "g"
+    },
+    {
+      "id": "nutritional-yeast",
+      "name_es": "Titán",
+      "note": "Titán is a brand of nutritional yeast",
+      "qty": 5,
+      "qty_source": "stated",
+      "role": "umami",
+      "technique": "season",
+      "unit": "tbsp"
+    },
+    {
+      "id": "garlic",
+      "name_es": "ajo",
+      "note": "Optativo",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "raw",
+      "unit": "to_taste"
+    },
+    {
+      "id": "white-pepper",
+      "name_es": "pimienta blanca",
+      "note": "Optativo",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "spice",
+      "technique": "season",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 10,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified (yield ~1.3 kg of spread)",
+      "total minutes and step durations estimated",
+      "title carries a trailing 'A' marker from the book, kept verbatim"
+    ]
+  },
+  "serves": 10,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "aplv",
+    "locator": "section 'Tofu', after 'Tofu a la barbacoa'",
+    "original_text": "Vegadelfia A\nIngredientes:\n1 kilogramo de tofu blando\n60 ml de jugo de limón\n1 cucharada al ras de sal entrefina\n250 gr de aceite neutro\n5 cucharadas de Titán\nOptativo: ajo y pimienta blanca\nProcedimiento: Poner todo en la licuadora y a máxima potencia procesar.\nConservar en heladera."
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 180,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Put everything in the blender and process at maximum power.",
+      "text_es": "Poner todo en la licuadora y a máxima potencia procesar.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 2,
+      "text": "Keep in the fridge.",
+      "text_es": "Conservar en heladera.",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "quick",
+    "emulsion",
+    "spread"
+  ],
+  "title": "Vegadelfia (tofu cream spread)",
+  "title_es": "Vegadelfia A"
+}

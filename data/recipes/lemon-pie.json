@@ -1,0 +1,267 @@
+{
+  "category": "dessert",
+  "diet": {
+    "gluten_free": false,
+    "notes": [
+      "filling is set with cornstarch, no egg; topping is a vegan whipped cream"
+    ],
+    "vegan": true
+  },
+  "id": "lemon-pie",
+  "ingredients": [
+    {
+      "id": "self-rising-flour",
+      "name_es": "harina leudante",
+      "note": "o harina 0000 + 1 cucharadita de polvo para hornear",
+      "qty": 150,
+      "qty_source": "stated",
+      "role": "starch",
+      "technique": "bake",
+      "unit": "g"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (masa)",
+      "note": null,
+      "qty": 40,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "bind-cold",
+      "unit": "g"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar orgánico (masa)",
+      "note": "orgánico",
+      "qty": 50,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "unit": "g"
+    },
+    {
+      "id": "water",
+      "name_es": "agua (masa)",
+      "note": "más un poquito si la masa queda seca",
+      "qty": 40,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "bind-cold",
+      "unit": "ml"
+    },
+    {
+      "id": "lemon",
+      "name_es": "ralladura de un limón",
+      "note": "solo la ralladura",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "aromatic",
+      "technique": "none",
+      "unit": "pc"
+    },
+    {
+      "id": "baking-powder",
+      "name_es": "polvo para hornear",
+      "note": "solo si se usa harina 0000 en lugar de leudante",
+      "qty": 1,
+      "qty_source": "stated",
+      "role": "leavening",
+      "technique": "leaven",
+      "unit": "tsp"
+    },
+    {
+      "id": "cooking-spray",
+      "name_es": "rocío vegetal",
+      "note": "para el molde; o papel manteca",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "fat",
+      "technique": "none",
+      "unit": "to_taste"
+    },
+    {
+      "id": "lemon",
+      "name_es": "jugo de limón (relleno)",
+      "note": "jugo",
+      "qty": 150,
+      "qty_source": "stated",
+      "role": "acid",
+      "technique": "simmer",
+      "unit": "ml"
+    },
+    {
+      "id": "water",
+      "name_es": "agua (relleno)",
+      "note": "la mitad para disolver la fécula",
+      "qty": 120,
+      "qty_source": "stated",
+      "role": "liquid",
+      "technique": "dissolve",
+      "unit": "ml"
+    },
+    {
+      "id": "sugar",
+      "name_es": "azúcar orgánico (relleno)",
+      "note": "o un sobrecito de stevia",
+      "qty": 130,
+      "qty_source": "stated",
+      "role": "sweetener",
+      "technique": "dissolve",
+      "unit": "g"
+    },
+    {
+      "id": "cornstarch",
+      "name_es": "fécula de maíz",
+      "note": null,
+      "qty": 60,
+      "qty_source": "stated",
+      "role": "thickener",
+      "technique": "thicken",
+      "unit": "g"
+    },
+    {
+      "id": "lemon",
+      "name_es": "ralladura de limón (relleno)",
+      "note": "cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "aromatic",
+      "technique": "simmer",
+      "unit": "to_taste"
+    },
+    {
+      "id": "vegetable-oil",
+      "name_es": "aceite (relleno)",
+      "note": null,
+      "qty": 4,
+      "qty_source": "stated",
+      "role": "fat",
+      "technique": "emulsify",
+      "unit": "tbsp"
+    },
+    {
+      "id": "vegan-whipped-topping",
+      "name_es": "crema chantilly vegana",
+      "note": "para decorar; cantidad no indicada",
+      "qty": null,
+      "qty_source": "unspecified",
+      "role": "garnish",
+      "technique": "whip",
+      "unit": "to_taste"
+    }
+  ],
+  "minutes": 120,
+  "minutes_source": "estimated",
+  "review": {
+    "needs_review": true,
+    "reasons": [
+      "serves unspecified",
+      "minutes estimated",
+      "step 4 recorded at the lower bound of the stated 15-20 minutes",
+      "oven temperature not stated",
+      "cooling time not stated",
+      "filling zest and whipped topping quantities unspecified"
+    ]
+  },
+  "serves": 8,
+  "serves_source": "unspecified",
+  "source": {
+    "book": "vegan-delicious",
+    "locator": "after 'Mousse de chocolate', before 'Brownie I'",
+    "original_text": "Lemon Pie\n\nPara la masa:\nHarina leudante 150gr\nAceite 40gr\nAzúcar orgànico 50gr\nAgua 40 cc\nRalladura de un limón\nSe mezcla el aceite, agua, azúcar y la ralladura. Una vez que esto està bien integrado, agregar los 150gr de harina (sino tienen harina leudante, usen 0000 y le agregan una cucharadita de polvo para hornear) si la masa esta muy seca le agregan un poquito de agua, traten de no amasarla mucho, porque sino les va a quedar una piedra, solo integren con la punta de los dedos hasta que quede un arenado. La dejan descansar en la heladera unos 30′ masomenos. (Aclaro que puede quedar muy aceitosa, entonces le aguegan mas harina, depende mucho de las marcas eso)\nAl molde le ponen rocìo vegetal, o papel manteca para evitar que la masa se pegue. Estiran, forran la tartera y pinchan con un tenedor. La llevan al horno por unos 15′ o 20′ hasta que dore un poco.\n\nRelleno:\nJugo de limón 150cc\nAgua 120cc\nAzùcar orgànico 130gr (si les gusta la stevia con un sobrecito va a estar bien)\nFécula de maíz 60gr\nRalladura de limón\nAceite 4cdas\nPrimero disuelven la fécula de maíz con la mitad del agua.\nPor otro, en una olla ponen a hervir el resto del agua con el jugo de limón, la ralladura y el azúcar. Una vez que hierve le agregan la fécula ya disuelta, entonces comienza a espesar, batir muy bien hasta que el sabor de la fécula no se sienta. Sacan del fuego y mezclan con el aceite. Vierten la preparación caliente sobre la masa ya cocida, dejan enfriar tapada con papel film.\nDecorar con crema chantilly vegana♥"
+  },
+  "steps": [
+    {
+      "depends_on": [],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 1,
+      "text": "Mix the oil, water, sugar and the zest. Once this is well combined, add the 150 g of flour (if you do not have self-rising flour, use 0000 and add a teaspoon of baking powder); if the dough is very dry add a little water; try not to knead it much, otherwise it will turn into a rock; just bring it together with your fingertips until it is sandy.",
+      "text_es": "Se mezcla el aceite, agua, azúcar y la ralladura. Una vez que esto està bien integrado, agregar los 150gr de harina (sino tienen harina leudante, usen 0000 y le agregan una cucharadita de polvo para hornear) si la masa esta muy seca le agregan un poquito de agua, traten de no amasarla mucho, porque sino les va a quedar una piedra, solo integren con la punta de los dedos hasta que quede un arenado.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        1
+      ],
+      "dur_s": 1800,
+      "dur_source": "stated",
+      "order": 2,
+      "text": "Let it rest in the fridge for about 30 minutes or so. (Note that it can end up very oily, in which case add more flour; it depends a lot on the brands.)",
+      "text_es": "La dejan descansar en la heladera unos 30′ masomenos. (Aclaro que puede quedar muy aceitosa, entonces le aguegan mas harina, depende mucho de las marcas eso)",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        2
+      ],
+      "dur_s": 300,
+      "dur_source": "estimated",
+      "order": 3,
+      "text": "Coat the tin with cooking spray, or use baking paper, so the dough does not stick. Roll out, line the tart tin and prick with a fork.",
+      "text_es": "Al molde le ponen rocìo vegetal, o papel manteca para evitar que la masa se pegue. Estiran, forran la tartera y pinchan con un tenedor.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        3
+      ],
+      "dur_s": 900,
+      "dur_source": "stated",
+      "order": 4,
+      "text": "Bake for about 15 or 20 minutes, until slightly golden.",
+      "text_es": "La llevan al horno por unos 15′ o 20′ hasta que dore un poco.",
+      "timer": true
+    },
+    {
+      "depends_on": [],
+      "dur_s": 60,
+      "dur_source": "estimated",
+      "order": 5,
+      "text": "First dissolve the cornstarch in half of the water.",
+      "text_es": "Primero disuelven la fécula de maíz con la mitad del agua.",
+      "timer": false
+    },
+    {
+      "depends_on": [
+        5
+      ],
+      "dur_s": 600,
+      "dur_source": "estimated",
+      "order": 6,
+      "text": "Separately, in a pot bring the rest of the water to the boil with the lemon juice, the zest and the sugar. Once it boils add the dissolved starch; it then starts to thicken; whisk very well until the starch taste can no longer be noticed. Take off the heat and mix in the oil.",
+      "text_es": "Por otro, en una olla ponen a hervir el resto del agua con el jugo de limón, la ralladura y el azúcar. Una vez que hierve le agregan la fécula ya disuelta, entonces comienza a espesar, batir muy bien hasta que el sabor de la fécula no se sienta. Sacan del fuego y mezclan con el aceite.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        4,
+        6
+      ],
+      "dur_s": 3600,
+      "dur_source": "estimated",
+      "order": 7,
+      "text": "Pour the hot mixture over the baked crust and let it cool covered with cling film.",
+      "text_es": "Vierten la preparación caliente sobre la masa ya cocida, dejan enfriar tapada con papel film.",
+      "timer": true
+    },
+    {
+      "depends_on": [
+        7
+      ],
+      "dur_s": 120,
+      "dur_source": "estimated",
+      "order": 8,
+      "text": "Decorate with vegan whipped cream.",
+      "text_es": "Decorar con crema chantilly vegana♥",
+      "timer": false
+    }
+  ],
+  "tags": [
+    "baked",
+    "tart",
+    "cornstarch-custard"
+  ],
+  "title": "Lemon pie",
+  "title_es": "Lemon Pie"
+}
