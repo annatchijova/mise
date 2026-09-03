@@ -64,7 +64,7 @@ Book slugs: `vegan-delicious`, `solidario-50`, `abc-vegan-ideas`, `recetario-dif
 - `timer: true` when a step is a wait or a timed cook (simmer 20 min, rest 1 h, bake).
 - `depends_on`: earlier step numbers this step needs finished (parallel prep has none).
 - `review.needs_review` is `true` whenever anything is estimated/unspecified or the vegan status needed judgment. List the reasons. Honesty here is the feature.
-- Non-vegan ingredients (honey, egg, dairy, meat, fish, gelatin) disqualify the recipe. Plant compounds that contain a dairy word are fine and should use their canonical id (`oat-milk`, `soy-milk`, `coconut-cream`, `peanut-butter`, `cashew-cheese`); the validator recognizes the plant qualifier. When the book offers a vegan variant, structure the vegan variant and say so in `diet.notes`.
+- Non-vegan ingredients (honey, egg, dairy, meat, fish, gelatin) disqualify the recipe. Plant compounds that contain a dairy word are fine and should use their canonical id (`oat-milk`, `soy-milk`, `coconut-cream`, `peanut-butter`, `cashew-cheese`); the validator recognizes the plant qualifier. The hard check is on the `id`; an animal word inside a verbatim `name_es` (e.g. the book's vegan `caldo "carne"`) only raises a review warning, because source text is never edited to satisfy a check. When the book offers a vegan variant, structure the vegan variant and say so in `diet.notes`.
 
 ### Closed vocabularies (validator-enforced)
 
