@@ -12,6 +12,11 @@ TECHNIQUE = {"emulsify","brown","bind-cold","bind-hot","leaven","thicken","ferme
 UNIT = {"g","kg","ml","l","tsp","tbsp","cup","pc","clove","pinch","slice","bunch","can","sachet","to_taste"}
 SOURCE = {"stated","estimated","unspecified"}
 NON_VEGAN = re.compile(r"\b(honey|egg|eggs|milk|butter|cheese|cream|yogurt|whey|meat|beef|pork|chicken|fish|tuna|shrimp|gelatin|lard)\b")
+# plant-based compounds are vegan even when they contain a dairy word: oat-milk, peanut-butter, coconut-cream, cashew-cheese
+PLANT = re.compile(r"(oat|soy|soya|coconut|almond|cashew|rice|plant|peanut|cocoa|vegan|sunflower|hemp|pea|walnut|hazelnut|sesame|tahini|"
+                   r"avena|soja|coco|almendra|casta[nñ]a|arroz|vegetal|vegan[oa]|man[ií]|cacao|girasol|nuez|s[eé]samo)")
+def looks_non_vegan(token):
+    return bool(NON_VEGAN.search(token)) and not PLANT.search(token)
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
 def load(path):
@@ -50,7 +55,7 @@ def check(r, errors, warnings, ids):
             if q is not None: err(f"{p} qty must be null when unspecified")
         else:
             if not isinstance(q, (int, float)) or isinstance(q, bool) or q <= 0: err(f"{p} qty must be a positive number when {ing.get('qty_source')}")
-        if NON_VEGAN.search(ing.get("id","")) or NON_VEGAN.search((ing.get("name_es") or "").lower()): err(f"{p} looks non-vegan: {ing.get('id')}")
+        if looks_non_vegan(ing.get("id","")) or looks_non_vegan((ing.get("name_es") or "").lower()): err(f"{p} looks non-vegan: {ing.get('id')}")
         if not ing.get("name_es"): warn(f"{p} name_es missing")
     n = len(r["steps"])
     if n == 0: err("no steps")
