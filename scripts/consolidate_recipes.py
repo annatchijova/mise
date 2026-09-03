@@ -61,6 +61,23 @@ def main(apply):
     print(f"distinct ingredient ids: {len(ing_count)}   near-duplicate groups: {len(near)}")
     for k, v in sorted(near.items()): print("  NEAR-DUP", sorted(v))
 
+    # 2b. cross-book duplicate RECIPES (same dish extracted from two books under different ids)
+    import unicodedata
+    def key(t): return re.sub(r"[^a-z0-9 ]", "", unicodedata.normalize("NFKD", t.lower()).encode("ascii","ignore").decode())
+    def words(t): return set(key(t).split())
+    dups = []
+    for a in range(len(recipes)):
+        for b in range(a + 1, len(recipes)):
+            ra, rb = recipes[a], recipes[b]
+            if ra["source"]["book"] == rb["source"]["book"]: continue
+            wa, wb = words(ra["source"]["original_text"]), words(rb["source"]["original_text"])
+            jac = len(wa & wb) / max(1, len(wa | wb))
+            same_title = key(ra["title_es"]) == key(rb["title_es"])
+            if same_title or jac >= 0.6:
+                dups.append((ra["id"], ra["source"]["book"], rb["id"], rb["source"]["book"], round(jac, 2), same_title))
+    print(f"cross-book duplicate recipes: {len(dups)}")
+    for d in dups: print(f"  DUP-RECIPE {d[0]} [{d[1]}]  ~  {d[2]} [{d[3]}]  jaccard={d[4]} same_title={d[5]}")
+
     # 3. planner stats
     cats = Counter(r["category"] for r in recipes)
     savory = sum(v for k, v in cats.items() if k in SAVORY)
