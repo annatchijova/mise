@@ -23,8 +23,8 @@ def norm(ingredient_id):
     s = ingredient_id.replace("-", "")
     return re.sub(r"(es|s)$", "", s)
 
-def main(apply):
-    books = sorted(d for d in os.listdir(WORK) if os.path.isdir(os.path.join(WORK, d)))
+def main(apply, only=None):
+    books = sorted(d for d in os.listdir(WORK) if os.path.isdir(os.path.join(WORK, d)) and (only is None or d in only))
     recipes, inventory = [], {}
     for b in books:
         rp, ip = os.path.join(WORK, b, "recipes.json"), os.path.join(WORK, b, "inventory.json")
@@ -36,6 +36,22 @@ def main(apply):
             inventory[b] = json.load(open(ip, encoding="utf-8"))
     print(f"books: {books}")
     print(f"recipes read: {len(recipes)}   inventory entries: {sum(len(v) for v in inventory.values())}")
+
+    # -1. drop the same dish extracted twice (data/recipe_dedupe.json), keep provenance of both books
+    dpath = os.path.join(ROOT, "data", "recipe_dedupe.json")
+    dedupe = {k: v for k, v in json.load(open(dpath, encoding="utf-8")).items() if not k.startswith("_")} if os.path.exists(dpath) else {}
+    by_id = {}
+    for r in recipes: by_id.setdefault(r["id"], []).append(r)
+    kept, dropped = [], 0
+    for r in recipes:
+        k = f"{r['id']}@{r['source']['book']}"
+        if k in dedupe:
+            target = next((x for x in recipes if x["id"] == dedupe[k] and f"{x['id']}@{x['source']['book']}" not in dedupe), None)
+            if target is None: print(f"  DEDUPE-ERROR keep target not found for {k}"); kept.append(r); continue
+            target["source"].setdefault("also_in", []).append(r["source"]["book"]); dropped += 1
+        else: kept.append(r)
+    recipes = kept
+    print(f"dedupe: dropped {dropped} duplicate extractions, {len(recipes)} recipes remain")
 
     # 0. canonical ingredient ids: apply the versioned alias table (data/ingredient_aliases.json)
     apath = os.path.join(ROOT, "data", "ingredient_aliases.json")
@@ -120,4 +136,7 @@ def main(apply):
     return 0
 
 if __name__ == "__main__":
-    sys.exit(main("--apply" in sys.argv))
+    only = None
+    for a in sys.argv[1:]:
+        if a.startswith("--books="): only = set(a.split("=", 1)[1].split(","))
+    sys.exit(main("--apply" in sys.argv, only))

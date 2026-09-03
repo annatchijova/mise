@@ -1,0 +1,12 @@
+{
+  "_comment": "The same dish extracted from two books. Key = '<id>@<book>' to drop; value = id kept. The kept recipe records the dropped book in source.also_in. Applied by scripts/consolidate_recipes.py.",
+  "oat-blueberry-delights@aplv": "oat-blueberry-delights",
+  "mushroom-basmati-soup@aplv": "mushroom-basmati-soup",
+  "fava-bean-red-lentil-stew@aplv": "broad-bean-red-lentil-stew",
+  "beet-borscht@aplv": "beet-borscht",
+  "chickpeas-chinese-eggplant-split-pea-soup@aplv": "chickpeas-chinese-eggplant-split-pea-soup",
+  "different-faina@aplv": "different-faina",
+  "andean-baby-potatoes-with-salad@aplv": "andean-potatoes-with-fresh-salad",
+  "barbecue-tofu@aplv": "barbecue-tofu",
+  "brined-cucumbers@aplv": "cucumbers-in-brine"
+}

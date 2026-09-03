@@ -6,13 +6,14 @@
   "cashew-creme": "cashew-cream",
   "cashew-sour-creme": "cashew-sour-cream",
   "vegan-cheeze": "vegan-cheese",
-  "flour-000": "flour-000",
   "wheat-flour": "flour-0000",
   "firm-tofu": "tofu",
-  "chili": "chili",
   "spring-onion": "green-onion",
   "sea-salt": "salt",
   "black-peppercorn": "black-pepper",
-  "vegetable-oil": "vegetable-oil",
-  "sunflower-oil": "sunflower-oil"
+  "beet": "beetroot",
+  "chili-pepper": "chili",
+  "neutral-oil": "vegetable-oil",
+  "oil": "vegetable-oil",
+  "white-cabbage": "cabbage"
 }
