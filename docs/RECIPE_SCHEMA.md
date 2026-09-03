@@ -70,7 +70,7 @@ Book slugs: `vegan-delicious`, `solidario-50`, `abc-vegan-ideas`, `recetario-dif
 
 **category**: `main | side | soup | breakfast | dessert | bread | sauce | preserve | drink | snack`
 
-**role** (what the ingredient *is* in the dish): `protein | fat | acid | binder | umami | aromatic | vegetable | grain | starch | sweetener | liquid | leavening | spice | herb | garnish | thickener`
+**role** (what the ingredient *is* in the dish): `protein | fat | acid | binder | umami | aromatic | vegetable | fruit | grain | starch | sweetener | liquid | leavening | spice | herb | garnish | thickener`
 
 **technique** (what the ingredient must *do* — this is what makes substitution safe): `emulsify | brown | bind-cold | bind-hot | leaven | thicken | ferment | marinate | simmer | fry | bake | raw | whip | sweeten | season | dissolve | none`
 

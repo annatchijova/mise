@@ -7,7 +7,7 @@ Exit 0 = all recipes valid. Exit 1 = hard errors (listed). Warnings never fail t
 import json, re, sys, os
 
 CATEGORY = {"main","side","soup","breakfast","dessert","bread","sauce","preserve","drink","snack"}
-ROLE = {"protein","fat","acid","binder","umami","aromatic","vegetable","grain","starch","sweetener","liquid","leavening","spice","herb","garnish","thickener"}
+ROLE = {"protein","fat","acid","binder","umami","aromatic","vegetable","fruit","grain","starch","sweetener","liquid","leavening","spice","herb","garnish","thickener"}
 TECHNIQUE = {"emulsify","brown","bind-cold","bind-hot","leaven","thicken","ferment","marinate","simmer","fry","bake","raw","whip","sweeten","season","dissolve","none"}
 UNIT = {"g","kg","ml","l","tsp","tbsp","cup","pc","clove","pinch","slice","bunch","can","sachet","to_taste"}
 SOURCE = {"stated","estimated","unspecified"}

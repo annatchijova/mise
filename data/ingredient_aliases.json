@@ -1,0 +1,18 @@
+{
+  "_comment": "alias -> canonical ingredient id. Applied by scripts/consolidate_recipes.py before validation. Keep ids generic (the thing, not the brand).",
+  "soymilk": "soy-milk",
+  "plantmilk-powder": "plant-milk-powder",
+  "cashew-mylk": "cashew-milk",
+  "cashew-creme": "cashew-cream",
+  "cashew-sour-creme": "cashew-sour-cream",
+  "vegan-cheeze": "vegan-cheese",
+  "flour-000": "flour-000",
+  "wheat-flour": "flour-0000",
+  "firm-tofu": "tofu",
+  "chili": "chili",
+  "spring-onion": "green-onion",
+  "sea-salt": "salt",
+  "black-peppercorn": "black-pepper",
+  "vegetable-oil": "vegetable-oil",
+  "sunflower-oil": "sunflower-oil"
+}

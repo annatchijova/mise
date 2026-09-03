@@ -37,6 +37,16 @@ def main(apply):
     print(f"books: {books}")
     print(f"recipes read: {len(recipes)}   inventory entries: {sum(len(v) for v in inventory.values())}")
 
+    # 0. canonical ingredient ids: apply the versioned alias table (data/ingredient_aliases.json)
+    apath = os.path.join(ROOT, "data", "ingredient_aliases.json")
+    aliases = {k: v for k, v in json.load(open(apath, encoding="utf-8")).items() if not k.startswith("_")} if os.path.exists(apath) else {}
+    remapped = Counter()
+    for r in recipes:
+        for ing in r["ingredients"]:
+            if ing["id"] in aliases and aliases[ing["id"]] != ing["id"]:
+                remapped[f"{ing['id']} -> {aliases[ing['id']]}"] += 1; ing["id"] = aliases[ing["id"]]
+    print(f"aliases applied: {sum(remapped.values())} " + (", ".join(f"{k}({n})" for k, n in sorted(remapped.items())) if remapped else ""))
+
     # 1. re-validate the union
     errors, warnings, ids = [], [], set()
     for r in recipes: check(r, errors, warnings, ids)
