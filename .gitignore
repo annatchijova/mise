@@ -144,3 +144,7 @@ vite.config.ts.timestamp-*
 
 # intermediate per-book extraction (agents); curated output goes to data/
 work/
+
+# python tooling caches (scripts/)
+__pycache__/
+*.pyc
