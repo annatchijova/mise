@@ -11,7 +11,8 @@ ROLE = {"protein","fat","acid","binder","umami","aromatic","vegetable","grain","
 TECHNIQUE = {"emulsify","brown","bind-cold","bind-hot","leaven","thicken","ferment","marinate","simmer","fry","bake","raw","whip","sweeten","season","dissolve","none"}
 UNIT = {"g","kg","ml","l","tsp","tbsp","cup","pc","clove","pinch","slice","bunch","can","sachet","to_taste"}
 SOURCE = {"stated","estimated","unspecified"}
-NON_VEGAN = re.compile(r"\b(honey|egg|eggs|milk|butter|cheese|cream|yogurt|whey|meat|beef|pork|chicken|fish|tuna|shrimp|gelatin|lard)\b")
+NON_VEGAN = re.compile(r"\b(honey|egg|eggs|milk|butter|cheese|cream|yogurt|whey|meat|beef|pork|chicken|fish|tuna|shrimp|gelatin|lard|"
+                       r"miel|huevos?|leche|manteca|queso|crema|yogur|suero|carne|vaca|cerdo|pollo|pescado|at[uú]n|camar[oó]n|gelatina|grasa)\b")
 # plant-based compounds are vegan even when they contain a dairy word: oat-milk, peanut-butter, coconut-cream, cashew-cheese
 PLANT = re.compile(r"(oat|soy|soya|coconut|almond|cashew|rice|plant|peanut|cocoa|vegan|sunflower|hemp|pea|walnut|hazelnut|sesame|tahini|"
                    r"avena|soja|coco|almendra|casta[nñ]a|arroz|vegetal|vegan[oa]|man[ií]|cacao|girasol|nuez|s[eé]samo)")
