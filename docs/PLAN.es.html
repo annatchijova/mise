@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mise</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #F4F6F1;
+    --paper-2: #EAEEE3;
+    --ink: #1C2419;
+    --ink-2: #46503F;
+    --muted: #6B7565;
+    --line: #D3D9C9;
+    --olive: #5E7A2E;
+    --olive-soft: #E2EAD1;
+    --paprika: #B8541F;
+    --paprika-soft: #F5E3D6;
+    --mono-bg: #ECEFE6;
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #141A12;
+      --paper-2: #1C241A;
+      --ink: #E6EAE0;
+      --ink-2: #C3CBB8;
+      --muted: #8F9A86;
+      --line: #2E3A2A;
+      --olive: #9BBF5A;
+      --olive-soft: #24331A;
+      --paprika: #E0844F;
+      --paprika-soft: #3A2417;
+      --mono-bg: #1C241A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #141A12;
+    --paper-2: #1C241A;
+    --ink: #E6EAE0;
+    --ink-2: #C3CBB8;
+    --muted: #8F9A86;
+    --line: #2E3A2A;
+    --olive: #9BBF5A;
+    --olive-soft: #24331A;
+    --paprika: #E0844F;
+    --paprika-soft: #3A2417;
+    --mono-bg: #1C241A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  header.masthead { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--olive); margin: 0 0 12px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 600; font-size: clamp(40px, 6vw, 60px);
+    font-variation-settings: "opsz" 144; line-height: 1.02; margin: 0 0 12px; text-wrap: balance;
+  }
+  .dek { font-size: 19px; color: var(--ink-2); max-width: 62ch; margin: 0 0 24px; text-wrap: pretty; }
+  .card-meta {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0;
+    border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--paper-2);
+  }
+  .card-meta div { padding: 12px 14px; border-right: 1px solid var(--line); }
+  .card-meta div:last-child { border-right: 0; }
+  .card-meta .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px; }
+  .card-meta .v { font-weight: 500; }
+
+  h2 {
+    font-family: var(--display); font-weight: 600; font-size: 30px; font-variation-settings: "opsz" 72;
+    line-height: 1.15; margin: 56px 0 14px; text-wrap: balance;
+  }
+  h2 .n { font-family: var(--mono); font-size: 13px; color: var(--muted); font-weight: 400; margin-right: 10px; letter-spacing: 0.06em; vertical-align: 0.35em; }
+  h3 { font-family: var(--body); font-weight: 600; font-size: 17px; margin: 30px 0 8px; }
+  p { max-width: 68ch; margin: 0 0 14px; text-wrap: pretty; }
+  p.lead { font-size: 17.5px; color: var(--ink-2); }
+  ul, ol { max-width: 68ch; padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--olive); }
+  strong { font-weight: 600; }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--mono-bg); padding: 1px 5px; border-radius: 3px; }
+  pre {
+    font-family: var(--mono); font-size: 13px; line-height: 1.55; background: var(--mono-bg);
+    border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 0 0 16px;
+  }
+  pre code { background: transparent; padding: 0; font-size: inherit; }
+
+  .callout {
+    border-left: 3px solid var(--olive); background: var(--olive-soft); padding: 12px 16px; border-radius: 0 6px 6px 0;
+    margin: 18px 0 20px; max-width: 72ch;
+  }
+  .callout.verify { border-left-color: var(--paprika); background: var(--paprika-soft); }
+  .callout p { margin: 0; }
+  .callout p + p { margin-top: 8px; }
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px; border: 1px solid var(--line); color: var(--ink-2); background: var(--paper-2); vertical-align: middle;
+  }
+  .tag.verify { border-color: var(--paprika); color: var(--paprika); background: var(--paprika-soft); }
+  .tag.ok { border-color: var(--olive); color: var(--olive); background: var(--olive-soft); }
+
+  .tablewrap { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--line); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--paper-2); }
+  tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+
+  figure { margin: 18px 0 24px; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
+  .diagram { border: 1px solid var(--line); border-radius: 6px; background: var(--paper-2); padding: 12px; overflow-x: auto; }
+
+  .inventory { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 0 0 20px; }
+  .inv-group { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .inv-group h4 {
+    margin: 0; padding: 10px 14px; background: var(--paper-2); border-bottom: 1px solid var(--line);
+    font-family: var(--body); font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  }
+  .inv-group h4 .tag { font-weight: 400; }
+  .inv-group ul { list-style: none; padding: 8px 14px; margin: 0; max-width: none; }
+  .inv-group li { padding: 5px 0 5px 22px; position: relative; margin: 0; }
+  .inv-group li::before {
+    content: ""; position: absolute; left: 0; top: 11px; width: 12px; height: 12px;
+    border: 1.5px solid var(--olive); border-radius: 3px;
+  }
+  .inv-group li.done::before { background: var(--olive); }
+
+  .script { list-style: none; padding: 0; margin: 0 0 20px; max-width: none; }
+  .script li { display: grid; grid-template-columns: 64px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); margin: 0; }
+  .script li:last-child { border-bottom: 0; }
+  .script .t { font-family: var(--mono); font-size: 13px; color: var(--olive); font-variant-numeric: tabular-nums; padding-top: 3px; }
+  .script .what { font-weight: 500; }
+  .script .why { color: var(--muted); font-size: 14px; }
+
+  .sources { font-size: 14px; color: var(--ink-2); }
+  .sources a { color: var(--olive); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="page">
+<header class="masthead">
+  <p class="eyebrow">Amazon Developer Hackathon 2026 · track Alexa+ · arquitectura y plan</p>
+  <h1>Mise</h1>
+  <p class="dek">Un add-on MCP para Alexa+ que lleva la despensa por voz, arma el plan de la semana con lo que hay y lo que se vence, guía la cocción paso a paso sin perder el hilo entre sesiones, sustituye con criterio de chef y compra lo que falta. Nombre de trabajo: cambialo cuando quieras.</p>
+  <div class="card-meta">
+    <div><span class="k">Stack</span><span class="v">TypeScript · Node 22</span></div>
+    <div><span class="k">Hosting</span><span class="v">AWS (App Runner + DynamoDB)</span></div>
+    <div><span class="k">Compra</span><span class="v">UCP checkout, tienda demo propia</span></div>
+    <div><span class="k">Prueba</span><span class="v">Web Simulator (sin dispositivo)</span></div>
+    <div><span class="k">Locale</span><span class="v">en-US (contenido en inglés)</span></div>
+  </div>
+</header>
+
+<h2><span class="n">01</span>Qué decide la plataforma por vos</h2>
+<p class="lead">Tres cosas que salen de la documentación oficial y que fijan la forma del sistema antes de escribir una línea.</p>
+<p><strong>Alexa+ es el LLM.</strong> El add-on expone tools por MCP; el razonamiento de Alexa+ decide cuándo llamarlas, extrae las entidades de lo que dijo la persona y narra el resultado. Tu servidor no tiene modelo propio: es datos más lógica determinística. La rúbrica premia "workflows agénticos que orquestan servicios de forma autónoma", y esa orquestación la hace Alexa+ sobre tus tools — vos ponés las piezas correctas y descripciones que mapeen a intenciones distintas.</p>
+<p><strong>Comprar no es comprar en Amazon.</strong> El checkout de un add-on sigue UCP (Universal Commerce Protocol): Alexa+ es agente, no comerciante. Tu backend es el <em>merchant of record</em>, la fuente de precios, impuestos, stock y envío, y expone cinco endpoints REST más un perfil en <code>/.well-known/ucp</code>. No hay forma documentada de que un add-on compre productos de Amazon Fresh o Whole Foods. Para el hackathon, "capacidad de compra" significa implementar una tienda propia — acá, un almacén demo con SKUs reales de las recetas.</p>
+<p><strong>El estado entre sesiones es tuyo, atado a account linking.</strong> Alexa+ mantiene el hilo conversacional del lado de ellos y no documenta un identificador de usuario para tools sin linking. La identidad estable sale del bearer token de OAuth 2.1 (authorization code + PKCE S256, parámetro <code>resource</code>, documento PRM). Sin linking no existe "¿dónde me quedé?". La certificación exige además una experiencia de invitado funcional para lo que no necesite cuenta.</p>
+<div class="callout verify">
+  <p><strong>Latencia, dos cifras en la documentación.</strong> El quickstart dice que la respuesta debe llegar en menos de 500 ms; los requisitos funcionales dicen "resultados dentro de 3 segundos" y mostrar un mensaje intermedio si la tool tarda. Diseñá para la cifra dura: todas las tools son lecturas/escrituras en DynamoDB más cómputo puro, sin llamadas externas en el camino de respuesta.</p>
+</div>
+
+<h2><span class="n">02</span>Arquitectura</h2>
+<figure>
+  <div class="diagram">
+  <svg viewBox="0 0 900 380" role="img" aria-label="Diagrama de arquitectura: Alexa+ habla por MCP Streamable HTTP y UCP con un contenedor en App Runner que contiene el servidor MCP, el store UCP y el OAuth; todo persiste en DynamoDB.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+      </marker>
+    </defs>
+    <style>
+      .bx { fill: var(--paper); stroke: var(--line); stroke-width: 1.2; }
+      .bx.acc { stroke: var(--olive); stroke-width: 1.6; }
+      .lbl { font-family: var(--body); font-size: 14px; fill: var(--ink); font-weight: 600; }
+      .sub { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
+      .edge { stroke: var(--muted); stroke-width: 1.2; fill: none; marker-end: url(#arr); }
+      .elbl { font-family: var(--mono); font-size: 10.5px; fill: var(--ink-2); }
+      .grp { fill: none; stroke: var(--olive); stroke-dasharray: 4 4; stroke-width: 1; }
+      .grpl { font-family: var(--mono); font-size: 10.5px; fill: var(--olive); letter-spacing: 0.06em; }
+    </style>
+
+    <rect x="20" y="130" width="180" height="120" rx="6" class="bx"/>
+    <text x="38" y="160" class="lbl">Alexa+</text>
+    <text x="38" y="182" class="sub">NLU · razonamiento · voz</text>
+    <text x="38" y="200" class="sub">cliente MCP · registry</text>
+    <text x="38" y="218" class="sub">orquestador · UI</text>
+
+    <rect x="290" y="40" width="380" height="300" rx="8" class="grp"/>
+    <text x="306" y="62" class="grpl">AWS APP RUNNER · 1 CONTENEDOR · TLS · MIN 1</text>
+
+    <rect x="310" y="80" width="340" height="70" rx="6" class="bx acc"/>
+    <text x="326" y="106" class="lbl">Servidor MCP</text>
+    <text x="326" y="126" class="sub">POST /mcp · Streamable HTTP · spec 2025-11-25</text>
+    <text x="326" y="142" class="sub">tools + resources ui:// · zod en el borde</text>
+
+    <rect x="310" y="165" width="340" height="70" rx="6" class="bx acc"/>
+    <text x="326" y="191" class="lbl">Almacén demo · UCP</text>
+    <text x="326" y="211" class="sub">/checkout-sessions · create/get/update/complete</text>
+    <text x="326" y="227" class="sub">/.well-known/ucp · Idempotency-Key 24 h</text>
+
+    <rect x="310" y="250" width="340" height="70" rx="6" class="bx"/>
+    <text x="326" y="276" class="lbl">OAuth 2.1 (account linking)</text>
+    <text x="326" y="296" class="sub">/authorize · /token · PKCE S256 · resource</text>
+    <text x="326" y="312" class="sub">/.well-known/oauth-authorization-server</text>
+
+    <rect x="730" y="120" width="150" height="140" rx="6" class="bx"/>
+    <text x="746" y="148" class="lbl">DynamoDB</text>
+    <text x="746" y="170" class="sub">single table</text>
+    <text x="746" y="188" class="sub">USER · PANTRY_EVT</text>
+    <text x="746" y="204" class="sub">RECIPE · SUBST</text>
+    <text x="746" y="220" class="sub">COOK · PLAN</text>
+    <text x="746" y="236" class="sub">SKU · CART · CS</text>
+
+    <path d="M200 160 C 250 160, 250 115, 310 115" class="edge"/>
+    <text x="214" y="126" class="elbl">tools/call</text>
+    <path d="M200 200 C 250 200, 250 200, 310 200" class="edge"/>
+    <text x="222" y="214" class="elbl">UCP REST</text>
+    <path d="M200 232 C 250 232, 250 285, 310 285" class="edge"/>
+    <text x="222" y="270" class="elbl">bearer</text>
+
+    <path d="M650 115 C 690 115, 690 165, 730 165" class="edge"/>
+    <path d="M650 200 C 690 200, 690 200, 730 200" class="edge"/>
+    <path d="M650 285 C 690 285, 690 235, 730 235" class="edge"/>
+  </svg>
+  </div>
+  <figcaption>Un solo contenedor en App Runner sirve las tres superficies bajo la misma URL TLS (App Runner da HTTPS de fábrica; dominio propio opcional). Min 1 instancia elimina el arranque en frío durante la demo. No hay LLM del lado tuyo.</figcaption>
+</figure>
+
+<h3>Por qué App Runner y no Lambda</h3>
+<p>Streamable HTTP funciona en modo stateless (cada POST devuelve JSON) y eso entra en Lambda, pero el cliente MCP de Alexa+ anuncia capacidades de <code>roots</code> y la documentación no aclara si abre streams GET/SSE que Lambda no sostiene bien. Un contenedor siempre tibio evita el arranque en frío y las dudas de transporte por el precio de un servicio pequeño. Si preferís Lambda, el punto a verificar es exactamente ese: correr el Local Inspector contra el endpoint y ver si pide capacidades de stream.</p>
+
+<h3>OAuth: Cognito o servidor propio</h3>
+<p>Alexa+ exige OAuth 2.1 con PKCE, el parámetro <code>resource</code> (RFC 8707) apuntando a la URI canónica del servidor MCP y un documento PRM; no soporta Dynamic Client Registration ni OIDC. Cognito cubre authorization code + PKCE y suma puntos en el mini-challenge de AWS, pero hay que verificar que acepte <code>resource</code> y que el PRM servido desde tu dominio apunte correctamente a su metadata. La alternativa es un servidor OAuth 2.1 mínimo dentro del mismo contenedor (<code>oidc-provider</code> o hecho a mano): más código, control total, y es tu terreno. Elegí después de una prueba de linking de media hora con Cognito.</p>
+
+<h2><span class="n">03</span>Modelo de datos</h2>
+<p>Una tabla en DynamoDB con claves compuestas. Lo importante no es el esquema sino tres decisiones de forma.</p>
+<p><strong>La despensa es un ledger, no un inventario.</strong> Cada cambio es un evento append-only (<code>add</code>, <code>consume</code>, <code>remove</code>, <code>correct</code>) con origen (<code>voice</code>, <code>recipe_deduction</code>, <code>checkout</code>). El estado actual es un fold sobre los eventos, y cada ítem lleva un nivel de confianza: <code>confirmed</code> cuando la persona lo dijo, <code>inferred</code> cuando lo dedujo una receta cocinada, <code>stale</code> después de N días sin confirmación. La tool nunca presenta una cantidad inferida como certeza; Alexa+ la narra con esa reserva porque el <code>structuredContent</code> se la marca.</p>
+<p><strong>La receta es una máquina de estados, no un texto.</strong> Pasos ordenados con duración estimada, dependencias y timers paralelos; ingredientes con <em>rol</em> (grasa, ácido, ligante, umami, proteína, aromático) y no solo nombre. El rol es lo que hace posible sustituir con criterio.</p>
+<p><strong>Las sustituciones son una tabla curada por vos, versionada.</strong> Clave: ingrediente + rol + técnica (¿tiene que emulsionar? ¿dorar? ¿ligar en frío?). Valor: alternativas con proporción y advertencia. Alexa+ no inventa sustituciones; elige entre las que vos escribiste. Ese es el argumento de producto que nadie más en el hackathon puede hacer.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Entidad</th><th>PK / SK</th><th>Campos que importan</th></tr></thead>
+  <tbody>
+    <tr><td>Usuario</td><td><code>USER#id</code> / <code>PROFILE</code></td><td>restricciones (vegano fijo; alergias), personas en casa, tiempo típico por comida, unidades (g/ml)</td></tr>
+    <tr><td>Evento de despensa</td><td><code>USER#id</code> / <code>PANTRY#ts#ulid</code></td><td>tipo, ingrediente_id, cantidad+unidad, origen, vence_el (si lo dijo), confianza</td></tr>
+    <tr><td>Receta</td><td><code>RECIPE#id</code> / <code>V#n</code></td><td>título, rinde, pasos[{orden, texto, dur_s, timer?, depende_de[]}], ingredientes[{id, rol, cantidad, unidad, técnica}]</td></tr>
+    <tr><td>Sustitución</td><td><code>SUBST#ingrediente</code> / <code>ROL#técnica</code></td><td>alternativas[{ingrediente, proporción, advertencia}], versión, autora</td></tr>
+    <tr><td>Sesión de cocina</td><td><code>USER#id</code> / <code>COOK#recipe#started</code></td><td>estado, paso_actual, timers activos, desvíos[{paso, qué_cambió}], transiciones log</td></tr>
+    <tr><td>Plan semanal</td><td><code>USER#id</code> / <code>PLAN#semana</code></td><td>comidas[{día, receta, por_qué: usa_X_que_vence}], faltantes[], hash del plan</td></tr>
+    <tr><td>SKU (almacén)</td><td><code>SKU#id</code> / <code>META</code></td><td>título, precio en centavos, stock, mapea_a_ingrediente</td></tr>
+    <tr><td>Carrito / checkout</td><td><code>USER#id</code> / <code>CART</code> · <code>CS#id</code> / <code>STATE</code></td><td>line_items, totals, status UCP, expires_at (6 h), idempotency keys (24 h)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2><span class="n">04</span>Tools MCP</h2>
+<p>Cada tool mapea a una intención distinta (requisito de certificación: descripciones claras, con sinónimos, sin prometer de más). Entradas validadas con zod en el borde; salida siempre en <code>structuredContent</code>, y donde hay UI, <code>_meta.ui.resourceUri</code>. Las que necesitan cuenta lo declaran y devuelven un error MCP bien formado si no hay linking; las de invitado funcionan solas.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Tool</th><th>Entrada</th><th>Devuelve</th><th>Cuenta</th></tr></thead>
+  <tbody>
+    <tr><td><code>pantry_update</code></td><td>items[{name, qty, unit, expires?}], mode: add|consume|correct</td><td>estado resultante de esos ítems con confianza</td><td>sí</td></tr>
+    <tr><td><code>pantry_list</code></td><td>filter: all|expiring_soon|low</td><td>ítems + confianza + días para vencer · UI: vista de despensa</td><td>sí</td></tr>
+    <tr><td><code>recipe_search</code></td><td>query? , use_ingredients?[], max_minutes?</td><td>candidatas con % de ingredientes que ya tenés</td><td>no</td></tr>
+    <tr><td><code>plan_week</code></td><td>days, meals_per_day, time_budget_min, avoid?[]</td><td>plan + rationale por comida + faltantes consolidados · UI: grilla</td><td>sí</td></tr>
+    <tr><td><code>substitute</code></td><td>ingredient, recipe_id?, step?</td><td>alternativas curadas con proporción y advertencia</td><td>no</td></tr>
+    <tr><td><code>cook_start</code></td><td>recipe_id, servings?</td><td>sesión creada, paso 1, mise en place · UI: tarjeta de paso</td><td>sí</td></tr>
+    <tr><td><code>cook_next</code></td><td>completed_hint?</td><td>paso siguiente; si el hint no coincide con el paso actual, lo registra como desvío y avisa</td><td>sí</td></tr>
+    <tr><td><code>cook_where_am_i</code></td><td>—</td><td>sesión activa o pausada, paso, timers, tiempo transcurrido</td><td>sí</td></tr>
+    <tr><td><code>cook_note</code></td><td>note (ej. "used chickpeas instead of lentils")</td><td>desvío registrado; ajusta la deducción de despensa al cerrar</td><td>sí</td></tr>
+    <tr><td><code>cook_pause</code> / <code>cook_finish</code></td><td>—</td><td>pausa reanudable · al terminar: consume ingredientes (eventos <code>inferred</code>)</td><td>sí</td></tr>
+    <tr><td><code>cart_from_plan</code></td><td>plan_id?, days?[]</td><td>carrito con SKUs del almacén, precio, lo que no se pudo mapear · UI: carrito</td><td>sí</td></tr>
+    <tr><td><code>cart_edit</code></td><td>add[] / remove[] / qty changes</td><td>carrito actualizado</td><td>sí</td></tr>
+  </tbody>
+</table>
+</div>
+<p>El checkout no es una tool: Alexa+ lo dispara por la superficie UCP cuando la persona dice que quiere comprar. Tu tool <code>cart_from_plan</code> deja el carrito listo con los ids de SKU que después viajan en <code>line_items</code>.</p>
+
+<h3>Ejemplo de definición (SDK oficial TS)</h3>
+<pre><code>server.registerTool("cook_next", {
+  title: "Next cooking step",
+  description: "Advance the active cooking session to the next step. Use when the customer says they finished a step, asks what's next, or says 'done', 'ready', 'ok next'.",
+  inputSchema: { completed_hint: z.string().optional() },
+  _meta: { ui: { resourceUri: "ui://mise/step-card" } }
+}, async ({ completed_hint }, extra) =&gt; {
+  const user = requireLinkedUser(extra);            // del bearer token
+  const next = await cook.advance(user, completed_hint); // determinístico, &lt;50 ms
+  return { structuredContent: next, content: [{ type: "text", text: next.spoken }] };
+});</code></pre>
+
+<h2><span class="n">05</span>Los tres motores determinísticos</h2>
+<h3>Sesión de cocina</h3>
+<figure>
+  <div class="diagram">
+  <svg viewBox="0 0 860 200" role="img" aria-label="Máquina de estados de la sesión de cocina: idle, mise en place, en paso, pausada, terminada, con transiciones etiquetadas.">
+    <style>
+      .st { fill: var(--paper); stroke: var(--olive); stroke-width: 1.4; }
+      .st.end { stroke: var(--muted); }
+      .sl { font-family: var(--body); font-size: 13px; fill: var(--ink); font-weight: 600; text-anchor: middle; }
+      .ed { stroke: var(--muted); stroke-width: 1.2; fill: none; marker-end: url(#arr2); }
+      .el { font-family: var(--mono); font-size: 10.5px; fill: var(--ink-2); text-anchor: middle; }
+    </style>
+    <defs>
+      <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+      </marker>
+    </defs>
+    <rect x="20" y="70" width="120" height="44" rx="22" class="st end"/><text x="80" y="97" class="sl">idle</text>
+    <rect x="200" y="70" width="140" height="44" rx="22" class="st"/><text x="270" y="97" class="sl">mise en place</text>
+    <rect x="400" y="70" width="140" height="44" rx="22" class="st"/><text x="470" y="97" class="sl">en paso n</text>
+    <rect x="400" y="140" width="140" height="44" rx="22" class="st"/><text x="470" y="167" class="sl">pausada</text>
+    <rect x="620" y="70" width="140" height="44" rx="22" class="st end"/><text x="690" y="97" class="sl">terminada</text>
+
+    <path d="M140 92 L200 92" class="ed"/><text x="170" y="82" class="el">cook_start</text>
+    <path d="M340 92 L400 92" class="ed"/><text x="370" y="82" class="el">cook_next</text>
+    <path d="M470 70 C 470 30, 520 30, 520 70" class="ed"/><text x="495" y="26" class="el">cook_next (n+1) · cook_note (desvío)</text>
+    <path d="M440 114 L440 140" class="ed"/><text x="405" y="132" class="el">pause</text>
+    <path d="M500 140 L500 114" class="ed"/><text x="600" y="172" class="el">where_am_i / next</text>
+    <path d="M540 92 L620 92" class="ed"/><text x="580" y="82" class="el">último paso</text>
+    <text x="690" y="140" class="el">→ eventos consume (inferred)</text>
+  </svg>
+  </div>
+  <figcaption>Toda transición se registra con su entrada (qué dijo la persona, qué paso esperaba el sistema). "Ya agregué la cebolla" cuando el paso actual era otro no rompe nada: queda como desvío y la deducción de despensa lo respeta al cerrar.</figcaption>
+</figure>
+
+<h3>Planificador semanal</h3>
+<p>Un scoring entero y determinístico, no un modelo. Para cada slot (día, comida) se puntúan las recetas candidatas: usa ingredientes que vencen pronto (peso alto, decrece con días restantes), minimiza faltantes, respeta el tiempo disponible del slot, penaliza repetir la misma proteína en comidas consecutivas y la misma receta en la semana. Asignación greedy por slot ordenado por urgencia de vencimiento; mismo estado de despensa produce el mismo plan. El plan sale con su <em>rationale</em> por comida ("Thursday: tofu stir-fry because the tofu expires Friday") y un hash del plan — marca de la casa, y le da a Alexa+ algo concreto para narrar en vez de justificar por su cuenta.</p>
+
+<h3>Sustituciones</h3>
+<p>Lookup exacto por (ingrediente, rol, técnica), con fallback a (ingrediente, rol) y por último (rol). Cada entrada la escribís vos: proporción, qué cambia en textura o sabor, y cuándo no sirve ("aquafaba no liga en caliente"). Para la demo alcanzan 30–50 entradas que cubran los ingredientes de las 8–12 recetas. El repo las versiona como datos, no como código.</p>
+
+<h2><span class="n">06</span>Compra: el almacén demo y UCP</h2>
+<p>Alexa+ inicia la sesión con los ítems del carrito y el contexto del comprador; tu backend responde siempre HTTP 200 con el estado UCP y usa <code>messages[]</code> para errores comerciales. El método de pago elegido para la demo es <code>com.amazon.payments.stored_payment_method</code>: instrumentos "guardados" en tu almacén (tarjetas ficticias) que devolvés en Create y validás en Complete contra el usuario del token. Evita el onboarding con Amazon Pay que exige el network token.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Endpoint</th><th>Quién llama</th><th>Qué hacés</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET /.well-known/ucp</code></td><td>descubrimiento</td><td>perfil con versión <code>2026-04-08</code>, capability <code>dev.ucp.shopping.checkout</code>, handler <code>stored_payment_method</code></td></tr>
+    <tr><td><code>POST /checkout-sessions</code></td><td>Alexa+ (Create)</td><td>validar SKUs y stock, precios desde tu catálogo (nunca del request), totals en centavos, instrumentos de pago, link a política de reembolso, <code>expires_at</code> +6 h</td></tr>
+    <tr><td><code>GET /checkout-sessions/{id}</code></td><td>Alexa+ (recuperación)</td><td>estado actual, <code>Cache-Control: no-store</code></td></tr>
+    <tr><td><code>PUT /checkout-sessions/{id}</code></td><td>Alexa+ (Update)</td><td>dirección/selecciones → recalcular envío e impuestos, pasar a <code>ready_for_complete</code></td></tr>
+    <tr><td><code>POST /checkout-sessions/{id}/complete</code></td><td>Alexa+ (Complete)</td><td>validar que <code>payment_method_id</code> es del usuario y que vos lo devolviste en Create; descontar stock; emitir eventos <code>add</code> a la despensa con origen <code>checkout</code></td></tr>
+    <tr><td><code>POST /checkout-sessions/{id}/cancel</code></td><td>opcional</td><td>transición de estado</td></tr>
+  </tbody>
+</table>
+</div>
+<ul>
+  <li>Headers en todas las llamadas: <code>Authorization: Bearer</code>, <code>Idempotency-Key</code> en las que cambian estado (misma clave con body distinto → 409), <code>UCP-Agent</code>, <code>Request-Id</code>.</li>
+  <li>TLS 1.3 mínimo — App Runner lo soporta; confirmá la política TLS del dominio.</li>
+  <li>Mensajes con <code>presentation: "disclosure"</code> para alérgenos: como chef, mostrar "contains sesame" en el checkout es un detalle que un jurado nota.</li>
+  <li>El cierre del círculo es el argumento de producto: completar la compra escribe en la despensa, y el próximo <code>plan_week</code> ya la ve.</li>
+</ul>
+<div class="callout verify">
+  <p><strong>A verificar temprano:</strong> si el Web Simulator permite ejercer el flujo de checkout de punta a punta sin certificación. La documentación de testing no lo dice. Si no se puede, el video muestra el checkout con el Local Inspector o con un cliente MCP de referencia contra los endpoints UCP, y se explica.</p>
+</div>
+
+<h2><span class="n">07</span>Cuenta, estado y la experiencia de invitado</h2>
+<p>Con linking: el bearer token identifica al usuario, y todo el estado (despensa, plan, sesión de cocina, carrito) cuelga de ese id. Sin linking: <code>recipe_search</code> y <code>substitute</code> funcionan igual, y el resto responde con un mensaje que invita a vincular la cuenta, sin callejón sin salida. Alexa+ lleva el contexto de la conversación; tu servidor lleva el contexto de la persona. Esa división es lo que hace que "¿dónde me quedé?" funcione un día después, en otro dispositivo, en otra conversación.</p>
+
+<h2><span class="n">08</span>MCP Apps: las cuatro vistas</h2>
+<p>Alexa+ soporta la extensión MCP Apps: un recurso <code>ui://…</code> con HTML empaquetado que el cliente renderiza en un iframe aislado y que se comunica por JSON-RPC sobre <code>postMessage</code> usando <code>@modelcontextprotocol/ext-apps</code>. Sin UI declarada, Alexa+ usa el flujo "solo datos" y arma sus propios visuales desde el <code>structuredContent</code> — así que las vistas son pulido, no bloqueo. Orden de valor para la demo:</p>
+<ol>
+  <li><strong>Tarjeta de paso</strong> (<code>cook_start</code>, <code>cook_next</code>): paso actual grande, timer, ingredientes de este paso, botón "next" que llama <code>cook_next</code> desde la UI.</li>
+  <li><strong>Grilla semanal</strong> (<code>plan_week</code>): días × comidas, cada celda con la razón; faltantes abajo con un botón que llama <code>cart_from_plan</code>.</li>
+  <li><strong>Carrito</strong> (<code>cart_from_plan</code>): ítems, precios, lo que no se pudo mapear a un SKU.</li>
+  <li><strong>Despensa</strong> (<code>pantry_list</code>): ítems con badge de confianza y días para vencer — el lugar donde se ve que el sistema no finge saber lo que no sabe.</li>
+</ol>
+<p>Vos tenés el frontend resuelto; lo único distinto acá es el sandbox: sin red externa desde el iframe, todo inline, y las acciones que disparan tools piden aprobación del usuario por diseño del protocolo.</p>
+
+<h2><span class="n">09</span>Cómo cubre la rúbrica</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Lo que la rúbrica llama "creativo"</th><th>Dónde vive en Mise</th></tr></thead>
+  <tbody>
+    <tr><td>Workflow agéntico que orquesta servicios de forma autónoma</td><td>despensa → planificador → carrito → checkout → despensa, con Alexa+ encadenando tools sin que la persona nombre ninguna</td></tr>
+    <tr><td>Add-on consciente del contexto que mantiene estado entre sesiones</td><td>sesión de cocina reanudable; ledger de despensa con confianza; plan persistido</td></tr>
+    <tr><td>Capacidades de compra</td><td>UCP completo con método de pago guardado y disclosure de alérgenos</td></tr>
+    <tr><td>Soporte de media / MCP Apps</td><td>cuatro vistas MCP Apps; tarjeta de paso con timer</td></tr>
+    <tr><td>Agent Skills</td><td>el add-on se da de alta por el flujo guiado del toolkit</td></tr>
+    <tr><td>Lo que la rúbrica llama "obvio" y hay que evitar</td><td>ninguna tool es un wrapper de una API ajena; ninguna respuesta es un Q&amp;A de un turno</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Además, con licencia Apache-2.0 y repo público el proyecto entra al mini-challenge Open Source, y hosteado en AWS entra al AWS Builder. Las reglas permiten un premio de track más uno de mini-challenge por proyecto.</p>
+
+<h2><span class="n">10</span>Inventario de trabajo</h2>
+<p>Todo lo que hay que hacer, agrupado por área y en el orden que reduce riesgo más rápido. Sin fechas: eso lo organizás vos. Lo primero es cerrar un viaje redondo mínimo con la plataforma; recién después vale la pena construir contenido.</p>
+<div class="inventory">
+  <div class="inv-group">
+    <h4>A · Acceso y esqueleto <span class="tag">primero, de-riesga la plataforma</span></h4>
+    <ul>
+      <li>Instalar Alexa AI CLI, <code>alexa-ai configure</code> (Login with Amazon) con la cuenta developer</li>
+      <li>Repo público Apache-2.0, TypeScript, <code>@modelcontextprotocol/sdk</code>, zod, esbuild; Dockerfile</li>
+      <li>Servidor MCP con una sola tool (<code>recipe_search</code> sobre datos en memoria), Streamable HTTP en <code>/mcp</code></li>
+      <li>Desplegar a App Runner (min 1 instancia) o exponer con cloudflared para la primera prueba</li>
+      <li><code>alexa-ai new mcp --locale en-US --mcp-server-url …</code>, completar <code>addon.json</code> (íconos en 6 tamaños, privacy/terms URLs provisorias), <code>alexa-ai deploy</code></li>
+      <li>Viaje redondo en el Web Simulator: preguntar por una receta y ver la respuesta. Hasta acá, nada más</li>
+      <li>Correr el Local Inspector y guardar el reporte de preparación como línea de base</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>B · Cuenta y estado</h4>
+    <ul>
+      <li>Prueba de media hora: Cognito con PKCE + <code>resource</code> + PRM. Si no cierra, servidor OAuth 2.1 mínimo en el contenedor</li>
+      <li>Account linking en el add-on; extraer el id de usuario del bearer en un middleware único</li>
+      <li>DynamoDB single-table, acceso por repositorio; ledger de despensa con fold y niveles de confianza</li>
+      <li>Camino de invitado: tools sin cuenta funcionan; las otras devuelven error MCP bien formado</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>C · Contenido de chef <span class="tag">tu ventaja, empezá en paralelo con A</span></h4>
+    <ul>
+      <li>Formato de receta como datos (JSON/YAML): pasos con duración, timers, dependencias; ingredientes con rol y técnica</li>
+      <li>8–12 recetas veganas escritas en ese formato, en inglés, elegidas para que compartan ingredientes y ejerciten sustituciones</li>
+      <li>Tabla de sustituciones: 30–50 entradas con proporción y advertencia, versionada</li>
+      <li>Catálogo del almacén: ~40 SKUs que cubran las recetas, precios en centavos, stock, alérgenos</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>D · Tools y motores</h4>
+    <ul>
+      <li><code>pantry_update</code>, <code>pantry_list</code> sobre el ledger</li>
+      <li>Máquina de estados de cocina: <code>cook_start/next/where_am_i/note/pause/finish</code>; log de transiciones; deducción al cerrar</li>
+      <li><code>substitute</code> con lookup por (ingrediente, rol, técnica) y fallbacks</li>
+      <li>Planificador: scoring entero, greedy por urgencia, rationale por slot, hash del plan; <code>plan_week</code></li>
+      <li><code>cart_from_plan</code>, <code>cart_edit</code> con mapeo ingrediente → SKU y lista de no mapeados</li>
+      <li>Descripciones de tools con sinónimos; corta ≤123 caracteres, completa ≤4000; 3–4 ejemplos de invocación ≤200 caracteres cada uno</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>E · Almacén y UCP</h4>
+    <ul>
+      <li><code>/.well-known/ucp</code>; los cinco endpoints de checkout; idempotencia con 409; <code>no-store</code>; TTL 6 h</li>
+      <li>Handler <code>stored_payment_method</code> con instrumentos ficticios ligados al usuario; validación en Complete</li>
+      <li>Impuesto y envío simples pero calculados del lado del servidor; disclosure de alérgenos en <code>messages[]</code></li>
+      <li>Complete escribe eventos en la despensa con origen <code>checkout</code></li>
+      <li>Verificar si el Web Simulator ejercita el checkout; si no, plan B para el video</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>F · Vistas MCP Apps</h4>
+    <ul>
+      <li>Setup de <code>@modelcontextprotocol/ext-apps</code>; recursos <code>ui://mise/*</code> empaquetados inline</li>
+      <li>Tarjeta de paso con timer y botón next → luego grilla semanal → carrito → despensa</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>G · Pruebas</h4>
+    <ul>
+      <li>Unitarias que pueden fallar: fold del ledger, transiciones válidas e inválidas de la sesión, determinismo del plan (mismo input → mismo hash), idempotencia UCP (misma clave, body distinto → 409)</li>
+      <li>Local Inspector en verde antes de cada deploy; sesiones grabadas en el Web Simulator para las frases del guion</li>
+    </ul>
+  </div>
+  <div class="inv-group">
+    <h4>H · Entrega</h4>
+    <ul>
+      <li>Privacy policy y términos reales en URLs públicas; política de reembolso del almacén demo</li>
+      <li>README con setup, arquitectura y qué es determinístico vs qué hace Alexa+</li>
+      <li>Video ≤3 min (guion abajo) grabado en el Web Simulator con vista de pantalla de dispositivo</li>
+      <li>Formulario de Devpost: track Alexa+, mini-challenges AWS Builder y Open Source</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="n">11</span>Guion del video (3 minutos)</h2>
+<p>Una sola historia, sin explicar tecnología hasta el final. Cada tramo muestra una capacidad de la rúbrica sin nombrarla.</p>
+<ul class="script">
+  <li><span class="t">0:00</span><div><div class="what">"I've got two onions, half a kilo of red lentils, and the tofu expires Friday."</div><div class="why">Despensa por voz. La vista muestra el tofu con días para vencer y todo marcado como confirmado.</div></div></li>
+  <li><span class="t">0:30</span><div><div class="what">"Plan my dinners through Thursday, forty minutes max."</div><div class="why">Grilla semanal. El tofu cae el jueves y la celda dice por qué. Faltantes consolidados abajo.</div></div></li>
+  <li><span class="t">1:00</span><div><div class="what">"Let's cook tonight's lentils." … "Done with the onions." … "I'm out of tahini."</div><div class="why">Tarjeta de paso con timer; sustitución con proporción y advertencia de la tabla de chef.</div></div></li>
+  <li><span class="t">1:40</span><div><div class="what">"Pause." — corte — "Where was I?"</div><div class="why">Reanuda en el paso 5 con el timer donde quedó. Estado entre sesiones, sin explicarlo.</div></div></li>
+  <li><span class="t">2:10</span><div><div class="what">"Order what's missing for Thursday."</div><div class="why">Carrito → checkout con tarjeta guardada → disclosure "contains sesame" → recibo. La despensa ya muestra lo comprado.</div></div></li>
+  <li><span class="t">2:45</span><div><div class="what">Cierre en una placa: qué decide el servidor (todo lo que cuenta) y qué hace Alexa+ (entender y narrar).</div><div class="why">Quince segundos de arquitectura, no más.</div></div></li>
+</ul>
+
+<h2><span class="n">12</span>Riesgos y verificaciones pendientes</h2>
+<ul>
+  <li><span class="tag verify">verificar</span> Disponibilidad del Web Simulator desde Argentina con cuenta developer: el toolkit es US-only y la documentación de testing no habla de región. Es lo primero que se prueba en el bloque A.</li>
+  <li><span class="tag verify">verificar</span> Checkout de punta a punta en el simulador sin certificación.</li>
+  <li><span class="tag verify">verificar</span> Cognito con <code>resource</code> (RFC 8707) y PRM; si no, OAuth propio.</li>
+  <li><span class="tag verify">verificar</span> Si el cliente MCP de Alexa+ abre streams GET además de POST (define Lambda vs contenedor).</li>
+  <li><span class="tag verify">verificar</span> Qué contexto llega en la sesión MCP sin linking (locale, timezone) — la documentación no lo enumera.</li>
+  <li><span class="tag">decisión</span> Todo el contenido en inglés: el add-on se crea con locale en-US y el video lo piden en inglés.</li>
+  <li><span class="tag">decisión</span> Sin LLM propio en el servidor. Si en algún momento tentás meter uno (por ejemplo para parsear ingredientes libres), la respuesta es no: Alexa+ ya extrae entidades, y agregar un modelo rompe la latencia y el argumento.</li>
+</ul>
+
+<h2><span class="n">13</span>Fuentes</h2>
+<p class="sources">
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-overview.html">Alexa+ MCP Toolkit Overview</a> ·
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-quickstart.html">MCP QuickStart</a> ·
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-client-lifecycle.html">Client and App Lifecycle</a> ·
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/functional-requirements.html">Functional Requirements</a> ·
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/checkout-integration.html">Checkout Integration Reference (UCP)</a> ·
+<a href="https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-test-add-ons.html">Test Your MCP Add-ons</a> ·
+<a href="https://blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/">MCP Apps (extensión oficial)</a> ·
+<a href="https://amazonappdev2026.devpost.com/rules">Reglas del hackathon</a>
+</p>
+</div>
+</body>
+</html>

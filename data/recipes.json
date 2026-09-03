@@ -1,0 +1,62 @@
+[
+  {
+    "id": "red-lentil-dal",
+    "title": "Red lentil dal",
+    "minutes": 30,
+    "serves": 4,
+    "ingredients": [
+      { "id": "red-lentil", "role": "protein", "qty": 250, "unit": "g" },
+      { "id": "onion", "role": "aromatic", "qty": 1, "unit": "pc" },
+      { "id": "garlic", "role": "aromatic", "qty": 2, "unit": "clove" },
+      { "id": "tomato", "role": "acid", "qty": 200, "unit": "g" },
+      { "id": "coconut-oil", "role": "fat", "qty": 15, "unit": "ml" },
+      { "id": "cumin", "role": "aromatic", "qty": 1, "unit": "tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Rinse the lentils until the water runs clear.", "dur_s": 120 },
+      { "order": 2, "text": "Sweat the onion and garlic in the oil until soft.", "dur_s": 360, "timer": true },
+      { "order": 3, "text": "Add cumin, then tomato; cook two minutes.", "dur_s": 120, "depends_on": [2] },
+      { "order": 4, "text": "Add lentils and 700 ml water; simmer until they fall apart.", "dur_s": 1200, "timer": true, "depends_on": [3] },
+      { "order": 5, "text": "Season and serve.", "dur_s": 60, "depends_on": [4] }
+    ]
+  },
+  {
+    "id": "tofu-stir-fry",
+    "title": "Tofu stir-fry",
+    "minutes": 25,
+    "serves": 2,
+    "ingredients": [
+      { "id": "tofu", "role": "protein", "qty": 300, "unit": "g" },
+      { "id": "broccoli", "role": "vegetable", "qty": 200, "unit": "g" },
+      { "id": "garlic", "role": "aromatic", "qty": 2, "unit": "clove" },
+      { "id": "soy-sauce", "role": "umami", "qty": 30, "unit": "ml" },
+      { "id": "sesame-oil", "role": "fat", "qty": 10, "unit": "ml" },
+      { "id": "tahini", "role": "binder", "qty": 20, "unit": "g" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Press the tofu and cut into cubes.", "dur_s": 300 },
+      { "order": 2, "text": "Sear the tofu in sesame oil until golden on two sides.", "dur_s": 480, "timer": true },
+      { "order": 3, "text": "Add broccoli and garlic; stir-fry three minutes.", "dur_s": 180, "depends_on": [2] },
+      { "order": 4, "text": "Whisk soy sauce with tahini, toss through, serve.", "dur_s": 120, "depends_on": [3] }
+    ]
+  },
+  {
+    "id": "chickpea-tomato-stew",
+    "title": "Chickpea and tomato stew",
+    "minutes": 35,
+    "serves": 4,
+    "ingredients": [
+      { "id": "chickpea", "role": "protein", "qty": 400, "unit": "g" },
+      { "id": "onion", "role": "aromatic", "qty": 1, "unit": "pc" },
+      { "id": "tomato", "role": "acid", "qty": 400, "unit": "g" },
+      { "id": "olive-oil", "role": "fat", "qty": 20, "unit": "ml" },
+      { "id": "paprika", "role": "aromatic", "qty": 1, "unit": "tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Soften the onion in olive oil.", "dur_s": 360, "timer": true },
+      { "order": 2, "text": "Add paprika, then tomato; simmer ten minutes.", "dur_s": 600, "timer": true, "depends_on": [1] },
+      { "order": 3, "text": "Add chickpeas; simmer until thick.", "dur_s": 900, "timer": true, "depends_on": [2] },
+      { "order": 4, "text": "Season and serve.", "dur_s": 60, "depends_on": [3] }
+    ]
+  }
+]
