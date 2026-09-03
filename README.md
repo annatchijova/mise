@@ -32,7 +32,7 @@ If a change to the narrator could ever change a decision, that is a defect in th
 
 Hackathon scaffold — **block A of the plan** (`docs/PLAN.es.md`): repository, TypeScript MCP server with a single `recipe_search` tool over in-memory recipe data, Dockerfile. Not yet validated against Alexa+ end to end; the first milestone is a round trip in the Web Simulator.
 
-Recipes, substitutions and the store catalog live as **data** (`data/`), not code.
+Recipes, substitutions and the store catalog live as **data** (`data/`), not code. Recipes come from the author's own cookbooks, structured under `docs/RECIPE_SCHEMA.md`: every number carries a `stated | estimated | unspecified` flag, the original Spanish text travels verbatim beside the English, and anything estimated is marked `needs_review`. The data never looks more certain than its source.
 
 ## Run locally
 
@@ -46,11 +46,14 @@ curl localhost:8080/healthz
 ## Layout
 
 ```
-src/server.ts      MCP server (Streamable HTTP) and tools
-data/recipes.json  recipes as data: steps with durations, ingredients with role
-docs/PLAN.es.md    the architecture and work plan (author's planning document, Spanish)
-docs/PLAN.es.html  same plan, original formatted version
-Dockerfile         one container for App Runner
+src/server.ts                 MCP server (Streamable HTTP) and tools
+data/recipes/<id>.json        recipes as data, one file each (see the contract below)
+data/inventory.md             catalogue of every recipe found in the author's cookbooks
+docs/RECIPE_SCHEMA.md         the recipe data contract: provenance, closed vocabularies, honesty flags
+scripts/validate_recipes.py   deterministic validator (stdlib); nothing enters data/ without passing it
+scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
+docs/PLAN.es.md / .html       the architecture and work plan (author's planning document, Spanish)
+Dockerfile                    one container for App Runner
 ```
 
 ## License

@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# intermediate per-book extraction (agents); curated output goes to data/
+work/
