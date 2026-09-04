@@ -16,7 +16,7 @@ page from it and pasted the result here.**
 
 ## Status
 
-**One portal verified: Taste of Home.** The importer was run against a real page from a machine with
+**One portal verified: Taste of Home. One ruled out: ChefSteps. Two need a browser: Allrecipes, Cookpad.** The importer was run against a real page from a machine with
 normal outbound access and read all 18 ingredients, 16 of them with a stated quantity. The other four
 rows are still open.
 
@@ -32,6 +32,12 @@ The parser itself was developed against our own exported pages (`test/roundtrip.
 the ingredient strings these sites publish (`test/ingredient_parsing.test.ts`). That is enough to
 trust the parsing rules; it is not enough to claim a given site works. Filling in the table below is
 part of block I.0.
+
+**ChefSteps publishes no JSON-LD.** Its pages are a Next.js app that renders client-side: the served
+HTML is 43 KB with a generic `<title>ChefSteps</title>`, no `application/ld+json`, and no `schema.org`
+marker of any kind. Per the rule above, that is recorded and the hunt stops — we do not scrape the
+HTML instead. A browser save could in principle catch a block injected after hydration, but with no
+schema.org reference anywhere in the source it is unlikely to be worth the attempt.
 
 ## How to verify one portal
 
@@ -65,9 +71,9 @@ Then fill in a row. Judge it on four things, because these are what break in pra
 
 | Portal | Sample URL | JSON-LD? | Instructions shape | Ingredients read / total | Quantities stated | Checked by / when |
 |---|---|---|---|---|---|---|
-| Allrecipes | | | | | | |
-| Cookpad | | | | | | |
-| ChefSteps | | | | | | |
+| Allrecipes | — | not reached | — | — | — | blocked: HTTP 403 to `curl`, needs a browser save |
+| Cookpad | — | not reached | — | — | — | blocked: anti-bot "Client Challenge", needs a browser save |
+| ChefSteps | `/activities/shrimp-scampi` | **no** | — | — | — | Anna, 4 Sep 2026 |
 | Taste of Home | `/recipes/alex-bala-french-onion-pasta/` | yes (2 blocks) | list of `HowToStep` | 18 / 18 | 16 / 18 | Anna, 4 Sep 2026 |
 | Samsung Food | | | | | | |
 
