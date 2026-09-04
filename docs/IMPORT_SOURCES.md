@@ -16,11 +16,22 @@ page from it and pasted the result here.**
 
 ## Status
 
-**No portal has been verified yet.** Outbound HTTPS to these sites is blocked from the environment
-where the importer was written, so the parser was developed and tested against our own exported
-pages (`test/roundtrip.test.ts`) and against the ingredient strings these sites are known to publish
-(`test/ingredient_parsing.test.ts`). That is enough to trust the parsing rules; it is not enough to
-claim a given site works. Filling in the table below is part of block I.0.
+**One portal verified: Taste of Home.** The importer was run against a real page from a machine with
+normal outbound access and read all 18 ingredients, 16 of them with a stated quantity. The other four
+rows are still open.
+
+Two things learned while verifying, which decide *how* the remaining rows get filled:
+
+- **Allrecipes answers `curl` with HTTP 403.** It blocks non-browser clients, so its page has to be
+  saved from a browser (Save as, HTML only) and passed to the importer as a file. Cookpad answers 302
+  (follow it with `curl -L`); ChefSteps and Taste of Home answer 200.
+- **Prefer `--url` over a saved file** wherever the site allows it. Importing a saved file records
+  `source.url` as `file:/tmp/page.html`, which is useless provenance; `--url` records the real URL.
+
+The parser itself was developed against our own exported pages (`test/roundtrip.test.ts`) and against
+the ingredient strings these sites publish (`test/ingredient_parsing.test.ts`). That is enough to
+trust the parsing rules; it is not enough to claim a given site works. Filling in the table below is
+part of block I.0.
 
 ## How to verify one portal
 
@@ -57,7 +68,7 @@ Then fill in a row. Judge it on four things, because these are what break in pra
 | Allrecipes | | | | | | |
 | Cookpad | | | | | | |
 | ChefSteps | | | | | | |
-| Taste of Home | | | | | | |
+| Taste of Home | `/recipes/alex-bala-french-onion-pasta/` | yes (2 blocks) | list of `HowToStep` | 18 / 18 | 16 / 18 | Anna, 4 Sep 2026 |
 | Samsung Food | | | | | | |
 
 ## The other direction: does Samsung Food import *our* pages?
