@@ -236,6 +236,7 @@ What is in the repository, with its tests. Everything else in block I is still p
 | Signed ingest door: HMAC, `Idempotency-Key`, replay 202 / conflict 409, `POST /ingest/:source` | done | `src/integrations/ingest.ts`, `src/server.ts` |
 | Barcode adapter (Open Food Facts) with package math and a timed, cached lookup | done, lookup unexercised (egress blocked here) | `src/integrations/barcode.ts`, `off_client.ts` |
 | Account web: pantry view with badges, freshness light, locations, sources; simulated fridge page | done | `src/pages.ts`, `GET /pantry`, `/sim/fridge` |
+| `pantry_update` MCP tool: what the person said, as confirmed `voice` events on the same ledger | done (block D item, pulled forward to close the demo loop) | `src/pantry/voice.ts`, `src/server.ts` |
 | `pantry_list` MCP tool over the same fold | done (demo account until block B linking) | `src/server.ts` |
 | Export recipes as pages with JSON-LD, English primary with the book's Spanish beside it | done | `src/recipe_jsonld.ts` |
 | Import from JSON-LD into staging, conservative quantity parsing | done | `scripts/import_jsonld.py` |

@@ -14,10 +14,11 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { z } from "zod";
 
 import { type Recipe, loadRecipes, searchRecipes } from "./recipes.ts";
-import { displayName } from "./pantry/events.ts";
+import { type Unit, displayName } from "./pantry/events.ts";
 import { renderIndexPage, renderRecipePage, toJsonLd } from "./recipe_jsonld.ts";
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
+import { UNITS, voiceEvents } from "./pantry/voice.ts";
 import { MemoryPantryStore } from "./pantry/store.ts";
 import { buildResolver, loadAliases } from "./integrations/aliases.ts";
 import { type BarcodePayload, barcodeSource } from "./integrations/barcode.ts";
@@ -115,6 +116,44 @@ function buildServer(): McpServer {
           : `${result.total} option${result.total === 1 ? "" : "s"}: ` +
             result.candidates.map((c) => `${c.title} (${c.minutes} min, ${c.have_pct}% on hand)`).join("; ") + ".";
       return { structuredContent: result, content: [{ type: "text", text: spoken }] };
+    },
+  );
+
+  server.registerTool(
+    "pantry_update",
+    {
+      title: "Update the pantry",
+      description:
+        "Record what the customer has, used, or corrected. Use when they say they bought, have, got, or put away food ('I've got two onions', 'the tofu expires Friday'), used some up ('I used the last of the lentils'), or correct an amount ('actually there are three'). Pass the items as extracted, with a YYYY-MM-DD date when they gave one. Returns what was recorded and anything that could not be placed. Needs a linked account.",
+      inputSchema: {
+        mode: z.enum(["add", "consume", "correct", "remove"]).describe("add: new food; consume: some was used; correct: the true amount now; remove: it is gone"),
+        items: z.array(z.object({
+          name: z.string().describe("The food, as the customer said it"),
+          qty: z.number().positive().optional().describe("Amount, if they said one"),
+          unit: z.enum(UNITS as [Unit, ...Unit[]]).optional().describe("Unit of the amount; pc for a count"),
+          expires: z.string().optional().describe("YYYY-MM-DD, if they gave a date"),
+          location: z.string().optional().describe("fridge, freezer, pantry, or a named place"),
+        })).min(1),
+      },
+      outputSchema: {
+        recorded: z.array(z.object({ ingredient_id: z.string(), qty: z.number().nullable(), unit: z.string(), location: z.string(), expires_on: z.string().nullable() })),
+        rejected: z.array(z.object({ name: z.string(), reason: z.string() })),
+        as_of: z.string(),
+      },
+    },
+    async (args) => {
+      if (!DEMO_USER) {
+        return { isError: true, content: [{ type: "text", text: "This needs a linked account. Link Mise in the Alexa app and ask again." }] };
+      }
+      const now = new Date().toISOString();
+      const { events, rejected } = voiceEvents(args.items, args.mode, { now, resolve });
+      await store.append(DEMO_USER, events);
+      const recorded = events.map((e) => ({ ingredient_id: e.ingredient_id, qty: e.qty_milli === null ? null : e.qty_milli / 1000, unit: e.unit, location: e.location, expires_on: e.expires_on }));
+      const verb = { add: "Got it", consume: "Noted", correct: "Corrected", remove: "Removed" }[args.mode];
+      const said = recorded.map((r) => `${r.qty === null ? "" : `${r.qty} ${r.unit === "pc" ? "" : `${r.unit} `}`}${displayName(r.ingredient_id)}${r.expires_on ? ` (expires ${r.expires_on})` : ""}`).join(", ");
+      const back = rejected.map((r) => `${r.name}: ${r.reason}`).join("; ");
+      const spoken = `${recorded.length ? `${verb}: ${said}.` : "Nothing recorded."}${back ? ` Could not place ${back}.` : ""}`;
+      return { structuredContent: { recorded, rejected, as_of: now }, content: [{ type: "text", text: spoken }] };
     },
   );
 

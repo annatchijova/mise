@@ -169,6 +169,7 @@ Lo que ya está en el repo, con sus pruebas. Todo lo demás del bloque I sigue p
 | Puerta de ingesta firmada: HMAC, `Idempotency-Key`, replay 202 / conflicto 409, `POST /ingest/:source` | hecho | `src/integrations/ingest.ts`, `src/server.ts` |
 | Adaptador de código de barras (Open Food Facts) con cuenta de paquetes y lookup con timeout y cache | hecho; el lookup no se pudo ejercitar (egress bloqueado acá) | `src/integrations/barcode.ts`, `off_client.ts` |
 | Web de la cuenta: vista de despensa con badges, semáforo, ubicaciones, fuentes; página de heladera simulada | hecho | `src/pages.ts`, `GET /pantry`, `/sim/fridge` |
+| Tool MCP `pantry_update`: lo que dijo la persona, como eventos `voice` confirmados en el mismo ledger | hecho (ítem del bloque D, adelantado para cerrar el circuito de la demo) | `src/pantry/voice.ts`, `src/server.ts` |
 | Tool MCP `pantry_list` sobre el mismo fold | hecho (cuenta demo hasta el linking del bloque B) | `src/server.ts` |
 | Exportar recetas como páginas con JSON-LD, inglés principal con el castellano del libro al lado (`GET /recipes`, `/recipes/:id`, `/recipes/:id.json`) | hecho | `src/recipe_jsonld.ts`, `src/server.ts` |
 | Importar desde JSON-LD a staging, con parseo conservador de cantidades | hecho | `scripts/import_jsonld.py` |
