@@ -30,30 +30,64 @@ If a change to the narrator could ever change a decision, that is a defect in th
 
 ## Status
 
-Hackathon scaffold — **block A of the plan** (`docs/PLAN.md`): repository, TypeScript MCP server with a single `recipe_search` tool, Dockerfile. Not yet validated against Alexa+ end to end; the first milestone is a round trip in the Web Simulator.
+Hackathon build. The parts that need no Amazon developer account, no cloud bill and no outbound
+access to a third party are **built, tested and exercised end to end**; the parts that do are listed
+one by one in `docs/BLOCKED.md`, with what blocks them, what to run when they are unblocked, and what
+evidence to record. Nothing here is described as working until somebody has watched it work — the
+add-on has never met Alexa+, and the first milestone is still a round trip in the Web Simulator.
 
-Started on **block I, integrations** (`docs/INTEGRATIONS_PLAN.md`), the parts that need no external credentials. The pantry ledger has its event contract, deterministic fold and store; connected sources come in through a signed, idempotent `POST /ingest/:source` door; a simulated fridge and a barcode adapter (Open Food Facts) feed it; `pantry_update` and `pantry_list` work it over MCP — the video's opening line lands as confirmed events and is read back with every reservation the data carries; and a small account web (`/pantry`, `/sim/fridge`) shows the pantry with confidence badges, a freshness light and locations, and drives the demo fridge. Recipes exchange with the portal ecosystem in both directions: every Mise recipe is served as a page whose `schema.org/Recipe` JSON-LD any recipe app can import (English primary, the book's Spanish beside it), and `scripts/import_jsonld.py` reads such a page back into a reviewable staging file. `npm run check` runs the typecheck, the tests and the data validators.
+What runs today, all of it deterministic and all of it covered by tests that can fail:
 
-No smart-fridge, Instacart or portal integration is claimed as verified: outbound access to those services is not available here, so the fridge adapter is honestly named `simulated` and `docs/IMPORT_SOURCES.md` keeps an evidence table that is empty until someone runs it against the real thing.
+| | |
+|---|---|
+| **The pantry** | An append-only ledger with a deterministic fold and three confidence levels. `pantry_update` and `pantry_list` over MCP; a signed, idempotent `POST /ingest/:source` door with a simulated fridge and a barcode adapter behind it; an account web at `/pantry` and `/sim/fridge`. |
+| **Substitutions** | 90 curated rows keyed on (ingredient, role, technique), each with an integer ratio, what changes and what breaks. `substitute` walks a fallback chain and says which level it answered from; an ingredient the table does not cover gets silence, out loud. |
+| **Cooking** | A pure state machine: ordered steps, parallel timers, dependencies, and a transition log. Six `cook_*` tools. "Pause" — a day later, on another device — "where was I?" answers step 5 with the timer where it stopped. Finishing deducts what was used, as `inferred`, honouring any swap you recorded. |
+| **The week** | `plan_week`: a deadline pass that schedules food on the last day it is still good, then a coverage pass, with a per-meal reason, a consolidated shopping list that counts shortfalls, and a plan hash. |
+| **Buying** | A demo grocery of 107 SKUs, `cart_from_plan` and `cart_edit`, and a UCP-shaped checkout — five endpoints, idempotency with 409, allergen disclosure, server-side tax and shipping. Completing writes back to the pantry, so the next plan already sees it. |
+| **Views** | Four MCP Apps `ui://` resources — step card, weekly grid, cart, pantry — each one self-contained HTML with no network of its own. |
+| **Recipes** | 49 recipes structured from the author's own cookbooks, served as `schema.org/Recipe` JSON-LD any app can import, and importable back the same way. |
 
-Recipes, substitutions and the store catalog live as **data** (`data/`), not code. Recipes come from the author's own cookbooks, structured under `docs/RECIPE_SCHEMA.md`: every number carries a `stated | estimated | unspecified` flag, the original Spanish text travels verbatim beside the English, and anything estimated is marked `needs_review`. The data never looks more certain than its source.
+`npm run check` runs the typecheck, 161 tests and four data validators.
+
+No smart-fridge, Instacart or portal integration is claimed as verified: outbound access to those
+services is not available here, so the fridge adapter is honestly named `simulated` and
+`docs/IMPORT_SOURCES.md` keeps an evidence table that is empty until someone runs it against the real
+thing. The checkout follows this project's reading of UCP and has never met a real client; its own
+profile document says so in a `disclaimer` field.
+
+Recipes, substitutions and the store catalog live as **data** (`data/`), not code. Recipes come from
+the author's own cookbooks, structured under `docs/RECIPE_SCHEMA.md`: every number carries a
+`stated | estimated | unspecified` flag, the original Spanish text travels verbatim beside the
+English, and anything estimated is marked `needs_review`. The data never looks more certain than its
+source.
+
+`docs/IDEAS.md` is the list of what could come next, and what has been deliberately ruled out.
 
 ## Run locally
 
 ```bash
 npm install
 npm run build
-INGEST_SECRET=dev-secret npm start   # http://localhost:8080 — MCP at /mcp
+INGEST_SECRET=dev-secret UCP_TOKEN=dev-token npm start   # http://localhost:8080 — MCP at /mcp
 curl localhost:8080/healthz
 open http://localhost:8080/pantry                     # the pantry, as the fold sees it
 open http://localhost:8080/sim/fridge                 # drive the demo fridge by hand
 open http://localhost:8080/recipes                    # importable recipe pages
 curl localhost:8080/recipes/vegan-gnocchi.json        # the JSON-LD on its own
+curl localhost:8080/.well-known/ucp                   # the demo store's checkout profile
 
 npm run check      # typecheck + tests + data validators
 ```
 
-Environment: `PORT`, `BASE_URL` (the public origin; used for recipe `@id`s and for the same-origin check on `/sim/fridge`, so set it on a deployment), `DEMO_USER` (the account that owns the pantry until linking exists; default `demo`; set it empty to close every account-bound surface), `INGEST_SECRET` (HMAC secret for the two demo sources at `POST /ingest/sim-fridge` and `/ingest/scanner`; unset closes that door), `PANTRY_FILE` (optional JSON mirror of the in-memory ledger; an unreadable one refuses to start rather than starting empty).
+Environment: `PORT`, `BASE_URL` (the public origin; used for recipe `@id`s and for the same-origin
+check on `/sim/fridge`, so set it on a deployment), `DEMO_USER` (the account that owns everything
+until linking exists; default `demo`; set it empty to close every account-bound surface),
+`INGEST_SECRET` (HMAC secret for the two demo sources at `POST /ingest/sim-fridge` and
+`/ingest/scanner`; unset closes that door), `UCP_TOKEN` (the bearer the demo store's checkout
+accepts; unset and `/store` answers 503 — it is a shared secret, not authentication, until block B),
+and the optional JSON mirrors that let a local demo survive a restart: `PANTRY_FILE`, `COOK_FILE`,
+`PLAN_FILE`, `CART_FILE`. An unreadable mirror refuses to start rather than starting empty.
 
 There are no accounts yet, so `/pantry` and `/sim/fridge` are open to whoever can reach them. The demo fridge page only accepts JSON posts from its own origin carrying the token it was served with, so a foreign website cannot write into the pantry; that is the extent of it until block B. `docs/ROBUSTNESS_REVIEW.md` records what was reviewed, what was found and what is still unverified.
 
@@ -68,20 +102,34 @@ curl -X POST localhost:8080/ingest/scanner -H "X-Mise-Signature: $SIG" -H 'Idemp
 ## Layout
 
 ```
-src/server.ts                 MCP server (Streamable HTTP), tools, and the recipe pages
+src/server.ts                 MCP server (Streamable HTTP), the HTTP routes, and what is wired to what
 src/recipes.ts                recipe loading and deterministic search
 src/recipe_jsonld.ts          schema.org/Recipe export: how a recipe leaves the building
+src/substitutions.ts          the curated table's loader and its (ingredient, role, technique) lookup
 src/pantry/                   the pantry ledger: event contract, deterministic fold, store
+src/cook/                     the cooking state machine and where sessions live
+src/plan/                     the weekly planner: deadlines, coverage, the plan hash
+src/store/                    the demo grocery: catalog arithmetic, the cart, the UCP checkout
+src/tools/                    the MCP tool registrations for cooking, the plan and the cart
+src/ui/                       the four MCP Apps views and the app-side runtime bundled into them
 src/integrations/             adapter contract, signed ingest, name resolution, simulated fridge, barcode
-src/pages.ts                  the account web: pantry view and simulated fridge
+src/pages.ts                  the account web: pantry, simulated fridge, refund policy, receipts
 data/recipes/<id>.json        recipes as data, one file each (see the contract below)
+data/substitutions.json       the substitution table: 90 curated rows, versioned
+data/catalog.json             the demo grocery: 107 SKUs, prices in integer cents, allergens
 data/inventory.md             catalogue of every recipe found in the author's cookbooks
 docs/RECIPE_SCHEMA.md         the recipe data contract: provenance, closed vocabularies, honesty flags
+docs/SUBSTITUTION_SCHEMA.md   the substitution table's contract, and why the key is a triple
+docs/STORE_SCHEMA.md          the catalog's contract and the checkout surface, verified and not
 scripts/validate_recipes.py   deterministic validator (stdlib); nothing enters data/ without passing it
+scripts/validate_substitutions.py  the same for the substitution table, with a coverage report
+scripts/validate_catalog.py   the same for the catalog: integer money, real ingredients, known allergens
 scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
 docs/PLAN.md                  the architecture and work plan (English; Spanish original in PLAN.es.md / .html)
 docs/INTEGRATIONS_PLAN.md     IoT, barcode, Instacart and recipe-portal integration plan (block I; Spanish in PLAN_INTEGRACIONES.es.md)
 docs/IMPORT_SOURCES.md        what each recipe portal actually gives us, and how to verify one
+docs/BLOCKED.md               what cannot be done from here, what to run when it can, what to record
+docs/IDEAS.md                 what could come next, and what has been deliberately ruled out
 docs/ROBUSTNESS_REVIEW.md     the block I review: findings, fixes, negative controls, blind spots
 scripts/import_jsonld.py      import a portal recipe from its JSON-LD into data/imports/ (staging)
 data/imports/                 imported recipes awaiting a human's roles, techniques and ids
