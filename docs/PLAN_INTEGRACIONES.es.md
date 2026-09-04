@@ -102,7 +102,7 @@ interface PantrySource {
 ### 4.6 Recetas: importar y exportar por JSON-LD
 
 - **Exportar**: `GET /recipes/:id` devuelve HTML con `<script type="application/ld+json">` `schema.org/Recipe` generado desde `data/recipes/<id>.json` (`recipeIngredient`, `recipeInstructions` como `HowToStep`, `totalTime`, `recipeYield`, `suitableForDiet: VeganDiet`). Es lo que hace a Mise legible por Samsung Food, Paprika, Family Hub, Google y cualquier portal. Cero riesgo, una tarde.
-- **Importar**: `scripts/import_jsonld.py <url>` (stdlib, como los otros scripts) → extrae el bloque `Recipe`, lo guarda tal cual en `source.jsonld`, traduce a nuestro contrato con `qty_source` según lo que el JSON-LD trae (`"2 cups flour"` → parseo conservador; lo que no parsea queda `qty: null, unit: to_taste, note: <texto original>`), `role` y `technique` en `null` y `needs_review: true` con razón `"role/technique unassigned (imported)"`. Pasa por `validate_recipes.py` como todo lo demás. Roles y técnicas los asigna una persona: es criterio de chef, no se infiere.
+- **Importar**: `scripts/import_jsonld.py <url>` (stdlib, como los otros scripts) → extrae el bloque `Recipe`, lo guarda tal cual en `source.jsonld`, traduce a nuestro contrato con `qty_source` según lo que el JSON-LD trae (`"2 cups flour"` → parseo conservador; lo que no parsea queda `qty: null, unit: to_taste, note: <texto original>`), `role`, `technique`, `ingredients[].id` y `diet.vegan` en `null`, y `needs_review: true` con sus razones. No pasa por el contrato completo — no podría: los roles son obligatorios ahí. Pasa por `validate_recipes.py --staging`, que verifica el contrato débil de `data/imports/`: que lo que no se puede saber esté explícitamente en `null` en vez de rellenado, que el JSON-LD verbatim esté y coincida con su hash, y que el archivo admita que necesita revisión. La promoción a `data/recipes/` la hace una persona llenando esos nulls; ahí sí aplica el contrato completo. Roles y técnicas son criterio de chef, no se infieren.
 - Probar con una URL de cada portal (Allrecipes, Cookpad, ChefSteps, Taste of Home) y registrar en `docs/IMPORT_SOURCES.md` cuál trae JSON-LD completo y cuál no. Eso es el "soporte de portales" que se puede afirmar con evidencia.
 - **Vía voz, no**: `recipe_import` como tool MCP requeriría una llamada externa dentro de la respuesta. El import es una acción de la web de la cuenta.
 
@@ -152,6 +152,35 @@ En el orden que reduce riesgo más rápido. Sin fechas. Todo se puede repartir a
 
 **Fuera de alcance, escrito para que no vuelva a la mesa**: GE SmartHQ (sin acceso confirmado a inventario), OCR de tickets y fotos (rompe "sin LLM propio"), API de Samsung Food (partners), scraping de portales sin JSON-LD, notificaciones push de vencimiento (Alexa+ no documenta proactividad para add-ons; queda como pregunta al planificador: "what's expiring?").
 
+## 5.bis · Estado de implementación
+
+Lo que ya está en el repo, con sus pruebas. Todo lo demás del bloque I sigue pendiente.
+
+| Ítem | Estado | Dónde |
+|---|---|---|
+| Contrato de eventos de despensa (origen, confianza, ubicación, `external_id`, milli-unidades enteras) | hecho | `src/pantry/events.ts` |
+| Fold determinístico: idempotencia, degradación honesta, `stale` derivado del reloj | hecho | `src/pantry/fold.ts` |
+| Contrato `PantrySource` + `runSource` que recorta la confianza al techo declarado | hecho | `src/integrations/types.ts` |
+| Adaptador de heladera simulada con envelope tipo SmartThings | hecho | `src/integrations/simulated_fridge.ts` |
+| Resolución de nombres externos a ids canónicos, con `unmapped` como salida de primera clase | hecho | `src/integrations/aliases.ts`, `data/source_aliases.json` |
+| Exportar recetas como páginas con JSON-LD (`GET /recipes`, `/recipes/:id`, `/recipes/:id.json`) | hecho | `src/recipe_jsonld.ts`, `src/server.ts` |
+| Importar desde JSON-LD a staging, con parseo conservador de cantidades | hecho | `scripts/import_jsonld.py` |
+| Contrato de staging y su validador | hecho | `scripts/validate_recipes.py --staging`, `docs/RECIPE_SCHEMA.md` |
+| Pruebas: 60, incluida la ida y vuelta exportar → importar | hecho | `test/` (`npm test`) |
+| I.0 de-riesgo: llaves de Instacart y token de SmartThings, evidencia por portal | **pendiente, necesita manos humanas** | `docs/IMPORT_SOURCES.md` |
+| Ingesta HTTP (`POST /ingest/:kind`), HMAC, sincronización | pendiente | — |
+| Adaptador de código de barras (Open Food Facts) | pendiente | — |
+| Adaptador SmartThings real | pendiente, bloqueado por I.0 | — |
+| Instacart en `cart_from_plan` | pendiente, bloqueado por I.0 | — |
+| Vista de despensa (semáforo, ubicaciones, línea de fuentes) | pendiente | — |
+
+Dos cosas que la implementación cambió respecto de lo planeado, ambas hacia más honestidad:
+
+- **Las cantidades de la despensa son enteros en milésimas de unidad**, no decimales. Una despensa se
+  suma una y otra vez, y `0.1 + 0.2` no puede derivar. La conversión ocurre una sola vez, en el borde.
+- **Las unidades nunca se convierten entre sí.** 2 tazas de harina y 500 g de harina son dos líneas
+  honestas, no una suma inventada. Cada línea es (ingrediente, unidad, ubicación).
+
 ## 6 · Cómo suma a la rúbrica
 
 | Rúbrica | Dónde vive |
@@ -165,7 +194,8 @@ En el orden que reduce riesgo más rápido. Sin fechas. Todo se puede repartir a
 
 - **verificar** Capability pública de SmartThings para la lista de alimentos del Family Hub. Sin token real, el adaptador queda contra documentación y la demo usa el simulador. [bloqueado desde este entorno]
 - **verificar** Campos exactos y límites de la shopping list page de Instacart, y si el entorno de desarrollo devuelve URLs abribles. [documentación bloqueada desde este entorno; verificar con la llave]
-- **verificar** Que Samsung Food importe desde nuestra página con JSON-LD (prueba manual de cinco minutos con la app).
+- **verificar** Que Samsung Food importe desde nuestra página con JSON-LD (prueba manual de cinco minutos con la app). El exportador ya sirve las páginas; falta un host público y la prueba.
+- **verificar** Qué portales traen JSON-LD completo. Los cuatro que probamos están bloqueados por el proxy de egress de este entorno, así que el parser se desarrolló contra nuestras propias páginas exportadas y contra las formas de texto que estos sitios publican. La tabla de evidencia de `docs/IMPORT_SOURCES.md` está vacía a propósito.
 - **verificar** Latencia de la llamada a Instacart; si supera el presupuesto, moverla a la generación del plan.
 - **decisión** Sin OCR ni visión propios. Lo que requiera reconocer una foto entra por webhook desde una app que ya lo haga, o no entra.
 - **decisión** Cada integración se muestra en el video como lo que es: real con token real, o simulada con el shape real. Nunca la segunda presentada como la primera.

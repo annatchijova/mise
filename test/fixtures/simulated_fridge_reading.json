@@ -1,0 +1,23 @@
+{
+  "_comment": "A simulated fridge reading. The envelope mirrors the shape of a SmartThings device status; the capability id and item fields are NOT verified against a real Family Hub (see src/integrations/simulated_fridge.ts). Replace this fixture with a captured real status in block I.0 and the tests become a contract test.",
+  "deviceId": "mise-sim-fridge-1",
+  "components": {
+    "main": {
+      "samsungce.fridgeFoodList": {
+        "foodList": {
+          "timestamp": "2026-09-04T07:00:00.000Z",
+          "value": [
+            { "name": "Tofu", "quantity": 1, "unit": "pc", "expireDate": "2026-09-05" },
+            { "name": "Cherry Tomatoes", "quantity": 250, "unit": "g", "expireDate": "2026-09-08" },
+            { "name": "Spring Onions", "quantity": 1, "unit": "bunch" },
+            { "name": "Baby Spinach", "expireDate": "2026-09-06" },
+            { "name": "Carrots", "quantity": 4, "unit": "pc" },
+            { "name": "Kimchi", "quantity": 1, "unit": "can" },
+            { "name": "Leftover pasta", "quantity": 1, "unit": "pc" },
+            { "name": "Rice", "quantity": 1, "unit": "bowl" }
+          ]
+        }
+      }
+    }
+  }
+}

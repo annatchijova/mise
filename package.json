@@ -4,12 +4,17 @@
   "description": "MCP add-on for Alexa+: pantry by voice, weekly plan from what you have, resumable cooking sessions, curated substitutions, UCP checkout. Deterministic server, no LLM of its own.",
   "type": "module",
   "license": "Apache-2.0",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "esbuild src/server.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/server.js --packages=external",
     "typecheck": "tsc --noEmit",
     "start": "node dist/server.js",
-    "dev": "npm run build && npm start"
+    "dev": "npm run build && npm start",
+    "test": "node --experimental-strip-types --test 'test/*.test.ts'",
+    "validate": "python3 scripts/validate_recipes.py data/recipes && python3 scripts/validate_recipes.py --staging data/imports",
+    "check": "npm run typecheck && npm test && npm run validate"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.20.0",
