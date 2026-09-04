@@ -69,6 +69,7 @@ curl -X POST localhost:8080/ingest/scanner -H "X-Mise-Signature: $SIG" -H 'Idemp
 
 ```
 src/server.ts                 MCP server (Streamable HTTP), tools, and the recipe pages
+skills/<name>/SKILL.md        Agent Skills: how to use the tools well (open format; see skills/README.md)
 src/recipes.ts                recipe loading and deterministic search
 src/recipe_jsonld.ts          schema.org/Recipe export: how a recipe leaves the building
 src/pantry/                   the pantry ledger: event contract, deterministic fold, store
