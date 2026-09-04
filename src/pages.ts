@@ -164,3 +164,57 @@ SmartThings device status; its capability id is unverified against a real Family
 </script>`;
   return shell("Simulated fridge", body, "Drive the demo's fridge by hand. Then look at the pantry.");
 }
+
+// --- the demo store ---------------------------------------------------------------------------
+
+/** The refund policy the UCP profile links to. A demo store still has to have one: the checkout
+ *  reference asks for the link, and a link that 404s is worse than no link. */
+export function renderRefundPolicyPage(storeName: string): string {
+  const body = `<div class="card">
+<p><strong>${esc(storeName)} is a demonstration store.</strong> It exists so that an add-on can be shown
+buying groceries end to end. Nothing is dispatched, no card is charged, and the payment instruments
+it offers are fictional.</p>
+<p>If it were a real shop, this page would carry the refund terms the checkout reference requires:
+the window, what a refund covers, how to start one, and how long it takes. It does not, because
+promising terms nobody will honour is worse than saying so.</p>
+</div>
+<h2>What is real about it</h2>
+<div class="card">
+<p>The prices, the stock counts and the allergen declarations are real data in
+<code>data/catalog.json</code>, and they are the only source the checkout uses — a request cannot
+tell this store what something costs. Completing a checkout writes what you bought into the pantry
+ledger, which is the point of the whole exercise.</p>
+</div>`;
+  return shell("Refund policy", body, "Demonstration store — nothing here ships.");
+}
+
+/** A receipt, reachable by its order id. The id is the capability: unguessable, and enough on its
+ *  own, the way a receipt link normally works. */
+export function renderReceiptPage(order: {
+  order_id: string;
+  placed_at: string;
+  currency: string;
+  lines: { title: string; quantity: number; total_cents: number }[];
+  totals: { subtotal_cents: number; tax_cents: number; shipping_cents: number; total_cents: number };
+  disclosures: string[];
+}): string {
+  const cents = (c: number) => `${order.currency === "USD" ? "$" : `${order.currency} `}${Math.floor(c / 100)}.${String(c % 100).padStart(2, "0")}`;
+  const rows = order.lines
+    .map((l) => `<tr><td>${esc(l.title)}</td><td class="num">${l.quantity}</td><td class="num">${esc(cents(l.total_cents))}</td></tr>`)
+    .join("");
+  const body = `<div class="card">
+<table>
+<thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Total</th></tr></thead>
+<tbody>${rows}</tbody>
+<tfoot>
+<tr><td>Subtotal</td><td></td><td class="num">${esc(cents(order.totals.subtotal_cents))}</td></tr>
+<tr><td>Tax</td><td></td><td class="num">${esc(cents(order.totals.tax_cents))}</td></tr>
+<tr><td>Delivery</td><td></td><td class="num">${esc(cents(order.totals.shipping_cents))}</td></tr>
+<tr><td><strong>Paid</strong></td><td></td><td class="num"><strong>${esc(cents(order.totals.total_cents))}</strong></td></tr>
+</tfoot>
+</table>
+</div>
+${order.disclosures.length ? `<h2>Disclosures</h2><div class="card">${order.disclosures.map((d) => `<p>${esc(d)}</p>`).join("")}</div>` : ""}
+<p class="legend">Order ${esc(order.order_id)} · ${esc(order.placed_at)} · demonstration store, nothing was dispatched and no card was charged.</p>`;
+  return shell("Receipt", body, "");
+}

@@ -7,6 +7,8 @@
 //   GET  /recipes[/:id]       importable recipe pages (schema.org JSON-LD)
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
+//   GET  /.well-known/ucp     the demo store's UCP profile
+//   /store/*                  the five checkout endpoints, the refund policy, receipts
 //   GET  /healthz             liveness
 import { randomBytes } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
@@ -35,6 +37,11 @@ import { MemoryCookStore } from "./cook/store.ts";
 import { registerCookTools } from "./tools/cook.ts";
 import { MemoryPlanStore } from "./plan/store.ts";
 import { registerPlanTools } from "./tools/plan.ts";
+import { indexCatalog, loadCatalog } from "./store/catalog.ts";
+import { MemoryCartStore } from "./store/cart.ts";
+import { MemoryCheckoutStore, handleUcp } from "./store/ucp.ts";
+import { registerCartTools } from "./tools/cart.ts";
+import { renderReceiptPage, renderRefundPolicyPage } from "./pages.ts";
 
 // --- configuration --------------------------------------------------------------------------
 
@@ -53,6 +60,12 @@ const PANTRY_FILE = process.env.PANTRY_FILE;
 const COOK_FILE = process.env.COOK_FILE;
 /** And for the week's plan, which the cart shops from. */
 const PLAN_FILE = process.env.PLAN_FILE;
+/** And for the basket. */
+const CART_FILE = process.env.CART_FILE;
+/** The bearer token the demo store's UCP surface accepts. Unset: checkout is closed, the same way
+ *  ingest is closed without INGEST_SECRET. Block B replaces this with the OAuth 2.1 access token,
+ *  and until then this is a shared secret, not authentication — see docs/BLOCKED.md. */
+const UCP_TOKEN = process.env.UCP_TOKEN;
 
 /** Ties a POST to /sim/fridge to a page this process served. It is not authentication — there are
  *  no accounts yet — but it stops a foreign website, or a bare request, from writing to the demo
@@ -73,6 +86,21 @@ const resolve = buildResolver(loadAliases(), new Set([
 const store = new MemoryPantryStore(PANTRY_FILE);
 const sessions = new MemoryCookStore(COOK_FILE);
 const plans = new MemoryPlanStore(PLAN_FILE);
+const carts = new MemoryCartStore(CART_FILE);
+const catalog = loadCatalog();
+const skuIndex = indexCatalog(catalog);
+const checkouts = new MemoryCheckoutStore();
+
+const ucpDeps = {
+  catalog,
+  index: skuIndex,
+  sessions: checkouts,
+  pantry: store,
+  userFor: (bearer: string | null) => (UCP_TOKEN && bearer === UCP_TOKEN && DEMO_USER ? DEMO_USER : null),
+  now: () => new Date().toISOString(),
+  newId: (prefix: string) => `${prefix}_${randomBytes(16).toString("hex")}`,
+  baseUrl: BASE_URL,
+};
 const lookupProduct = makeOffLookup();
 
 /** Block B replaces this with per-user sources in DynamoDB. */
@@ -340,6 +368,17 @@ function buildServer(): McpServer {
     },
   );
 
+  registerCartTools(server, {
+    catalog,
+    index: skuIndex,
+    carts,
+    plans,
+    resolve,
+    userId: () => DEMO_USER,
+    now: () => new Date().toISOString(),
+    newId: () => `cart-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`,
+  });
+
   registerPlanTools(server, {
     recipes: () => recipes,
     plans,
@@ -476,6 +515,53 @@ async function serveSimFridge(req: IncomingMessage, res: ServerResponse): Promis
   json(res, 202, { ok: true, accepted: reading.events.length, unmapped: reading.unmapped, next: "/pantry" });
 }
 
+/** The demo store's HTTP surface: the UCP profile and the five checkout calls, plus the two pages
+ *  the profile links to. `handleUcp` owns the protocol; this owns reading the body and the headers. */
+async function serveStore(pathname: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
+  if (!UCP_TOKEN || !DEMO_USER) {
+    json(res, 503, { error: "checkout_closed", message: "The demo store is closed: UCP_TOKEN and DEMO_USER must both be set." });
+    return;
+  }
+  if (pathname === "/store/refund-policy") { html(res, renderRefundPolicyPage(catalog.store.name)); return; }
+  if (pathname.startsWith("/store/receipts/")) {
+    const orderId = pathname.slice("/store/receipts/".length);
+    const session = ORDER_ID.test(orderId) ? await checkouts.getByOrder(orderId) : null;
+    if (!session || session.order === null) { send(res, 404, "No such receipt."); return; }
+    html(res, renderReceiptPage({
+      order_id: session.order.id,
+      placed_at: session.updated_at,
+      currency: session.currency,
+      lines: session.line_items.map((l) => ({ title: l.title, quantity: l.quantity, total_cents: l.total_cents })),
+      totals: session.totals,
+      disclosures: session.messages.filter((m) => m.presentation === "disclosure").map((m) => m.content),
+    }));
+    return;
+  }
+
+  let body = "";
+  if (req.method !== "GET") {
+    try { body = await readBody(req); }
+    catch (err) { if (err instanceof BodyTooLarge) tooLarge(req, res); else json(res, 400, { error: "unreadable_body" }); return; }
+  }
+  const result = await handleUcp(ucpDeps, {
+    method: req.method ?? "GET",
+    path: pathname === "/.well-known/ucp" ? pathname : pathname.slice("/store".length),
+    body,
+    headers: {
+      authorization: req.headers.authorization,
+      "idempotency-key": req.headers["idempotency-key"] as string | undefined,
+      "ucp-agent": req.headers["ucp-agent"] as string | undefined,
+      "request-id": req.headers["request-id"] as string | undefined,
+    },
+  });
+  if (result === null) { send(res, 404, "No such store route."); return; }
+  json(res, result.status, result.body);
+}
+
+/** Order ids are 32 hex characters from randomBytes(16). Checked before any lookup so that the path
+ *  can never be anything but an id. */
+const ORDER_ID = /^order_[0-9a-f]{32}$/;
+
 const httpServer = createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", BASE_URL);
   const { pathname } = url;
@@ -485,6 +571,10 @@ const httpServer = createServer(async (req, res) => {
     if (req.method === "POST" && pathname.startsWith("/ingest/")) { await serveIngest(pathname.slice("/ingest/".length), req, res); return; }
     if (req.method === "GET" && pathname === "/pantry") { await servePantry(url, res); return; }
     if (pathname === "/sim/fridge" && (req.method === "GET" || req.method === "POST")) { await serveSimFridge(req, res); return; }
+    if (pathname === "/.well-known/ucp" || pathname === "/store" || pathname.startsWith("/store/")) {
+      await serveStore(pathname, req, res);
+      return;
+    }
     if (pathname === "/mcp" && req.method === "POST") {
       // Stateless Streamable HTTP: one server + transport per request.
       const server = buildServer();
@@ -494,7 +584,7 @@ const httpServer = createServer(async (req, res) => {
       await transport.handleRequest(req, res);
       return;
     }
-    send(res, pathname === "/" ? 200 : 404, "Mise. POST /mcp · GET /recipes · GET /pantry · GET /sim/fridge · POST /ingest/:source");
+    send(res, pathname === "/" ? 200 : 404, "Mise. POST /mcp · GET /recipes · GET /pantry · GET /sim/fridge · POST /ingest/:source · GET /.well-known/ucp");
   } catch (err) {
     console.error(err);
     if (!res.headersSent) send(res, 500, "Internal error.");
@@ -502,5 +592,11 @@ const httpServer = createServer(async (req, res) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`mise listening on ${BASE_URL} — MCP at /mcp, ${recipes.length} recipes at /recipes, pantry at /pantry (${DEMO_USER ? `user: ${DEMO_USER}` : "no demo user: account surfaces closed"}), ingest ${sources.length ? "open" : "closed (set INGEST_SECRET)"}`);
+  console.log(
+    `mise listening on ${BASE_URL} — MCP at /mcp, ${recipes.length} recipes at /recipes, ` +
+      `${substitutions.entries.length} substitution rows, ${catalog.skus.length} SKUs, ` +
+      `pantry at /pantry (${DEMO_USER ? `user: ${DEMO_USER}` : "no demo user: account surfaces closed"}), ` +
+      `ingest ${sources.length ? "open" : "closed (set INGEST_SECRET)"}, ` +
+      `checkout ${UCP_TOKEN && DEMO_USER ? "open at /store" : "closed (set UCP_TOKEN)"}`,
+  );
 });
