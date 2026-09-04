@@ -53,6 +53,7 @@ docs/RECIPE_SCHEMA.md         the recipe data contract: provenance, closed vocab
 scripts/validate_recipes.py   deterministic validator (stdlib); nothing enters data/ without passing it
 scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
 docs/PLAN.es.md / .html       the architecture and work plan (author's planning document, Spanish)
+docs/PLAN_INTEGRACIONES.es.md IoT, barcode, Instacart and recipe-portal integration plan (block I, Spanish)
 Dockerfile                    one container for App Runner
 ```
 
