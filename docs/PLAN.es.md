@@ -1,6 +1,6 @@
 # Mise — plan de arquitectura (Amazon Developer Hackathon 2026, track Alexa+)
 
-> Documento de planificación original de la autora (español). La fuente de verdad con formato completo es `docs/PLAN.es.html`.
+> Documento de planificación original de la autora (español). Versión en inglés: `docs/PLAN.md`. La fuente de verdad con formato completo es `docs/PLAN.es.html`.
 > El código, los tests y la documentación pública del repo están en inglés.
 
 Amazon Developer Hackathon 2026 · track Alexa+ · arquitectura y plan

@@ -1,0 +1,123 @@
+// Where the ledger lives.
+//
+// The interface is what block B's DynamoDB repository will implement; the in-memory store is what
+// runs today, for tests and for the local demo. Only two operations exist on purpose: append events
+// and read them all back. There is no "update an item" because the pantry has no items — it has a
+// history, and the fold derives the items.
+//
+// Idempotency keys live here too, as a claim rather than a check. `claimKey` reads and reserves the
+// key in one synchronous step — the only atomicity a single-process store has, and enough, because
+// nothing can interleave inside one event-loop turn. Between the claim and the commit the ingest
+// path awaits a network lookup and an append; a second delivery with the same key arriving in that
+// window sees `in_flight` instead of `new`, so the ledger cannot take the events twice. `commitKey`
+// finalizes after the work succeeds; `releaseKey` undoes the claim on failure so the sender's retry
+// can do the work. In DynamoDB the same three calls are a conditional put, a conditional update and
+// a conditional delete.
+import { createHash } from "node:crypto";
+import { readFileSync, writeFileSync } from "node:fs";
+
+import type { PantryEvent } from "./events.ts";
+
+export type KeyOutcome = "new" | "in_flight" | "replay" | "conflict";
+
+export type PantryStore = {
+  append(userId: string, events: PantryEvent[]): Promise<void>;
+  events(userId: string): Promise<PantryEvent[]>;
+  /** Reserve (scope, key) for this delivery, or say why not. */
+  claimKey(scope: string, key: string, bodyHash: string): Promise<KeyOutcome>;
+  /** The guarded work succeeded: the key is now permanent. */
+  commitKey(scope: string, key: string): Promise<void>;
+  /** The guarded work failed: forget the claim so a retry can make it again. */
+  releaseKey(scope: string, key: string): Promise<void>;
+};
+
+export function bodyHash(body: string): string {
+  return createHash("sha256").update(body, "utf8").digest("hex");
+}
+
+type KeyState = { hash: string; state: "pending" | "done" };
+type Snapshot = { events: Record<string, PantryEvent[]>; keys: Record<string, string> };
+
+/** Scope and key joined with a visible separator. Scopes are `<userId>:<sourceId>` built by us; a
+ *  key that carried "|" would still only collide with itself. */
+function keyOf(scope: string, key: string): string {
+  return `${scope}|${key}`;
+}
+
+/** In-memory ledger, optionally mirrored to a JSON file so a local demo survives a restart. Only
+ *  committed keys are mirrored: a claim is a fact about this process, not about the ledger. */
+export class MemoryPantryStore implements PantryStore {
+  private ledgers = new Map<string, PantryEvent[]>();
+  private keys = new Map<string, KeyState>();
+  private readonly file: string | undefined;
+
+  constructor(file?: string) {
+    this.file = file;
+    if (file) this.load();
+  }
+
+  async append(userId: string, events: PantryEvent[]): Promise<void> {
+    if (events.length === 0) return;
+    const ledger = this.ledgers.get(userId) ?? [];
+    ledger.push(...events);
+    this.ledgers.set(userId, ledger);
+    this.persist();
+  }
+
+  async events(userId: string): Promise<PantryEvent[]> {
+    return [...(this.ledgers.get(userId) ?? [])];
+  }
+
+  async claimKey(scope: string, key: string, hash: string): Promise<KeyOutcome> {
+    // No await between the read and the write: this is the atomic step.
+    const k = keyOf(scope, key);
+    const seen = this.keys.get(k);
+    if (seen === undefined) {
+      this.keys.set(k, { hash, state: "pending" });
+      return "new";
+    }
+    if (seen.state === "pending") return "in_flight";
+    return seen.hash === hash ? "replay" : "conflict";
+  }
+
+  async commitKey(scope: string, key: string): Promise<void> {
+    const k = keyOf(scope, key);
+    const seen = this.keys.get(k);
+    if (!seen) throw new Error(`commitKey without a claim: ${k}`);
+    this.keys.set(k, { hash: seen.hash, state: "done" });
+    this.persist();
+  }
+
+  async releaseKey(scope: string, key: string): Promise<void> {
+    const k = keyOf(scope, key);
+    if (this.keys.get(k)?.state === "pending") this.keys.delete(k);
+  }
+
+  /** Everything the mirror holds, for the file and for tests. Pending claims are not part of it. */
+  snapshot(): Snapshot {
+    const keys: Record<string, string> = {};
+    for (const [k, v] of this.keys) if (v.state === "done") keys[k] = v.hash;
+    return { events: Object.fromEntries([...this.ledgers].map(([u, e]) => [u, [...e]])), keys };
+  }
+
+  private persist(): void {
+    if (!this.file) return;
+    writeFileSync(this.file, JSON.stringify(this.snapshot(), null, 2), "utf8");
+  }
+
+  private load(): void {
+    let raw: string;
+    try {
+      raw = readFileSync(this.file!, "utf8");
+    } catch (err) {
+      // Only a missing file is a first run. Any other failure — permissions, a directory at the
+      // path — must not start the server with an empty pantry that the next append would then
+      // write back over the real one.
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") return;
+      throw err;
+    }
+    const parsed = JSON.parse(raw) as Snapshot;
+    for (const [u, e] of Object.entries(parsed.events ?? {})) this.ledgers.set(u, e);
+    for (const [k, h] of Object.entries(parsed.keys ?? {})) this.keys.set(k, { hash: h, state: "done" });
+  }
+}

@@ -88,3 +88,33 @@ Argentine → unit map: `taza→cup`, `cda/cucharada→tbsp`, `cdta/cucharadita�
 4. Favor recipes that **share ingredients** with each other (the planner needs overlap) and that **exercise substitutions** (binders, emulsifiers, fats, umami).
 5. Spread of cooking times: quick (< 30 min), medium, long.
 6. Keep the author's voice: `text_es` and `original_text` verbatim.
+
+## Imported recipes (staging)
+
+Recipes from the author's cookbooks are the corpus. Recipes imported from a portal's
+`schema.org/Recipe` JSON-LD (`scripts/import_jsonld.py`) land in `data/imports/` and satisfy a
+**weaker contract**, checked by `validate_recipes.py --staging`. The server does not load them.
+
+The weakening is the point: a web page cannot carry the judgment this schema is built on, so the
+import is required to say so in the data rather than fill the gaps.
+
+| Field | In a staging file | Why |
+|---|---|---|
+| `ingredients[].role`, `.technique` | `null` | What an ingredient must *do* is the chef's call, and the basis of every substitution. Nothing in JSON-LD implies it. |
+| `ingredients[].id` | `null` | Mapping "all-purpose flour" to `flour-0000` is a decision about the corpus, not a string transformation. |
+| `ingredients[].raw` | required | The source line verbatim, so the mapping stays auditable. |
+| `diet.vegan` | `null` | The corpus is vegan by construction; an import may not inherit that claim. |
+| `category` | `null` or in the vocabulary | Closed vocabulary, so a human picks. |
+| `minutes`, `serves` | integer or `null` | `null` whenever the page stated none, with `*_source: unspecified`. |
+| `steps[].dur_s` | `null` unless stated | Step timings are almost never published. |
+| `source.kind` | `"imported"` | Alongside `url`, `site`, `author`, `fetched_at`. |
+| `source.jsonld` | the block verbatim, as text | Same discipline as `source.original_text` for books. |
+| `source.jsonld_sha256` | must match `source.jsonld` | The validator recomputes it; edited provenance is an error, not a warning. |
+| `review.needs_review` | always `true` | A staging file is unreviewed by definition. |
+
+Quantities are parsed only when the text plainly states one. A range ("2-3 onions"), prose ("a
+handful"), or no number at all yields `qty: null`, `qty_source: "unspecified"`, and the site's own
+wording kept in `note` — the same rule the cookbooks get, applied to a different kind of source.
+
+**Promotion** means a human assigns the nulls, adds `title_es` and the verbatim source, and moves the
+file to `data/recipes/`, where the full contract above applies. There is no automatic promotion.

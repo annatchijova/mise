@@ -1,0 +1,12 @@
+{
+  "_comment": "Shape of an Open Food Facts v2 product response with the fields the barcode adapter reads. Values are illustrative; the field names follow the published API documentation.",
+  "code": "0000000000017",
+  "status": 1,
+  "product": {
+    "code": "0000000000017",
+    "product_name": "Firm Tofu",
+    "brands": "Example Foods",
+    "quantity": "400 g",
+    "categories_tags": ["en:plant-based-foods-and-beverages", "en:plant-based-foods", "en:legumes-and-their-products", "en:tofu"]
+  }
+}
