@@ -47,6 +47,30 @@ export type PantryEvent = {
 
 export const MILLI = 1000;
 
+/** Units that are exactly a thousand of another unit. Nothing else belongs here: a cup of flour is
+ *  not a number of grams without knowing the flour, and guessing the density is exactly the kind of
+ *  invention the ledger refuses. */
+const EXACT_MULTIPLES: Partial<Record<Unit, { unit: Unit; factor: number }>> = {
+  kg: { unit: "g", factor: 1000 },
+  l: { unit: "ml", factor: 1000 },
+};
+
+/**
+ * Put an amount into the unit the ledger keeps it in.
+ *
+ * The fold keys a line on (ingredient, unit, location) and never converts, because most conversions
+ * would be a guess. Two of them are not: a kilogram is a thousand grams and a litre is a thousand
+ * millilitres, exactly, for every substance there is. Left unconverted, half a kilo of lentils and
+ * the 250 g a recipe takes out are two lines that never meet, and cooking silently stops reducing
+ * the pantry. So the conversion happens once, here, at the boundary where an amount becomes an
+ * event — never inside the fold, which must stay a pure function of what it was given.
+ */
+export function canonicalAmount(qtyMilli: number | null, unit: Unit): { qty_milli: number | null; unit: Unit } {
+  const conv = EXACT_MULTIPLES[unit];
+  if (!conv) return { qty_milli: qtyMilli, unit };
+  return { qty_milli: qtyMilli === null ? null : qtyMilli * conv.factor, unit: conv.unit };
+}
+
 /** Boundary conversion: a human quantity to integer milli-units. Rejects anything that would
  *  silently lose precision, because a pantry that rounds is a pantry that lies. */
 export function toMilli(qty: number | null): number | null {

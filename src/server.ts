@@ -2,7 +2,7 @@
 // deterministic logic, and nothing external sits on the response path.
 //
 // One process, one URL, four surfaces:
-//   POST /mcp                 the MCP server Alexa+ talks to (recipes, pantry, substitutions)
+//   POST /mcp                 the MCP server Alexa+ talks to (recipes, pantry, substitutions, cooking)
 //   GET  /recipes[/:id]       importable recipe pages (schema.org JSON-LD)
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
@@ -30,6 +30,8 @@ import { type ConnectedSource, type IngestDeps, ingest } from "./integrations/in
 import { makeOffLookup } from "./integrations/off_client.ts";
 import { type FridgeStatus, simulatedFridge } from "./integrations/simulated_fridge.ts";
 import { type PantrySource, runSource } from "./integrations/types.ts";
+import { MemoryCookStore } from "./cook/store.ts";
+import { registerCookTools } from "./tools/cook.ts";
 
 // --- configuration --------------------------------------------------------------------------
 
@@ -44,6 +46,8 @@ const DEMO_USER: string | null = (process.env.DEMO_USER ?? "demo").trim() || nul
 const INGEST_SECRET = process.env.INGEST_SECRET;
 /** Optional JSON mirror of the in-memory ledger, so a local demo survives a restart. */
 const PANTRY_FILE = process.env.PANTRY_FILE;
+/** The same, for cooking sessions: "where was I?" a day later is the point of them. */
+const COOK_FILE = process.env.COOK_FILE;
 
 /** Ties a POST to /sim/fridge to a page this process served. It is not authentication — there are
  *  no accounts yet — but it stops a foreign website, or a bare request, from writing to the demo
@@ -62,6 +66,7 @@ const resolve = buildResolver(loadAliases(), new Set([
   ...substitutionIds(substitutions),
 ]));
 const store = new MemoryPantryStore(PANTRY_FILE);
+const sessions = new MemoryCookStore(COOK_FILE);
 const lookupProduct = makeOffLookup();
 
 /** Block B replaces this with per-user sources in DynamoDB. */
@@ -91,6 +96,18 @@ const ingestDeps: IngestDeps = {
 async function pantryFor(userId: string, now: string) {
   const events = await store.events(userId);
   return { events, fold: foldPantry(events, { now }) };
+}
+
+/** Why a line is `inferred` rather than confirmed. The reservation the pantry carries is only
+ *  useful if it names the right source: a number worked out from a recipe is not a fridge reading,
+ *  and telling a person "the fridge reported it" about their own cooking is a small lie. */
+function whoSaid(origins: string[]): string {
+  if (origins.includes("recipe_deduction")) return "worked out from what you cooked, not counted";
+  if (origins.includes("simulated") || origins.includes("smartthings")) return "the fridge reported it";
+  if (origins.includes("barcode")) return "read off a barcode";
+  if (origins.includes("receipt")) return "read off a receipt";
+  if (origins.includes("checkout")) return "from what you bought";
+  return "my reckoning, not yours";
 }
 
 // --- MCP ------------------------------------------------------------------------------------
@@ -210,7 +227,7 @@ function buildServer(): McpServer {
         const name = displayName(i.ingredient_id);
         const amount = !i.qty_known ? `some ${name}, amount unknown` : i.unit === "pc" ? `${i.qty} ${name}` : `${i.qty} ${i.unit} ${name}`;
         const when = i.days_to_expiry === null ? "" : i.days_to_expiry < 0 ? ", already past its date" : i.days_to_expiry <= 1 ? ", expiring today or tomorrow" : `, ${i.days_to_expiry} days left`;
-        const sure = i.confidence === "inferred" ? " (the fridge reported it)" : i.confidence === "stale" ? " (not confirmed lately)" : "";
+        const sure = i.confidence === "stale" ? " (not confirmed lately)" : i.confidence === "inferred" ? ` (${whoSaid(i.origins)})` : "";
         return `${amount}${when}${sure}`;
       };
       const caveat = fold.invalid > 0 ? ` ${fold.invalid} record${fold.invalid === 1 ? "" : "s"} could not be read and ${fold.invalid === 1 ? "was" : "were"} left out.` : "";
@@ -316,6 +333,17 @@ function buildServer(): McpServer {
       };
     },
   );
+
+  registerCookTools(server, {
+    recipeById: (id) => byId.get(id),
+    sessions,
+    pantry: store,
+    resolve,
+    userId: () => DEMO_USER,
+    now: () => new Date().toISOString(),
+    // Sortable by time and unique without a database sequence: the same shape a ULID gives.
+    newId: () => `cook-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`,
+  });
 
   return server;
 }

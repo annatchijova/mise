@@ -10,7 +10,7 @@
 // Open Food Facts: GET https://world.openfoodfacts.org/api/v2/product/{ean}?fields=... — public,
 // no key. Verified against its published documentation; the field names below are the ones that
 // documentation lists.
-import { type PantryEvent, type Unit, isIsoDate, isIsoTimestamp, milliOrNull } from "../pantry/events.ts";
+import { type PantryEvent, type Unit, isIsoDate, isIsoTimestamp, canonicalAmount, milliOrNull } from "../pantry/events.ts";
 import { type PantrySource, type SourceContext, type SourceReading, type UnmappedItem } from "./types.ts";
 
 /** The subset of an Open Food Facts product record this adapter reads. */
@@ -115,13 +115,14 @@ export const barcodeSource: PantrySource<BarcodePayload> = {
     const pkg = parsePackage(product.quantity);
     const packages = scan.packages;
     const known = pkg !== null && typeof packages === "number" && Number.isInteger(packages) && packages > 0;
+    const amount = canonicalAmount(known ? pkg![0] * packages : null, pkg ? pkg[1] : "pc");
     const events: PantryEvent[] = [{
       ts: scannedAt,
       seq: 0,
       type: "add",
       ingredient_id: id,
-      qty_milli: known ? pkg![0] * packages : null,
-      unit: pkg ? pkg[1] : "pc",
+      qty_milli: amount.qty_milli,
+      unit: amount.unit,
       origin: "barcode",
       confidence: "confirmed",
       location: typeof scan.location === "string" && scan.location.trim() ? scan.location.trim() : "pantry",

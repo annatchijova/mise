@@ -15,7 +15,7 @@
 //
 // Everything a device sends is validated here, at the boundary, because the ledger is append-only
 // and a bad timestamp that gets in would break every later read of this pantry.
-import { type PantryEvent, type Unit, isIsoDate, isIsoTimestamp, milliOrNull } from "../pantry/events.ts";
+import { type PantryEvent, type Unit, isIsoDate, isIsoTimestamp, canonicalAmount, milliOrNull } from "../pantry/events.ts";
 import { type PantrySource, type SourceContext, type SourceReading, type UnmappedItem } from "./types.ts";
 import { normalizeName } from "./aliases.ts";
 
@@ -91,14 +91,15 @@ export const simulatedFridge: PantrySource<FridgeStatus> = {
         if (isIsoDate(item.expireDate)) expires = item.expireDate;
         else unmapped.push({ raw_name: raw, reason: `expireDate '${String(item.expireDate)}' is not a YYYY-MM-DD date; the item was kept without a date` });
       }
+      const amount = canonicalAmount(milliOrNull(item.quantity), unit);
       events.push({
         ts: readingTs,
         seq: index,
         type: "correct",
         ingredient_id: id,
         // A missing or unusable quantity stays null: "there is tofu", not "there is one tofu".
-        qty_milli: milliOrNull(item.quantity),
-        unit,
+        qty_milli: amount.qty_milli,
+        unit: amount.unit,
         origin: "simulated",
         confidence: "inferred",
         location: typeof item.location === "string" && item.location.trim() ? item.location.trim() : "fridge",
