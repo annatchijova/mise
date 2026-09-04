@@ -2,7 +2,7 @@
 // deterministic logic, and nothing external sits on the response path.
 //
 // One process, one URL, four surfaces:
-//   POST /mcp                 the MCP server Alexa+ talks to (recipe_search, pantry_list)
+//   POST /mcp                 the MCP server Alexa+ talks to (recipes, pantry, substitutions)
 //   GET  /recipes[/:id]       importable recipe pages (schema.org JSON-LD)
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
@@ -16,6 +16,10 @@ import { z } from "zod";
 import { type Recipe, loadRecipes, searchRecipes } from "./recipes.ts";
 import { type Unit, displayName } from "./pantry/events.ts";
 import { renderIndexPage, renderRecipePage, toJsonLd } from "./recipe_jsonld.ts";
+import {
+  ROLES, TECHNIQUES, type Role, type Technique,
+  indexSubstitutions, loadSubstitutions, nameOf, ratioText, substitutionIds, substitutionsFor,
+} from "./substitutions.ts";
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
 import { UNITS, voiceEvents } from "./pantry/voice.ts";
@@ -49,7 +53,14 @@ const ORIGIN = new URL(BASE_URL).origin;
 
 const recipes: Recipe[] = loadRecipes();
 const byId = new Map(recipes.map((r) => [r.id, r]));
-const resolve = buildResolver(loadAliases(), new Set(recipes.flatMap((r) => r.ingredients.map((i) => i.id))));
+const substitutions = loadSubstitutions();
+const substitutionIndex = indexSubstitutions(substitutions);
+// The resolver knows every id anyone can name: the ones the recipes cook with, and the ones only
+// the substitution table mentions. Being out of tamari is a sentence a person can say.
+const resolve = buildResolver(loadAliases(), new Set([
+  ...recipes.flatMap((r) => r.ingredients.map((i) => i.id)),
+  ...substitutionIds(substitutions),
+]));
 const store = new MemoryPantryStore(PANTRY_FILE);
 const lookupProduct = makeOffLookup();
 
@@ -205,6 +216,104 @@ function buildServer(): McpServer {
       const caveat = fold.invalid > 0 ? ` ${fold.invalid} record${fold.invalid === 1 ? "" : "s"} could not be read and ${fold.invalid === 1 ? "was" : "were"} left out.` : "";
       const spoken = (out.length === 0 ? "Nothing on record yet." : `${out.length} item${out.length === 1 ? "" : "s"}: ${out.map(say).join("; ")}.`) + caveat;
       return { structuredContent: { items: out, total: out.length, as_of: now, invalid_events: fold.invalid }, content: [{ type: "text", text: spoken }] };
+    },
+  );
+
+  server.registerTool(
+    "substitute",
+    {
+      title: "Substitute an ingredient",
+      description:
+        "Say what to use instead of an ingredient, with how much and what changes. Use when the customer says they have run out of something, asks what they can use instead, or asks whether one thing works in place of another. Every answer comes from a table a cook wrote, with its ratio and its warnings; when the table has nothing for that ingredient it says so instead of guessing. Pass recipe_id when they are cooking something, because the answer depends on what the ingredient was doing. Works without a linked account.",
+      inputSchema: {
+        ingredient: z.string().describe("What they have run out of, as they said it"),
+        recipe_id: z.string().optional().describe("The recipe being cooked, when known: it settles what the ingredient was doing"),
+        role: z.enum(ROLES).optional().describe("What the ingredient does in the dish, when there is no recipe: fat, acid, binder, umami, aromatic, thickener"),
+        technique: z.enum(TECHNIQUES).optional().describe("What is being done with it: fry, bake, emulsify, bind-cold, simmer, whip"),
+      },
+      outputSchema: {
+        ingredient: z.string(),
+        /** false when the name is not one we keep: there is nothing curated, and nothing invented. */
+        resolved: z.boolean(),
+        table_version: z.number().int(),
+        contexts: z.array(
+          z.object({
+            role: z.string(),
+            technique: z.string().nullable(),
+            /** How specific the answer is. Anything below ingredient+role+technique is a wider
+             *  answer than was asked for, and the narrator should say so. */
+            match: z.enum(["ingredient+role+technique", "ingredient+role", "ingredient", "role+technique", "role"]),
+            alternatives: z.array(
+              z.object({
+                ingredient: z.string(), name: z.string(),
+                ratio: z.tuple([z.number().int(), z.number().int()]).nullable(),
+                how_much: z.string(), note: z.string(), warning: z.string().nullable(),
+                /** true/false when there is a pantry to check, null when there is no account. */
+                on_hand: z.boolean().nullable(),
+              }),
+            ),
+            if_missing: z.string(),
+          }),
+        ),
+      },
+    },
+    async (args) => {
+      const id = resolve(args.ingredient);
+      if (!id) {
+        const text = `I do not keep ${args.ingredient}, so I have nothing curated to put in its place. I would rather say that than guess.`;
+        return { structuredContent: { ingredient: args.ingredient, resolved: false, table_version: substitutions.version, contexts: [] }, content: [{ type: "text", text }] };
+      }
+
+      // The recipe settles the question the table is keyed on: what was this ingredient doing?
+      const recipe = args.recipe_id ? byId.get(args.recipe_id) : undefined;
+      const inRecipe = recipe?.ingredients.find((i) => i.id === id);
+      const role = (inRecipe?.role ?? args.role ?? null) as Role | null;
+      const technique = (inRecipe?.technique ?? args.technique ?? null) as Technique | null;
+
+      // Only annotate what is on hand when there is a pantry to read. No account, no claim.
+      let onHand: Set<string> | null = null;
+      if (DEMO_USER) {
+        const { fold } = await pantryFor(DEMO_USER, new Date().toISOString());
+        onHand = new Set(fold.items.map((i) => i.ingredient_id));
+      }
+
+      const contexts = substitutionsFor(substitutions, substitutionIndex, { ingredient: id, role, technique }).map((c) => ({
+        role: c.role,
+        technique: c.technique,
+        match: c.match,
+        alternatives: c.alternatives.map((a) => ({
+          ingredient: a.ingredient,
+          name: nameOf(substitutions, a.ingredient),
+          ratio: a.ratio === null ? null : ([a.ratio[0], a.ratio[1]] as [number, number]),
+          how_much: ratioText(a.ratio),
+          note: a.note,
+          warning: a.warning,
+          on_hand: onHand === null ? null : onHand.has(a.ingredient),
+        })),
+        if_missing: c.if_missing,
+      }));
+
+      const name = nameOf(substitutions, id);
+      const said = contexts.length === 0
+        ? `I have nothing curated for ${name}. Tell me what it was doing in the dish — the fat, the acid, what binds it — and I can answer.`
+        : contexts.slice(0, 3).map((c) => {
+            const where = c.technique === null || c.technique === "none" ? `as the ${c.role}` : `as the ${c.role}, ${c.technique}`;
+            const wide = c.match === "role" || c.match === "role+technique"
+              ? `Nothing curated for ${name} itself, but generally ${where}: `
+              : `Instead of ${name} ${where}: `;
+            if (c.alternatives.length === 0) return `${wide.replace(/: $/, ". ")}${c.if_missing}`;
+            const list = c.alternatives.map((a) => {
+              const have = a.on_hand ? ", which you have" : "";
+              const warn = a.warning ? ` Careful: ${a.warning}` : "";
+              return `${a.name}${have}, ${a.how_much}. ${a.note}${warn}`;
+            }).join(" ");
+            return `${wide}${list}`;
+          }).join(" ");
+
+      return {
+        structuredContent: { ingredient: id, resolved: true, table_version: substitutions.version, contexts },
+        content: [{ type: "text", text: said }],
+      };
     },
   );
 
