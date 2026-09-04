@@ -2,7 +2,8 @@
 // deterministic logic, and nothing external sits on the response path.
 //
 // One process, one URL, four surfaces:
-//   POST /mcp                 the MCP server Alexa+ talks to (recipes, pantry, substitutions, cooking)
+//   POST /mcp                 the MCP server Alexa+ talks to (recipes, pantry, substitutions,
+//                             the week's plan, cooking)
 //   GET  /recipes[/:id]       importable recipe pages (schema.org JSON-LD)
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
@@ -32,6 +33,8 @@ import { type FridgeStatus, simulatedFridge } from "./integrations/simulated_fri
 import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
 import { registerCookTools } from "./tools/cook.ts";
+import { MemoryPlanStore } from "./plan/store.ts";
+import { registerPlanTools } from "./tools/plan.ts";
 
 // --- configuration --------------------------------------------------------------------------
 
@@ -48,6 +51,8 @@ const INGEST_SECRET = process.env.INGEST_SECRET;
 const PANTRY_FILE = process.env.PANTRY_FILE;
 /** The same, for cooking sessions: "where was I?" a day later is the point of them. */
 const COOK_FILE = process.env.COOK_FILE;
+/** And for the week's plan, which the cart shops from. */
+const PLAN_FILE = process.env.PLAN_FILE;
 
 /** Ties a POST to /sim/fridge to a page this process served. It is not authentication — there are
  *  no accounts yet — but it stops a foreign website, or a bare request, from writing to the demo
@@ -67,6 +72,7 @@ const resolve = buildResolver(loadAliases(), new Set([
 ]));
 const store = new MemoryPantryStore(PANTRY_FILE);
 const sessions = new MemoryCookStore(COOK_FILE);
+const plans = new MemoryPlanStore(PLAN_FILE);
 const lookupProduct = makeOffLookup();
 
 /** Block B replaces this with per-user sources in DynamoDB. */
@@ -333,6 +339,15 @@ function buildServer(): McpServer {
       };
     },
   );
+
+  registerPlanTools(server, {
+    recipes: () => recipes,
+    plans,
+    pantryItems: async (userId, now) => (await pantryFor(userId, now)).fold.items,
+    resolve,
+    userId: () => DEMO_USER,
+    now: () => new Date().toISOString(),
+  });
 
   registerCookTools(server, {
     recipeById: (id) => byId.get(id),
