@@ -42,6 +42,8 @@ import { MemoryCartStore } from "./store/cart.ts";
 import { MemoryCheckoutStore, handleUcp } from "./store/ucp.ts";
 import { registerCartTools } from "./tools/cart.ts";
 import { renderReceiptPage, renderRefundPolicyPage } from "./pages.ts";
+import { RESOURCE_MIME_TYPE, registerAppResource } from "@modelcontextprotocol/ext-apps/server";
+import { VIEW_URIS, buildViews, loadRuntime } from "./ui/views.ts";
 
 // --- configuration --------------------------------------------------------------------------
 
@@ -90,6 +92,11 @@ const carts = new MemoryCartStore(CART_FILE);
 const catalog = loadCatalog();
 const skuIndex = indexCatalog(catalog);
 const checkouts = new MemoryCheckoutStore();
+// The MCP Apps views, built once. A missing runtime bundle is a "you have not run npm run build"
+// condition, not a reason to withhold the views: each one then renders a page saying exactly that,
+// and every tool still returns the full structuredContent the client can draw from on its own.
+const uiRuntime = loadRuntime();
+const views = buildViews(uiRuntime);
 
 const ucpDeps = {
   catalog,
@@ -243,6 +250,7 @@ function buildServer(): McpServer {
         /** Ledger events the fold could not use. Zero unless a source got past boundary validation. */
         invalid_events: z.number().int(),
       },
+      _meta: { ui: { resourceUri: VIEW_URIS.pantry } },
     },
     async (args) => {
       if (!DEMO_USER) {
@@ -367,6 +375,12 @@ function buildServer(): McpServer {
       };
     },
   );
+
+  for (const view of views) {
+    registerAppResource(server, view.title, view.uri, { description: `Mise view: ${view.title.toLowerCase()}` }, async () => ({
+      contents: [{ uri: view.uri, mimeType: RESOURCE_MIME_TYPE, text: view.html }],
+    }));
+  }
 
   registerCartTools(server, {
     catalog,
@@ -597,6 +611,7 @@ httpServer.listen(PORT, () => {
       `${substitutions.entries.length} substitution rows, ${catalog.skus.length} SKUs, ` +
       `pantry at /pantry (${DEMO_USER ? `user: ${DEMO_USER}` : "no demo user: account surfaces closed"}), ` +
       `ingest ${sources.length ? "open" : "closed (set INGEST_SECRET)"}, ` +
-      `checkout ${UCP_TOKEN && DEMO_USER ? "open at /store" : "closed (set UCP_TOKEN)"}`,
+      `checkout ${UCP_TOKEN && DEMO_USER ? "open at /store" : "closed (set UCP_TOKEN)"}, ` +
+      `${views.length} MCP Apps views${uiRuntime === null ? " (runtime bundle missing — run npm run build)" : ""}`,
   );
 });

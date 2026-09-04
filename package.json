@@ -8,15 +8,17 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "esbuild src/server.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/server.js --packages=external",
+    "build": "npm run build:ui && esbuild src/server.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/server.js --packages=external",
     "typecheck": "tsc --noEmit",
     "start": "node dist/server.js",
     "dev": "npm run build && npm start",
     "test": "node --experimental-strip-types --test 'test/*.test.ts'",
     "validate": "python3 scripts/validate_recipes.py data/recipes && python3 scripts/validate_recipes.py --staging data/imports && python3 scripts/validate_substitutions.py && python3 scripts/validate_catalog.py",
-    "check": "npm run typecheck && npm test && npm run validate"
+    "check": "npm run typecheck && npm test && npm run validate",
+    "build:ui": "esbuild src/ui/runtime.ts --bundle --platform=browser --target=es2020 --format=iife --minify --outfile=dist/ui-runtime.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
     "@modelcontextprotocol/sdk": "^1.20.0",
     "zod": "^3.25.0"
   },
