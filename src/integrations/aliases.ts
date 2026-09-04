@@ -6,7 +6,8 @@
 // unmapped, because a wrong ingredient id silently rewrites the weekly plan.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+
+import { dataDir } from "../recipes.ts";
 
 /** Lowercase, strip accents, collapse every run of non-alphanumerics into one hyphen. */
 export function normalizeName(raw: string): string {
@@ -59,6 +60,6 @@ export function buildResolver(aliases: Record<string, string>, known: Iterable<s
 }
 
 export function loadAliases(path?: string): Record<string, string> {
-  const file = path ?? join(fileURLToPath(new URL("../..", import.meta.url)), "data", "source_aliases.json");
+  const file = path ?? join(dataDir(), "source_aliases.json");
   return JSON.parse(readFileSync(file, "utf8")) as Record<string, string>;
 }

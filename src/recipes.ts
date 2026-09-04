@@ -44,8 +44,15 @@ export type Recipe = {
   review: { needs_review?: boolean; reasons?: string[] };
 };
 
+/** The data directory. Resolved one level up from this module, which holds both for src/*.ts under
+ *  the type-stripping test runner and for the esbuild bundle in dist/ — every data loader goes
+ *  through here so the two never disagree. */
+export function dataDir(): string {
+  return process.env.DATA_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "data");
+}
+
 export function recipesDir(): string {
-  return process.env.RECIPES_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "data", "recipes");
+  return process.env.RECIPES_DIR ?? join(dataDir(), "recipes");
 }
 
 /** Load every recipe file in the directory. Each *.json may hold one recipe or an array;

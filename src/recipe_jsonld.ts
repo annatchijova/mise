@@ -133,6 +133,7 @@ h2{font:600 .8rem/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;te
 ul,ol{padding-left:1.3rem;margin:0}li{margin:.4rem 0}
 .flag{display:inline-block;font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;
  color:var(--flag);background:var(--flagbg);border-radius:3px;padding:.2rem .35rem;vertical-align:.05em}
+.es{color:var(--dim);font-style:italic;font-size:.92em}
 footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--dim);font:.82rem/1.6 ui-sans-serif,system-ui,sans-serif}
 footer p{margin:.4rem 0}a{color:inherit}
 .index{list-style:none;padding:0}.index li{margin:.15rem 0}.index a{text-decoration:none;border-bottom:1px solid var(--line)}
@@ -154,11 +155,13 @@ export function renderRecipePage(r: Recipe, opts: { baseUrl?: string } = {}): st
   meta.push("vegan");
   if (r.diet?.gluten_free) meta.push("gluten free");
 
+  // English is the primary text (the add-on's locale); the book's Spanish travels beside it,
+  // verbatim, because it is the source and the author's voice. Nothing is translated twice.
   const ingredients = r.ingredients
-    .map((i) => `<li>${esc(ingredientLine(i))}${flag(i.qty_source)} <span class="flag" style="background:none;color:var(--dim)">${esc(i.role)} · ${esc(i.technique)}</span></li>`)
+    .map((i) => `<li>${esc(ingredientLine(i))}${flag(i.qty_source)} <span class="flag" style="background:none;color:var(--dim)">${esc(i.role)} · ${esc(i.technique)}</span>${i.name_es ? `<br><span class="es" lang="es">${esc(i.name_es)}</span>` : ""}</li>`)
     .join("\n");
   const steps = r.steps
-    .map((s) => `<li>${esc(s.text)}${s.timer ? ` <span class="flag">timer ${Math.round(s.dur_s / 60)} min</span>` : ""}${flag(s.dur_source)}</li>`)
+    .map((s) => `<li>${esc(s.text)}${s.timer ? ` <span class="flag">timer ${Math.round(s.dur_s / 60)} min</span>` : ""}${flag(s.dur_source)}${s.text_es ? `<br><span class="es" lang="es">${esc(s.text_es)}</span>` : ""}</li>`)
     .join("\n");
   const notes = (r.diet?.notes ?? []).map((n) => `<p>${esc(n)}</p>`).join("\n");
   const reasons = r.review?.needs_review

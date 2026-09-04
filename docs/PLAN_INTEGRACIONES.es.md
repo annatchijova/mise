@@ -1,5 +1,7 @@
 # Mise — plan de integraciones IoT y portales de recetas
 
+> Versión en español. La versión principal, en inglés, es `docs/INTEGRATIONS_PLAN.md`.
+>
 > Extiende `docs/PLAN.es.md` (bloques A–H) con un bloque **I · Integraciones**. Responde a la propuesta del equipo (3 sep 2026): heladeras inteligentes que rastrean y compran productos (Samsung Family Hub + Instacart, GE Profile Kitchen Assistant), sus plataformas (Samsung Food, Taste of Home) y portales de recetas (Cookpad, Allrecipes, ChefSteps), con KitchenPal, NoWaste, Pantry Check y FridgeBuddy como referencias de producto.
 >
 > Estado de cada afirmación sobre APIs externas: **[verificado]** = leído en documentación oficial o en resultados de búsqueda de documentación oficial; **[no verificado]** = conocimiento previo, hay que confirmarlo antes de apostar tiempo; **[bloqueado]** = la documentación no se pudo abrir desde el entorno donde se escribió este plan.
@@ -163,16 +165,19 @@ Lo que ya está en el repo, con sus pruebas. Todo lo demás del bloque I sigue p
 | Contrato `PantrySource` + `runSource` que recorta la confianza al techo declarado | hecho | `src/integrations/types.ts` |
 | Adaptador de heladera simulada con envelope tipo SmartThings | hecho | `src/integrations/simulated_fridge.ts` |
 | Resolución de nombres externos a ids canónicos, con `unmapped` como salida de primera clase | hecho | `src/integrations/aliases.ts`, `data/source_aliases.json` |
-| Exportar recetas como páginas con JSON-LD (`GET /recipes`, `/recipes/:id`, `/recipes/:id.json`) | hecho | `src/recipe_jsonld.ts`, `src/server.ts` |
+| Almacén del ledger: interfaz, implementación en memoria con espejo a archivo, claves de idempotencia | hecho | `src/pantry/store.ts` |
+| Puerta de ingesta firmada: HMAC, `Idempotency-Key`, replay 202 / conflicto 409, `POST /ingest/:source` | hecho | `src/integrations/ingest.ts`, `src/server.ts` |
+| Adaptador de código de barras (Open Food Facts) con cuenta de paquetes y lookup con timeout y cache | hecho; el lookup no se pudo ejercitar (egress bloqueado acá) | `src/integrations/barcode.ts`, `off_client.ts` |
+| Web de la cuenta: vista de despensa con badges, semáforo, ubicaciones, fuentes; página de heladera simulada | hecho | `src/pages.ts`, `GET /pantry`, `/sim/fridge` |
+| Tool MCP `pantry_list` sobre el mismo fold | hecho (cuenta demo hasta el linking del bloque B) | `src/server.ts` |
+| Exportar recetas como páginas con JSON-LD, inglés principal con el castellano del libro al lado (`GET /recipes`, `/recipes/:id`, `/recipes/:id.json`) | hecho | `src/recipe_jsonld.ts`, `src/server.ts` |
 | Importar desde JSON-LD a staging, con parseo conservador de cantidades | hecho | `scripts/import_jsonld.py` |
 | Contrato de staging y su validador | hecho | `scripts/validate_recipes.py --staging`, `docs/RECIPE_SCHEMA.md` |
-| Pruebas: 60, incluida la ida y vuelta exportar → importar | hecho | `test/` (`npm test`) |
+| Pruebas, incluida la ida y vuelta exportar → importar, cada una verificada contra una implementación rota a propósito | hecho | `test/` (`npm test`) |
 | I.0 de-riesgo: llaves de Instacart y token de SmartThings, evidencia por portal | **pendiente, necesita manos humanas** | `docs/IMPORT_SOURCES.md` |
-| Ingesta HTTP (`POST /ingest/:kind`), HMAC, sincronización | pendiente | — |
-| Adaptador de código de barras (Open Food Facts) | pendiente | — |
 | Adaptador SmartThings real | pendiente, bloqueado por I.0 | — |
 | Instacart en `cart_from_plan` | pendiente, bloqueado por I.0 | — |
-| Vista de despensa (semáforo, ubicaciones, línea de fuentes) | pendiente | — |
+| Sincronización programada (`/sources/:kind/sync`) | pendiente, necesita las fuentes del bloque B | — |
 
 Dos cosas que la implementación cambió respecto de lo planeado, ambas hacia más honestidad:
 

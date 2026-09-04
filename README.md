@@ -30,9 +30,9 @@ If a change to the narrator could ever change a decision, that is a defect in th
 
 ## Status
 
-Hackathon scaffold — **block A of the plan** (`docs/PLAN.es.md`): repository, TypeScript MCP server with a single `recipe_search` tool, Dockerfile. Not yet validated against Alexa+ end to end; the first milestone is a round trip in the Web Simulator.
+Hackathon scaffold — **block A of the plan** (`docs/PLAN.md`): repository, TypeScript MCP server with a single `recipe_search` tool, Dockerfile. Not yet validated against Alexa+ end to end; the first milestone is a round trip in the Web Simulator.
 
-Started on **block I, integrations** (`docs/PLAN_INTEGRACIONES.es.md`), the parts that need no external credentials: the pantry ledger's event contract and deterministic fold, the adapter contract with its confidence ceiling, a simulated fridge, and recipe exchange with the portal ecosystem in both directions — every Mise recipe is served as a page whose `schema.org/Recipe` JSON-LD any recipe app can import, and `scripts/import_jsonld.py` reads such a page back into a reviewable staging file. `npm run check` runs the typecheck, 60 tests and the data validators.
+Started on **block I, integrations** (`docs/INTEGRATIONS_PLAN.md`), the parts that need no external credentials. The pantry ledger has its event contract, deterministic fold and store; connected sources come in through a signed, idempotent `POST /ingest/:source` door; a simulated fridge and a barcode adapter (Open Food Facts) feed it; `pantry_list` reads it over MCP with every reservation the data carries; and a small account web (`/pantry`, `/sim/fridge`) shows the pantry with confidence badges, a freshness light and locations, and drives the demo fridge. Recipes exchange with the portal ecosystem in both directions: every Mise recipe is served as a page whose `schema.org/Recipe` JSON-LD any recipe app can import (English primary, the book's Spanish beside it), and `scripts/import_jsonld.py` reads such a page back into a reviewable staging file. `npm run check` runs the typecheck, the tests and the data validators.
 
 No smart-fridge, Instacart or portal integration is claimed as verified: outbound access to those services is not available here, so the fridge adapter is honestly named `simulated` and `docs/IMPORT_SOURCES.md` keeps an evidence table that is empty until someone runs it against the real thing.
 
@@ -43,12 +43,24 @@ Recipes, substitutions and the store catalog live as **data** (`data/`), not cod
 ```bash
 npm install
 npm run build
-npm start          # MCP server on http://localhost:8080/mcp
+INGEST_SECRET=dev-secret npm start   # http://localhost:8080 — MCP at /mcp
 curl localhost:8080/healthz
+open http://localhost:8080/pantry                     # the pantry, as the fold sees it
+open http://localhost:8080/sim/fridge                 # drive the demo fridge by hand
 open http://localhost:8080/recipes                    # importable recipe pages
 curl localhost:8080/recipes/vegan-gnocchi.json        # the JSON-LD on its own
 
 npm run check      # typecheck + tests + data validators
+```
+
+Environment: `PORT`, `BASE_URL` (public origin for recipe `@id`s), `DEMO_USER` (the account that owns the pantry until linking exists; default `demo`), `INGEST_SECRET` (HMAC secret for the two demo sources at `POST /ingest/sim-fridge` and `/ingest/scanner`; unset closes the door), `PANTRY_FILE` (optional JSON mirror of the in-memory ledger).
+
+A signed delivery, for reference:
+
+```bash
+BODY='{"scan":{"ean":"0000000000017","scanned_at":"2026-09-04T09:30:00Z","packages":2,"location":"fridge"}}'
+SIG="sha256=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac dev-secret | sed 's/^.* //')"
+curl -X POST localhost:8080/ingest/scanner -H "X-Mise-Signature: $SIG" -H 'Idempotency-Key: scan-1' -d "$BODY"
 ```
 
 ## Layout
@@ -57,15 +69,16 @@ npm run check      # typecheck + tests + data validators
 src/server.ts                 MCP server (Streamable HTTP), tools, and the recipe pages
 src/recipes.ts                recipe loading and deterministic search
 src/recipe_jsonld.ts          schema.org/Recipe export: how a recipe leaves the building
-src/pantry/                   the pantry ledger: event contract and deterministic fold
-src/integrations/             adapter contract, name resolution, simulated fridge
+src/pantry/                   the pantry ledger: event contract, deterministic fold, store
+src/integrations/             adapter contract, signed ingest, name resolution, simulated fridge, barcode
+src/pages.ts                  the account web: pantry view and simulated fridge
 data/recipes/<id>.json        recipes as data, one file each (see the contract below)
 data/inventory.md             catalogue of every recipe found in the author's cookbooks
 docs/RECIPE_SCHEMA.md         the recipe data contract: provenance, closed vocabularies, honesty flags
 scripts/validate_recipes.py   deterministic validator (stdlib); nothing enters data/ without passing it
 scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
-docs/PLAN.es.md / .html       the architecture and work plan (author's planning document, Spanish)
-docs/PLAN_INTEGRACIONES.es.md IoT, barcode, Instacart and recipe-portal integration plan (block I, Spanish)
+docs/PLAN.md                  the architecture and work plan (English; Spanish original in PLAN.es.md / .html)
+docs/INTEGRATIONS_PLAN.md     IoT, barcode, Instacart and recipe-portal integration plan (block I; Spanish in PLAN_INTEGRACIONES.es.md)
 docs/IMPORT_SOURCES.md        what each recipe portal actually gives us, and how to verify one
 scripts/import_jsonld.py      import a portal recipe from its JSON-LD into data/imports/ (staging)
 data/imports/                 imported recipes awaiting a human's roles, techniques and ids
