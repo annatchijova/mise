@@ -131,3 +131,34 @@ test("recipeYield is read from the shapes sites actually publish", () => {
     [null, "unspecified"], [null, "unspecified"], [null, "unspecified"],
   ]);
 });
+
+test("a step whose @type is a list does not crash the import", () => {
+  const driver = [
+    "import importlib.util, json, sys",
+    `spec = importlib.util.spec_from_file_location("imp", ${JSON.stringify(script)})`,
+    "mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)",
+    'json.dump(mod.flatten_instructions(json.load(sys.stdin)), sys.stdout)',
+  ].join("\n");
+  const out = JSON.parse(execFileSync("python3", ["-c", driver], {
+    input: JSON.stringify([
+      { "@type": ["HowToStep"], text: "Boil" },
+      { "@type": ["HowToSection"], itemListElement: [{ "@type": "HowToStep", text: "Drain" }, "Serve"] },
+    ]),
+    encoding: "utf8",
+  }));
+  assert.deepEqual(out, ["Boil", "Drain", "Serve"]);
+});
+
+test("a yield that is a range or several numbers is not one number, so none is taken", () => {
+  const driver = [
+    "import importlib.util, json, sys",
+    `spec = importlib.util.spec_from_file_location("imp", ${JSON.stringify(script)})`,
+    "mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)",
+    'json.dump([mod.parse_yield(v) for v in json.load(sys.stdin)], sys.stdout)',
+  ].join("\n");
+  const out = JSON.parse(execFileSync("python3", ["-c", driver], {
+    input: JSON.stringify(["4-6 servings", "Makes 12 cookies, serves 6", "4 to 6", "8 servings"]),
+    encoding: "utf8",
+  }));
+  assert.deepEqual(out, [[null, "unspecified"], [null, "unspecified"], [null, "unspecified"], [8, "stated"]]);
+});

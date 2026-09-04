@@ -95,18 +95,41 @@ export async function ingest(
     return { status: 400, body: { ok: false, message: "Body is not valid JSON." } };
   }
 
-  const outcome = await deps.store.rememberKey(`${source.userId}:${source.id}`, key, bodyHash(input.body));
+  const scope = `${source.userId}:${source.id}`;
+  const hash = bodyHash(input.body);
+  const outcome = await deps.store.claimKey(scope, key, hash);
   if (outcome === "conflict") {
     return { status: 409, body: { ok: false, message: "Idempotency-Key was already used with a different body." } };
+  }
+  if (outcome === "in_flight") {
+    // The same delivery is being processed right now. Not a replay yet — its events are not in the
+    // store — and not new work either. The sender retries after the first attempt settles.
+    return { status: 409, body: { ok: false, message: "This delivery is already being processed; retry shortly." } };
   }
   if (outcome === "replay") {
     return { status: 202, body: { ok: true, message: "Already accepted.", source: source.id, accepted: 0, replay: true } };
   }
 
-  const enrich = deps.enrich?.[source.kind];
-  const completed = enrich ? await enrich(payload) : payload;
-  const reading = runSource(adapter, completed, { userId: source.userId, now: deps.now(), resolve: deps.resolve });
-  await deps.store.append(source.userId, reading.events);
+  // The claim is committed only once the events are in the store, and released on any failure, so
+  // the sender's retry with the same key does the work again instead of being told "already
+  // accepted" for a delivery that never landed. An adapter given a malformed payload is the
+  // sender's 400, not a 500 that hides which side is at fault.
+  let reading;
+  try {
+    const enrich = deps.enrich?.[source.kind];
+    const completed = enrich ? await enrich(payload) : payload;
+    try {
+      reading = runSource(adapter, completed, { userId: source.userId, now: deps.now(), resolve: deps.resolve });
+    } catch (err) {
+      await deps.store.releaseKey(scope, key);
+      return { status: 400, body: { ok: false, message: `The payload is not in the shape '${source.kind}' expects: ${(err as Error).message}` } };
+    }
+    await deps.store.append(source.userId, reading.events);
+  } catch (err) {
+    await deps.store.releaseKey(scope, key);
+    throw err;
+  }
+  await deps.store.commitKey(scope, key);
   return {
     status: 202,
     body: {

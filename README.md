@@ -53,7 +53,9 @@ curl localhost:8080/recipes/vegan-gnocchi.json        # the JSON-LD on its own
 npm run check      # typecheck + tests + data validators
 ```
 
-Environment: `PORT`, `BASE_URL` (public origin for recipe `@id`s), `DEMO_USER` (the account that owns the pantry until linking exists; default `demo`), `INGEST_SECRET` (HMAC secret for the two demo sources at `POST /ingest/sim-fridge` and `/ingest/scanner`; unset closes the door), `PANTRY_FILE` (optional JSON mirror of the in-memory ledger).
+Environment: `PORT`, `BASE_URL` (the public origin; used for recipe `@id`s and for the same-origin check on `/sim/fridge`, so set it on a deployment), `DEMO_USER` (the account that owns the pantry until linking exists; default `demo`; set it empty to close every account-bound surface), `INGEST_SECRET` (HMAC secret for the two demo sources at `POST /ingest/sim-fridge` and `/ingest/scanner`; unset closes that door), `PANTRY_FILE` (optional JSON mirror of the in-memory ledger; an unreadable one refuses to start rather than starting empty).
+
+There are no accounts yet, so `/pantry` and `/sim/fridge` are open to whoever can reach them. The demo fridge page only accepts JSON posts from its own origin carrying the token it was served with, so a foreign website cannot write into the pantry; that is the extent of it until block B. `docs/ROBUSTNESS_REVIEW.md` records what was reviewed, what was found and what is still unverified.
 
 A signed delivery, for reference:
 
@@ -80,6 +82,7 @@ scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run u
 docs/PLAN.md                  the architecture and work plan (English; Spanish original in PLAN.es.md / .html)
 docs/INTEGRATIONS_PLAN.md     IoT, barcode, Instacart and recipe-portal integration plan (block I; Spanish in PLAN_INTEGRACIONES.es.md)
 docs/IMPORT_SOURCES.md        what each recipe portal actually gives us, and how to verify one
+docs/ROBUSTNESS_REVIEW.md     the block I review: findings, fixes, negative controls, blind spots
 scripts/import_jsonld.py      import a portal recipe from its JSON-LD into data/imports/ (staging)
 data/imports/                 imported recipes awaiting a human's roles, techniques and ids
 data/source_aliases.json      external food names -> canonical ingredient ids

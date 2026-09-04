@@ -10,7 +10,7 @@
 //   3. `stale` is derived from the clock, not stored. An item nobody has confirmed in N days says so.
 import {
   type Confidence, type Location, type PantryEvent, type Unit,
-  dayOf, daysBetween, fromMilli, weaker,
+  dayOf, daysBetween, fromMilli, isIsoDate, isIsoTimestamp, weaker,
 } from "./events.ts";
 
 export type Freshness = "expired" | "urgent" | "soon" | "fresh" | "unknown";
@@ -46,6 +46,10 @@ export type FoldResult = {
   items: PantryItem[];
   /** Events skipped because their external_id had already been folded. Idempotency, made visible. */
   duplicates: number;
+  /** Events skipped because their timestamp or expiry date is not a valid ISO value. Adapters
+   *  validate at the boundary, so this should stay zero; when it does not, the pantry still answers
+   *  and says how many events it could not use, instead of failing every read on one bad record. */
+  invalid: number;
 };
 
 type Bucket = {
@@ -104,8 +108,13 @@ export function foldPantry(events: PantryEvent[], opts: FoldOptions): FoldResult
   const seen = new Set<string>();
   const buckets = new Map<string, Bucket>();
   let duplicates = 0;
+  let invalid = 0;
 
   for (const e of ordered) {
+    if (!isIsoTimestamp(e.ts) || (e.expires_on !== null && !isIsoDate(e.expires_on))) {
+      invalid++;
+      continue;
+    }
     if (e.external_id !== null) {
       // A fridge that reports the same reading twice, or a webhook delivered twice, must not double
       // the pantry. Same guarantee as the UCP Idempotency-Key, one layer down.
@@ -189,5 +198,5 @@ export function foldPantry(events: PantryEvent[], opts: FoldOptions): FoldResult
       a.location.localeCompare(b.location) ||
       a.unit.localeCompare(b.unit),
   );
-  return { items, duplicates };
+  return { items, duplicates, invalid };
 }

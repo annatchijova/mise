@@ -4,7 +4,7 @@
 // import refuses to invent what a page cannot carry.
 import { strict as assert } from "node:assert";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, test } from "node:test";
@@ -129,4 +129,19 @@ test("a page with no Recipe JSON-LD is reported, not half-imported", () => {
     () => execFileSync("python3", [join(repo, "scripts/import_jsonld.py"), page, "--stdout"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }),
     /Command failed/,
   );
+});
+
+test("the importer refuses to overwrite a staging file a human may have edited", () => {
+  const page = join(work, "tofu-scramble.html");
+  writeFileSync(page, renderRecipePage(recipes.find((r) => r.id === "tofu-scramble")!), "utf8");
+  const dir = join(work, "imports-overwrite");
+  execFileSync("python3", [join(repo, "scripts/import_jsonld.py"), page, "--id", "tofu-scramble", "-o", dir], { stdio: "ignore" });
+  writeFileSync(join(dir, "tofu-scramble.json"), '{"edited":"by a human"}', "utf8");
+  assert.throws(
+    () => execFileSync("python3", [join(repo, "scripts/import_jsonld.py"), page, "--id", "tofu-scramble", "-o", dir], { stdio: ["ignore", "pipe", "pipe"] }),
+    /Command failed/,
+  );
+  assert.equal(JSON.parse(readFileSync(join(dir, "tofu-scramble.json"), "utf8")).edited, "by a human", "the edit survived");
+  execFileSync("python3", [join(repo, "scripts/import_jsonld.py"), page, "--id", "tofu-scramble", "-o", dir, "--force"], { stdio: "ignore" });
+  assert.equal(JSON.parse(readFileSync(join(dir, "tofu-scramble.json"), "utf8")).id, "tofu-scramble", "--force is the explicit choice");
 });

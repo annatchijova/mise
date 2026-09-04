@@ -8,8 +8,9 @@ import { type BarcodePayload, barcodeSource, candidateNames, parsePackage } from
 import { IDEMPOTENCY_HEADER, SIGNATURE_HEADER, type ConnectedSource, ingest, sign, verify } from "../src/integrations/ingest.ts";
 import { simulatedFridge } from "../src/integrations/simulated_fridge.ts";
 import { type PantrySource, runSource } from "../src/integrations/types.ts";
+import { type PantryEvent } from "../src/pantry/events.ts";
 import { foldPantry } from "../src/pantry/fold.ts";
-import { MemoryPantryStore } from "../src/pantry/store.ts";
+import { MemoryPantryStore, type PantryStore } from "../src/pantry/store.ts";
 import { loadRecipes } from "../src/recipes.ts";
 
 const NOW = "2026-09-04T12:00:00.000Z";
@@ -20,7 +21,7 @@ const offTofu = JSON.parse(readFileSync(new URL("./fixtures/off_product_tofu.jso
 const fridge: ConnectedSource = { id: "src-fridge", userId: "anna", kind: "simulated", secret: "s3cret", label: "Kitchen fridge" };
 const scanner: ConnectedSource = { id: "src-scan", userId: "anna", kind: "barcode", secret: "other", label: "Phone scanner" };
 
-function deps(store = new MemoryPantryStore()) {
+function deps(store: PantryStore = new MemoryPantryStore()) {
   return {
     store,
     resolve,
@@ -98,10 +99,112 @@ test("a body that is not JSON is a 400 after the signature check, not a crash", 
 
 test("idempotency keys are scoped per user and source, so two sources may reuse a key", async () => {
   const store = new MemoryPantryStore();
-  assert.equal(await store.rememberKey("anna:a", "k", "h1"), "new");
-  assert.equal(await store.rememberKey("anna:b", "k", "h2"), "new");
-  assert.equal(await store.rememberKey("anna:a", "k", "h1"), "replay");
-  assert.equal(await store.rememberKey("anna:a", "k", "h9"), "conflict");
+  assert.equal(await store.claimKey("anna:a", "k", "h1"), "new");
+  assert.equal(await store.claimKey("anna:a", "k", "h1"), "in_flight", "claimed but not yet committed");
+  await store.commitKey("anna:a", "k");
+  assert.equal(await store.claimKey("anna:b", "k", "h2"), "new", "a different scope, same key");
+  assert.equal(await store.claimKey("anna:a", "k", "h1"), "replay");
+  assert.equal(await store.claimKey("anna:a", "k", "h9"), "conflict");
+  await store.releaseKey("anna:a", "k");
+  assert.equal(await store.claimKey("anna:a", "k", "h1"), "replay", "release does not undo a commit");
+});
+
+test("two deliveries of the same key started before either commits: one wins, the ledger holds the events once", async () => {
+  const store = new MemoryPantryStore();
+  // Force the feared interleaving: append parks on a promise so both requests are past the claim.
+  let unblock!: () => void;
+  const gate = new Promise<void>((r) => { unblock = r; });
+  const slow: PantryStore = {
+    append: async (u, e) => { await gate; return store.append(u, e); },
+    events: (u) => store.events(u),
+    claimKey: (s, k, h) => store.claimKey(s, k, h),
+    commitKey: (s, k) => store.commitKey(s, k),
+    releaseKey: (s, k) => store.releaseKey(s, k),
+  };
+  const d = deps(slow);
+  const a = ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-race") });
+  const b = ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-race") });
+  unblock();
+  const [ra, rb] = await Promise.all([a, b]);
+  const statuses = [ra.status, rb.status].sort();
+  assert.deepEqual(statuses, [202, 409], "exactly one accepted, the other told to retry");
+  assert.equal((await store.events("anna")).length, 5, "not ten");
+  // After the first settles, the same delivery is a replay, not more work.
+  const again = await ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-race") });
+  assert.equal(again.body.replay, true);
+});
+
+test("a failure after the key is checked does not burn the key: the retry does the work", async () => {
+  const store = new MemoryPantryStore();
+  let calls = 0;
+  const flaky: PantrySource<unknown> = {
+    kind: "simulated",
+    maxConfidence: "inferred",
+    toEvents: (payload, ctx) => {
+      calls += 1;
+      if (calls === 1) throw new TypeError("device sent garbage");
+      return simulatedFridge.toEvents(payload as never, ctx);
+    },
+  };
+  const d = { ...deps(store), adapters: { simulated: flaky } };
+  const first = await ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-flaky") });
+  assert.equal(first.status, 400, "an adapter that cannot read the payload is the sender's 400, not our 500");
+  assert.deepEqual(await store.events("anna"), [], "nothing was stored");
+  const second = await ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-flaky") });
+  assert.equal(second.status, 202);
+  assert.notEqual(second.body.replay, true, "the retry was real work, not a replay of nothing");
+  assert.equal((await store.events("anna")).length, 5);
+});
+
+test("a store that fails to append leaves the key uncommitted", async () => {
+  const store = new MemoryPantryStore();
+  let fail = true;
+  const failing: PantryStore = {
+    append: async (u: string, e: PantryEvent[]) => { if (fail) throw new Error("disk full"); return store.append(u, e); },
+    events: (u: string) => store.events(u),
+    claimKey: (s: string, k: string, h: string) => store.claimKey(s, k, h),
+    commitKey: (s: string, k: string) => store.commitKey(s, k),
+    releaseKey: (s: string, k: string) => store.releaseKey(s, k),
+  };
+  const d = deps(failing);
+  await assert.rejects(ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-disk") }), /disk full/);
+  fail = false;
+  const retry = await ingest(d, { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading, "k-disk") });
+  assert.equal(retry.status, 202);
+  assert.notEqual(retry.body.replay, true);
+  assert.equal((await store.events("anna")).length, 5);
+});
+
+test("the persisted mirror uses a visible separator, never a control character", async () => {
+  const { mkdtempSync, rmSync, readFileSync: read } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "mise-sep-"));
+  try {
+    const file = join(dir, "pantry.json");
+    const s = new MemoryPantryStore(file);
+    await s.claimKey("anna:src", "k-1", "h");
+    await s.commitKey("anna:src", "k-1");
+    const text = read(file, "utf8");
+    assert.ok(!/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(text), "no control characters in the mirror");
+    assert.match(text, /"anna:src\|k-1"/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("an unreadable mirror refuses to start rather than starting empty", async () => {
+  const { mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "mise-unreadable-"));
+  try {
+    // A directory at the path is not "first run"; it is a misconfiguration.
+    assert.throws(() => new MemoryPantryStore(dir), /EISDIR|illegal operation/i);
+    assert.doesNotThrow(() => new MemoryPantryStore(join(dir, "missing.json")), "a missing file is a first run");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("the store mirrors to a file and reloads it", async () => {
@@ -115,7 +218,7 @@ test("the store mirrors to a file and reloads it", async () => {
     await ingest(deps(a), { sourceId: fridge.id, body: reading, headers: headers(fridge.secret, reading) });
     const b = new MemoryPantryStore(file);
     assert.equal((await b.events("anna")).length, 5);
-    assert.equal(await b.rememberKey("anna:src-fridge", "k-1", "x"), "conflict", "keys survive the restart too");
+    assert.equal(await b.claimKey("anna:src-fridge", "k-1", "x"), "conflict", "keys survive the restart too");
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

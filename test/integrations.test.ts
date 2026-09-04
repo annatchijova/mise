@@ -129,3 +129,43 @@ test("what the fridge sees and what you say land in the same ledger, and the wea
   assert.deepEqual(carrot.origins, ["simulated", "voice"]);
   assert.equal(carrot.confidence, "inferred");
 });
+
+// --- boundary validation: what a device sends must not be able to break every later read ---------
+
+test("a reading whose timestamp is not a timestamp is rejected whole, and says so", () => {
+  const bad = { ...reading, components: { main: { "samsungce.fridgeFoodList": { foodList: { timestamp: "today", value: [{ name: "Tofu", quantity: 1, unit: "pc" }] } } } } };
+  const { events, unmapped } = runSource(simulatedFridge, bad as FridgeStatus, ctx);
+  assert.equal(events.length, 0);
+  assert.match(unmapped[0].reason, /not an ISO 8601 timestamp/);
+});
+
+test("an impossible expiry date is dropped from the item, not stored", () => {
+  const bad = { ...reading, components: { main: { "samsungce.fridgeFoodList": { foodList: { timestamp: "2026-09-04T07:00:00.000Z", value: [{ name: "Tofu", quantity: 1, unit: "pc", expireDate: "2026-13-45" }] } } } } };
+  const { events, unmapped } = runSource(simulatedFridge, bad as FridgeStatus, ctx);
+  assert.equal(events.length, 1, "the tofu is still real");
+  assert.equal(events[0].expires_on, null, "its date is not");
+  assert.match(unmapped[0].reason, /2026-13-45/);
+});
+
+test("two packages of the same food in one reading are two lines, not one plus a duplicate", () => {
+  const two = { ...reading, components: { main: { "samsungce.fridgeFoodList": { foodList: { timestamp: "2026-09-04T07:00:00.000Z", value: [{ name: "Tofu", quantity: 1, unit: "pc" }, { name: "Tofu", quantity: 1, unit: "pc" }] } } } } };
+  const { events } = runSource(simulatedFridge, two as FridgeStatus, ctx);
+  assert.equal(events.length, 2);
+  assert.notEqual(events[0].external_id, events[1].external_id);
+  const { items, duplicates } = foldPantry(events, { now: NOW });
+  assert.equal(duplicates, 0);
+  // Two corrections on the same line: the later restates. The fridge sees two packages; the honest
+  // total is the last thing it said about the line, which is one package per line-item, twice over.
+  // What must not happen is a silent drop — both events reached the fold.
+  assert.equal(items.length, 1);
+});
+
+test("the fold never throws on a bad stored record: it counts it and answers with the rest", () => {
+  const good = runSource(simulatedFridge, reading, ctx).events;
+  const poisoned: PantryEvent = { ...good[0], ts: "today", external_id: "poison" };
+  const { items, invalid } = foldPantry([...good, poisoned], { now: NOW });
+  assert.equal(invalid, 1);
+  assert.equal(items.length, foldPantry(good, { now: NOW }).items.length);
+  const badDate: PantryEvent = { ...good[0], expires_on: "2026-13-45", external_id: "poison-2" };
+  assert.equal(foldPantry([badDate], { now: NOW }).invalid, 1);
+});

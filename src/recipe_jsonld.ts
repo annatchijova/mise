@@ -16,6 +16,7 @@
 // flag — so another Mise instance can round-trip a recipe without losing the chef's judgment,
 // while consumers that do not understand the namespace simply ignore it.
 import type { Ingredient, Recipe, Step } from "./recipes.ts";
+import { displayName } from "./pantry/events.ts";
 
 export const MISE_NS = "https://github.com/annatchijova/mise/ns#";
 
@@ -39,10 +40,7 @@ const UNIT_WORD: Record<string, [string, string]> = {
   bunch: ["bunch", "bunches"], can: ["can", "cans"], sachet: ["sachet", "sachets"], to_taste: ["", ""],
 };
 
-/** Canonical id to a readable English name: "flour-0000" -> "flour 0000". */
-export function displayName(id: string): string {
-  return id.replace(/-/g, " ");
-}
+export { displayName };
 
 /** One schema.org recipeIngredient line. Never invents a quantity: an unspecified qty yields the
  *  bare ingredient, with the book's own wording ("a gusto", "cantidad necesaria") kept as a note. */

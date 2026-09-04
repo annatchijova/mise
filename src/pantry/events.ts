@@ -61,6 +61,34 @@ export function fromMilli(milli: number | null): number | null {
   return milli === null ? null : milli / MILLI;
 }
 
+/** Boundary conversion for a value a device reported: anything that is not a finite positive number
+ *  representable in milli-units becomes null ("some, amount unknown"). Adapters use this; `toMilli`
+ *  is for our own input, where imprecision is a bug rather than a fact about the source. */
+export function milliOrNull(qty: unknown): number | null {
+  if (typeof qty !== "number" || !Number.isFinite(qty) || qty <= 0) return null;
+  const milli = Math.round(qty * MILLI);
+  return Math.abs(milli / MILLI - qty) > 1e-9 ? null : milli;
+}
+
+/** An ISO 8601 timestamp with a date part and a time part that Date.parse accepts. The date-part
+ *  check keeps "today", "1725000000" and a bare date from passing as timestamps. */
+export function isIsoTimestamp(value: unknown): value is string {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value) && !Number.isNaN(Date.parse(value));
+}
+
+/** A real YYYY-MM-DD calendar date. Round-trips through Date so that 2026-13-45 is rejected, not
+ *  merely shaped correctly. */
+export function isIsoDate(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const t = Date.parse(`${value}T00:00:00Z`);
+  return !Number.isNaN(t) && new Date(t).toISOString().slice(0, 10) === value;
+}
+
+/** Canonical id to a readable English name: "flour-0000" -> "flour 0000". */
+export function displayName(id: string): string {
+  return id.replace(/-/g, " ");
+}
+
 const CONFIDENCE_RANK: Record<Confidence, number> = { confirmed: 3, inferred: 2, stale: 1 };
 
 /** The weaker of two confidences. Mixing a confirmed and an inferred event yields inferred:

@@ -241,6 +241,7 @@ What is in the repository, with its tests. Everything else in block I is still p
 | Import from JSON-LD into staging, conservative quantity parsing | done | `scripts/import_jsonld.py` |
 | Staging contract and its validator | done | `scripts/validate_recipes.py --staging`, `docs/RECIPE_SCHEMA.md` |
 | Tests, including the export → import round trip, each checked against a deliberately broken implementation | done | `test/` (`npm test`) |
+| Robustness review: correctness, security, degradation, concurrency; every finding fixed with a red-first test | done | `docs/ROBUSTNESS_REVIEW.md` |
 | I.0 de-risk: Instacart key, SmartThings token, per-portal evidence | **pending, needs human hands** | `docs/IMPORT_SOURCES.md` |
 | Real SmartThings adapter | pending, blocked on I.0 | — |
 | Instacart in `cart_from_plan` | pending, blocked on I.0 | — |

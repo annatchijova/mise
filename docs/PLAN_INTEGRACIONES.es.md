@@ -174,6 +174,7 @@ Lo que ya está en el repo, con sus pruebas. Todo lo demás del bloque I sigue p
 | Importar desde JSON-LD a staging, con parseo conservador de cantidades | hecho | `scripts/import_jsonld.py` |
 | Contrato de staging y su validador | hecho | `scripts/validate_recipes.py --staging`, `docs/RECIPE_SCHEMA.md` |
 | Pruebas, incluida la ida y vuelta exportar → importar, cada una verificada contra una implementación rota a propósito | hecho | `test/` (`npm test`) |
+| Revisión de robustez: corrección, seguridad, degradación, concurrencia; cada hallazgo corregido con prueba en rojo primero | hecho | `docs/ROBUSTNESS_REVIEW.md` |
 | I.0 de-riesgo: llaves de Instacart y token de SmartThings, evidencia por portal | **pendiente, necesita manos humanas** | `docs/IMPORT_SOURCES.md` |
 | Adaptador SmartThings real | pendiente, bloqueado por I.0 | — |
 | Instacart en `cart_from_plan` | pendiente, bloqueado por I.0 | — |

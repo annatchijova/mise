@@ -5,6 +5,7 @@
 // connects a source, drives the simulated fridge for the demo, and looks at the pantry with every
 // badge the data carries. They are server-rendered, inline-styled, and read the same fold the tools
 // read — there is no second model of the pantry.
+import { displayName } from "./pantry/events.ts";
 import type { Freshness, PantryItem } from "./pantry/fold.ts";
 import { esc } from "./recipe_jsonld.ts";
 
@@ -75,7 +76,11 @@ function expiryCell(i: PantryItem): string {
 export type SourceLine = { label: string; kind: string; synced_at: string | null };
 
 /** The pantry, exactly as the fold sees it. Every reservation the data carries is on the page. */
-export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now: string, opts: { location?: string } = {}): string {
+export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now: string, opts: { location?: string; invalid?: number } = {}): string {
+  const invalid = opts.invalid ?? 0;
+  const warning = invalid > 0
+    ? `<div class="card" style="border-color:var(--bad)"><span class="badge bad">warning</span> ${invalid} ledger record${invalid === 1 ? "" : "s"} could not be read (bad timestamp or date) and ${invalid === 1 ? "is" : "are"} not shown. The pantry below is what the rest of the ledger says.</div>`
+    : "";
   const locations = [...new Set(items.map((i) => i.location))].sort();
   const shown = opts.location ? items.filter((i) => i.location === opts.location) : items;
 
@@ -84,7 +89,7 @@ export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now
     : "";
 
   const rows = shown.map((i) => `<tr>
-<td>${esc(i.ingredient_id.replace(/-/g, " "))}<br><span style="color:var(--dim);font-size:.8rem">${esc(i.location)}</span></td>
+<td>${esc(displayName(i.ingredient_id))}<br><span style="color:var(--dim);font-size:.8rem">${esc(i.location)}</span></td>
 <td class="num">${qtyCell(i)}</td>
 <td><span class="badge ${CONF[i.confidence]}">${esc(i.confidence)}</span></td>
 <td>${expiryCell(i)}</td>
@@ -102,12 +107,17 @@ ${rows}
     ? `<p class="sub">No connected sources. Voice only.</p>`
     : `<p class="sub">${sources.map((s) => `${esc(s.label)} <span style="color:var(--dim)">(${esc(s.kind)}${s.synced_at ? `, last report ${esc(s.synced_at.slice(0, 16).replace("T", " "))}` : ", never reported"})</span>`).join(" · ")}</p>`;
 
-  return shell("Pantry", `${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
+  return shell("Pantry", `${warning}${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
     `${items.length} line${items.length === 1 ? "" : "s"}, ordered by what goes off first.`);
 }
 
+/** What every account-bound page answers when there is no account to bind to. */
+export function renderLinkAccountPage(): string {
+  return shell("Link your account", `<div class="card"><p style="margin:0">This needs a linked account. Until account linking exists, set <code>DEMO_USER</code> to name the demo account; it is currently unset, so the pantry, the simulated fridge and the ingest sources are closed rather than serving an anonymous pantry.</p></div>`);
+}
+
 /** The demo's fridge. It posts the same payload shape the real adapter will read. */
-export function renderSimFridgePage(): string {
+export function renderSimFridgePage(token: string): string {
   const body = `
 <div class="card">
 <p style="margin:0 0 .5rem">This page stands in for a connected fridge: what you submit here reaches the pantry through the same
@@ -126,6 +136,7 @@ SmartThings device status; its capability id is unverified against a real Family
 <pre id="out">—</pre>
 <script>
 (function(){
+  var TOKEN = ${JSON.stringify(token)};
   var rows = document.getElementById('rows');
   function row(n,q,u,e){
     var d=document.createElement('div');d.className='row';
@@ -145,7 +156,7 @@ SmartThings device status; its capability id is unverified against a real Family
     });
     var ts=document.querySelector('[name=ts]').value.trim()||new Date().toISOString();
     var payload={deviceId:'mise-sim-fridge-1',components:{main:{'samsungce.fridgeFoodList':{foodList:{timestamp:ts,value:items}}}}};
-    fetch('/sim/fridge',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)})
+    fetch('/sim/fridge',{method:'POST',headers:{'content-type':'application/json','x-sim-token':TOKEN},body:JSON.stringify(payload)})
       .then(function(r){return r.text()}).then(function(t){document.getElementById('out').textContent=t;})
       .catch(function(e){document.getElementById('out').textContent=String(e)});
   };

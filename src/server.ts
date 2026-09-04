@@ -7,14 +7,16 @@
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
 //   GET  /healthz             liveness
+import { randomBytes } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 
 import { type Recipe, loadRecipes, searchRecipes } from "./recipes.ts";
+import { displayName } from "./pantry/events.ts";
 import { renderIndexPage, renderRecipePage, toJsonLd } from "./recipe_jsonld.ts";
-import { renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
+import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
 import { MemoryPantryStore } from "./pantry/store.ts";
 import { buildResolver, loadAliases } from "./integrations/aliases.ts";
@@ -29,13 +31,20 @@ import { type PantrySource, runSource } from "./integrations/types.ts";
 const PORT = Number(process.env.PORT ?? 8080);
 /** Canonical public origin, used for the @id of an exported recipe. */
 const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}`;
-/** Until account linking (plan block B) exists, one demo account owns the pantry. Unset it and
- *  every account-bound surface answers "link your account" instead of pretending. */
-const DEMO_USER = process.env.DEMO_USER ?? "demo";
+/** Until account linking (plan block B) exists, one demo account owns the pantry. Defaults to
+ *  "demo"; set DEMO_USER to an empty string and every account-bound surface — pantry_list, /pantry,
+ *  /sim/fridge and the ingest sources — answers "link your account" instead of pretending. */
+const DEMO_USER: string | null = (process.env.DEMO_USER ?? "demo").trim() || null;
 /** Secret for the two demo sources reachable through POST /ingest. Unset: the door is closed. */
 const INGEST_SECRET = process.env.INGEST_SECRET;
 /** Optional JSON mirror of the in-memory ledger, so a local demo survives a restart. */
 const PANTRY_FILE = process.env.PANTRY_FILE;
+
+/** Ties a POST to /sim/fridge to a page this process served. It is not authentication — there are
+ *  no accounts yet — but it stops a foreign website, or a bare request, from writing to the demo
+ *  pantry through the unsigned route. Rotates on every start. */
+const SIM_TOKEN = randomBytes(16).toString("hex");
+const ORIGIN = new URL(BASE_URL).origin;
 
 const recipes: Recipe[] = loadRecipes();
 const byId = new Map(recipes.map((r) => [r.id, r]));
@@ -44,7 +53,7 @@ const store = new MemoryPantryStore(PANTRY_FILE);
 const lookupProduct = makeOffLookup();
 
 /** Block B replaces this with per-user sources in DynamoDB. */
-const sources: ConnectedSource[] = INGEST_SECRET
+const sources: ConnectedSource[] = INGEST_SECRET && DEMO_USER
   ? [
       { id: "sim-fridge", userId: DEMO_USER, kind: "simulated", secret: INGEST_SECRET, label: "Kitchen fridge (simulated)" },
       { id: "scanner", userId: DEMO_USER, kind: "barcode", secret: INGEST_SECRET, label: "Barcode scanner" },
@@ -130,6 +139,8 @@ function buildServer(): McpServer {
         ),
         total: z.number().int(),
         as_of: z.string(),
+        /** Ledger events the fold could not use. Zero unless a source got past boundary validation. */
+        invalid_events: z.number().int(),
       },
     },
     async (args) => {
@@ -146,14 +157,15 @@ function buildServer(): McpServer {
         ({ ingredient_id, qty, qty_known, unit, location, confidence, expires_on, days_to_expiry, freshness, origins }));
 
       const say = (i: (typeof out)[number]) => {
-        const name = i.ingredient_id.replace(/-/g, " ");
+        const name = displayName(i.ingredient_id);
         const amount = !i.qty_known ? `some ${name}, amount unknown` : i.unit === "pc" ? `${i.qty} ${name}` : `${i.qty} ${i.unit} ${name}`;
         const when = i.days_to_expiry === null ? "" : i.days_to_expiry < 0 ? ", already past its date" : i.days_to_expiry <= 1 ? ", expiring today or tomorrow" : `, ${i.days_to_expiry} days left`;
         const sure = i.confidence === "inferred" ? " (the fridge reported it)" : i.confidence === "stale" ? " (not confirmed lately)" : "";
         return `${amount}${when}${sure}`;
       };
-      const spoken = out.length === 0 ? "Nothing on record yet." : `${out.length} item${out.length === 1 ? "" : "s"}: ${out.map(say).join("; ")}.`;
-      return { structuredContent: { items: out, total: out.length, as_of: now }, content: [{ type: "text", text: spoken }] };
+      const caveat = fold.invalid > 0 ? ` ${fold.invalid} record${fold.invalid === 1 ? "" : "s"} could not be read and ${fold.invalid === 1 ? "was" : "were"} left out.` : "";
+      const spoken = (out.length === 0 ? "Nothing on record yet." : `${out.length} item${out.length === 1 ? "" : "s"}: ${out.map(say).join("; ")}.`) + caveat;
+      return { structuredContent: { items: out, total: out.length, as_of: now, invalid_events: fold.invalid }, content: [{ type: "text", text: spoken }] };
     },
   );
 
@@ -170,18 +182,30 @@ const html = (res: ServerResponse, body: string, status = 200) => send(res, stat
 const json = (res: ServerResponse, status: number, body: unknown) => send(res, status, JSON.stringify(body, null, 2), "application/json; charset=utf-8");
 
 const BODY_LIMIT = 256 * 1024;
+class BodyTooLarge extends Error {}
+
+/** Read the body up to the limit. On overflow it stops reading and rejects with BodyTooLarge; the
+ *  caller answers 413 before the socket is closed, so the sender sees the status rather than a reset. */
 function readBody(req: IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     let size = 0;
+    let done = false;
     req.on("data", (c: Buffer) => {
+      if (done) return;
       size += c.length;
-      if (size > BODY_LIMIT) { reject(new Error("body too large")); req.destroy(); return; }
+      if (size > BODY_LIMIT) { done = true; req.pause(); reject(new BodyTooLarge("body too large")); return; }
       chunks.push(c);
     });
-    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-    req.on("error", reject);
+    req.on("end", () => { if (!done) resolve(Buffer.concat(chunks).toString("utf8")); });
+    req.on("error", (err) => { if (!done) reject(err); });
   });
+}
+
+/** Answer 413 and only then close the connection: the response must leave before the socket does. */
+function tooLarge(req: IncomingMessage, res: ServerResponse): void {
+  res.writeHead(413, { "content-type": "application/json; charset=utf-8", connection: "close" });
+  res.end(JSON.stringify({ ok: false, message: "Body too large." }), () => req.destroy());
 }
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -203,9 +227,9 @@ function serveRecipes(pathname: string, res: ServerResponse): boolean {
 }
 
 async function serveIngest(sourceId: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
-  if (sources.length === 0) { json(res, 503, { ok: false, message: "Ingest is closed: INGEST_SECRET is not set." }); return; }
+  if (sources.length === 0) { json(res, 503, { ok: false, message: "Ingest is closed: INGEST_SECRET and DEMO_USER must both be set." }); return; }
   let body: string;
-  try { body = await readBody(req); } catch { json(res, 413, { ok: false, message: "Body too large." }); return; }
+  try { body = await readBody(req); } catch (err) { if (err instanceof BodyTooLarge) tooLarge(req, res); else json(res, 400, { ok: false, message: "Could not read the body." }); return; }
   const result = await ingest(ingestDeps, {
     sourceId,
     body,
@@ -215,6 +239,7 @@ async function serveIngest(sourceId: string, req: IncomingMessage, res: ServerRe
 }
 
 async function servePantry(url: URL, res: ServerResponse): Promise<void> {
+  if (!DEMO_USER) { html(res, renderLinkAccountPage(), 403); return; }
   const now = new Date().toISOString();
   const { events, fold } = await pantryFor(DEMO_USER, now);
   // A source's "last report" is simply the newest event it produced; no separate sync state to drift.
@@ -226,14 +251,35 @@ async function servePantry(url: URL, res: ServerResponse): Promise<void> {
   if (sources.length === 0 && events.some((e) => e.origin === "simulated")) {
     lines.push({ label: "Simulated fridge (web)", kind: "simulated", synced_at: events.filter((e) => e.origin === "simulated").map((e) => e.ts).sort().at(-1) ?? null });
   }
-  html(res, renderPantryPage(fold.items, lines, now, { location: url.searchParams.get("location") ?? undefined }));
+  html(res, renderPantryPage(fold.items, lines, now, { location: url.searchParams.get("location") ?? undefined, invalid: fold.invalid }));
 }
 
-/** The demo fridge page posts here, same-origin, as the demo user. External devices use /ingest. */
+/** A browser request that did not come from this origin. Checked on the headers browsers set and
+ *  a page cannot forge; a non-browser client simply sends none of them and is stopped by the token. */
+function crossSite(req: IncomingMessage): boolean {
+  const site = req.headers["sec-fetch-site"];
+  if (typeof site === "string" && site !== "same-origin" && site !== "none") return true;
+  const origin = req.headers.origin;
+  if (typeof origin === "string" && origin !== ORIGIN) return true;
+  return false;
+}
+
+/** The demo fridge page posts here as the demo user. It is the same adapter as the signed
+ *  /ingest/sim-fridge door, so it must not be an easier way in: JSON only (a form cannot send it
+ *  without a preflight), same origin, and the token the page was served with. Devices use /ingest. */
 async function serveSimFridge(req: IncomingMessage, res: ServerResponse): Promise<void> {
-  if (req.method === "GET") { html(res, renderSimFridgePage()); return; }
+  if (!DEMO_USER) { html(res, renderLinkAccountPage(), 403); return; }
+  if (req.method === "GET") { html(res, renderSimFridgePage(SIM_TOKEN)); return; }
+  if (!(req.headers["content-type"] ?? "").toLowerCase().startsWith("application/json")) {
+    json(res, 415, { ok: false, message: "Send application/json." }); return;
+  }
+  if (crossSite(req) || req.headers["x-sim-token"] !== SIM_TOKEN) {
+    json(res, 403, { ok: false, message: "This route only accepts posts from the simulated fridge page served by this server." }); return;
+  }
+  let body: string;
+  try { body = await readBody(req); } catch (err) { if (err instanceof BodyTooLarge) tooLarge(req, res); else json(res, 400, { ok: false, message: "Could not read the body." }); return; }
   let payload: FridgeStatus;
-  try { payload = JSON.parse(await readBody(req)) as FridgeStatus; } catch { json(res, 400, { ok: false, message: "Body is not valid JSON." }); return; }
+  try { payload = JSON.parse(body) as FridgeStatus; } catch { json(res, 400, { ok: false, message: "Body is not valid JSON." }); return; }
   const reading = runSource(simulatedFridge, payload, { userId: DEMO_USER, now: new Date().toISOString(), resolve });
   await store.append(DEMO_USER, reading.events);
   json(res, 202, { ok: true, accepted: reading.events.length, unmapped: reading.unmapped, next: "/pantry" });
@@ -265,5 +311,5 @@ const httpServer = createServer(async (req, res) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`mise listening on ${BASE_URL} — MCP at /mcp, ${recipes.length} recipes at /recipes, pantry at /pantry (user: ${DEMO_USER}), ingest ${sources.length ? "open" : "closed (set INGEST_SECRET)"}`);
+  console.log(`mise listening on ${BASE_URL} — MCP at /mcp, ${recipes.length} recipes at /recipes, pantry at /pantry (${DEMO_USER ? `user: ${DEMO_USER}` : "no demo user: account surfaces closed"}), ingest ${sources.length ? "open" : "closed (set INGEST_SECRET)"}`);
 });

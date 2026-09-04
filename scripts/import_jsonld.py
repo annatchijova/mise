@@ -68,10 +68,15 @@ def iter_nodes(doc):
                 stack.append(node["@graph"])
 
 
-def is_recipe(node):
-    t = node.get("@type")
+def type_names(node):
+    """schema.org allows @type to be a string or a list; compare on the bare local name."""
+    t = node.get("@type") if isinstance(node, dict) else None
     types = t if isinstance(t, list) else [t]
-    return any(isinstance(x, str) and x.rsplit("/", 1)[-1].lower() == "recipe" for x in types)
+    return {x.rsplit("/", 1)[-1].lower() for x in types if isinstance(x, str)}
+
+
+def is_recipe(node):
+    return "recipe" in type_names(node)
 
 
 def find_recipe(text):
@@ -198,7 +203,7 @@ def flatten_instructions(value):
         out.extend(p.strip() for p in re.split(r"[\r\n]+", value) if p.strip())
         return out
     for item in value if isinstance(value, list) else [value]:
-        if isinstance(item, dict) and item.get("@type", "").endswith("HowToSection"):
+        if isinstance(item, dict) and "howtosection" in type_names(item):
             out.extend(flatten_instructions(item.get("itemListElement", [])))
         else:
             text = as_text(item)
@@ -208,16 +213,20 @@ def flatten_instructions(value):
 
 
 def parse_yield(value):
-    """recipeYield is famously loose: 4, "4", "4 servings", ["4 servings"]."""
+    """recipeYield is famously loose: 4, "4", "4 servings", ["4 servings"].
+
+    Same rule as the ingredient parser: one plainly stated number is read; a range ("4-6 servings")
+    or several numbers ("Makes 12 cookies, serves 6") is not one number, so nothing is taken.
+    """
     if isinstance(value, list):
         value = value[0] if value else None
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         n = int(value)
         return (n, "stated") if n > 0 else (None, "unspecified")
     if isinstance(value, str):
-        m = re.search(r"\d+", value)
-        if m:
-            n = int(m.group())
+        numbers = re.findall(r"\d+", unicodedata.normalize("NFKC", value))
+        if len(numbers) == 1:
+            n = int(numbers[0])
             return (n, "stated") if n > 0 else (None, "unspecified")
     return None, "unspecified"
 
@@ -327,6 +336,7 @@ def main(argv):
     ap.add_argument("--fetched-at", default=None, help="ISO timestamp to record (default: now, UTC)")
     ap.add_argument("--timeout", type=float, default=20.0)
     ap.add_argument("--stdout", action="store_true", help="print instead of writing a file")
+    ap.add_argument("--force", action="store_true", help="overwrite an existing staging file (a human may have edited it)")
     args = ap.parse_args(argv)
 
     try:
@@ -355,6 +365,11 @@ def main(argv):
     else:
         os.makedirs(args.out_dir, exist_ok=True)
         path = os.path.join(args.out_dir, f"{staged['id']}.json")
+        if os.path.exists(path) and not args.force:
+            # A staging file is where a human fills in roles, techniques and ids. Silently replacing
+            # it with fresh nulls would destroy that work; make the overwrite an explicit choice.
+            print(f"{path} already exists and may carry a reviewer's edits; use --force to overwrite, or --id for a new file", file=sys.stderr)
+            return 3
         with open(path, "w", encoding="utf-8") as f:
             f.write(payload)
         print(f"wrote {path}")
