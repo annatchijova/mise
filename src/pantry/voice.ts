@@ -10,6 +10,7 @@ import { type EventType, type PantryEvent, type Unit, canonicalAmount, isIsoDate
 
 export const UNITS: readonly Unit[] = [
   "g", "kg", "ml", "l", "tsp", "tbsp", "cup", "pc", "clove", "pinch", "slice", "bunch", "can", "sachet", "to_taste",
+  "portion",
 ];
 
 export type VoiceItem = {

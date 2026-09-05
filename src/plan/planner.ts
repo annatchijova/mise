@@ -25,7 +25,8 @@ import { createHash } from "node:crypto";
 
 import type { Recipe } from "../recipes.ts";
 import type { PantryItem } from "../pantry/fold.ts";
-import { type Unit, canonicalAmount, dayOf, toMilli } from "../pantry/events.ts";
+import { type Unit, canonicalAmount, dayOf, displayName, toMilli } from "../pantry/events.ts";
+import { isLeftover, recipeOfLeftover } from "../pantry/shelf_life.ts";
 
 export type MealName = "breakfast" | "lunch" | "dinner";
 
@@ -76,9 +77,11 @@ export type PlanMeal = {
    *  dinners and charging both for it would be arithmetic nobody could check. null when there is no
    *  price list, or when what this meal needs is not something the shop sells. */
   cost_cents: number | null;
-  /** `expiring` when a deadline put it here, `pantry` when the score did, `thin` when nothing fit
-   *  well and this was the best of a bad row. */
-  why_code: "expiring" | "pantry" | "thin";
+  /** `leftovers` when the fridge already holds the meal, `expiring` when a deadline put it here,
+   *  `pantry` when the score did, `thin` when nothing fit well and this was the best of a bad row. */
+  why_code: "leftovers" | "expiring" | "pantry" | "thin";
+  /** True when this meal is already cooked. Nothing is shopped for it, and nothing is cooked. */
+  from_leftovers: boolean;
   why: string;
   uses_expiring: { ingredient_id: string; days_to_expiry: number }[];
   missing: string[];
@@ -386,8 +389,64 @@ export function planWeek(input: PlanInput): PlanResult {
 
   const unplaceable: PlanResult["unplaceable"] = [];
 
+  // --- pass 0: what is already cooked ----------------------------------------------------------
+  // A portion in the fridge is a meal that needs no cooking and no shopping, and it goes off sooner
+  // than anything it was made from. It gets the same treatment as any deadline — the latest slot it
+  // is still good for — and it is placed before the recipes, because there is no argument to have:
+  // the dinner exists.
+  const REHEAT_MINUTES = 10;
+  const leftovers = input.pantry
+    .filter((i) => isLeftover(i.ingredient_id) && (i.qty === null || i.qty > 0))
+    .sort((a, b) => (a.days_to_expiry ?? 9999) - (b.days_to_expiry ?? 9999) || a.ingredient_id.localeCompare(b.ingredient_id));
+
+  for (const line of leftovers) {
+    const recipeId = recipeOfLeftover(line.ingredient_id);
+    const source = input.recipes.find((r) => r.id === recipeId);
+    // One slot per portion, so four portions do not become four identical dinners on one night.
+    const portions = line.qty === null ? 1 : Math.floor(line.qty);
+    const deadlineDay = line.days_to_expiry === null ? days : Math.min(days, line.days_to_expiry + 1);
+    if (deadlineDay < 1) {
+      unplaceable.push({
+        ingredient_id: line.ingredient_id, days_to_expiry: line.days_to_expiry ?? 0,
+        reason: line.expiry_source === "estimated" ? "probably past its best already, going by the shelf-life table" : "already past its date",
+      });
+      continue;
+    }
+    let placed = 0;
+    for (const s of slots.filter((x) => x.filled === null && x.day <= deadlineDay).sort((a, b) => b.day - a.day)) {
+      if (placed >= portions) break;
+      s.filled = {
+        day: s.day, date: s.date, meal: s.meal,
+        recipe_id: recipeId,
+        title: source ? `${source.title}, from the fridge` : `Leftovers: ${displayName(recipeId)}`,
+        minutes: REHEAT_MINUTES,
+        cost_cents: 0,
+        from_leftovers: true,
+        why_code: "leftovers",
+        // How many there are, said the same way on every night it fills. Counting down as the slots
+        // are filled would read as a countdown to the person, and they are filled backwards.
+        why: `there ${portions === 1 ? "is a portion" : `are ${portions} portions`} of it in the fridge already${
+          line.days_to_expiry === null ? "" : line.days_to_expiry <= 1 ? ", and it wants eating now" : `, with about ${line.days_to_expiry} days left`
+        }`,
+        uses_expiring: line.days_to_expiry === null ? [] : [{ ingredient_id: line.ingredient_id, days_to_expiry: line.days_to_expiry }],
+        missing: [],
+      };
+      // Cooking the same dish again in a week you are already eating it is not a plan.
+      if (source) used.add(source.id);
+      placed++;
+    }
+    if (placed < portions) {
+      unplaceable.push({
+        ingredient_id: line.ingredient_id,
+        days_to_expiry: line.days_to_expiry ?? 0,
+        reason: `${portions - placed} portion${portions - placed === 1 ? "" : "s"} with no meal left before ${line.days_to_expiry === null ? "the end of the week" : "its date"}`,
+      });
+    }
+  }
+
   // --- pass 1: deadlines ---------------------------------------------------------------------
   const urgent = [...onHand.entries()]
+    .filter(([id]) => !isLeftover(id))
     .filter(([, v]) => v.days_to_expiry !== null && v.days_to_expiry <= days)
     .map(([id, v]) => ({ id, days: v.days_to_expiry!, source: v.expiry_source }))
     .sort((a, b) => a.days - b.days || a.id.localeCompare(b.id));
@@ -427,6 +486,7 @@ export function planWeek(input: PlanInput): PlanResult {
         day: s.day, date: s.date, meal: s.meal,
         recipe_id: pick.recipe.id, title: pick.recipe.title, minutes: pick.recipe.minutes,
         cost_cents: null,
+        from_leftovers: false,
         why_code: "expiring",
         why: whyExpiring(item.id, item.days, item.source),
         uses_expiring: pick.expiring_used,
@@ -462,6 +522,7 @@ export function planWeek(input: PlanInput): PlanResult {
       day: slot.day, date: slot.date, meal: slot.meal,
       recipe_id: pick.recipe.id, title: pick.recipe.title, minutes: pick.recipe.minutes,
       cost_cents: null,
+      from_leftovers: false,
       why_code: thin ? "thin" : "pantry",
       why: thin
         ? "nothing in the kitchen fits this slot, so this is a shopping night"
@@ -474,7 +535,9 @@ export function planWeek(input: PlanInput): PlanResult {
   // --- the shopping list -----------------------------------------------------------------------
   const byId = new Map(input.recipes.map((r) => [r.id, r]));
   const placed = slots.map((s) => s.filled).filter((m): m is PlanMeal => m !== null);
-  const missing = shoppingList(placed.map((m) => m.recipe_id), byId, onHand);
+  // Nothing is bought for a meal that is already cooked, which is most of the point of it.
+  const cooked = placed.filter((m) => !m.from_leftovers).map((m) => m.recipe_id);
+  const missing = shoppingList(cooked, byId, onHand);
 
   // --- what it costs ---------------------------------------------------------------------------
   // Leave-one-out, because one bag of lentils feeds two dinners: a meal's cost is what the week's
@@ -494,8 +557,8 @@ export function planWeek(input: PlanInput): PlanResult {
     };
     const whole = priceList(missing);
     for (const meal of placed) {
-      const without = shoppingList(placed.filter((m) => m !== meal).map((m) => m.recipe_id), byId, onHand);
-      meal.cost_cents = whole.total - priceList(without).total;
+      const without = shoppingList(cooked.filter((id) => id !== meal.recipe_id || meal.from_leftovers), byId, onHand);
+      meal.cost_cents = meal.from_leftovers ? 0 : whole.total - priceList(without).total;
     }
     const ceiling = input.budget_cents ?? null;
     cost = {

@@ -14,7 +14,7 @@ gap to the customer either way.
 """
 import json, os, re, sys
 
-UNIT = {"g","kg","ml","l","tsp","tbsp","cup","pc","clove","pinch","slice","bunch","can","sachet","to_taste"}
+UNIT = {"g","kg","ml","l","tsp","tbsp","cup","pc","clove","pinch","slice","bunch","can","sachet","to_taste","portion"}
 ALLERGEN = {"gluten","soy","sesame","nuts","peanut","mustard","sulphites","celery"}
 # Units a pack can be sold in. "to_taste" is not one of them, and neither is a pinch.
 SELLABLE = {"g","kg","ml","l","pc","clove","bunch","can","sachet","slice"}

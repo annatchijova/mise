@@ -45,7 +45,7 @@ function planOf(meals: { day: number; date: string; recipe_id: string; why?: str
       day: m.day, date: m.date, meal: "dinner" as const,
       recipe_id: m.recipe_id, title: m.recipe_id, minutes: 30,
       why_code: "pantry" as const, why: m.why ?? "is what the kitchen had",
-      uses_expiring: [], missing: [], cost_cents: null,
+      uses_expiring: [], missing: [], cost_cents: null, from_leftovers: false,
     })),
     missing: [], unplaceable: [], unfilled: [], cost: null, day_budgets: [],
     plan_hash: meals.map((m) => `${m.date}=${m.recipe_id}`).join("|"),

@@ -3,11 +3,12 @@
 Suggestions beyond `docs/PLAN.md` and `docs/INTEGRATIONS_PLAN.md`. Nothing here is committed to;
 this is the list to argue with.
 
-> **Seven of these have since been built**, and are marked **done** below with what actually landed:
+> **Eleven of these have since been built**, and are marked **done** below with what actually landed:
 > the plan diff (1.1), the kitchen confidence figure (1.2), the stale-item audit (1.3), per-day time
 > budgets (1.4) with cost per meal and a spending ceiling (1.5), the shelf-life table (2.3), and the
-> cooking post-mortem (2.1). Where building one taught something the proposal had wrong, that is
-> written down rather than quietly corrected.
+> cooking post-mortem (2.1), two cooks (2.2), what does not scale (2.4), leftovers (2.5), and the
+> tables and shopping list as open data (3.1, 3.2). Where building one taught something the proposal
+> had wrong, that is written down rather than quietly corrected.
 
 Every entry answers the same three questions, because they are the ones that killed the ideas that
 are not on the list:
@@ -110,6 +111,8 @@ the log is exactly the temptation to refuse.
 
 ### 2.2 Two cooks, one dinner
 
+> **Done.** `src/cook/schedule.ts` and `cooks` on `cook_start`. The proposal called it a week of work and was about right, but the shape it predicted was wrong in one place: the session's current step had to stop being *stored* and start being derived, because with two people there is no single answer to store. That change turned out to be an improvement on its own. It also surfaced a real bug — the second cook's first word ticked off a step they had never been given — and the honest result is that on this corpus two cooks help with only eleven of forty-nine recipes; the rest say so instead of pretending.
+
 Steps carry `depends_on` and timers already run in parallel. Given two people, the machine can
 partition the independent steps into two tracks and keep both. *"My partner is helping"* → two step
 cards, one session, one dinner that lands at the same time.
@@ -138,6 +141,8 @@ into `confirmed`. That is a real risk and worth stating in the schema before wri
 
 ### 2.4 What does not scale
 
+> **Done.** 21 rows in `data/scaling.json`, with damping as a pair of integers so nothing drifts. The proposal's estimate of two days was right. The part it did not anticipate is that half the table is not a number at all: past double, the limit is the pan, and that has to be said rather than folded into an amount.
+
 `misePlace` scales every quantity by servings. Cooking does not work that way: salt scales
 sub-linearly, leavening scales oddly, baking times barely scale at all, and a pan has a size. A
 curated table keyed on `(role, technique)` — *"do not scale linearly past double; the pan sets the
@@ -149,6 +154,8 @@ place.
 **Holds the line:** yes, and it is the same pattern that already works.
 
 ### 2.5 Leftovers as a first-class thing
+
+> **Done.** `cook_finish` takes `leftover_portions` and the planner fills slots with them before it looks at any recipe. The design question the proposal flagged — a dish is not an ingredient — was settled with an id namespace (`leftover-<recipe>`) and one new unit, `portion`, which is the only unit here that measures a dish. Nothing is bought or cooked for a meal that already exists, and portions with no meal left before their date are named rather than wasted quietly.
 
 Cooking six servings when two people eat produces four servings of something with a date on it.
 `cook_finish` could offer to record it: a pantry `add` of a *dish*, `inferred`, with a shelf life,
@@ -178,6 +185,8 @@ the reason it is trustworthy.
 
 ### 3.1 Publish the substitution table as open data
 
+> **Done.** `/data` publishes all three tables under Apache-2.0 with their provenance, and — the part the proposal did not think of — with their caveats **in the payload**, because a warning that lives in a repository somebody did not clone has not been given to them.
+
 The recipes are already served as importable JSON-LD. The substitution table is the more unusual
 artefact: nobody publishes a machine-readable table of *(ingredient, role, technique) → alternatives
 with ratios and failure modes*. Serving it at a stable URL, versioned, Apache-2.0, is the strongest
@@ -188,6 +197,8 @@ possible entry in the Open Source mini-challenge.
 **Holds the line:** yes.
 
 ### 3.2 The shopping list as an open format
+
+> **Done.** A `schema.org/ItemList` inside the `cart_from_plan` response, so it reaches the person who asked and nobody else. What the shop could not supply is in the list without an offer and with the reason, which is the same rule the spoken list follows.
 
 The same trick, in the other direction: serve the week's missing items as a `schema.org/ItemList`
 that any grocery app can import. It makes the project useful to somebody who does not want the demo

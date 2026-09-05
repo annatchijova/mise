@@ -295,7 +295,14 @@ function buildServer(): McpServer {
 
       const say = (i: (typeof out)[number]) => {
         const name = displayName(i.ingredient_id);
-        const amount = !i.qty_known ? `some ${name}, amount unknown` : i.unit === "pc" ? `${i.qty} ${name}` : `${i.qty} ${i.unit} ${name}`;
+        const amount = !i.qty_known
+          ? `some ${name}, amount unknown`
+          : i.unit === "pc"
+            ? `${i.qty} ${name}`
+            // A portion is a portion *of* something, and it pluralises.
+            : i.unit === "portion"
+              ? `${i.qty} portion${i.qty === 1 ? "" : "s"} of ${name}`
+              : `${i.qty} ${i.unit} ${name}`;
         // A date somebody gave and a number a table worked out are two different sentences, and
         // they stay two different sentences right up to the moment they are spoken.
         const guessed = i.expiry_source === "estimated";

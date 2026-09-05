@@ -4,6 +4,9 @@
   "updated_on": "2026-09-05",
   "author": "the author's kitchen",
   "locations": ["fridge", "freezer", "pantry"],
+  "extra_ingredients": {
+    "leftovers": "cooked leftovers"
+  },
   "entries": [
     { "ingredient": "spinach", "location": "fridge", "days": 4, "note": "Wilts from the stems in. Loose leaves go faster than a whole bunch." },
     { "ingredient": "arugula", "location": "fridge", "days": 4, "note": "Bruises where it was packed; use the pressed leaves first." },
@@ -157,6 +160,9 @@
     { "ingredient": null, "role": "spice", "location": "fridge", "days": 545, "note": "The fridge does a spice no good and no harm; the number is the same as the cupboard." },
     { "ingredient": null, "role": "starch", "location": "fridge", "days": 5, "note": "Cooked. A raw starch in the fridge is unusual enough to deserve its own row." },
     { "ingredient": null, "role": "sweetener", "location": "fridge", "days": 365, "note": "Syrups, once opened. Dry sugar has no business in a fridge." },
+
+    { "ingredient": "leftovers", "location": "fridge", "days": 4, "note": "Cooled quickly, in a shallow container, covered. Four days is the ordinary rule and it assumes it went into the fridge within a couple of hours." },
+    { "ingredient": "leftovers", "location": "pantry", "days": 1, "note": "Cooked food left out is not stored, it is waiting. If it has been on the counter overnight, throw it away rather than reasoning about it." },
 
     { "ingredient": null, "role": null, "location": "freezer", "days": 180, "note": "The freezer is a pause, not a preservative: six months is when texture and flavour have gone, not when it becomes unsafe." }
   ]

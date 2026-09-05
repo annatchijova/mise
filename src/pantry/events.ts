@@ -10,7 +10,10 @@
 
 export type Unit =
   | "g" | "kg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "pc"
-  | "clove" | "pinch" | "slice" | "bunch" | "can" | "sachet" | "to_taste";
+  | "clove" | "pinch" | "slice" | "bunch" | "can" | "sachet" | "to_taste"
+  /** A serving of something already cooked. The only unit here that measures a dish rather than an
+   *  ingredient, and the reason leftovers can sit in the same ledger as the lentils. */
+  | "portion";
 
 /** Where the event came from. Adding an integration means adding an origin, never a new code path. */
 export type Origin =

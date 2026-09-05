@@ -569,6 +569,38 @@ export function view(s: CookSession, recipe: Recipe, now: string, cook = 1): Ses
 
 // --- the deduction --------------------------------------------------------------------------
 
+/** A dish in the pantry, keyed so it can never collide with an ingredient. */
+export function leftoverId(recipeId: string): string {
+  return `leftover-${recipeId}`;
+}
+
+/**
+ * What was cooked and not eaten, as a pantry line.
+ *
+ * The loop most people actually live in: six servings, two people, four portions in the fridge. It
+ * goes in as `inferred` — the person said how many portions, but nobody counted what is in them —
+ * with no expiry of its own, so the shelf-life table's four days applies and stays labelled as the
+ * estimate it is.
+ */
+export function leftoverEvent(s: CookSession, recipe: Recipe, portions: number, now: string): PantryEvent | null {
+  const whole = Math.floor(portions);
+  if (!Number.isFinite(whole) || whole <= 0) return null;
+  return {
+    ts: now,
+    seq: 0,
+    type: "add",
+    ingredient_id: leftoverId(recipe.id),
+    qty_milli: whole * 1000,
+    unit: "portion",
+    origin: "recipe_deduction",
+    confidence: "inferred",
+    location: "fridge",
+    expires_on: null,
+    external_id: `leftover:${s.id}`,
+    source_device: null,
+  };
+}
+
 export type Deduction = {
   events: PantryEvent[];
   /** Ingredients deliberately not deducted, with the reason. Reported, never silent. */

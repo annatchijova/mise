@@ -17,7 +17,7 @@ import type { PantryStore } from "../pantry/store.ts";
 import type { Resolver } from "../integrations/aliases.ts";
 import {
   type CookSession, type SessionView, type TimerView,
-  advance, consumptionEvents, currentStepFor, finish, misePlace, note, orderedSteps, pause, startSession, view,
+  advance, consumptionEvents, currentStepFor, finish, leftoverEvent, misePlace, note, orderedSteps, pause, startSession, view,
 } from "../cook/session.ts";
 import type { CookStore } from "../cook/store.ts";
 import { postMortem, spanText } from "../cook/postmortem.ts";
@@ -132,17 +132,21 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
   /** Finishing is the one transition with a consequence outside the session: it writes to the
    *  pantry. Every event is inferred and carries the session id, so a repeated call folds to the
    *  same pantry instead of eating the lentils twice. */
-  async function close(session: CookSession, recipe: Recipe, now: string) {
+  async function close(session: CookSession, recipe: Recipe, now: string, leftoverPortions = 0) {
     const already = session.state === "finished";
     const finished = finish(session, recipe, now);
     await deps.sessions.put(finished);
-    if (already) return { session: finished, deducted: [], skipped: [] as { ingredient_id: string; reason: string }[] };
+    if (already) return { session: finished, deducted: [], skipped: [] as { ingredient_id: string; reason: string }[], leftovers: 0 };
     const { events, skipped } = consumptionEvents(finished, recipe, now, deps.scaling);
-    await deps.pantry.append(finished.user_id, events);
+    // What was cooked and not eaten is a line in the same ledger, with the same reservations: the
+    // person said how many portions, nobody counted what is in them.
+    const kept = leftoverEvent(finished, recipe, leftoverPortions, now);
+    await deps.pantry.append(finished.user_id, kept ? [...events, kept] : events);
     return {
       session: finished,
       deducted: events.map((e) => ({ ingredient_id: e.ingredient_id, qty: e.qty_milli === null ? null : e.qty_milli / 1000, unit: e.unit })),
       skipped,
+      leftovers: kept ? (kept.qty_milli ?? 0) / 1000 : 0,
     };
   }
 
@@ -525,23 +529,27 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
     {
       title: "Finish the cooking",
       description:
-        "Close the cooking session and take what it used out of the pantry. Use when the customer says they are done, it is finished, they are eating, or they want to stop early. Amounts come off as inferred, never as something the customer confirmed, and anything measured to taste is left alone. Needs a linked account.",
-      inputSchema: {},
+        "Close the cooking session and take what it used out of the pantry. Use when the customer says they are done, it is finished, they are eating, or they want to stop early. Pass leftover_portions when they say how much is going in the fridge — it becomes a meal the weekly plan can use, with about four days on it. Amounts come off as inferred, never as something the customer confirmed, and anything measured to taste is left alone. Needs a linked account.",
+      inputSchema: {
+        leftover_portions: z.number().int().min(0).max(50).optional().describe("How many servings are being put away rather than eaten, when they say"),
+      },
       outputSchema: {
         ...SESSION_SCHEMA,
         deducted: z.array(z.object({ ingredient_id: z.string(), qty: z.number().nullable(), unit: z.string() })),
         skipped: z.array(z.object({ ingredient_id: z.string(), reason: z.string() })),
         unfinished_steps: z.array(z.number().int()),
+        /** Portions put away, now a line in the pantry the planner can fill a slot with. */
+        leftover_portions: z.number(),
       },
     },
-    async () => {
+    async (args) => {
       const userId = deps.userId();
       if (!userId) return mcpError(NEEDS_ACCOUNT);
       const found = await activeWithRecipe(userId);
       if (typeof found === "string") return mcpError(found);
       const now = deps.now();
       const unfinished = orderedSteps(found.recipe).map((s) => s.order).filter((o) => !found.session.completed_steps.includes(o));
-      const closed = await close(found.session, found.recipe, now);
+      const closed = await close(found.session, found.recipe, now, args.leftover_portions ?? 0);
       const v = view(closed.session, found.recipe, now);
 
       const counted = closed.deducted.filter((d) => d.qty !== null).length;
@@ -549,9 +557,12 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const early = unfinished.length > 1 ? ` You stopped with ${unfinished.length} steps unticked; I have closed it anyway.` : "";
       const vague = unknown ? ` ${unknown} of them had no amount in the book, so those lines now read as "some, amount unknown" rather than a number I made up.` : "";
       const taste = closed.skipped.length ? ` ${closed.skipped.length} more were measured to taste and I have not touched them.` : "";
-      const text = `${found.recipe.title}, done.${early} I have taken ${closed.deducted.length} ingredient${closed.deducted.length === 1 ? "" : "s"} off the pantry as my own reckoning.${vague}${taste}`;
+      const kept = closed.leftovers > 0
+        ? ` ${closed.leftovers} portion${closed.leftovers === 1 ? "" : "s"} in the fridge, about four days by the shelf-life table — I will offer ${closed.leftovers === 1 ? "it" : "them"} back when you next plan the week.`
+        : "";
+      const text = `${found.recipe.title}, done.${early} I have taken ${closed.deducted.length} ingredient${closed.deducted.length === 1 ? "" : "s"} off the pantry as my own reckoning.${vague}${taste}${kept}`;
       return {
-        structuredContent: { session: v, deducted: closed.deducted, skipped: closed.skipped, unfinished_steps: unfinished },
+        structuredContent: { session: v, deducted: closed.deducted, skipped: closed.skipped, unfinished_steps: unfinished, leftover_portions: closed.leftovers },
         content: [{ type: "text", text }],
       };
     },

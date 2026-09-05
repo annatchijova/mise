@@ -91,7 +91,10 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
           z.object({
             day: z.number().int(), date: z.string(), weekday: z.string(), meal: z.string(),
             recipe_id: z.string(), title: z.string(), minutes: z.number().int(),
-            why_code: z.enum(["expiring", "pantry", "thin"]), why: z.string(),
+            why_code: z.enum(["leftovers", "expiring", "pantry", "thin"]), why: z.string(),
+            /** Already cooked: nothing is bought for it and nothing is cooked. */
+            from_leftovers: z.boolean(),
+            cost_cents: z.number().int().nullable(),
             uses_expiring: z.array(z.object({ ingredient_id: z.string(), days_to_expiry: z.number().int() })),
             missing: z.array(z.string()),
           }),

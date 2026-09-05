@@ -64,6 +64,10 @@ def main(argv):
         return 1
 
     locations = set(table["locations"])
+    extra = table.get("extra_ingredients", {})
+    for eid, label in sorted(extra.items()):
+        if not KEBAB.match(eid): errors.append(f"extra_ingredients: '{eid}' is not kebab-case")
+        if not isinstance(label, str) or not label.strip(): errors.append(f"extra_ingredients: '{eid}' has no display name")
     if not locations:
         errors.append("locations must list the places the table knows about")
 
@@ -85,8 +89,8 @@ def main(argv):
         if ing is not None:
             if not isinstance(ing, str) or not KEBAB.match(ing):
                 errors.append(f"{tag}: ingredient is not kebab-case or null")
-            elif ing not in roles:
-                errors.append(f"{tag}: ingredient '{ing}' appears in no recipe")
+            elif ing not in roles and ing not in extra:
+                errors.append(f"{tag}: ingredient '{ing}' appears in no recipe and is not in extra_ingredients")
             if role is not None:
                 errors.append(f"{tag}: a row for a specific ingredient must not also set a role — it would never be reached")
             answered_ingredients.add(ing)

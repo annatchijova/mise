@@ -35,8 +35,23 @@ export type ShelfLifeTable = {
   updated_on: string;
   author: string;
   locations: string[];
+  /** Things the table answers for that no recipe cooks with — `leftovers`, chiefly. */
+  extra_ingredients?: Record<string, string>;
   entries: ShelfLifeEntry[];
 };
+
+/** A cooked dish in the pantry. `leftover-vegan-gnocchi` is a portion of something, not an
+ *  ingredient, and the shelf-life table answers for all of them with one row. */
+export const LEFTOVER_PREFIX = "leftover-";
+
+export function isLeftover(ingredientId: string): boolean {
+  return ingredientId.startsWith(LEFTOVER_PREFIX);
+}
+
+/** The recipe a leftover came from. */
+export function recipeOfLeftover(ingredientId: string): string {
+  return ingredientId.slice(LEFTOVER_PREFIX.length);
+}
 
 export type ShelfLifeMatch =
   | "ingredient+location"
@@ -84,10 +99,12 @@ export function buildShelfLife(table: ShelfLifeTable, roleOf: (id: string) => st
   for (const e of table.entries) index.set(keyOf(e.ingredient, e.role ?? null, e.location), e);
 
   return (ingredientId: string, location: string): ShelfLifeAnswer | null => {
-    const role = roleOf(ingredientId);
+    // Every leftover keeps the same way, so they share one row rather than needing one each.
+    const lookupId = isLeftover(ingredientId) ? "leftovers" : ingredientId;
+    const role = roleOf(lookupId);
     const chain: [string, ShelfLifeMatch][] = [
-      [keyOf(ingredientId, null, location), "ingredient+location"],
-      [keyOf(ingredientId, null, null), "ingredient"],
+      [keyOf(lookupId, null, location), "ingredient+location"],
+      [keyOf(lookupId, null, null), "ingredient"],
       ...(role === null ? [] : ([
         [keyOf(null, role, location), "role+location"],
         [keyOf(null, role, null), "role"],
