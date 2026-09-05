@@ -188,6 +188,36 @@ SmartThings device status; its capability id is unverified against a real Family
   return shell("Simulated fridge", body, "Drive the demo's fridge by hand. Then look at the pantry.");
 }
 
+/** The index of what this server publishes as data. Its job is to make the caveats as easy to read
+ *  as the download link, which is the opposite of how most open data is presented. */
+export function renderDataIndexPage(
+  entries: { path: string; title: string; summary: string; schema_doc: string; caveat: string | null; rows: number; version: number; updated_on: string }[],
+  license: string,
+): string {
+  const cards = entries.map((e) => `<div class="card">
+<h3 style="margin:0 0 .3rem;font:600 1rem/1.3 ui-serif,Georgia,serif"><a href="${esc(e.path)}">${esc(e.title)}</a></h3>
+<p style="margin:0 0 .5rem">${esc(e.summary)}</p>
+<p class="legend" style="margin:0"><span>${e.rows} rows</span><span>version ${e.version}</span><span>updated ${esc(e.updated_on)}</span><span><code>${esc(e.schema_doc)}</code></span></p>
+${e.caveat ? `<p style="margin:.6rem 0 0"><span class="badge warn">read this first</span> ${esc(e.caveat)}</p>` : ""}
+</div>`).join("\n");
+
+  const body = `<p>Three tables of a cook's judgment, and the recipes they describe. All of it under
+${esc(license)}, all of it versioned, and every file carries its own provenance and its own caveats
+in the payload — a warning that lives only in a repository somebody did not clone has not been given
+to them.</p>
+${cards}
+<h2>The recipes</h2>
+<div class="card"><p><a href="/recipes">Every recipe</a> is served as a page whose
+<code>schema.org/Recipe</code> JSON-LD any recipe app can import, with the book's original Spanish
+kept verbatim beside the English. <code>docs/RECIPE_SCHEMA.md</code> is the contract.</p></div>
+<h2>What is not here</h2>
+<div class="card"><p>The pantry, the plans and the baskets are somebody's kitchen and are not
+published. The week's shopping list travels as a <code>schema.org/ItemList</code> inside the
+<code>cart_from_plan</code> response, so it goes to the person who asked for it and to nobody
+else.</p></div>`;
+  return shell("Open data", body, "The tables, with their provenance and their reservations.");
+}
+
 // --- the demo store ---------------------------------------------------------------------------
 
 /** The refund policy the UCP profile links to. A demo store still has to have one: the checkout

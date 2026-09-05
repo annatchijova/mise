@@ -13,6 +13,7 @@ import type { Resolver } from "../integrations/aliases.ts";
 import type { PlanStore } from "../plan/store.ts";
 import { type Catalog, type SkuIndex, money } from "../store/catalog.ts";
 import { type CartStore, type WantedLine, cartFromWanted, editCart } from "../store/cart.ts";
+import { shoppingListJsonLd } from "../open_data.ts";
 
 export type CartDeps = {
   catalog: Catalog;
@@ -23,6 +24,8 @@ export type CartDeps = {
   userId: () => string | null;
   now: () => string;
   newId: () => string;
+  /** The public origin, for the exported list's own links. */
+  baseUrl: string;
 };
 
 const NEEDS_ACCOUNT = "The cart hangs off your account. Link Mise in the Alexa app and ask again.";
@@ -67,6 +70,9 @@ export function registerCartTools(server: McpServer, deps: CartDeps): void {
         ...CART_SCHEMA,
         plan_id: z.string().nullable(),
         for_days: z.array(z.number().int()),
+        /** The same list as a schema.org ItemList, so a grocery app that imports a list can import
+         *  this one. What the shop could not supply is in it, without an offer and with the reason. */
+        item_list: z.unknown(),
       },
       _meta: uiCart,
     },
@@ -98,7 +104,10 @@ export function registerCartTools(server: McpServer, deps: CartDeps): void {
         : `${cart.lines.length} item${cart.lines.length === 1 ? "" : "s"}, ${money(cart.subtotal_cents, cart.currency)} before tax and delivery: ${list}.${cannot}`;
 
       return {
-        structuredContent: { cart, subtotal: money(cart.subtotal_cents, cart.currency), plan_id: plan.plan_id, for_days: days },
+        structuredContent: {
+          cart, subtotal: money(cart.subtotal_cents, cart.currency), plan_id: plan.plan_id, for_days: days,
+          item_list: shoppingListJsonLd(plan, cart, { baseUrl: deps.baseUrl }),
+        },
         content: [{ type: "text", text }],
       };
     },

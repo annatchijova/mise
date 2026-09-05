@@ -7,6 +7,7 @@
 //   GET  /recipes[/:id]       importable recipe pages (schema.org JSON-LD)
 //   POST /ingest/:source      the signed door for connected sources (fridge, barcode scanner)
 //   GET  /pantry, /sim/fridge the account web: what voice cannot do
+//   GET  /data[/*.json]       the curated tables, published with their provenance and caveats
 //   GET  /.well-known/ucp     the demo store's UCP profile
 //   /store/*                  the five checkout endpoints, the refund policy, receipts
 //   GET  /healthz             liveness
@@ -44,7 +45,8 @@ import { indexCatalog, loadCatalog } from "./store/catalog.ts";
 import { MemoryCartStore, priceOfWanted } from "./store/cart.ts";
 import { MemoryCheckoutStore, handleUcp } from "./store/ucp.ts";
 import { registerCartTools } from "./tools/cart.ts";
-import { renderReceiptPage, renderRefundPolicyPage } from "./pages.ts";
+import { renderDataIndexPage, renderReceiptPage, renderRefundPolicyPage } from "./pages.ts";
+import { DATA_LICENSE, PUBLISHED, publish } from "./open_data.ts";
 import { RESOURCE_MIME_TYPE, registerAppResource } from "@modelcontextprotocol/ext-apps/server";
 import { VIEW_URIS, buildViews, loadRuntime } from "./ui/views.ts";
 
@@ -59,6 +61,8 @@ const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}`;
 const DEMO_USER: string | null = (process.env.DEMO_USER ?? "demo").trim() || null;
 /** Secret for the two demo sources reachable through POST /ingest. Unset: the door is closed. */
 const INGEST_SECRET = process.env.INGEST_SECRET;
+/** Where the source lives, cited in every published table so a copy stays attributable. */
+const REPOSITORY_URL = process.env.REPOSITORY_URL ?? "https://github.com/annatchijova/mise";
 /** Optional JSON mirror of the in-memory ledger, so a local demo survives a restart. */
 const PANTRY_FILE = process.env.PANTRY_FILE;
 /** The same, for cooking sessions: "where was I?" a day later is the point of them. */
@@ -92,10 +96,12 @@ const store = new MemoryPantryStore(PANTRY_FILE);
 // How long things keep, so the planner's deadline pass has something to work on. Every number it
 // produces is an estimate and stays labelled as one all the way to what gets said out loud.
 const roles = rolesFromRecipes(recipes);
-const shelfLife = buildShelfLife(loadShelfLife(), (id) => roles.get(id) ?? null);
+const shelfLifeTable = loadShelfLife();
+const shelfLife = buildShelfLife(shelfLifeTable, (id) => roles.get(id) ?? null);
 const sessions = new MemoryCookStore(COOK_FILE);
 // What multiplies when the servings change, and what does not.
-const scaling = buildScaling(loadScaling());
+const scalingTable = loadScaling();
+const scaling = buildScaling(scalingTable);
 const plans = new MemoryPlanStore(PLAN_FILE);
 const carts = new MemoryCartStore(CART_FILE);
 const catalog = loadCatalog();
@@ -484,6 +490,7 @@ function buildServer(): McpServer {
     userId: () => DEMO_USER,
     now: () => new Date().toISOString(),
     newId: () => `cart-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`,
+    baseUrl: BASE_URL,
   });
 
   registerPlanTools(server, {
@@ -677,6 +684,34 @@ async function serveStore(pathname: string, req: IncomingMessage, res: ServerRes
   json(res, result.status, result.body);
 }
 
+/** What each published path serves. Built once: these are files, and they do not change under us. */
+const DATA_ROUTES: Record<string, () => Record<string, unknown>> = {
+  "/data/substitutions.json": () => substitutions as unknown as Record<string, unknown>,
+  "/data/shelf-life.json": () => shelfLifeTable as unknown as Record<string, unknown>,
+  "/data/scaling.json": () => scalingTable as unknown as Record<string, unknown>,
+};
+
+function serveData(pathname: string, res: ServerResponse): boolean {
+  if (pathname === "/data" || pathname === "/data/") {
+    const entries = PUBLISHED.map((p) => {
+      const table = DATA_ROUTES[p.path]() as { entries?: unknown[]; version: number; updated_on: string };
+      return { ...p, rows: table.entries?.length ?? 0, version: table.version, updated_on: table.updated_on };
+    });
+    html(res, renderDataIndexPage(entries, DATA_LICENSE));
+    return true;
+  }
+  const meta = PUBLISHED.find((p) => p.path === pathname);
+  if (!meta) return false;
+  const body = publish(DATA_ROUTES[pathname](), meta, { baseUrl: BASE_URL, repository: REPOSITORY_URL });
+  send(res, 200, JSON.stringify(body, null, 2), "application/json; charset=utf-8", {
+    // Published data is meant to be fetched by other people's software, which is the one thing here
+    // that benefits from being cached.
+    "cache-control": "public, max-age=3600",
+    "access-control-allow-origin": "*",
+  });
+  return true;
+}
+
 /** Order ids are 32 hex characters from randomBytes(16). Checked before any lookup so that the path
  *  can never be anything but an id. */
 const ORDER_ID = /^order_[0-9a-f]{32}$/;
@@ -687,6 +722,7 @@ const httpServer = createServer(async (req, res) => {
   try {
     if (pathname === "/healthz") { send(res, 200, "ok"); return; }
     if (req.method === "GET" && serveRecipes(pathname, res)) return;
+    if (req.method === "GET" && serveData(pathname, res)) return;
     if (req.method === "POST" && pathname.startsWith("/ingest/")) { await serveIngest(pathname.slice("/ingest/".length), req, res); return; }
     if (req.method === "GET" && pathname === "/pantry") { await servePantry(url, res); return; }
     if (pathname === "/sim/fridge" && (req.method === "GET" || req.method === "POST")) { await serveSimFridge(req, res); return; }
@@ -703,7 +739,7 @@ const httpServer = createServer(async (req, res) => {
       await transport.handleRequest(req, res);
       return;
     }
-    send(res, pathname === "/" ? 200 : 404, "Mise. POST /mcp · GET /recipes · GET /pantry · GET /sim/fridge · POST /ingest/:source · GET /.well-known/ucp");
+    send(res, pathname === "/" ? 200 : 404, "Mise. POST /mcp · GET /recipes · GET /data · GET /pantry · GET /sim/fridge · POST /ingest/:source · GET /.well-known/ucp");
   } catch (err) {
     console.error(err);
     if (!res.headersSent) send(res, 500, "Internal error.");
