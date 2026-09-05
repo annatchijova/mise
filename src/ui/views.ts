@@ -282,13 +282,15 @@ window.mise.onData(function(data){
   else {
     html += '<table><thead><tr><th>Item</th><th class="num">Amount</th><th>How sure</th></tr></thead><tbody>';
     data.items.forEach(function(i){
-      html += '<tr><td>' + esc(i.ingredient_id.replace(/-/g, ' ')) + '<div class="why">' + esc(i.location) +
-              (i.expires_on ? ' · ' + esc(i.expires_on) : '') + '</div></td>';
+      var dated = i.expires_on ? ' · ' + esc(i.expires_on)
+        : i.expiry_source === 'estimated' && i.expiry_estimated_on ? ' · ~' + esc(i.expiry_estimated_on) + ' (estimate)'
+        : '';
+      html += '<tr><td>' + esc(i.ingredient_id.replace(/-/g, ' ')) + '<div class="why">' + esc(i.location) + dated + '</div></td>';
       html += '<td class="num">' + (i.qty_known ? esc(i.qty) + ' ' + esc(i.unit === 'pc' ? '' : i.unit) : '<span class="dim">some</span>') + '</td>';
       html += '<td>' + confBadge(i.confidence) + freshBadge(i.freshness) + '</td></tr>';
     });
     html += '</tbody></table>';
-    html += '<div class="why">“Some” means nobody counted it. It is never shown as a number the kitchen made up.</div>';
+    html += '<div class="why">“Some” means nobody counted it, and a date marked (estimate) came from the shelf-life table rather than from you. Neither is ever shown as something you said.</div>';
   }
   el('root').innerHTML = html;
 });

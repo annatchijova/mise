@@ -25,6 +25,7 @@ import {
 } from "./substitutions.ts";
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
+import { buildShelfLife, loadShelfLife, rolesFromRecipes } from "./pantry/shelf_life.ts";
 import { UNITS, voiceEvents } from "./pantry/voice.ts";
 import { MemoryPantryStore } from "./pantry/store.ts";
 import { buildResolver, loadAliases } from "./integrations/aliases.ts";
@@ -86,6 +87,10 @@ const resolve = buildResolver(loadAliases(), new Set([
   ...substitutionIds(substitutions),
 ]));
 const store = new MemoryPantryStore(PANTRY_FILE);
+// How long things keep, so the planner's deadline pass has something to work on. Every number it
+// produces is an estimate and stays labelled as one all the way to what gets said out loud.
+const roles = rolesFromRecipes(recipes);
+const shelfLife = buildShelfLife(loadShelfLife(), (id) => roles.get(id) ?? null);
 const sessions = new MemoryCookStore(COOK_FILE);
 const plans = new MemoryPlanStore(PLAN_FILE);
 const carts = new MemoryCartStore(CART_FILE);
@@ -136,7 +141,7 @@ const ingestDeps: IngestDeps = {
 
 async function pantryFor(userId: string, now: string) {
   const events = await store.events(userId);
-  return { events, fold: foldPantry(events, { now }) };
+  return { events, fold: foldPantry(events, { now, shelfLife }) };
 }
 
 /** Why a line is `inferred` rather than confirmed. The reservation the pantry carries is only
@@ -241,7 +246,13 @@ function buildServer(): McpServer {
           z.object({
             ingredient_id: z.string(), qty: z.number().nullable(), qty_known: z.boolean(), unit: z.string(),
             location: z.string(), confidence: z.enum(["confirmed", "inferred", "stale"]),
-            expires_on: z.string().nullable(), days_to_expiry: z.number().int().nullable(),
+            /** Only a date somebody stated. Never the shelf-life table's number. */
+            expires_on: z.string().nullable(),
+            /** What the shelf-life table works out, when nobody stated anything. */
+            expiry_estimated_on: z.string().nullable(),
+            expiry_source: z.enum(["stated", "estimated", "unknown"]),
+            expiry_note: z.string().nullable(),
+            days_to_expiry: z.number().int().nullable(),
             freshness: z.enum(["expired", "urgent", "soon", "fresh", "unknown"]), origins: z.array(z.string()),
           }),
         ),
@@ -262,13 +273,26 @@ function buildServer(): McpServer {
       if (args.location) items = items.filter((i) => i.location === args.location);
       if (args.filter === "expiring_soon") items = items.filter((i) => ["expired", "urgent", "soon"].includes(i.freshness));
       if (args.filter === "unknown_amount") items = items.filter((i) => !i.qty_known);
-      const out = items.map(({ ingredient_id, qty, qty_known, unit, location, confidence, expires_on, days_to_expiry, freshness, origins }) =>
-        ({ ingredient_id, qty, qty_known, unit, location, confidence, expires_on, days_to_expiry, freshness, origins }));
+      const out = items.map(({ ingredient_id, qty, qty_known, unit, location, confidence, expires_on, expiry_estimated_on, expiry_source, expiry_note, days_to_expiry, freshness, origins }) =>
+        ({ ingredient_id, qty, qty_known, unit, location, confidence, expires_on, expiry_estimated_on, expiry_source, expiry_note, days_to_expiry, freshness, origins }));
 
       const say = (i: (typeof out)[number]) => {
         const name = displayName(i.ingredient_id);
         const amount = !i.qty_known ? `some ${name}, amount unknown` : i.unit === "pc" ? `${i.qty} ${name}` : `${i.qty} ${i.unit} ${name}`;
-        const when = i.days_to_expiry === null ? "" : i.days_to_expiry < 0 ? ", already past its date" : i.days_to_expiry <= 1 ? ", expiring today or tomorrow" : `, ${i.days_to_expiry} days left`;
+        // A date somebody gave and a number a table worked out are two different sentences, and
+        // they stay two different sentences right up to the moment they are spoken.
+        const guessed = i.expiry_source === "estimated";
+        // A two-year estimate on a bag of lentils is true and useless. An estimate is only worth
+        // saying out loud while it is near enough to change what somebody cooks; a date a person
+        // actually gave is always worth saying, however far off it is.
+        const worthSaying = !guessed || (i.days_to_expiry !== null && i.days_to_expiry <= ESTIMATE_SPEAK_WITHIN_DAYS);
+        const when = !worthSaying ? "" : i.days_to_expiry === null
+          ? ""
+          : i.days_to_expiry < 0
+            ? guessed ? ", probably past its best by now" : ", already past its date"
+            : i.days_to_expiry <= 1
+              ? guessed ? ", about a day left by my reckoning" : ", expiring today or tomorrow"
+              : guessed ? `, roughly ${i.days_to_expiry} days by my reckoning` : `, ${i.days_to_expiry} days left`;
         const sure = i.confidence === "stale" ? " (not confirmed lately)" : i.confidence === "inferred" ? ` (${whoSaid(i.origins)})` : "";
         return `${amount}${when}${sure}`;
       };
@@ -453,6 +477,9 @@ function tooLarge(req: IncomingMessage, res: ServerResponse): void {
 }
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** How near a shelf-life estimate has to be before the spoken pantry list mentions it at all. */
+const ESTIMATE_SPEAK_WITHIN_DAYS = 14;
 
 // --- routes ---------------------------------------------------------------------------------
 

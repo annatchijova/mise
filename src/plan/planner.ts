@@ -124,12 +124,15 @@ export type OnHand = {
   /** Amount per unit, so a comparison never crosses units it cannot cross. */
   byUnit: Map<Unit, { milli: number | null }>;
   days_to_expiry: number | null;
+  /** Whether that date is one somebody stated or one the shelf-life table worked out. It changes
+   *  nothing about the scheduling and everything about the sentence the plan gives back. */
+  expiry_source: "stated" | "estimated" | "unknown";
 };
 
 function indexPantry(items: PantryItem[]): Map<string, OnHand> {
   const map = new Map<string, OnHand>();
   for (const i of items) {
-    const entry = map.get(i.ingredient_id) ?? { byUnit: new Map(), days_to_expiry: null };
+    const entry = map.get(i.ingredient_id) ?? { byUnit: new Map<Unit, { milli: number | null }>(), days_to_expiry: null, expiry_source: "unknown" as OnHand["expiry_source"] };
     const prior = entry.byUnit.get(i.unit);
     const milli = i.qty === null ? null : Math.round(i.qty * 1000);
     // Two lines of the same ingredient and unit in different places add up; one unknown makes the
@@ -138,7 +141,14 @@ function indexPantry(items: PantryItem[]): Map<string, OnHand> {
       milli: prior === undefined ? milli : prior.milli === null || milli === null ? null : prior.milli + milli,
     });
     if (i.days_to_expiry !== null) {
-      entry.days_to_expiry = entry.days_to_expiry === null ? i.days_to_expiry : Math.min(entry.days_to_expiry, i.days_to_expiry);
+      const tighter = entry.days_to_expiry === null || i.days_to_expiry < entry.days_to_expiry;
+      if (tighter) {
+        entry.days_to_expiry = i.days_to_expiry;
+        entry.expiry_source = i.expiry_source;
+      } else if (i.days_to_expiry === entry.days_to_expiry && i.expiry_source === "stated") {
+        // Same date from two lines: the one somebody actually stated is the one to cite.
+        entry.expiry_source = "stated";
+      }
     }
     map.set(i.ingredient_id, entry);
   }
@@ -243,6 +253,18 @@ export function scoreRecipe(
   return { recipe, score, have, missing: [...missing].sort(), short: [...short].sort(), expiring_used: expiring };
 }
 
+/** The reason a deadline put a meal where it did. A stated date is quoted; a shelf-life estimate is
+ *  hedged, because it is one — and the hedge is the difference between advice and a claim. */
+export function whyExpiring(ingredientId: string, days: number, source: "stated" | "estimated" | "unknown"): string {
+  const name = ingredientId.replace(/-/g, " ");
+  if (source === "estimated") {
+    const when = days === 0 ? "is about done" : days === 1 ? "has about a day left" : `has roughly ${days} days left`;
+    return `uses the ${name}, which ${when} by the shelf-life table — nobody gave it a date`;
+  }
+  const when = days === 0 ? "goes off today" : days === 1 ? "goes off tomorrow" : `has ${days} days left`;
+  return `uses the ${name}, which ${when}`;
+}
+
 // --- the plan -------------------------------------------------------------------------------
 
 type Slot = { day: number; date: string; meal: MealName; filled: PlanMeal | null };
@@ -299,7 +321,7 @@ export function planWeek(input: PlanInput): PlanResult {
   // --- pass 1: deadlines ---------------------------------------------------------------------
   const urgent = [...onHand.entries()]
     .filter(([, v]) => v.days_to_expiry !== null && v.days_to_expiry <= days)
-    .map(([id, v]) => ({ id, days: v.days_to_expiry! }))
+    .map(([id, v]) => ({ id, days: v.days_to_expiry!, source: v.expiry_source }))
     .sort((a, b) => a.days - b.days || a.id.localeCompare(b.id));
 
   for (const item of urgent) {
@@ -337,7 +359,7 @@ export function planWeek(input: PlanInput): PlanResult {
         day: s.day, date: s.date, meal: s.meal,
         recipe_id: pick.recipe.id, title: pick.recipe.title, minutes: pick.recipe.minutes,
         why_code: "expiring",
-        why: `uses the ${item.id.replace(/-/g, " ")}, which ${item.days === 0 ? "goes off today" : item.days === 1 ? "goes off tomorrow" : `has ${item.days} days left`}`,
+        why: whyExpiring(item.id, item.days, item.source),
         uses_expiring: pick.expiring_used,
         missing: pick.missing,
       };

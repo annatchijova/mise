@@ -67,10 +67,17 @@ function qtyCell(i: PantryItem): string {
   return `${i.qty} ${esc(i.unit)}`;
 }
 
+/** A date somebody gave is printed. A date the shelf-life table worked out is printed too, and
+ *  marked, with the row that produced it as the tooltip — advice should be legible as advice. */
 function expiryCell(i: PantryItem): string {
   const [cls, label] = FRESH[i.freshness];
-  const when = i.expires_on ? ` <span style="color:var(--dim)">${esc(i.expires_on)}</span>` : "";
-  return `<span class="dot ${cls}" style="background:currentColor"></span>${label}${when}`;
+  const light = `<span class="dot ${cls}" style="background:currentColor"></span>${label}`;
+  if (i.expires_on) return `${light} <span style="color:var(--dim)">${esc(i.expires_on)}</span>`;
+  if (i.expiry_source === "estimated" && i.expiry_estimated_on) {
+    const why = i.expiry_note ? ` title="${esc(i.expiry_note)}"` : "";
+    return `${light} <span style="color:var(--dim)"${why}>~${esc(i.expiry_estimated_on)}</span> <span class="badge mute">estimate</span>`;
+  }
+  return light;
 }
 
 export type SourceLine = { label: string; kind: string; synced_at: string | null };
@@ -101,7 +108,7 @@ export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now
     : `<table><thead><tr><th>Item</th><th class="num">Amount</th><th>Confidence</th><th>Expiry</th><th>Reported by</th></tr></thead><tbody>
 ${rows}
 </tbody></table>
-<p class="legend"><span><span class="badge ok">confirmed</span> you said it, or scanned it</span><span><span class="badge warn">inferred</span> a device or a recipe deduced it</span><span><span class="badge mute">stale</span> nobody has confirmed it in a while</span></p>`;
+<p class="legend"><span><span class="badge ok">confirmed</span> you said it, or scanned it</span><span><span class="badge warn">inferred</span> a device or a recipe deduced it</span><span><span class="badge mute">stale</span> nobody has confirmed it in a while</span><span><span class="badge mute">estimate</span> no date was given; the shelf-life table worked one out</span></p>`;
 
   const sourceLines = sources.length === 0
     ? `<p class="sub">No connected sources. Voice only.</p>`
