@@ -17,6 +17,10 @@ import type { PlanStore } from "../plan/store.ts";
 
 export type PlanDeps = {
   recipes: () => Recipe[];
+  /** What a shopping line costs, from the same function the basket uses. Optional: without it the
+   *  plan simply has no money in it, which is the honest state of a system with no shop. */
+  priceOf?: (want: { ingredient_id: string; unit: string; qty: number | null }) => { cents: number } | { reason: string };
+  currency?: string;
   plans: PlanStore;
   pantryItems: (userId: string, now: string) => Promise<PantryItem[]>;
   resolve: Resolver;
@@ -25,6 +29,25 @@ export type PlanDeps = {
 };
 
 const weekday = weekdayOf;
+
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+/** Which day of the plan a named weekday is, or null when the week being planned does not reach it. */
+function dayNumberOf(name: string, startDate: string, days: number): number | null {
+  const wanted = WEEKDAYS.indexOf(name);
+  if (wanted === -1) return null;
+  const start = new Date(Date.parse(`${startDate}T00:00:00Z`)).getUTCDay();
+  const offset = (wanted - start + 7) % 7;
+  return offset + 1 <= days ? offset + 1 : null;
+}
+
+/** Integer cents to something a person hears. The same shape as the store's, kept here so the
+ *  planner's tools do not have to depend on the shop to say a number out loud. */
+function moneyOf(cents: number, currency: string): string {
+  const symbol = currency === "USD" ? "$" : `${currency} `;
+  const abs = Math.abs(cents);
+  return `${cents < 0 ? "-" : ""}${symbol}${Math.floor(abs / 100)}.${String(abs % 100).padStart(2, "0")}`;
+}
 
 /** One line saying how the week differs from the last one, for `plan_week` to hand back without
  *  anybody having to ask for a diff. */
@@ -50,6 +73,12 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         time_budget_min: z.number().int().positive().optional().describe("Longest a meal may take, in minutes"),
         avoid: z.array(z.string()).optional().describe("Ingredients to keep out of the week, as the customer said them"),
         start_date: z.string().optional().describe("YYYY-MM-DD if they named a start; today otherwise"),
+        day_limits: z.array(z.object({
+          weekday: z.enum(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]).optional().describe("The day they named"),
+          day: z.number().int().positive().optional().describe("Or the day's number in the plan, counting from 1"),
+          minutes: z.number().int().positive().describe("Longest a meal may take that day"),
+        })).optional().describe("Limits for particular days: 'Wednesday I get home late, twenty minutes'"),
+        max_spend: z.number().positive().optional().describe("A ceiling on what the week's shopping may cost, in whole currency units (40 means forty dollars)"),
       },
       outputSchema: {
         plan_id: z.string(),
@@ -79,6 +108,19 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         /** Names the customer gave in `avoid` that we do not keep, so nothing is silently ignored. */
         unresolved_avoid: z.array(z.string()),
         pantry_as_of: z.string(),
+        /** What the shopping list costs at the shop's prices, and what it could not price. null when
+         *  there is no price list at all. */
+        cost: z.object({
+          shopping_cents: z.number().int(),
+          shopping: z.string(),
+          /** Lines the shop could not price, and why. The total is a floor, not an estimate. */
+          unpriced: z.array(z.object({ ingredient_id: z.string(), reason: z.string() })),
+          budget_cents: z.number().int().nullable(),
+          over_by_cents: z.number().int().nullable(),
+        }).nullable(),
+        day_budgets: z.array(z.object({ day: z.number().int(), minutes: z.number().int() })),
+        /** Day limits the customer named that fall outside the week being planned. */
+        unused_day_limits: z.array(z.string()),
         /** The plan this one replaces, when there was one, and how it differs. */
         previous_plan_id: z.string().nullable(),
         changed_since_previous: z.string().nullable(),
@@ -104,6 +146,24 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         else unresolvedAvoid.push(raw);
       }
 
+      // "Wednesday I get home late" arrives as a weekday, not as a day number. Which day of the
+      // plan that is depends on when the plan starts, so it is resolved here, and a day the week
+      // does not contain is reported rather than dropped.
+      const start = args.start_date ?? now.slice(0, 10);
+      const dayBudgets: { day: number; minutes: number }[] = [];
+      const unusedDayLimits: string[] = [];
+      for (const limit of args.day_limits ?? []) {
+        const day = limit.day ?? (limit.weekday ? dayNumberOf(limit.weekday, start, args.days) : null);
+        if (day === null || day < 1 || day > args.days) {
+          unusedDayLimits.push(`${limit.weekday ?? `day ${limit.day ?? "?"}`} is not in the week being planned`);
+          continue;
+        }
+        dayBudgets.push({ day, minutes: limit.minutes });
+      }
+
+      // Whole currency units in, integer cents kept. The one conversion, at the boundary.
+      const budgetCents = args.max_spend === undefined ? null : Math.round(args.max_spend * 100);
+
       const plan = planWeek({
         recipes: deps.recipes(),
         pantry,
@@ -111,8 +171,11 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         days: args.days,
         meals_per_day: args.meals_per_day ?? 1,
         time_budget_min: args.time_budget_min ?? null,
+        day_budgets: dayBudgets,
         avoid,
         start_date: args.start_date,
+        priceOf: deps.priceOf,
+        budget_cents: budgetCents,
       });
       // The plan this one replaces, read before it is stored. Replanning and being told nothing
       // changed but Thursday is the difference between a plan and a suggestion.
@@ -133,17 +196,32 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         : "";
       const gaps = plan.unfilled.length ? ` ${plan.unfilled.length} slot${plan.unfilled.length === 1 ? "" : "s"} left empty: ${plan.unfilled[0].reason}.` : "";
       const ignored = unresolvedAvoid.length ? ` I do not keep ${unresolvedAvoid.join(" or ")}, so I could not plan around ${unresolvedAvoid.length === 1 ? "it" : "them"}.` : "";
+      const skippedLimits = unusedDayLimits.length ? ` I could not use ${unusedDayLimits.length} of the day limits: ${unusedDayLimits.join("; ")}.` : "";
+
+      const currency = deps.currency ?? "USD";
+      const priced = plan.cost === null ? "" : (() => {
+        const total = ` The shopping comes to ${moneyOf(plan.cost.shopping_cents, currency)}`;
+        const floor = plan.cost.unpriced.length
+          ? `, and that is a floor: ${plan.cost.unpriced.length} line${plan.cost.unpriced.length === 1 ? "" : "s"} could not be priced — ${plan.cost.unpriced.slice(0, 3).map((u) => `${displayName(u.ingredient_id)}, because ${u.reason}`).join("; ")}.`
+          : ".";
+        const over = plan.cost.over_by_cents === null
+          ? plan.cost.budget_cents === null ? "" : ` That is inside the ${moneyOf(plan.cost.budget_cents, currency)} you set.`
+          : ` That is ${moneyOf(plan.cost.over_by_cents, currency)} over the ${moneyOf(plan.cost.budget_cents ?? 0, currency)} you set. I leaned the week towards cheaper meals and it still came out over.`;
+        return `${total}${floor}${over}`;
+      })();
 
       const since = diff === null ? "" : ` ${changeSummary(diff)}`;
 
       return {
         structuredContent: {
           ...plan, meals, unresolved_avoid: unresolvedAvoid,
+          cost: plan.cost === null ? null : { ...plan.cost, shopping: moneyOf(plan.cost.shopping_cents, currency) },
+          unused_day_limits: unusedDayLimits,
           previous_plan_id: previous?.plan_id ?? null,
           changed_since_previous: diff === null ? null : changeSummary(diff),
           changes_since_previous: diff === null ? null : movedChanges(diff).length,
         },
-        content: [{ type: "text", text: `${lines.join(" ")}${shop}${lost}${gaps}${ignored}${since}` }],
+        content: [{ type: "text", text: `${lines.join(" ")}${shop}${priced}${lost}${gaps}${ignored}${skippedLimits}${since}` }],
       };
     },
   );

@@ -24,6 +24,7 @@
     { "id": "sku-green-onion-bunch", "title": "Spring onions, bunch", "ingredient_id": "green-onion", "pack": { "qty": 1, "unit": "bunch" }, "price_cents": 129, "stock": 40, "allergens": [] },
     { "id": "sku-leek-each", "title": "Leek, each", "ingredient_id": "leek", "pack": { "qty": 1, "unit": "pc" }, "price_cents": 139, "stock": 30, "allergens": [] },
     { "id": "sku-garlic-head", "title": "Garlic, head of about 10 cloves", "ingredient_id": "garlic", "pack": { "qty": 10, "unit": "clove" }, "price_cents": 99, "stock": 80, "allergens": [] },
+    { "id": "sku-garlic-each", "title": "Garlic, one head", "ingredient_id": "garlic", "pack": { "qty": 1, "unit": "pc" }, "price_cents": 99, "stock": 80, "allergens": [] },
     { "id": "sku-ginger-100g", "title": "Fresh ginger, 100 g", "ingredient_id": "ginger", "pack": { "qty": 100, "unit": "g" }, "price_cents": 119, "stock": 40, "allergens": [] },
     { "id": "sku-carrot-each", "title": "Carrot, each", "ingredient_id": "carrot", "pack": { "qty": 1, "unit": "pc" }, "price_cents": 39, "stock": 200, "allergens": [] },
     { "id": "sku-potato-each", "title": "Potato, each", "ingredient_id": "potato", "pack": { "qty": 1, "unit": "pc" }, "price_cents": 42, "stock": 300, "allergens": [] },

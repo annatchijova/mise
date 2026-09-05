@@ -71,6 +71,11 @@ export type PlanMeal = {
   recipe_id: string;
   title: string;
   minutes: number;
+  /** What this meal adds to the week's shopping bill: the whole list's cost minus what it would
+   *  cost without this meal. Marginal rather than standalone, because one bag of lentils feeds two
+   *  dinners and charging both for it would be arithmetic nobody could check. null when there is no
+   *  price list, or when what this meal needs is not something the shop sells. */
+  cost_cents: number | null;
   /** `expiring` when a deadline put it here, `pantry` when the score did, `thin` when nothing fit
    *  well and this was the best of a bad row. */
   why_code: "expiring" | "pantry" | "thin";
@@ -90,6 +95,17 @@ export type MissingLine = {
   topping_up: boolean;
 };
 
+export type PlanCost = {
+  /** What the shopping list costs at the shop's prices, in integer cents. */
+  shopping_cents: number;
+  /** Lines the shop could not price, each with the reason. The total above excludes them, so it is
+   *  a floor and not an estimate — reported rather than folded into a number that would be wrong. */
+  unpriced: { ingredient_id: string; reason: string }[];
+  budget_cents: number | null;
+  /** How far past the ceiling the plan came out, or null when it did not. Never silently met. */
+  over_by_cents: number | null;
+};
+
 export type PlanResult = {
   plan_id: string;
   start_date: string;
@@ -104,6 +120,10 @@ export type PlanResult = {
   unfilled: { day: number; date: string; meal: MealName; reason: string }[];
   plan_hash: string;
   pantry_as_of: string;
+  /** null when no price list was supplied. */
+  cost: PlanCost | null;
+  /** The per-day limits actually applied, after the global one is filled in. */
+  day_budgets: { day: number; minutes: number }[];
 };
 
 export type PlanInput = {
@@ -113,9 +133,19 @@ export type PlanInput = {
   days: number;
   meals_per_day: number;
   time_budget_min?: number | null;
+  /** Per-day limits, for the day somebody gets home at nine. They override the weekly one for that
+   *  day and are a hard filter like it: a limit that bends is not a limit. */
+  day_budgets?: { day: number; minutes: number }[];
   /** Ingredient ids to keep out of the week. */
   avoid?: string[];
   start_date?: string;
+  /** What a line of the shopping list costs in integer cents, or why it cannot be priced. Injected
+   *  rather than imported so the planner stays independent of the store — and so the plan's figure
+   *  and the basket's are computed by the same function. */
+  priceOf?: (want: { ingredient_id: string; unit: Unit; qty: number | null }) => { cents: number } | { reason: string };
+  /** A ceiling on what the week's shopping may cost. A preference the scorer leans on, never a
+   *  promise: if the plan comes out over, it says so rather than pretending. */
+  budget_cents?: number | null;
 };
 
 // --- the pantry, as the planner needs it ------------------------------------------------------
@@ -202,6 +232,10 @@ const MISSING_PENALTY_CAP = 40;
 const SHORT_PENALTY = 5;
 const CATEGORY_FIT = 30;
 const REPEAT_PROTEIN_PENALTY = 60;
+/** One point per dollar its own shopping would cost, capped so money can never outweigh rescuing
+ *  food that is about to go off. Applied only when somebody actually set a ceiling: quietly
+ *  preferring cheap meals when nobody asked about money is a behaviour change nobody requested. */
+const COST_PENALTY_CAP = 60;
 
 export function primaryProtein(recipe: Recipe): string | null {
   return recipe.ingredients.find((i) => i.role === "protein")?.id ?? null;
@@ -215,6 +249,8 @@ export function scoreRecipe(
     /** Ingredients a deadline has already found a meal for. They are rescued; scoring them urgent a
      *  second time would pull the same food into two meals and undo the "latest usable slot" rule. */
     claimed?: Set<string>;
+    /** Set only when a spending ceiling was given. See COST_PENALTY_CAP. */
+    priceOf?: PlanInput["priceOf"];
   },
 ): ScoredRecipe {
   const avail = availability(recipe, onHand);
@@ -244,6 +280,17 @@ export function scoreRecipe(
 
   score += avail.length === 0 ? 0 : Math.floor((COVERAGE_MAX * have) / avail.length);
   score -= Math.min(MISSING_PENALTY_CAP, MISSING_PENALTY * missing.length);
+  if (opts.priceOf) {
+    // What this dish alone would add to a shopping list. Standalone rather than marginal, because
+    // at scoring time there is no list yet — a proxy, and only ever a nudge.
+    let cents = 0;
+    for (const a of avail) {
+      if (a.have && a.enough !== false) continue;
+      const answer = opts.priceOf({ ingredient_id: a.ingredient_id, unit: a.needed_unit, qty: a.needed_milli === null ? null : a.needed_milli / 1000 });
+      if ("cents" in answer) cents += answer.cents;
+    }
+    score -= Math.min(COST_PENALTY_CAP, Math.floor(cents / 100));
+  }
   if (MEAL_CATEGORIES[opts.meal].includes(recipe.category)) score += CATEGORY_FIT;
   // A shorter dish wins a tie; the time budget itself is a hard filter applied by the caller.
   score -= Math.floor(recipe.minutes / 10);
@@ -294,12 +341,26 @@ export function planWeek(input: PlanInput): PlanResult {
     for (const meal of meals) slots.push({ day: d, date: addDays(start, d - 1), meal, filled: null });
   }
 
-  // Hard filters, applied once: a recipe over the budget or carrying something to avoid is not a
-  // candidate at all, and no recipe appears twice in the same week.
-  const eligible = input.recipes.filter(
-    (r) => (budget === null || r.minutes <= budget) && !r.ingredients.some((i) => avoid.has(i.id)),
-  );
+  // Time limits. The weekly one is the default and a per-day one overrides it, because a week is
+  // not uniform: Wednesday is the day somebody gets home at nine. Both are hard filters — a limit
+  // that bends is not a limit — so they are applied per slot rather than once over the corpus.
+  const perDayBudget = new Map<number, number>();
+  for (const b of input.day_budgets ?? []) {
+    if (Number.isInteger(b.day) && b.day >= 1 && b.day <= days && Number.isInteger(b.minutes) && b.minutes > 0) {
+      perDayBudget.set(b.day, b.minutes);
+    }
+  }
+  const budgetFor = (day: number): number | null => perDayBudget.get(day) ?? budget;
+  const dayBudgets = Array.from({ length: days }, (_, i) => ({ day: i + 1, minutes: budgetFor(i + 1) }))
+    .filter((b): b is { day: number; minutes: number } => b.minutes !== null);
+
+  // A recipe carrying something to avoid is not a candidate anywhere, and no recipe appears twice.
+  const eligible = input.recipes.filter((r) => !r.ingredients.some((i) => avoid.has(i.id)));
   const used = new Set<string>();
+  const fitsSlot = (r: Recipe, day: number): boolean => {
+    const limit = budgetFor(day);
+    return limit === null || r.minutes <= limit;
+  };
 
   const proteinBefore = (index: number): string | null => {
     for (let i = index - 1; i >= 0; i--) {
@@ -310,13 +371,14 @@ export function planWeek(input: PlanInput): PlanResult {
   };
 
   const claimed = new Set<string>();
+  const costBias = input.budget_cents !== null && input.budget_cents !== undefined ? input.priceOf : undefined;
 
   const best = (slotIndex: number): ScoredRecipe | null => {
     const slot = slots[slotIndex];
     const previous = proteinBefore(slotIndex);
     const scored = eligible
-      .filter((r) => !used.has(r.id))
-      .map((r) => scoreRecipe(r, onHand, { meal: slot.meal, windowDays: days, previousProtein: previous, dayIndex: slot.day, claimed }))
+      .filter((r) => !used.has(r.id) && fitsSlot(r, slot.day))
+      .map((r) => scoreRecipe(r, onHand, { meal: slot.meal, windowDays: days, previousProtein: previous, dayIndex: slot.day, claimed, priceOf: costBias }))
       // Ties broken by id, so two machines with the same pantry produce the same week.
       .sort((a, b) => b.score - a.score || a.recipe.minutes - b.recipe.minutes || a.recipe.id.localeCompare(b.recipe.id));
     return scored[0] ?? null;
@@ -353,8 +415,8 @@ export function planWeek(input: PlanInput): PlanResult {
     for (const { s, index } of candidates) {
       const previous = proteinBefore(index);
       const scored = eligible
-        .filter((r) => !used.has(r.id) && r.ingredients.some((i) => i.id === item.id))
-        .map((r) => scoreRecipe(r, onHand, { meal: s.meal, windowDays: days, previousProtein: previous, dayIndex: s.day, claimed }))
+        .filter((r) => !used.has(r.id) && fitsSlot(r, s.day) && r.ingredients.some((i) => i.id === item.id))
+        .map((r) => scoreRecipe(r, onHand, { meal: s.meal, windowDays: days, previousProtein: previous, dayIndex: s.day, claimed, priceOf: costBias }))
         .sort((a, b) => b.score - a.score || a.recipe.minutes - b.recipe.minutes || a.recipe.id.localeCompare(b.recipe.id));
       const pick = scored[0];
       if (!pick) break; // no recipe uses this at all; a later slot will not change that
@@ -364,6 +426,7 @@ export function planWeek(input: PlanInput): PlanResult {
       s.filled = {
         day: s.day, date: s.date, meal: s.meal,
         recipe_id: pick.recipe.id, title: pick.recipe.title, minutes: pick.recipe.minutes,
+        cost_cents: null,
         why_code: "expiring",
         why: whyExpiring(item.id, item.days, item.source),
         uses_expiring: pick.expiring_used,
@@ -384,9 +447,12 @@ export function planWeek(input: PlanInput): PlanResult {
     if (slot.filled !== null) continue;
     const pick = best(index);
     if (!pick) {
+      const limit = budgetFor(slot.day);
       unfilled.push({
         day: slot.day, date: slot.date, meal: slot.meal,
-        reason: budget === null ? "nothing left that has not already been planned this week" : `nothing left under ${budget} minutes that has not already been planned this week`,
+        reason: limit === null
+          ? "nothing left that has not already been planned this week"
+          : `nothing left under ${limit} minutes that has not already been planned this week`,
       });
       continue;
     }
@@ -395,6 +461,7 @@ export function planWeek(input: PlanInput): PlanResult {
     slot.filled = {
       day: slot.day, date: slot.date, meal: slot.meal,
       recipe_id: pick.recipe.id, title: pick.recipe.title, minutes: pick.recipe.minutes,
+      cost_cents: null,
       why_code: thin ? "thin" : "pantry",
       why: thin
         ? "nothing in the kitchen fits this slot, so this is a shopping night"
@@ -406,11 +473,69 @@ export function planWeek(input: PlanInput): PlanResult {
 
   // --- the shopping list -----------------------------------------------------------------------
   const byId = new Map(input.recipes.map((r) => [r.id, r]));
+  const placed = slots.map((s) => s.filled).filter((m): m is PlanMeal => m !== null);
+  const missing = shoppingList(placed.map((m) => m.recipe_id), byId, onHand);
+
+  // --- what it costs ---------------------------------------------------------------------------
+  // Leave-one-out, because one bag of lentils feeds two dinners: a meal's cost is what the week's
+  // bill drops by without it, not what its own ingredients would cost bought alone.
+  let cost: PlanCost | null = null;
+  if (input.priceOf) {
+    const priceOf = input.priceOf;
+    const priceList = (lines: MissingLine[]) => {
+      let total = 0;
+      const unpriced: { ingredient_id: string; reason: string }[] = [];
+      for (const l of lines) {
+        const answer = priceOf({ ingredient_id: l.ingredient_id, unit: l.unit, qty: l.qty });
+        if ("cents" in answer) total += answer.cents;
+        else unpriced.push({ ingredient_id: l.ingredient_id, reason: answer.reason });
+      }
+      return { total, unpriced };
+    };
+    const whole = priceList(missing);
+    for (const meal of placed) {
+      const without = shoppingList(placed.filter((m) => m !== meal).map((m) => m.recipe_id), byId, onHand);
+      meal.cost_cents = whole.total - priceList(without).total;
+    }
+    const ceiling = input.budget_cents ?? null;
+    cost = {
+      shopping_cents: whole.total,
+      unpriced: whole.unpriced.sort((a, b) => a.ingredient_id.localeCompare(b.ingredient_id)),
+      budget_cents: ceiling,
+      over_by_cents: ceiling !== null && whole.total > ceiling ? whole.total - ceiling : null,
+    };
+  }
+
+  const plan_hash = hashPlan({
+    start, days, perDay, budget, avoid: [...avoid].sort(), meals: placed,
+    dayBudgets: dayBudgets.map((b) => `${b.day}:${b.minutes}`),
+    budgetCents: input.budget_cents ?? null,
+  });
+
+  return {
+    plan_id: `plan-${start}-${plan_hash.slice(0, 8)}`,
+    start_date: start,
+    days,
+    meals_per_day: perDay,
+    time_budget_min: budget,
+    meals: placed,
+    missing,
+    unplaceable: unplaceable.sort((a, b) => a.days_to_expiry - b.days_to_expiry || a.ingredient_id.localeCompare(b.ingredient_id)),
+    unfilled,
+    plan_hash,
+    pantry_as_of: input.now,
+    cost,
+    day_budgets: dayBudgets,
+  };
+}
+
+/** The consolidated shopping list for a set of recipes. Pulled out of `planWeek` so that costing a
+ *  plan without one of its meals is the same computation rather than a second one that could drift. */
+function shoppingList(recipeIds: string[], byId: Map<string, Recipe>, onHand: Map<string, OnHand>): MissingLine[] {
   const missingMap = new Map<string, MissingLine>();
-  for (const slot of slots) {
-    const meal = slot.filled;
-    if (!meal) continue;
-    const recipe = byId.get(meal.recipe_id)!;
+  for (const id of recipeIds) {
+    const recipe = byId.get(id);
+    if (!recipe) continue;
     for (const a of availability(recipe, onHand)) {
       const needsBuying = !a.have || a.enough === false;
       if (!needsBuying) continue;
@@ -426,26 +551,9 @@ export function planWeek(input: PlanInput): PlanResult {
       missingMap.set(key, line);
     }
   }
-  const missing = [...missingMap.values()]
+  return [...missingMap.values()]
     .map((l) => ({ ...l, qty: l.qty_known ? l.qty : null, for_recipes: [...l.for_recipes].sort() }))
     .sort((a, b) => a.ingredient_id.localeCompare(b.ingredient_id) || a.unit.localeCompare(b.unit));
-
-  const placed = slots.map((s) => s.filled).filter((m): m is PlanMeal => m !== null);
-  const plan_hash = hashPlan({ start, days, perDay, budget, avoid: [...avoid].sort(), meals: placed });
-
-  return {
-    plan_id: `plan-${start}-${plan_hash.slice(0, 8)}`,
-    start_date: start,
-    days,
-    meals_per_day: perDay,
-    time_budget_min: budget,
-    meals: placed,
-    missing,
-    unplaceable: unplaceable.sort((a, b) => a.days_to_expiry - b.days_to_expiry || a.ingredient_id.localeCompare(b.ingredient_id)),
-    unfilled,
-    plan_hash,
-    pantry_as_of: input.now,
-  };
 }
 
 /**
@@ -459,12 +567,16 @@ export function planWeek(input: PlanInput): PlanResult {
 export function hashPlan(parts: {
   start: string; days: number; perDay: number; budget: number | null; avoid: string[];
   meals: { day: number; meal: string; recipe_id: string }[];
+  dayBudgets?: string[];
+  budgetCents?: number | null;
 }): string {
   const canonical = [
     `start=${parts.start}`,
     `days=${parts.days}`,
     `per_day=${parts.perDay}`,
     `budget=${parts.budget ?? "none"}`,
+    `day_budgets=${(parts.dayBudgets ?? []).join(",")}`,
+    `budget_cents=${parts.budgetCents ?? "none"}`,
     `avoid=${parts.avoid.join(",")}`,
     ...parts.meals.map((m) => `${m.day}/${m.meal}=${m.recipe_id}`),
   ].join("\n");

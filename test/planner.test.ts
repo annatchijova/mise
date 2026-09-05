@@ -166,3 +166,78 @@ test("a week longer than the recipe book leaves the extra slots empty and says w
   assert.equal(plan.unfilled.length, 2);
   assert.match(plan.unfilled[0].reason, /already been planned/);
 });
+
+// --- per-day limits and money -------------------------------------------------------------------
+
+test("a day with its own limit gets a meal under that limit, and the rest keep the weekly one", () => {
+  const plan = planWeek({
+    ...base, days: 4, pantry: [have("onion", { unit: "pc", qty: 5 })],
+    time_budget_min: 60,
+    day_budgets: [{ day: 3, minutes: 15 }],
+  });
+  const wednesday = plan.meals.find((m) => m.day === 3);
+  assert.ok(wednesday, "the tight day is still filled");
+  assert.ok(wednesday.minutes <= 15, `${wednesday.recipe_id} takes ${wednesday.minutes} minutes on a 15 minute day`);
+  for (const m of plan.meals) assert.ok(m.minutes <= (m.day === 3 ? 15 : 60), `${m.recipe_id} on day ${m.day}`);
+  assert.deepEqual(plan.day_budgets.find((b) => b.day === 3), { day: 3, minutes: 15 });
+});
+
+test("a day limit nothing fits leaves that day empty and quotes the limit that emptied it", () => {
+  const plan = planWeek({
+    ...base, days: 2, pantry: [],
+    recipes: recipes.filter((r) => r.minutes >= 40),
+    day_budgets: [{ day: 2, minutes: 5 }],
+  });
+  const gap = plan.unfilled.find((u) => u.day === 2);
+  assert.ok(gap, "the day nothing fits is reported, not silently filled with something too long");
+  assert.match(gap.reason, /under 5 minutes/);
+});
+
+test("the plan hash covers the per-day limits, so two different weeks cannot share one", () => {
+  const pantry = [have("onion", { unit: "pc", qty: 5 })];
+  const flat = planWeek({ ...base, pantry, time_budget_min: 60 });
+  const tight = planWeek({ ...base, pantry, time_budget_min: 60, day_budgets: [{ day: 2, minutes: 15 }] });
+  assert.notEqual(tight.plan_hash, flat.plan_hash);
+});
+
+test("a meal's cost is what the week's bill drops by without it, not what its ingredients cost alone", () => {
+  // Two dinners that both want lentils. One bag covers both, so the second one is not charged for it.
+  const priceOf = (want: { ingredient_id: string; qty: number | null }) =>
+    want.ingredient_id === "red-lentil" ? { cents: 289 } : { cents: 100 };
+  const plan = planWeek({
+    ...base, days: 2, pantry: [],
+    recipes: recipes.filter((r) => r.ingredients.some((i) => i.id === "red-lentil")).slice(0, 2),
+    priceOf,
+  });
+  assert.ok(plan.cost !== null);
+  const charged = plan.meals.reduce((sum, m) => sum + (m.cost_cents ?? 0), 0);
+  assert.ok(charged <= plan.cost.shopping_cents, "the marginal costs cannot add up to more than the bill");
+});
+
+test("what the shop cannot price is named with the reason, and left out of the total", () => {
+  const priceOf = (want: { ingredient_id: string }) =>
+    want.ingredient_id === "water" ? { reason: "the shop does not stock it" } : { cents: 200 };
+  const plan = planWeek({ ...base, days: 1, pantry: [], recipes: recipes.filter((r) => r.id === "broad-bean-red-lentil-stew"), priceOf });
+  assert.ok(plan.cost !== null);
+  const water = plan.cost.unpriced.find((u) => u.ingredient_id === "water");
+  assert.ok(water, "an unpriceable line is named");
+  assert.equal(water.reason, "the shop does not stock it", "with the shop's own reason, not a shrug");
+  assert.equal(plan.cost.shopping_cents % 200, 0, "and it contributes nothing to the total");
+});
+
+test("a plan that comes out over its ceiling says so rather than pretending it met it", () => {
+  const plan = planWeek({
+    ...base, days: 2, pantry: [], recipes: recipes.slice(0, 6),
+    priceOf: () => ({ cents: 1000 }),
+    budget_cents: 500,
+  });
+  assert.ok(plan.cost !== null);
+  assert.ok(plan.cost.over_by_cents !== null && plan.cost.over_by_cents > 0, "the overrun is stated");
+  assert.equal(plan.cost.shopping_cents - plan.cost.budget_cents!, plan.cost.over_by_cents);
+});
+
+test("with no price list there is simply no money in the plan", () => {
+  const plan = planWeek({ ...base, pantry: [] });
+  assert.equal(plan.cost, null);
+  for (const m of plan.meals) assert.equal(m.cost_cents, null);
+});

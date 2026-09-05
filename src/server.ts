@@ -39,7 +39,7 @@ import { registerCookTools } from "./tools/cook.ts";
 import { MemoryPlanStore } from "./plan/store.ts";
 import { registerPlanTools } from "./tools/plan.ts";
 import { indexCatalog, loadCatalog } from "./store/catalog.ts";
-import { MemoryCartStore } from "./store/cart.ts";
+import { MemoryCartStore, priceOfWanted } from "./store/cart.ts";
 import { MemoryCheckoutStore, handleUcp } from "./store/ucp.ts";
 import { registerCartTools } from "./tools/cart.ts";
 import { renderReceiptPage, renderRefundPolicyPage } from "./pages.ts";
@@ -419,6 +419,10 @@ function buildServer(): McpServer {
 
   registerPlanTools(server, {
     recipes: () => recipes,
+    // The plan's figure and the basket's come from the same function, so a week that says $26 and a
+    // basket that says $31 is not something anybody discovers at the checkout.
+    priceOf: (want) => priceOfWanted(skuIndex, { ingredient_id: want.ingredient_id, unit: want.unit as Unit, qty: want.qty }),
+    currency: catalog.currency,
     plans,
     pantryItems: async (userId, now) => (await pantryFor(userId, now)).fold.items,
     resolve,

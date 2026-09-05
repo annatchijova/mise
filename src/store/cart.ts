@@ -79,6 +79,22 @@ export function isUnmapped(line: CartLine | UnmappedLine): line is UnmappedLine 
   return "reason" in line;
 }
 
+/**
+ * What one line of a shopping list costs, or why it cannot be priced.
+ *
+ * The planner uses this to put a figure on a week and the cart uses the same `lineFor` underneath,
+ * which is the point: a plan that says $26 and a basket that says $31 is a bug somebody has to find
+ * at the checkout. One function, one answer.
+ *
+ * The reason travels with the failure because the two failures are different things to a shopper.
+ * "We do not stock kaffir lime leaves" is a shop that cannot help. "We sell flour by the kilo and
+ * the recipe asks for cups" is a shop that stocks it and an arithmetic this system refuses to fake.
+ */
+export function priceOfWanted(index: SkuIndex, want: WantedLine): { cents: number } | { reason: string } {
+  const line = lineFor(index, want);
+  return isUnmapped(line) ? { reason: line.reason } : { cents: line.line_total_cents };
+}
+
 /** Build a cart from a shopping list. Nothing is dropped: what cannot be bought is reported. */
 export function cartFromWanted(
   index: SkuIndex,
