@@ -17,11 +17,12 @@ import type { PantryStore } from "../pantry/store.ts";
 import type { Resolver } from "../integrations/aliases.ts";
 import {
   type CookSession, type SessionView, type TimerView,
-  advance, consumptionEvents, finish, misePlace, note, orderedSteps, pause, startSession, view,
+  advance, consumptionEvents, currentStepFor, finish, misePlace, note, orderedSteps, pause, startSession, view,
 } from "../cook/session.ts";
 import type { CookStore } from "../cook/store.ts";
 import { postMortem, spanText } from "../cook/postmortem.ts";
 import { type Scaling, scalingWarnings } from "../cook/scaling.ts";
+import { assignmentsByStep, scheduleSteps } from "../cook/schedule.ts";
 
 export type CookDeps = {
   recipeById: (id: string) => Recipe | undefined;
@@ -68,6 +69,12 @@ function timerSentence(timers: TimerView[]): string {
     .join(" ")}`;
 }
 
+/** "1", "1 and 3", "1, 3 and 5". A list a person would say. */
+function listOf(numbers: number[]): string {
+  if (numbers.length <= 1) return numbers.join("");
+  return `${numbers.slice(0, -1).join(", ")} and ${numbers.at(-1)}`;
+}
+
 function stepSentence(v: SessionView): string {
   if (v.step === null) return "";
   const dur = v.step.dur_s > 0 ? ` About ${durationText(v.step.dur_s)}.` : "";
@@ -83,6 +90,11 @@ const SESSION_SCHEMA = {
       recipe_id: z.string(),
       state: z.enum(["mise_en_place", "cooking", "paused", "finished", "abandoned"]),
       servings: z.number().int(),
+      cooks: z.number().int(),
+      /** When there is work left for this cook but none of it can start, the steps in the way. */
+      waiting_for: z.array(z.number().int()),
+      /** Everybody's place at once. One entry when one person is cooking. */
+      tracks: z.array(z.object({ cook: z.number().int(), step: z.number().int(), waiting_for: z.array(z.number().int()) })),
       step: z
         .object({
           order: z.number().int(), of: z.number().int(), text: z.string(), text_es: z.string(),
@@ -143,6 +155,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       inputSchema: {
         recipe_id: z.string().describe("The recipe id, from recipe_search"),
         servings: z.number().int().positive().optional().describe("How many people, when they said"),
+        cooks: z.number().int().min(1).max(4).optional().describe("How many people are cooking, when they say somebody is helping. One otherwise"),
         abandon_other: z.boolean().optional().describe("Only after the customer has confirmed they are giving up on the session already in progress"),
       },
       outputSchema: {
@@ -161,6 +174,18 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         ),
         /** What scaling this far up does that no amount can express — the pan, the tin, the bowl. */
         scaling_warnings: z.array(z.string()),
+        /** Who does what, when more than one person is cooking. null for one cook. */
+        schedule: z
+          .object({
+            cooks: z.number().int(),
+            steps_by_cook: z.array(z.object({ cook: z.number().int(), steps: z.array(z.number().int()) })),
+            makespan_s: z.number().int(),
+            solo_s: z.number().int(),
+            saved_s: z.number().int(),
+            /** True when nothing can be done in parallel and the second pair of hands has nowhere to stand. */
+            no_benefit: z.boolean(),
+          })
+          .nullable(),
       },
       _meta: uiStepCard,
     },
@@ -175,7 +200,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       if (existing && existing.recipe_id === recipe.id) {
         const v = view(existing, recipe, now);
         return {
-          structuredContent: { session: v, started: false, resumed: true, blocked_by: null, mise_en_place: misePlace(recipe, existing.servings, deps.scaling), scaling_warnings: [] },
+          structuredContent: { session: v, started: false, resumed: true, blocked_by: null, mise_en_place: misePlace(recipe, existing.servings, deps.scaling), scaling_warnings: [], schedule: null },
           content: [{ type: "text", text: `You are already cooking this. ${stepSentence(v) || "You are still on the mise en place."}${timerSentence(v.timers)}` }],
         };
       }
@@ -185,13 +210,14 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
           structuredContent: {
             session: view(existing, other ?? recipe, now),
             started: false, resumed: false,
-            blocked_by: { session_id: existing.id, recipe_id: existing.recipe_id, step: existing.current_step },
+            blocked_by: { session_id: existing.id, recipe_id: existing.recipe_id, step: currentStepFor(existing, other ?? recipe, 1).current_step },
             mise_en_place: [],
             scaling_warnings: [],
+            schedule: null,
           },
           content: [{
             type: "text",
-            text: `There is already a session going: ${other?.title ?? existing.recipe_id}, at step ${existing.current_step}. Do you want to leave that one and start ${recipe.title}?`,
+            text: `There is already a session going: ${other?.title ?? existing.recipe_id}, at step ${currentStepFor(existing, other ?? recipe, 1).current_step}. Do you want to leave that one and start ${recipe.title}?`,
           }],
         };
       }
@@ -200,7 +226,19 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         await deps.sessions.put(finish({ ...existing, state: "cooking" }, other ?? recipe, now));
       }
 
-      const session = startSession({ id: deps.newId(), userId, recipe, servings: args.servings, now });
+      // Who does what comes from the scheduler; the session takes it as given and never schedules.
+      // What it decides is who, not when — the session still records what people actually did.
+      const asked = Math.max(1, Math.min(4, Math.floor(args.cooks ?? 1)));
+      const schedule = asked > 1 ? scheduleSteps(recipe, asked) : null;
+      // A recipe that is one long chain cannot be split, and handing somebody alternate steps they
+      // can never start would be worse than telling them there is nothing to do. So it stays one
+      // job, and the sentence below says why.
+      const cooks = schedule === null || schedule.no_benefit ? 1 : asked;
+      const session = startSession({
+        id: deps.newId(), userId, recipe, servings: args.servings, now,
+        cooks,
+        assignments: cooks > 1 && schedule ? assignmentsByStep(schedule) : {},
+      });
       await deps.sessions.put(session);
       const mise = misePlace(recipe, session.servings, deps.scaling);
       const warnings = deps.scaling
@@ -216,9 +254,26 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         ? ` Scaled from ${recipe.serves} to ${session.servings}.${dampedItems.length ? ` The ${dampedItems.map((m) => displayName(m.ingredient_id)).join(", ")} did not scale straight — seasoning compounds, so it goes up by less than the rest.` : ""}`
         : "";
       const pan = warnings.length ? ` ${warnings.map((w) => w.text).join(" ")}` : "";
-      const text = `${recipe.title}, ${session.servings} serving${session.servings === 1 ? "" : "s"}.${scaled}${pan} Get out: ${list}. When you are ready, say next and we start with: ${first?.text ?? "the first step"}`;
+      const byCook = schedule === null ? [] : Array.from({ length: schedule.cooks }, (_, i) => ({
+        cook: i + 1,
+        steps: schedule.assignments.filter((a) => a.cook === i + 1).map((a) => a.step).sort((x, y) => x - y),
+      }));
+      const split = schedule === null
+        ? ""
+        : schedule.no_benefit
+          ? ` There is nothing here two people can do at once — every step waits on the one before it — so I have kept it as one job. A second pair of hands is better spent on the washing up.`
+          : ` Two of you: ${byCook.map((c) => `cook ${c.cook} takes step${c.steps.length === 1 ? "" : "s"} ${c.steps.join(", ")}`).join("; ")}. About ${durationText(schedule.makespan_s)} together against ${durationText(schedule.solo_s)} alone.`;
+
+      const text = `${recipe.title}, ${session.servings} serving${session.servings === 1 ? "" : "s"}.${scaled}${pan}${split} Get out: ${list}. When you are ready, say next and we start with: ${first?.text ?? "the first step"}`;
       return {
-        structuredContent: { session: v, started: true, resumed: false, blocked_by: null, mise_en_place: mise, scaling_warnings: warnings.map((w) => w.text) },
+        structuredContent: {
+          session: v, started: true, resumed: false, blocked_by: null, mise_en_place: mise,
+          scaling_warnings: warnings.map((w) => w.text),
+          schedule: schedule === null ? null : {
+            cooks: schedule.cooks, steps_by_cook: byCook,
+            makespan_s: schedule.makespan_s, solo_s: schedule.solo_s, saved_s: schedule.saved_s, no_benefit: schedule.no_benefit,
+          },
+        },
         content: [{ type: "text", text }],
       };
     },
@@ -229,9 +284,10 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
     {
       title: "Next cooking step",
       description:
-        "Move the cooking session on to the next step. Use when the customer says they finished a step, asks what is next, or says done, ready, ok, next. Pass what they said as completed_hint when they named what they did ('I already did the onions') — if that turns out to be a different step it is recorded as a deviation, not treated as a mistake. Needs a linked account.",
+        "Move the cooking session on to the next step. Use when the customer says they finished a step, asks what is next, or says done, ready, ok, next. Pass what they said as completed_hint when they named what they did ('I already did the onions') — if that turns out to be a different step it is recorded as a deviation, not treated as a mistake. When two people are cooking, pass which of them is speaking; each has their own place in the recipe and may have to wait for the other. Needs a linked account.",
       inputSchema: {
         completed_hint: z.string().optional().describe("What the customer said they finished, in their words"),
+        cook: z.number().int().min(1).max(4).optional().describe("Which cook is speaking, when more than one is cooking. One otherwise"),
       },
       outputSchema: {
         ...SESSION_SCHEMA,
@@ -252,7 +308,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       if (typeof found === "string") return mcpError(found);
       const now = deps.now();
 
-      const result = advance(found.session, found.recipe, { now, completed_hint: args.completed_hint });
+      const result = advance(found.session, found.recipe, { now, completed_hint: args.completed_hint, cook: args.cook });
       await deps.sessions.put(result.session);
 
       if (result.finished) {
@@ -265,15 +321,22 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         };
       }
 
-      const v = view(result.session, found.recipe, now);
+      const v = view(result.session, found.recipe, now, result.cook);
       const aside = result.unmatched_hint
         ? " I could not tell which step you meant, so I have written it down and left the order alone."
         : result.deviation
           ? ` Noted that you did step ${result.deviation.what.match(/step (\d+)/)?.[1] ?? "another one"} already.`
           : "";
+      // A cook with nothing to start is waiting on somebody else, and saying so is the whole reason
+      // the second track exists. It is not an error and it is not the end of their evening.
+      const held = result.step === null && result.waiting_for.length > 0
+        ? `Nothing for you yet: step${result.waiting_for.length === 1 ? "" : "s"} ${listOf(result.waiting_for)} ${result.waiting_for.length === 1 ? "has" : "have"} to be done first, and ${result.waiting_for.length === 1 ? "it is" : "they are"} not yours.`
+        : result.step === null
+          ? "That is everything on your side. The rest is somebody else's."
+          : "";
       return {
         structuredContent: { session: v, finished: false, deviation: result.deviation, unmatched_hint: result.unmatched_hint, deducted: [], skipped: [] },
-        content: [{ type: "text", text: `${aside}${aside ? " " : ""}${stepSentence(v)}${timerSentence(v.timers)}`.trim() }],
+        content: [{ type: "text", text: `${aside}${aside ? " " : ""}${held || stepSentence(v)}${timerSentence(v.timers)}`.trim() }],
       };
     },
   );
@@ -283,12 +346,14 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
     {
       title: "Where was I",
       description:
-        "Say where the cooking session stands: which step, which timers, how long it has been. Use when the customer comes back after a break and asks where they were, what step they are on, how long is left, or what they were doing. Answers across sessions and devices. Needs a linked account.",
-      inputSchema: {},
+        "Say where the cooking session stands: which step, which timers, how long it has been. Use when the customer comes back after a break and asks where they were, what step they are on, how long is left, or what they were doing. Answers across sessions and devices. When two people are cooking, pass which of them is asking. Needs a linked account.",
+      inputSchema: {
+        cook: z.number().int().min(1).max(4).optional().describe("Which cook is asking, when more than one is cooking"),
+      },
       outputSchema: { ...SESSION_SCHEMA, recipe_title: z.string().nullable() },
       _meta: uiStepCard,
     },
-    async () => {
+    async (args) => {
       const userId = deps.userId();
       if (!userId) return mcpError(NEEDS_ACCOUNT);
       const found = await activeWithRecipe(userId);
@@ -296,10 +361,16 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         return { structuredContent: { session: null, recipe_title: null }, content: [{ type: "text", text: found }] };
       }
       const now = deps.now();
-      const v = view(found.session, found.recipe, now);
+      const v = view(found.session, found.recipe, now, args.cook ?? 1);
       const away = ` It has been ${durationText(v.elapsed_s)} since you started.`;
       const where = v.state === "paused" ? "You paused" : v.state === "mise_en_place" ? "You had not started the steps yet" : "You are";
-      const text = `${where} on ${found.recipe.title}. ${stepSentence(v)}${timerSentence(v.timers)}${away}`;
+      const mine = v.step === null && v.waiting_for.length > 0
+        ? `Nothing for you until step${v.waiting_for.length === 1 ? "" : "s"} ${listOf(v.waiting_for)} ${v.waiting_for.length === 1 ? "is" : "are"} done.`
+        : stepSentence(v);
+      const others = v.cooks > 1
+        ? ` ${v.tracks.filter((t) => t.cook !== (args.cook ?? 1)).map((t) => `Cook ${t.cook} is ${t.step === 0 ? (t.waiting_for.length ? `waiting on step ${listOf(t.waiting_for)}` : "finished") : `on step ${t.step}`}.`).join(" ")}`
+        : "";
+      const text = `${where} on ${found.recipe.title}. ${mine}${timerSentence(v.timers)}${others}${away}`;
       return { structuredContent: { session: v, recipe_title: found.recipe.title }, content: [{ type: "text", text }] };
     },
   );
@@ -314,6 +385,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         note: z.string().describe("What they said, in their words"),
         used: z.string().optional().describe("The ingredient they actually used, when they named a swap"),
         instead_of: z.string().optional().describe("The ingredient the recipe asked for, when they named a swap"),
+        cook: z.number().int().min(1).max(4).optional().describe("Which cook is speaking, when more than one is cooking"),
       },
       outputSchema: {
         ...SESSION_SCHEMA,
@@ -339,9 +411,9 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       ];
       const swap = used && insteadOf ? { used, instead_of: insteadOf } : null;
 
-      const { session, deviation } = note(found.session, { now, note: args.note, used: swap?.used, instead_of: swap?.instead_of });
+      const { session, deviation } = note(found.session, found.recipe, { now, note: args.note, used: swap?.used, instead_of: swap?.instead_of, cook: args.cook });
       await deps.sessions.put(session);
-      const v = view(session, found.recipe, now);
+      const v = view(session, found.recipe, now, args.cook ?? 1);
       const said = swap
         ? `Noted: ${displayName(swap.used)} instead of ${displayName(swap.instead_of)}. I will count that against the ${displayName(swap.used)} when you finish, and leave the ${displayName(swap.instead_of)} alone.`
         : unresolved.length

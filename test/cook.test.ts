@@ -8,7 +8,7 @@ import { test } from "node:test";
 import { type Recipe, loadRecipes } from "../src/recipes.ts";
 import { foldPantry } from "../src/pantry/fold.ts";
 import {
-  advance, consumptionEvents, finish, matchStep, misePlace, note, pause, resume, scaleMilli,
+  advance, consumptionEvents, currentStepFor, finish, matchStep, misePlace, note, pause, resume, scaleMilli,
   startSession, timerViews, view,
 } from "../src/cook/session.ts";
 import { MemoryCookStore } from "../src/cook/store.ts";
@@ -25,7 +25,7 @@ function begin(recipe: Recipe = stew, servings?: number) {
 test("pause holds the timer where it stopped, and a day away does not move it", () => {
   let s = begin();
   s = advance(s, stew, { now: at(1) }).session;          // step 1: a 30 minute timer starts
-  assert.equal(s.current_step, 1);
+  assert.equal(currentStepFor(s, stew).current_step, 1);
   s = pause(s, at(11));                                   // ten minutes in
   const paused = timerViews(s, at(11)).find((t) => t.step === 1)!;
   assert.equal(paused.state, "paused");
@@ -129,7 +129,7 @@ test("an amount the book never gave is consumed as unknown, and the pantry line 
 test("a swap recorded while cooking redirects the deduction to what was actually used", () => {
   let s = begin();
   s = advance(s, stew, { now: T0 }).session;
-  s = note(s, { now: at(5), note: "I used chickpeas instead of the broad beans", used: "chickpea", instead_of: "broad-bean" }).session;
+  s = note(s, stew, { now: at(5), note: "I used chickpeas instead of the broad beans", used: "chickpea", instead_of: "broad-bean" }).session;
   const { events } = consumptionEvents(s, stew, at(90));
   assert.ok(events.some((e) => e.ingredient_id === "chickpea"), "the chickpeas come off the shelf");
   assert.ok(!events.some((e) => e.ingredient_id === "broad-bean"), "the broad beans are left alone");

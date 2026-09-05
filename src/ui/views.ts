@@ -141,13 +141,22 @@ window.mise.onData(function(data){
   var step = s.step;
   var timers = (s.timers || []).filter(function(t){ return t.state !== 'stopped'; });
   var html = '';
-  html += '<div class="dim">' + esc(s.recipe_id.replace(/-/g, ' ')) + ' · ' + esc(s.servings) + ' servings · ' + esc(s.state.replace(/_/g, ' ')) + '</div>';
-  if (step) {
+  html += '<div class="dim">' + esc(s.recipe_id.replace(/-/g, ' ')) + ' · ' + esc(s.servings) + ' servings · ' + esc(s.state.replace(/_/g, ' ')) +
+          (s.cooks > 1 ? ' · ' + esc(s.cooks) + ' cooks' : '') + '</div>';
+  if (!step && (s.waiting_for || []).length) {
+    html += '<div class="step">Waiting on step ' + esc(s.waiting_for.join(', ')) + '.</div>';
+    html += '<div class="why">That one is not yours. Nothing to do until it is done.</div>';
+  } else if (step) {
     html += '<div class="dim">Step ' + esc(step.order) + ' of ' + esc(step.of) + '</div>';
     html += '<div class="step">' + esc(step.text) + '</div>';
     if (step.dur_source === 'estimated') html += '<div class="why">That duration is the kitchen\\'s estimate, not the book\\'s.</div>';
   } else {
     html += '<div class="step">Mise en place.</div>';
+  }
+  if (s.cooks > 1) {
+    html += '<div class="why">' + (s.tracks || []).map(function(t){
+      return 'Cook ' + esc(t.cook) + ': ' + (t.step ? 'step ' + esc(t.step) : (t.waiting_for || []).length ? 'waiting on step ' + esc(t.waiting_for.join(', ')) : 'finished');
+    }).join(' · ') + '</div>';
   }
   timers.forEach(function(t){
     var late = t.state === 'done';

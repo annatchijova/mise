@@ -17,6 +17,10 @@
 //   3. **The deduction says what it does not know.** An ingredient the recipe never quantified is
 //      consumed as "some, amount unknown", which is exactly what the pantry fold does with it. An
 //      ingredient measured "to taste" is not deducted at all, and the reason is reported.
+//   4. **The current step is derived, never stored.** It is the lowest-numbered step this cook has
+//      not done whose dependencies are all met — a fact about `completed_steps` and the recipe's
+//      graph. Storing it as well would give the session two answers to the same question, and with
+//      two people cooking there is no single answer to store anyway.
 import type { Recipe, Step } from "../recipes.ts";
 import { type PantryEvent, type Unit, canonicalAmount, toMilli } from "../pantry/events.ts";
 import { LINEAR, type Scaling, scaleDamped } from "./scaling.ts";
@@ -75,7 +79,13 @@ export type Transition = {
    *  is a question only the log can answer, and only if the log wrote it down. Absent on a session
    *  saved before this field existed. */
   completed_step?: number | null;
+  /** Which cook this was. Also what tells us whether a given cook has started at all: their first
+   *  `cook_next` completes nothing, because they were gathering rather than cooking. Without it the
+   *  second person's first word would tick off a step they had never been given. */
+  cook?: number;
 };
+
+export type Track = { cook: number; current_step: number; waiting_for: number[] };
 
 export type CookSession = {
   id: string;
@@ -83,8 +93,10 @@ export type CookSession = {
   recipe_id: string;
   servings: number;
   state: SessionState;
-  /** 0 while gathering the mise en place; then the step number being worked on. */
-  current_step: number;
+  /** How many people are cooking. 1 unless somebody said otherwise. */
+  cooks: number;
+  /** Step order to cook, from the scheduler. Empty when one person is doing all of it. */
+  assignments: Record<number, number>;
   started_at: string;
   updated_at: string;
   completed_steps: number[];
@@ -116,6 +128,43 @@ function lastStep(recipe: Recipe): number {
   return orderedSteps(recipe).at(-1)?.order ?? 0;
 }
 
+/** Whose step this is. Unassigned steps belong to everybody, which is the single-cook case. */
+function belongsTo(s: CookSession, order: number, cook: number): boolean {
+  const owner = s.assignments[order];
+  return owner === undefined || owner === cook;
+}
+
+/**
+ * What this cook is on, worked out rather than remembered.
+ *
+ * The lowest-numbered step they have not done whose dependencies are all complete. `waiting_for`
+ * names the steps standing in their way when there is work left for them but none of it can start —
+ * which with two people is the whole point: "nothing for you until the beans are on".
+ */
+export function currentStepFor(s: CookSession, recipe: Recipe, cook = 1): Track {
+  const steps = orderedSteps(recipe);
+  const mine = steps.filter((st) => !s.completed_steps.includes(st.order) && belongsTo(s, st.order, cook));
+  const ready = mine.find((st) => st.depends_on.every((d) => s.completed_steps.includes(d) || !steps.some((x) => x.order === d)));
+  if (ready) return { cook, current_step: ready.order, waiting_for: [] };
+  // Only what stands in the way of the step they would do *next*. Listing every dependency of
+  // everything left is technically true and useless: nobody is waiting on four things at once, they
+  // are waiting on the first one.
+  const blocking = mine.length === 0
+    ? []
+    : mine[0].depends_on.filter((d) => !s.completed_steps.includes(d)).sort((a, b) => a - b);
+  return { cook, current_step: 0, waiting_for: blocking };
+}
+
+/** Every cook's track, in order. */
+export function tracksOf(s: CookSession, recipe: Recipe): Track[] {
+  return Array.from({ length: Math.max(1, s.cooks) }, (_, i) => currentStepFor(s, recipe, i + 1));
+}
+
+/** True once nobody has anything left to do. */
+export function allDone(s: CookSession, recipe: Recipe): boolean {
+  return orderedSteps(recipe).every((st) => s.completed_steps.includes(st.order));
+}
+
 /** A session is a value. Every operation returns a new one, arrays included — sharing an array
  *  with the stored session is how a "pure" state machine quietly starts mutating the store. */
 function clone(s: CookSession): CookSession {
@@ -131,9 +180,17 @@ function clone(s: CookSession): CookSession {
 
 function transition(
   s: CookSession, to: SessionState, action: string, at: string,
-  input: string | null, expected: number | null, actual: number | null, completed: number | null = null,
+  input: string | null, expected: number | null, actual: number | null,
+  completed: number | null = null, cook: number | undefined = undefined,
 ): Transition {
-  return { at, from: s.state, to, action, input, expected_step: expected, actual_step: actual, completed_step: completed };
+  return { at, from: s.state, to, action, input, expected_step: expected, actual_step: actual, completed_step: completed, cook };
+}
+
+/** Has this cook done anything yet? Their first `cook_next` is them leaving the mise en place, and
+ *  it completes nothing — which with two people cannot be a property of the session, because one of
+ *  them may have been cooking for ten minutes when the other picks up a knife. */
+function hasStarted(s: CookSession, cook: number): boolean {
+  return s.log.some((t) => t.action === "cook_next" && (t.cook ?? 1) === cook);
 }
 
 /** Scale an amount by servings/serves in integers. Milli-units in, milli-units out, so a doubled
@@ -218,9 +275,15 @@ export function matchStep(hint: string, recipe: Recipe): StepMatch {
 
 // --- the machine ----------------------------------------------------------------------------
 
-export type StartInput = { id: string; userId: string; recipe: Recipe; servings?: number; now: string };
+export type StartInput = {
+  id: string; userId: string; recipe: Recipe; servings?: number; now: string;
+  /** How many people are cooking, and which step belongs to which of them. Both come from the
+   *  scheduler in `src/cook/schedule.ts`; the session takes them as given and never schedules. */
+  cooks?: number;
+  assignments?: Record<number, number>;
+};
 
-export function startSession({ id, userId, recipe, servings, now }: StartInput): CookSession {
+export function startSession({ id, userId, recipe, servings, now, cooks, assignments }: StartInput): CookSession {
   const wanted = servings && servings > 0 ? Math.floor(servings) : recipe.serves;
   const session: CookSession = {
     id,
@@ -228,7 +291,8 @@ export function startSession({ id, userId, recipe, servings, now }: StartInput):
     recipe_id: recipe.id,
     servings: wanted,
     state: "mise_en_place",
-    current_step: 0,
+    cooks: Math.max(1, Math.min(4, Math.floor(cooks ?? 1))),
+    assignments: assignments ?? {},
     started_at: now,
     updated_at: now,
     completed_steps: [],
@@ -243,12 +307,17 @@ export function startSession({ id, userId, recipe, servings, now }: StartInput):
 
 export type AdvanceResult = {
   session: CookSession;
-  /** The step now being worked on, or null when the recipe is done. */
+  /** The step this cook is now on, or null when they have nothing left. */
   step: Step | null;
+  /** Which cook this was for. */
+  cook: number;
+  /** When there is work for them but none of it can start yet, the steps in the way. */
+  waiting_for: number[];
   /** Recorded when the hint pointed somewhere other than where we were. */
   deviation: Deviation | null;
   /** True when the hint was heard but could not be pinned to a step. Ask, do not guess. */
   unmatched_hint: boolean;
+  /** True when the whole recipe is done, not merely this cook's part of it. */
   finished: boolean;
 };
 
@@ -260,33 +329,35 @@ export type AdvanceResult = {
  * step is marked complete and the jump is recorded as a deviation — including a backwards one, which
  * is how "wait, I did the onions first" is meant to be handled.
  */
-export function advance(s: CookSession, recipe: Recipe, opts: { now: string; completed_hint?: string | null }): AdvanceResult {
+export function advance(
+  s: CookSession,
+  recipe: Recipe,
+  opts: { now: string; completed_hint?: string | null; cook?: number },
+): AdvanceResult {
   const now = opts.now;
   const hint = (opts.completed_hint ?? "").trim();
+  const cook = Math.max(1, Math.min(s.cooks, Math.floor(opts.cook ?? 1)));
   if (s.state === "finished" || s.state === "abandoned") {
-    return { session: s, step: null, deviation: null, unmatched_hint: false, finished: true };
+    return { session: s, step: null, cook, waiting_for: [], deviation: null, unmatched_hint: false, finished: true };
   }
 
-  const steps = orderedSteps(recipe);
-  const last = lastStep(recipe);
   const session = s.state === "paused" ? resumeIfPaused(s, now) : clone(s);
+  const before = currentStepFor(session, recipe, cook);
 
   let deviation: Deviation | null = null;
   let unmatched = false;
-  let completed = session.current_step;
+  // Leaving the mise en place completes nothing: there was nothing on the stove to finish.
+  let completed = hasStarted(session, cook) ? before.current_step : 0;
 
   if (hint !== "") {
     const match = matchStep(hint, recipe);
     if (match === null) {
       unmatched = true;
       // Heard, kept, not acted on. The transcript will show it was said.
-      session.deviations.push({ at: now, step: session.current_step, kind: "note", what: hint });
+      session.deviations.push({ at: now, step: before.current_step, kind: "note", what: hint });
     } else {
       completed = match.step;
-      // From the mise en place the "current" step is the first one nobody has done.
-      const expected = session.current_step === 0
-        ? (steps.find((st) => !session.completed_steps.includes(st.order))?.order ?? 0)
-        : session.current_step;
+      const expected = before.current_step;
       if (match.step !== expected) {
         deviation = {
           at: now,
@@ -303,13 +374,15 @@ export function advance(s: CookSession, recipe: Recipe, opts: { now: string; com
   session.completed_steps.sort((a, b) => a - b);
   for (const t of session.timers) if (t.step === completed && t.stopped_at === null) t.stopped_at = now;
 
-  // The next step is the lowest one nobody has done yet. A jump forward therefore does not skip the
-  // work in between — it comes back for it, which is what a cook actually wants.
-  const next = steps.find((st) => !session.completed_steps.includes(st.order)) ?? null;
-  const to: SessionState = next === null ? "finished" : "cooking";
-  session.log.push(transition(session, to, "cook_next", now, hint || null, s.current_step, next?.order ?? null, completed > 0 ? completed : null));
+  // The next step is worked out, not remembered: the lowest one this cook has not done whose
+  // dependencies are met. A jump forward therefore does not skip the work in between — it comes
+  // back for it, which is what a cook actually wants.
+  const after = currentStepFor(session, recipe, cook);
+  const next = after.current_step === 0 ? null : stepOf(recipe, after.current_step) ?? null;
+  const done = allDone(session, recipe);
+  const to: SessionState = done ? "finished" : "cooking";
+  session.log.push(transition(session, to, "cook_next", now, hint || null, before.current_step, next?.order ?? null, completed > 0 ? completed : null, cook));
   session.state = to;
-  session.current_step = next?.order ?? last;
   session.updated_at = now;
 
   if (next) {
@@ -317,7 +390,7 @@ export function advance(s: CookSession, recipe: Recipe, opts: { now: string; com
     if (timer && !session.timers.some((t) => t.step === next.order)) session.timers.push(timer);
   }
 
-  return { session, step: next, deviation, unmatched_hint: unmatched, finished: next === null };
+  return { session, step: next, cook, waiting_for: after.waiting_for, deviation, unmatched_hint: unmatched, finished: done };
 }
 
 /** Close out a pause: the paused seconds are added to every timer and the clock starts again. */
@@ -330,7 +403,9 @@ function resumeIfPaused(s: CookSession, now: string): CookSession {
       t.paused_at = null;
     }
   }
-  session.log.push(transition(s, "cooking", "resume", now, null, s.current_step, s.current_step));
+  // A pause and a resume do not concern any particular step, and recording one would put a false
+  // boundary in the log that the post-mortem reads as a step starting.
+  session.log.push(transition(s, "cooking", "resume", now, null, null, null));
   session.state = "cooking";
   session.updated_at = now;
   return session;
@@ -340,7 +415,7 @@ export function pause(s: CookSession, now: string): CookSession {
   if (s.state === "finished" || s.state === "abandoned" || s.state === "paused") return s;
   const session = clone(s);
   for (const t of session.timers) if (t.stopped_at === null && t.paused_at === null) t.paused_at = now;
-  session.log.push(transition(s, "paused", "cook_pause", now, null, s.current_step, s.current_step));
+  session.log.push(transition(s, "paused", "cook_pause", now, null, null, null));
   session.state = "paused";
   session.updated_at = now;
   return session;
@@ -350,7 +425,7 @@ export function resume(s: CookSession, now: string): CookSession {
   return resumeIfPaused(s, now);
 }
 
-export type NoteInput = { now: string; note: string; instead_of?: string | null; used?: string | null };
+export type NoteInput = { now: string; note: string; instead_of?: string | null; used?: string | null; cook?: number };
 
 /**
  * Record something the person said about the cooking.
@@ -359,18 +434,19 @@ export type NoteInput = { now: string; note: string; instead_of?: string | null;
  * extracted, already resolved to canonical ids by the caller — becomes a substitution, and the
  * deduction on close consumes what was actually used instead of what the recipe asked for.
  */
-export function note(s: CookSession, input: NoteInput): { session: CookSession; deviation: Deviation } {
+export function note(s: CookSession, recipe: Recipe, input: NoteInput): { session: CookSession; deviation: Deviation } {
   const session = clone(s);
+  const at = currentStepFor(s, recipe, input.cook ?? 1).current_step;
   const swap = input.instead_of && input.used ? { instead_of: input.instead_of, used: input.used } : null;
   const deviation: Deviation = {
     at: input.now,
-    step: s.current_step,
+    step: at,
     kind: swap ? "substitution" : "note",
     what: swap ? `used ${swap.used} instead of ${swap.instead_of}: "${input.note}"` : input.note,
   };
   session.deviations.push(deviation);
-  if (swap) session.substitutions.push({ at: input.now, step: s.current_step, ...swap });
-  session.log.push(transition(s, s.state, "cook_note", input.now, input.note, s.current_step, s.current_step));
+  if (swap) session.substitutions.push({ at: input.now, step: at, ...swap });
+  session.log.push(transition(s, s.state, "cook_note", input.now, input.note, at, null, null, input.cook ?? 1));
   session.updated_at = input.now;
   return { session, deviation };
 }
@@ -381,7 +457,7 @@ export function finish(s: CookSession, recipe: Recipe, now: string): CookSession
   for (const st of orderedSteps(recipe)) if (!session.completed_steps.includes(st.order)) session.completed_steps.push(st.order);
   session.completed_steps.sort((a, b) => a - b);
   for (const t of session.timers) if (t.stopped_at === null) t.stopped_at = now;
-  session.log.push(transition(s, "finished", "cook_finish", now, null, s.current_step, s.current_step));
+  session.log.push(transition(s, "finished", "cook_finish", now, null, currentStepFor(s, recipe, 1).current_step, null));
   session.state = "finished";
   session.updated_at = now;
   return session;
@@ -390,7 +466,7 @@ export function finish(s: CookSession, recipe: Recipe, now: string): CookSession
 export function abandon(s: CookSession, now: string): CookSession {
   const session = clone(s);
   for (const t of session.timers) if (t.stopped_at === null) t.stopped_at = now;
-  session.log.push(transition(s, "abandoned", "cook_abandon", now, null, s.current_step, s.current_step));
+  session.log.push(transition(s, "abandoned", "cook_abandon", now, null, null, null));
   session.state = "abandoned";
   session.updated_at = now;
   return session;
@@ -446,7 +522,13 @@ export type SessionView = {
   recipe_id: string;
   state: SessionState;
   servings: number;
+  cooks: number;
+  /** The step the cook who asked is on, or null when they have nothing to do. */
   step: (Step & { of: number }) | null;
+  /** When there is work left for them but none of it can start, the steps in the way. */
+  waiting_for: number[];
+  /** Everybody's place at once, for the view that shows both. */
+  tracks: { cook: number; step: number; waiting_for: number[] }[];
   completed_steps: number[];
   remaining_steps: number[];
   timers: TimerView[];
@@ -459,15 +541,21 @@ export type SessionView = {
   elapsed_s: number;
 };
 
-export function view(s: CookSession, recipe: Recipe, now: string): SessionView {
+export function view(s: CookSession, recipe: Recipe, now: string, cook = 1): SessionView {
   const steps = orderedSteps(recipe);
-  const step = stepOf(recipe, s.current_step) ?? null;
+  const track = currentStepFor(s, recipe, cook);
+  // In the mise en place nothing has begun; showing step one there would be the system getting
+  // ahead of the person.
+  const step = s.state === "mise_en_place" ? null : stepOf(recipe, track.current_step) ?? null;
   return {
     session_id: s.id,
     recipe_id: s.recipe_id,
     state: s.state,
     servings: s.servings,
+    cooks: s.cooks,
     step: step === null ? null : { ...step, of: steps.length },
+    waiting_for: track.waiting_for,
+    tracks: tracksOf(s, recipe).map((t) => ({ cook: t.cook, step: t.current_step, waiting_for: t.waiting_for })),
     completed_steps: [...s.completed_steps],
     remaining_steps: steps.map((st) => st.order).filter((o) => !s.completed_steps.includes(o)),
     timers: timerViews(s, now),

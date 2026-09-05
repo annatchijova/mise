@@ -81,7 +81,7 @@ test("a step ticked off twice is the one thing that can answer 'did I salt it tw
 test("a swap is reported with what it did to the pantry, because that part was witnessed", () => {
   let s = startSession({ id: "cook-review", userId: "u1", recipe: stew, now: T0 });
   s = advance(s, stew, { now: at(0) }).session;
-  s = note(s, { now: at(3), note: "chickpeas instead", used: "chickpea", instead_of: "broad-bean" }).session;
+  s = note(s, stew, { now: at(3), note: "chickpeas instead", used: "chickpea", instead_of: "broad-bean" }).session;
   const review = postMortem(s, stew, at(10));
   assert.ok(review.observations.some((o) => /chickpea instead of broad bean/.test(o) && /pantry count followed/.test(o)));
 });
@@ -117,7 +117,7 @@ test("every observation is a finished sentence", () => {
   s = advance(s, stew, { now: at(0) }).session;
   s = advance(s, stew, { now: at(90) }).session;
   s = advance(s, stew, { now: at(95), completed_hint: "cook the broad beans separately" }).session;
-  s = note(s, { now: at(96), note: "swapped", used: "chickpea", instead_of: "broad-bean" }).session;
+  s = note(s, stew, { now: at(96), note: "swapped", used: "chickpea", instead_of: "broad-bean" }).session;
   for (const o of postMortem(s, stew, at(100)).observations) {
     assert.ok(o.endsWith("."), `"${o}" is not a finished sentence`);
     assert.ok(!/undefined|NaN|\[object/.test(o), `"${o}" leaked a value`);
