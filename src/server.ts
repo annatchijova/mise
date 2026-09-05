@@ -37,6 +37,7 @@ import { type FridgeStatus, simulatedFridge } from "./integrations/simulated_fri
 import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
 import { registerCookTools } from "./tools/cook.ts";
+import { buildScaling, loadScaling } from "./cook/scaling.ts";
 import { MemoryPlanStore } from "./plan/store.ts";
 import { registerPlanTools } from "./tools/plan.ts";
 import { indexCatalog, loadCatalog } from "./store/catalog.ts";
@@ -93,6 +94,8 @@ const store = new MemoryPantryStore(PANTRY_FILE);
 const roles = rolesFromRecipes(recipes);
 const shelfLife = buildShelfLife(loadShelfLife(), (id) => roles.get(id) ?? null);
 const sessions = new MemoryCookStore(COOK_FILE);
+// What multiplies when the servings change, and what does not.
+const scaling = buildScaling(loadScaling());
 const plans = new MemoryPlanStore(PLAN_FILE);
 const carts = new MemoryCartStore(CART_FILE);
 const catalog = loadCatalog();
@@ -505,6 +508,7 @@ function buildServer(): McpServer {
     now: () => new Date().toISOString(),
     // Sortable by time and unique without a database sequence: the same shape a ULID gives.
     newId: () => `cook-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`,
+    scaling,
   });
 
   return server;

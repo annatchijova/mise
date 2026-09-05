@@ -13,7 +13,7 @@
     "start": "node dist/server.js",
     "dev": "npm run build && npm start",
     "test": "node --experimental-strip-types --test 'test/*.test.ts'",
-    "validate": "python3 scripts/validate_recipes.py data/recipes && python3 scripts/validate_recipes.py --staging data/imports && python3 scripts/validate_substitutions.py && python3 scripts/validate_catalog.py && python3 scripts/validate_shelf_life.py",
+    "validate": "python3 scripts/validate_recipes.py data/recipes && python3 scripts/validate_recipes.py --staging data/imports && python3 scripts/validate_substitutions.py && python3 scripts/validate_catalog.py && python3 scripts/validate_shelf_life.py && python3 scripts/validate_scaling.py",
     "check": "npm run typecheck && npm test && npm run validate",
     "build:ui": "esbuild src/ui/runtime.ts --bundle --platform=browser --target=es2020 --format=iife --minify --outfile=dist/ui-runtime.js"
   },

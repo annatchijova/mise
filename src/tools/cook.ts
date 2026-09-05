@@ -21,6 +21,7 @@ import {
 } from "../cook/session.ts";
 import type { CookStore } from "../cook/store.ts";
 import { postMortem, spanText } from "../cook/postmortem.ts";
+import { type Scaling, scalingWarnings } from "../cook/scaling.ts";
 
 export type CookDeps = {
   recipeById: (id: string) => Recipe | undefined;
@@ -31,6 +32,9 @@ export type CookDeps = {
   userId: () => string | null;
   now: () => string;
   newId: () => string;
+  /** How amounts behave when the servings change. Optional: without it everything multiplies
+   *  straight, which is what this did before there was a table. */
+  scaling?: Scaling;
 };
 
 const NEEDS_ACCOUNT = "This needs a linked account, because it has to remember where you were. Link Mise in the Alexa app and ask again.";
@@ -121,7 +125,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
     const finished = finish(session, recipe, now);
     await deps.sessions.put(finished);
     if (already) return { session: finished, deducted: [], skipped: [] as { ingredient_id: string; reason: string }[] };
-    const { events, skipped } = consumptionEvents(finished, recipe, now);
+    const { events, skipped } = consumptionEvents(finished, recipe, now, deps.scaling);
     await deps.pantry.append(finished.user_id, events);
     return {
       session: finished,
@@ -151,8 +155,12 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
           z.object({
             ingredient_id: z.string(), qty: z.number().nullable(), unit: z.string(),
             note: z.string().nullable(), qty_source: z.string(), role: z.string(),
+            /** The amount was scaled at less than the full rate. Say so, or it reads as a mistake. */
+            damped: z.boolean(), scaling_note: z.string().nullable(),
           }),
         ),
+        /** What scaling this far up does that no amount can express — the pan, the tin, the bowl. */
+        scaling_warnings: z.array(z.string()),
       },
       _meta: uiStepCard,
     },
@@ -167,7 +175,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       if (existing && existing.recipe_id === recipe.id) {
         const v = view(existing, recipe, now);
         return {
-          structuredContent: { session: v, started: false, resumed: true, blocked_by: null, mise_en_place: misePlace(recipe, existing.servings) },
+          structuredContent: { session: v, started: false, resumed: true, blocked_by: null, mise_en_place: misePlace(recipe, existing.servings, deps.scaling), scaling_warnings: [] },
           content: [{ type: "text", text: `You are already cooking this. ${stepSentence(v) || "You are still on the mise en place."}${timerSentence(v.timers)}` }],
         };
       }
@@ -179,6 +187,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
             started: false, resumed: false,
             blocked_by: { session_id: existing.id, recipe_id: existing.recipe_id, step: existing.current_step },
             mise_en_place: [],
+            scaling_warnings: [],
           },
           content: [{
             type: "text",
@@ -193,16 +202,23 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
 
       const session = startSession({ id: deps.newId(), userId, recipe, servings: args.servings, now });
       await deps.sessions.put(session);
-      const mise = misePlace(recipe, session.servings);
+      const mise = misePlace(recipe, session.servings, deps.scaling);
+      const warnings = deps.scaling
+        ? scalingWarnings(recipe.ingredients.map((i) => ({ id: i.id, role: i.role, technique: i.technique })), session.servings, recipe.serves, deps.scaling)
+        : [];
       const v = view(session, recipe, now);
       const first = orderedSteps(recipe)[0];
       const list = mise
         .map((m) => `${m.qty === null ? "" : `${m.qty}${m.unit === "pc" ? " " : ` ${m.unit} `}`}${displayName(m.ingredient_id)}${m.qty === null ? " (the book does not say how much)" : ""}`)
         .join(", ");
-      const scaled = session.servings !== recipe.serves ? ` Scaled from ${recipe.serves} to ${session.servings}.` : "";
-      const text = `${recipe.title}, ${session.servings} serving${session.servings === 1 ? "" : "s"}.${scaled} Get out: ${list}. When you are ready, say next and we start with: ${first?.text ?? "the first step"}`;
+      const dampedItems = mise.filter((m) => m.damped);
+      const scaled = session.servings !== recipe.serves
+        ? ` Scaled from ${recipe.serves} to ${session.servings}.${dampedItems.length ? ` The ${dampedItems.map((m) => displayName(m.ingredient_id)).join(", ")} did not scale straight — seasoning compounds, so it goes up by less than the rest.` : ""}`
+        : "";
+      const pan = warnings.length ? ` ${warnings.map((w) => w.text).join(" ")}` : "";
+      const text = `${recipe.title}, ${session.servings} serving${session.servings === 1 ? "" : "s"}.${scaled}${pan} Get out: ${list}. When you are ready, say next and we start with: ${first?.text ?? "the first step"}`;
       return {
-        structuredContent: { session: v, started: true, resumed: false, blocked_by: null, mise_en_place: mise },
+        structuredContent: { session: v, started: true, resumed: false, blocked_by: null, mise_en_place: mise, scaling_warnings: warnings.map((w) => w.text) },
         content: [{ type: "text", text }],
       };
     },

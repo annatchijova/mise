@@ -19,6 +19,7 @@
 //      ingredient measured "to taste" is not deducted at all, and the reason is reported.
 import type { Recipe, Step } from "../recipes.ts";
 import { type PantryEvent, type Unit, canonicalAmount, toMilli } from "../pantry/events.ts";
+import { LINEAR, type Scaling, scaleDamped } from "./scaling.ts";
 
 export type SessionState = "mise_en_place" | "cooking" | "paused" | "finished" | "abandoned";
 
@@ -405,18 +406,39 @@ export type MiseItem = {
   /** `estimated` and `unspecified` travel from the recipe data; the narrator must not round them away. */
   qty_source: string;
   role: string;
+  /** True when the amount was scaled at less than the full rate — seasoning, mostly. The narrator
+   *  should say so, because "one and a half teaspoons" for a doubled recipe looks like a mistake
+   *  until somebody explains that salt does not double. */
+  damped: boolean;
+  /** Why, in the scaling table's own words. null when nothing was damped. */
+  scaling_note: string | null;
 };
 
-/** The mise en place, scaled to the servings asked for. An amount the book never gave stays null. */
-export function misePlace(recipe: Recipe, servings: number): MiseItem[] {
-  return recipe.ingredients.map((i) => ({
-    ingredient_id: i.id,
-    qty: i.qty === null ? null : scaleMilli(toMilli(i.qty) ?? 0, servings, recipe.serves) / 1000,
-    unit: i.unit,
-    note: i.note,
-    qty_source: i.qty_source,
-    role: i.role,
-  }));
+/**
+ * The mise en place, scaled to the servings asked for.
+ *
+ * An amount the book never gave stays null. With a scaling table, seasoning and leavening scale at
+ * less than the full rate and say so; without one every amount multiplies straight, which is what
+ * this did before the table existed.
+ */
+export function misePlace(recipe: Recipe, servings: number, scaling?: Scaling): MiseItem[] {
+  return recipe.ingredients.map((i) => {
+    const rule = scaling ? scaling(i.id, i.role, i.technique) : LINEAR;
+    const base = i.qty === null ? null : toMilli(i.qty);
+    // Only a number can scale at less than the full rate. Saying "the water did not scale straight"
+    // about an amount the book never gave is noise dressed as care.
+    const damped = base !== null && rule.damping[0] !== rule.damping[1] && servings !== recipe.serves;
+    return {
+      ingredient_id: i.id,
+      qty: base === null ? null : scaleDamped(base, servings, recipe.serves, rule) / 1000,
+      unit: i.unit,
+      note: i.note,
+      qty_source: i.qty_source,
+      role: i.role,
+      damped,
+      scaling_note: damped ? rule.note : null,
+    };
+  });
 }
 
 export type SessionView = {
@@ -481,7 +503,7 @@ export type Deduction = {
  * A swap recorded during the session redirects the deduction: the chickpeas actually used are the
  * ones consumed, and the lentils are left alone.
  */
-export function consumptionEvents(s: CookSession, recipe: Recipe, now: string): Deduction {
+export function consumptionEvents(s: CookSession, recipe: Recipe, now: string, scaling?: Scaling): Deduction {
   const swapped = new Map(s.substitutions.map((x) => [x.instead_of, x.used]));
   const events: PantryEvent[] = [];
   const skipped: Deduction["skipped"] = [];
@@ -496,7 +518,9 @@ export function consumptionEvents(s: CookSession, recipe: Recipe, now: string): 
     let milli: number | null = null;
     if (i.qty !== null) {
       const base = toMilli(i.qty);
-      milli = base === null ? null : scaleMilli(base, s.servings, recipe.serves);
+      // The same damping the mise en place used. Taking twice the salt off a shelf that only lost
+      // one and a half times as much would make the pantry disagree with what the cook was told.
+      milli = base === null ? null : scaleDamped(base, s.servings, recipe.serves, scaling ? scaling(i.id, i.role, i.technique) : LINEAR);
     }
     const amount = canonicalAmount(milli, i.unit as Unit);
     events.push({
