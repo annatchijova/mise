@@ -20,6 +20,7 @@ import {
   advance, consumptionEvents, finish, misePlace, note, orderedSteps, pause, startSession, view,
 } from "../cook/session.ts";
 import type { CookStore } from "../cook/store.ts";
+import { postMortem, spanText } from "../cook/postmortem.ts";
 
 export type CookDeps = {
   recipeById: (id: string) => Recipe | undefined;
@@ -358,6 +359,76 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const held = v.timers.filter((t) => t.state === "paused");
       const text = `Paused at step ${v.step?.order ?? 0}.${held.length ? ` ${held.length === 1 ? "The timer is" : "The timers are"} holding.` : ""} Ask where you were whenever you come back.`;
       return { structuredContent: { session: v }, content: [{ type: "text", text }] };
+    },
+  );
+
+  server.registerTool(
+    "cook_review",
+    {
+      title: "What happened while cooking",
+      description:
+        "Read back what actually happened during a cook: how long each step really took, where the time went, what was done out of order, what was swapped. Use when the customer asks why something took so long, why it turned out the way it did, what they changed, or how the cooking went. It answers from the session's own record and says plainly which questions that record cannot answer. Reads only. Needs a linked account.",
+      inputSchema: {
+        session_id: z.string().optional().describe("A particular cook; the most recent one otherwise"),
+      },
+      outputSchema: {
+        session_id: z.string().nullable(),
+        recipe_id: z.string().nullable(),
+        title: z.string().nullable(),
+        state: z.string().nullable(),
+        total: z.string().nullable(),
+        total_s: z.number().int().nullable(),
+        cooking_s: z.number().int().nullable(),
+        paused_s: z.number().int().nullable(),
+        estimated_s: z.number().int().nullable(),
+        steps: z.array(
+          z.object({
+            order: z.number().int(), text: z.string(),
+            started_at: z.string().nullable(), finished_at: z.string().nullable(),
+            actual_s: z.number().int().nullable(), estimated_s: z.number().int(), dur_source: z.string(),
+            over_by_s: z.number().int().nullable(), completions: z.number().int(),
+          }),
+        ),
+        repeated_steps: z.array(z.number().int()),
+        deviations: z.array(z.object({ at: z.string(), step: z.number().int(), kind: z.string(), what: z.string() })),
+        substitutions: z.array(z.object({ at: z.string(), step: z.number().int(), instead_of: z.string(), used: z.string() })),
+        /** Sentences derived from recorded times and transitions, and from nothing else. */
+        observations: z.array(z.string()),
+        /** What the record did not witness, with the reason. The honest half of the answer. */
+        cannot_say: z.array(z.string()),
+      },
+    },
+    async (args) => {
+      const userId = deps.userId();
+      if (!userId) return mcpError(NEEDS_ACCOUNT);
+      const history = await deps.sessions.history(userId);
+      const session = args.session_id ? history.find((s) => s.id === args.session_id) ?? null : history[0] ?? null;
+      const empty = {
+        session_id: null, recipe_id: null, title: null, state: null, total: null,
+        total_s: null, cooking_s: null, paused_s: null, estimated_s: null,
+        steps: [], repeated_steps: [], deviations: [], substitutions: [], observations: [], cannot_say: [],
+      };
+      if (!session) {
+        return { structuredContent: empty, content: [{ type: "text", text: "There is no cook on record to look back at yet." }] };
+      }
+      const recipe = deps.recipeById(session.recipe_id);
+      if (!recipe) {
+        return { structuredContent: empty, content: [{ type: "text", text: `That session cooked ${session.recipe_id}, which I no longer have, so I cannot line the steps up against it.` }] };
+      }
+
+      const review = postMortem(session, recipe, deps.now());
+      const spoken = `${review.title}. ${review.observations.join(" ")} What I cannot tell you: ${review.cannot_say[0]}`;
+      return {
+        structuredContent: {
+          session_id: review.session_id, recipe_id: review.recipe_id, title: review.title, state: review.state,
+          total: spanText(review.total_s),
+          total_s: review.total_s, cooking_s: review.cooking_s, paused_s: review.paused_s, estimated_s: review.estimated_s,
+          steps: review.steps, repeated_steps: review.repeated_steps,
+          deviations: review.deviations, substitutions: review.substitutions,
+          observations: review.observations, cannot_say: review.cannot_say,
+        },
+        content: [{ type: "text", text: spoken }],
+      };
     },
   );
 

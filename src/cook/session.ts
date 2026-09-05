@@ -69,6 +69,11 @@ export type Transition = {
   input: string | null;
   expected_step: number | null;
   actual_step: number | null;
+  /** Which step this call actually marked done — the one the hint named, when it named one, and the
+   *  current one otherwise. Recorded rather than inferred, because "was that step ticked off twice?"
+   *  is a question only the log can answer, and only if the log wrote it down. Absent on a session
+   *  saved before this field existed. */
+  completed_step?: number | null;
 };
 
 export type CookSession = {
@@ -123,8 +128,11 @@ function clone(s: CookSession): CookSession {
   };
 }
 
-function transition(s: CookSession, to: SessionState, action: string, at: string, input: string | null, expected: number | null, actual: number | null): Transition {
-  return { at, from: s.state, to, action, input, expected_step: expected, actual_step: actual };
+function transition(
+  s: CookSession, to: SessionState, action: string, at: string,
+  input: string | null, expected: number | null, actual: number | null, completed: number | null = null,
+): Transition {
+  return { at, from: s.state, to, action, input, expected_step: expected, actual_step: actual, completed_step: completed };
 }
 
 /** Scale an amount by servings/serves in integers. Milli-units in, milli-units out, so a doubled
@@ -298,7 +306,7 @@ export function advance(s: CookSession, recipe: Recipe, opts: { now: string; com
   // work in between — it comes back for it, which is what a cook actually wants.
   const next = steps.find((st) => !session.completed_steps.includes(st.order)) ?? null;
   const to: SessionState = next === null ? "finished" : "cooking";
-  session.log.push(transition(session, to, "cook_next", now, hint || null, s.current_step, next?.order ?? null));
+  session.log.push(transition(session, to, "cook_next", now, hint || null, s.current_step, next?.order ?? null, completed > 0 ? completed : null));
   session.state = to;
   session.current_step = next?.order ?? last;
   session.updated_at = now;
