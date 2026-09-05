@@ -26,6 +26,7 @@ import {
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
 import { buildShelfLife, loadShelfLife, rolesFromRecipes } from "./pantry/shelf_life.ts";
+import { type AuditReason, auditQuestions, confidenceOf, confidenceSentence } from "./pantry/audit.ts";
 import { UNITS, voiceEvents } from "./pantry/voice.ts";
 import { MemoryPantryStore } from "./pantry/store.ts";
 import { buildResolver, loadAliases } from "./integrations/aliases.ts";
@@ -258,6 +259,13 @@ function buildServer(): McpServer {
         ),
         total: z.number().int(),
         as_of: z.string(),
+        /** One figure for how much of the pantry rests on something the customer actually said. */
+        confidence: z.object({
+          total: z.number().int(), confirmed: z.number().int(), inferred: z.number().int(), stale: z.number().int(),
+          confirmed_pct: z.number().int(), inferred_pct: z.number().int(), stale_pct: z.number().int(),
+          unknown_amount: z.number().int(), estimated_dates: z.number().int(),
+          score: z.number().int(), score_basis: z.string(),
+        }),
         /** Ledger events the fold could not use. Zero unless a source got past boundary validation. */
         invalid_events: z.number().int(),
       },
@@ -297,8 +305,15 @@ function buildServer(): McpServer {
         return `${amount}${when}${sure}`;
       };
       const caveat = fold.invalid > 0 ? ` ${fold.invalid} record${fold.invalid === 1 ? "" : "s"} could not be read and ${fold.invalid === 1 ? "was" : "were"} left out.` : "";
+      // Over the whole pantry, not the filtered slice: "how sure is my kitchen" is a question about
+      // the kitchen, and answering it about whatever was just asked for would be a different number
+      // every time somebody narrowed the list.
+      const confidence = confidenceOf(fold.items);
       const spoken = (out.length === 0 ? "Nothing on record yet." : `${out.length} item${out.length === 1 ? "" : "s"}: ${out.map(say).join("; ")}.`) + caveat;
-      return { structuredContent: { items: out, total: out.length, as_of: now, invalid_events: fold.invalid }, content: [{ type: "text", text: spoken }] };
+      return {
+        structuredContent: { items: out, total: out.length, as_of: now, confidence, invalid_events: fold.invalid },
+        content: [{ type: "text", text: spoken }],
+      };
     },
   );
 
@@ -405,6 +420,57 @@ function buildServer(): McpServer {
       contents: [{ uri: view.uri, mimeType: RESOURCE_MIME_TYPE, text: view.html }],
     }));
   }
+
+  server.registerTool(
+    "pantry_audit",
+    {
+      title: "Check what the pantry is unsure about",
+      description:
+        "Ask the customer about the things the pantry is least sure of: amounts nobody counted, items nothing has confirmed in a while, food that is probably past its date. Use when they ask what needs checking, what you are unsure about, whether the list is right, or when a tidy-up of the pantry would help. Returns questions to put to them, heaviest first; their answers go back through pantry_update as a correction or a removal. Reads only — it changes nothing on its own. Needs a linked account.",
+      inputSchema: {
+        limit: z.number().int().min(1).max(20).optional().describe("How many things to ask about; five otherwise"),
+        only: z.enum(["stale", "unknown_amount", "inferred", "past_estimate", "past_date"]).optional().describe("Narrow to one kind of doubt"),
+      },
+      outputSchema: {
+        questions: z.array(
+          z.object({
+            ingredient_id: z.string(), location: z.string(), unit: z.string(),
+            qty: z.number().nullable(), qty_known: z.boolean(), confidence: z.string(),
+            age_days: z.number().int(), days_to_expiry: z.number().int().nullable(), expiry_source: z.string(),
+            reasons: z.array(z.string()), weight: z.number().int(), question: z.string(),
+          }),
+        ),
+        /** How many lines are worth asking about in total, of which `questions` is the top slice. */
+        worth_asking: z.number().int(),
+        confidence: z.object({
+          total: z.number().int(), confirmed: z.number().int(), inferred: z.number().int(), stale: z.number().int(),
+          confirmed_pct: z.number().int(), inferred_pct: z.number().int(), stale_pct: z.number().int(),
+          unknown_amount: z.number().int(), estimated_dates: z.number().int(),
+          score: z.number().int(), score_basis: z.string(),
+        }),
+        as_of: z.string(),
+      },
+      _meta: { ui: { resourceUri: VIEW_URIS.pantry } },
+    },
+    async (args) => {
+      if (!DEMO_USER) {
+        return { isError: true, content: [{ type: "text", text: "This needs a linked account. Link Mise in the Alexa app and ask again." }] };
+      }
+      const now = new Date().toISOString();
+      const { fold } = await pantryFor(DEMO_USER, now);
+      const confidence = confidenceOf(fold.items);
+      const all = auditQuestions(fold.items, { limit: 20, only: args.only as AuditReason | undefined });
+      const questions = auditQuestions(fold.items, { limit: args.limit ?? 5, only: args.only as AuditReason | undefined });
+
+      const spoken = questions.length === 0
+        ? `Nothing to check. ${confidenceSentence(confidence)}`
+        : `${confidenceSentence(confidence)} ${questions.map((q) => q.question).join(" ")}`;
+      return {
+        structuredContent: { questions, worth_asking: all.length, confidence, as_of: now },
+        content: [{ type: "text", text: spoken }],
+      };
+    },
+  );
 
   registerCartTools(server, {
     catalog,
@@ -526,7 +592,11 @@ async function servePantry(url: URL, res: ServerResponse): Promise<void> {
   if (sources.length === 0 && events.some((e) => e.origin === "simulated")) {
     lines.push({ label: "Simulated fridge (web)", kind: "simulated", synced_at: events.filter((e) => e.origin === "simulated").map((e) => e.ts).sort().at(-1) ?? null });
   }
-  html(res, renderPantryPage(fold.items, lines, now, { location: url.searchParams.get("location") ?? undefined, invalid: fold.invalid }));
+  html(res, renderPantryPage(fold.items, lines, now, {
+    location: url.searchParams.get("location") ?? undefined,
+    invalid: fold.invalid,
+    confidence: confidenceOf(fold.items),
+  }));
 }
 
 /** A browser request that did not come from this origin. Checked on the headers browsers set and

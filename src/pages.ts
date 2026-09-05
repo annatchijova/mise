@@ -5,6 +5,7 @@
 // connects a source, drives the simulated fridge for the demo, and looks at the pantry with every
 // badge the data carries. They are server-rendered, inline-styled, and read the same fold the tools
 // read — there is no second model of the pantry.
+import type { PantryConfidence } from "./pantry/audit.ts";
 import { displayName } from "./pantry/events.ts";
 import type { Freshness, PantryItem } from "./pantry/fold.ts";
 import { esc } from "./recipe_jsonld.ts";
@@ -83,7 +84,12 @@ function expiryCell(i: PantryItem): string {
 export type SourceLine = { label: string; kind: string; synced_at: string | null };
 
 /** The pantry, exactly as the fold sees it. Every reservation the data carries is on the page. */
-export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now: string, opts: { location?: string; invalid?: number } = {}): string {
+export function renderPantryPage(
+  items: PantryItem[],
+  sources: SourceLine[],
+  now: string,
+  opts: { location?: string; invalid?: number; confidence?: PantryConfidence } = {},
+): string {
   const invalid = opts.invalid ?? 0;
   const warning = invalid > 0
     ? `<div class="card" style="border-color:var(--bad)"><span class="badge bad">warning</span> ${invalid} ledger record${invalid === 1 ? "" : "s"} could not be read (bad timestamp or date) and ${invalid === 1 ? "is" : "are"} not shown. The pantry below is what the rest of the ledger says.</div>`
@@ -114,7 +120,17 @@ ${rows}
     ? `<p class="sub">No connected sources. Voice only.</p>`
     : `<p class="sub">${sources.map((s) => `${esc(s.label)} <span style="color:var(--dim)">(${esc(s.kind)}${s.synced_at ? `, last report ${esc(s.synced_at.slice(0, 16).replace("T", " "))}` : ", never reported"})</span>`).join(" · ")}</p>`;
 
-  return shell("Pantry", `${warning}${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
+  // One figure for the whole kitchen. The per-row badges are a disclaimer; this is the fact.
+  const c = opts.confidence;
+  const bar = c === undefined || c.total === 0 ? "" : `<div class="card">
+<p style="margin:0 0 .5rem"><strong style="font-size:1.6rem">${c.score}%</strong> <span style="color:var(--dim)">of the pantry rests on something you said — ${esc(c.score_basis)}.</span></p>
+<div style="display:flex;height:.5rem;border-radius:3px;overflow:hidden;background:var(--mutebg)">
+<div style="width:${c.confirmed_pct}%;background:var(--ok)"></div><div style="width:${c.inferred_pct}%;background:var(--warn)"></div><div style="width:${c.stale_pct}%;background:var(--mute)"></div>
+</div>
+<p class="legend" style="margin-top:.5rem"><span>${c.confirmed} confirmed</span><span>${c.inferred} inferred</span><span>${c.stale} unconfirmed</span><span>${c.unknown_amount} with no amount</span><span>${c.estimated_dates} dated by the shelf-life table</span></p>
+</div>`;
+
+  return shell("Pantry", `${warning}${bar}${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
     `${items.length} line${items.length === 1 ? "" : "s"}, ordered by what goes off first.`);
 }
 

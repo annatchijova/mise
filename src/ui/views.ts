@@ -278,6 +278,17 @@ window.mise.onData(function(data){
   if (!data.items) { el('root').innerHTML = '<div class="empty">Nothing on record.</div>'; return; }
   var html = '<h1>The pantry</h1><div class="dim">' + esc(data.total) + ' items' +
              (data.invalid_events ? ' · ' + esc(data.invalid_events) + ' records could not be read and were left out' : '') + '</div>';
+  var c = data.confidence;
+  if (c && c.total) {
+    html += '<div class="card"><div style="font-size:1.5rem;font-weight:600">' + esc(c.score) + '%</div>';
+    html += '<div class="why">of the pantry rests on something you said — ' + esc(c.score_basis) + '.</div>';
+    html += '<div style="display:flex;height:.45rem;border-radius:3px;overflow:hidden;background:var(--mutebg);margin-top:.5rem">';
+    html += '<div style="width:' + esc(c.confirmed_pct) + '%;background:var(--ok)"></div>';
+    html += '<div style="width:' + esc(c.inferred_pct) + '%;background:var(--warn)"></div>';
+    html += '<div style="width:' + esc(c.stale_pct) + '%;background:var(--mute)"></div></div>';
+    html += '<div class="why">' + esc(c.confirmed) + ' confirmed · ' + esc(c.inferred) + ' inferred · ' + esc(c.stale) + ' unconfirmed · ' + esc(c.unknown_amount) + ' with no amount</div>';
+    html += '<button id="audit">Check the doubtful ones</button></div>';
+  }
   if (!data.items.length) html += '<div class="empty">Nothing on record yet.</div>';
   else {
     html += '<table><thead><tr><th>Item</th><th class="num">Amount</th><th>How sure</th></tr></thead><tbody>';
@@ -293,6 +304,7 @@ window.mise.onData(function(data){
     html += '<div class="why">“Some” means nobody counted it, and a date marked (estimate) came from the shelf-life table rather than from you. Neither is ever shown as something you said.</div>';
   }
   el('root').innerHTML = html;
+  if (el('audit')) el('audit').onclick = function(){ el('audit').disabled = true; window.mise.call('pantry_audit', {}); };
 });
 `;
   return page("The pantry", runtime, body, script);
