@@ -3,6 +3,12 @@
 Suggestions beyond `docs/PLAN.md` and `docs/INTEGRATIONS_PLAN.md`. Nothing here is committed to;
 this is the list to argue with.
 
+> **Seven of these have since been built**, and are marked **done** below with what actually landed:
+> the plan diff (1.1), the kitchen confidence figure (1.2), the stale-item audit (1.3), per-day time
+> budgets (1.4) with cost per meal and a spending ceiling (1.5), the shelf-life table (2.3), and the
+> cooking post-mortem (2.1). Where building one taught something the proposal had wrong, that is
+> written down rather than quietly corrected.
+
 Every entry answers the same three questions, because they are the ones that killed the ideas that
 are not on the list:
 
@@ -21,6 +27,8 @@ Ordered by how much they give back for what they take.
 
 ### 1.1 The plan diff — "Thursday moved, and here is why"
 
+> **Done.** `src/plan/diff.ts` and the `plan_diff` tool; `plan_week` also hands back a one-line summary so the demo works in a single turn. One thing the proposal did not anticipate: a slot has to be keyed on a **date** and not a day number, or replanning on Tuesday reports every day as changed. And quoting the planner's reason only works if every reason is a clause that reads after "because", which took a pass over the planner's wording.
+
 Replanning already produces a new `plan_hash` and a per-meal reason. Diffing two plans by slot and
 reading out only what changed — *"Thursday moved to Friday because you ate the tofu on Wednesday"* —
 turns the hash from an engineering detail into the thing the person actually feels.
@@ -32,6 +40,8 @@ A judge who sees a plan explain its own change understands the whole architectur
 
 ### 1.2 A kitchen confidence figure
 
+> **Done.** `confidenceOf` in `src/pantry/audit.ts`, on `pantry_list`, the pantry page and the MCP Apps view. The figure is stricter than the proposal implied — it counts only lines that are confirmed *and* have an amount somebody counted — because a flattering number would be no use. The demo pantry scores 33%.
+
 One number on the pantry view: how much of what you have is `confirmed`, how much is `inferred`, how
 much has gone `stale`. The honesty model is currently a badge per row; this makes it a fact about
 the kitchen.
@@ -41,6 +51,8 @@ the kitchen.
 **Holds the line:** it *is* the line.
 
 ### 1.3 The stale-item audit
+
+> **Done.** `pantry_audit`. It writes the questions and changes nothing; the answers come back through `pantry_update`. Reasons compound, and food past a date somebody gave is asked about differently from food past one the shelf-life table estimated.
 
 The fold already marks an item `stale` after N days without confirmation. A tool that asks about the
 five stalest — *"do you still have the miso?"* — closes the loop the confidence model opens. Right
@@ -53,6 +65,8 @@ open the add-on at all.
 
 ### 1.4 Per-day time budgets
 
+> **Done.** `plan_week` takes `day_limits`, resolved from the weekday somebody said against the week being planned; a day the week does not reach is reported rather than dropped.
+
 `plan_week` takes one `time_budget_min` for the week. Real weeks are not like that: *"Wednesday I get
 home at nine."* The planner's slots already carry a day; giving each a budget is a change to one
 filter.
@@ -63,6 +77,8 @@ into it.
 **Holds the line:** yes.
 
 ### 1.5 Cost per serving, and a weekly budget
+
+> **Done.** The plan carries what its shopping costs, priced by the same function the basket uses. A meal's cost is **marginal** — the week's bill minus what it would be without that meal — because one bag of lentils feeds two dinners. A ceiling leans the scorer towards cheaper meals, capped so money can never outweigh rescuing food, and says so when the plan still comes out over.
 
 The catalog prices everything. A plan can carry what it would cost to fill its gaps, per meal and per
 week, and the planner can take *"under forty dollars"* as another integer constraint.
@@ -78,6 +94,8 @@ as what dinner costs, which nobody can know.
 ## 2 · Structural: things only this architecture can do
 
 ### 2.1 The cooking post-mortem
+
+> **Done.** `cook_review` over `src/cook/postmortem.ts`. The proposal's "why was it salty" example needed one change to the ledger to work at all: the transition log now records which step each call marked done, so a step ticked off twice is a fact rather than a reconstruction. Everything the proposal warned about is enforced — no observation asserts anything about the food, and there is a test that says so.
 
 The session already records every transition with what the person said, every deviation, and every
 timer. Nothing reads it back. *"Why was it salty?"* → *"you salted at step 3 and again at step 7"*.
@@ -103,6 +121,8 @@ UI question the plan has not thought about. A week, honestly.
 thing here.
 
 ### 2.3 A shelf-life table
+
+> **Done.** 149 rows in `data/shelf_life.json`, derived at fold time and carried as `expiry_source` all the way to the sentence. The risk the proposal flagged — that a table estimate could fold into `confirmed` — is handled structurally rather than by care: nothing is stored, the fields are separate, and the hedge is chosen from the field rather than remembered.
 
 The pantry only knows an expiry when a person or a package states one. A curated table — ingredient
 by location, `tofu / fridge / opened: about 4 days` — would let it say something useful about the

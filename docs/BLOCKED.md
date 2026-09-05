@@ -225,6 +225,28 @@ simulator to record it in.
 
 ---
 
+## H · The tables somebody has to check
+
+### H.1 The shelf-life numbers — **partial, and this is the one to read twice**
+
+`data/shelf_life.json` says how long 120 foods keep. The numbers come from ordinary kitchen practice
+and nobody has measured any of them. They are used only to *schedule* — to put the spinach on
+Tuesday rather than Friday — and they are labelled `estimated` everywhere they travel, so the system
+never tells anybody their food is safe. But this is the one table in the repository where being
+wrong could matter to somebody's stomach rather than to their dinner.
+
+**Before this is shown to anybody as advice**, a cook should read the file end to end, and the
+short-lived rows — anything under a week — deserve a second opinion. The garlic-oil row in
+particular is there because garlic under oil at room temperature is a real botulism risk; it should
+be checked by somebody who knows, not kept because it sounded right.
+
+### H.2 The substitution table's advice — **partial**
+
+Same shape, lower stakes: 90 rows of one cook's judgment. The ratios and warnings are the author's
+own and have not been tested by anybody else. Every row is attributable — `author` and `version` at
+the top of the file, and the version travels in every `substitute` response — which is the
+mechanism for arguing with a row rather than a claim that no row is wrong.
+
 ## What is *not* blocked, and is done
 
 Kept here so the two lists can be read together. Every item below runs, has tests that can fail, and
@@ -238,4 +260,8 @@ is exercised end to end by `npm run check`:
 - the cooking state machine and all six `cook_*` tools, including the deduction on close;
 - the weekly planner, `plan_week`, and the plan hash;
 - the demo store, `cart_from_plan`, `cart_edit`, and the whole UCP checkout up to the pantry write;
-- the four MCP Apps views.
+- the four MCP Apps views;
+- the shelf-life table, and the estimated expiry the fold derives from it;
+- `plan_diff`, per-day time limits, and what a week's shopping costs;
+- the kitchen confidence figure and `pantry_audit`;
+- `cook_review`, the post-mortem over the session's own transition log.

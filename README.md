@@ -40,15 +40,16 @@ What runs today, all of it deterministic and all of it covered by tests that can
 
 | | |
 |---|---|
-| **The pantry** | An append-only ledger with a deterministic fold and three confidence levels. `pantry_update` and `pantry_list` over MCP; a signed, idempotent `POST /ingest/:source` door with a simulated fridge and a barcode adapter behind it; an account web at `/pantry` and `/sim/fridge`. |
+| **The pantry** | An append-only ledger with a deterministic fold and three confidence levels. `pantry_update` and `pantry_list` over MCP; a signed, idempotent `POST /ingest/:source` door with a simulated fridge and a barcode adapter behind it; an account web at `/pantry` and `/sim/fridge`. One figure says how much of the kitchen rests on something you actually said, and `pantry_audit` asks about the rest. |
+| **How long it keeps** | 149 curated shelf-life rows, derived at fold time and never stored. An estimate from the table and a date you gave stay two different things all the way to the sentence — "roughly four days by my reckoning" against "expiring today or tomorrow". |
 | **Substitutions** | 90 curated rows keyed on (ingredient, role, technique), each with an integer ratio, what changes and what breaks. `substitute` walks a fallback chain and says which level it answered from; an ingredient the table does not cover gets silence, out loud. |
-| **Cooking** | A pure state machine: ordered steps, parallel timers, dependencies, and a transition log. Six `cook_*` tools. "Pause" — a day later, on another device — "where was I?" answers step 5 with the timer where it stopped. Finishing deducts what was used, as `inferred`, honouring any swap you recorded. |
-| **The week** | `plan_week`: a deadline pass that schedules food on the last day it is still good, then a coverage pass, with a per-meal reason, a consolidated shopping list that counts shortfalls, and a plan hash. |
+| **Cooking** | A pure state machine: ordered steps, parallel timers, dependencies, and a transition log. Seven `cook_*` tools. "Pause" — a day later, on another device — "where was I?" answers step 5 with the timer where it stopped. Finishing deducts what was used, as `inferred`, honouring any swap you recorded. `cook_review` reads the log back: how long each step really took, what was done out of order, and which questions the record cannot answer. |
+| **The week** | `plan_week`: a deadline pass that schedules food on the last day it is still good, then a coverage pass, with a per-meal reason, a consolidated shopping list that counts shortfalls, and a plan hash. Time limits per day, a spending ceiling, and what the shopping costs. `plan_diff` says what changed since the last plan and why, quoting the planner rather than composing a story. |
 | **Buying** | A demo grocery of 107 SKUs, `cart_from_plan` and `cart_edit`, and a UCP-shaped checkout — five endpoints, idempotency with 409, allergen disclosure, server-side tax and shipping. Completing writes back to the pantry, so the next plan already sees it. |
 | **Views** | Four MCP Apps `ui://` resources — step card, weekly grid, cart, pantry — each one self-contained HTML with no network of its own. |
 | **Recipes** | 49 recipes structured from the author's own cookbooks, served as `schema.org/Recipe` JSON-LD any app can import, and importable back the same way. |
 
-`npm run check` runs the typecheck, 161 tests and four data validators.
+`npm run check` runs the typecheck, 212 tests and five data validators.
 
 No smart-fridge, Instacart or portal integration is claimed as verified: outbound access to those
 services is not available here, so the fridge adapter is honestly named `simulated` and
@@ -106,9 +107,9 @@ src/server.ts                 MCP server (Streamable HTTP), the HTTP routes, and
 src/recipes.ts                recipe loading and deterministic search
 src/recipe_jsonld.ts          schema.org/Recipe export: how a recipe leaves the building
 src/substitutions.ts          the curated table's loader and its (ingredient, role, technique) lookup
-src/pantry/                   the pantry ledger: event contract, deterministic fold, store
-src/cook/                     the cooking state machine and where sessions live
-src/plan/                     the weekly planner: deadlines, coverage, the plan hash
+src/pantry/                   the pantry ledger: event contract, deterministic fold, shelf life, store, audit
+src/cook/                     the cooking state machine, where sessions live, and the post-mortem
+src/plan/                     the weekly planner: deadlines, coverage, cost, the plan hash, and the diff
 src/store/                    the demo grocery: catalog arithmetic, the cart, the UCP checkout
 src/tools/                    the MCP tool registrations for cooking, the plan and the cart
 src/ui/                       the four MCP Apps views and the app-side runtime bundled into them
@@ -116,14 +117,17 @@ src/integrations/             adapter contract, signed ingest, name resolution, 
 src/pages.ts                  the account web: pantry, simulated fridge, refund policy, receipts
 data/recipes/<id>.json        recipes as data, one file each (see the contract below)
 data/substitutions.json       the substitution table: 90 curated rows, versioned
-data/catalog.json             the demo grocery: 107 SKUs, prices in integer cents, allergens
+data/catalog.json             the demo grocery: 108 SKUs, prices in integer cents, allergens
+data/shelf_life.json          how long each food keeps, and where. Advice, labelled as advice
 data/inventory.md             catalogue of every recipe found in the author's cookbooks
 docs/RECIPE_SCHEMA.md         the recipe data contract: provenance, closed vocabularies, honesty flags
 docs/SUBSTITUTION_SCHEMA.md   the substitution table's contract, and why the key is a triple
 docs/STORE_SCHEMA.md          the catalog's contract and the checkout surface, verified and not
+docs/SHELF_LIFE_SCHEMA.md     the shelf-life contract, and the rule that keeps an estimate an estimate
 scripts/validate_recipes.py   deterministic validator (stdlib); nothing enters data/ without passing it
 scripts/validate_substitutions.py  the same for the substitution table, with a coverage report
 scripts/validate_catalog.py   the same for the catalog: integer money, real ingredients, known allergens
+scripts/validate_shelf_life.py  the same for the shelf-life table, with a coverage report
 scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
 docs/PLAN.md                  the architecture and work plan (English; Spanish original in PLAN.es.md / .html)
 docs/INTEGRATIONS_PLAN.md     IoT, barcode, Instacart and recipe-portal integration plan (block I; Spanish in PLAN_INTEGRACIONES.es.md)
