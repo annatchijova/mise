@@ -12,6 +12,7 @@ import { displayName } from "../pantry/events.ts";
 import type { PantryItem } from "../pantry/fold.ts";
 import type { Resolver } from "../integrations/aliases.ts";
 import { planWeek } from "../plan/planner.ts";
+import { type PlanDiff, describe, diffPlans, movedChanges, weekdayOf } from "../plan/diff.ts";
 import type { PlanStore } from "../plan/store.ts";
 
 export type PlanDeps = {
@@ -23,10 +24,17 @@ export type PlanDeps = {
   now: () => string;
 };
 
-const WEEKDAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekday = weekdayOf;
 
-function weekday(date: string): string {
-  return WEEKDAY[new Date(Date.parse(`${date}T00:00:00Z`)).getUTCDay()];
+/** One line saying how the week differs from the last one, for `plan_week` to hand back without
+ *  anybody having to ask for a diff. */
+function changeSummary(diff: PlanDiff): string {
+  const changes = movedChanges(diff);
+  if (diff.identical) return "Same week as last time, down to the hash.";
+  if (changes.length === 0) return "The meals are the same; only the shopping list moved.";
+  const first = describe(changes[0]);
+  const rest = changes.length - 1;
+  return `${first}${rest > 0 ? ` And ${rest} other change${rest === 1 ? "" : "s"}; ask what changed for the rest.` : ""}`;
 }
 
 export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
@@ -71,6 +79,10 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         /** Names the customer gave in `avoid` that we do not keep, so nothing is silently ignored. */
         unresolved_avoid: z.array(z.string()),
         pantry_as_of: z.string(),
+        /** The plan this one replaces, when there was one, and how it differs. */
+        previous_plan_id: z.string().nullable(),
+        changed_since_previous: z.string().nullable(),
+        changes_since_previous: z.number().int().nullable(),
       },
       _meta: { ui: { resourceUri: "ui://mise/week-grid" } },
     },
@@ -102,7 +114,11 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
         avoid,
         start_date: args.start_date,
       });
+      // The plan this one replaces, read before it is stored. Replanning and being told nothing
+      // changed but Thursday is the difference between a plan and a suggestion.
+      const previous = await deps.plans.current(userId);
       await deps.plans.put(userId, plan);
+      const diff = previous ? diffPlans(previous, plan) : null;
 
       const meals = plan.meals.map((m) => ({ ...m, weekday: weekday(m.date) }));
       const lines = meals.map((m) => `${weekday(m.date)}: ${m.title}, ${m.minutes} minutes — ${m.why}.`);
@@ -118,9 +134,90 @@ export function registerPlanTools(server: McpServer, deps: PlanDeps): void {
       const gaps = plan.unfilled.length ? ` ${plan.unfilled.length} slot${plan.unfilled.length === 1 ? "" : "s"} left empty: ${plan.unfilled[0].reason}.` : "";
       const ignored = unresolvedAvoid.length ? ` I do not keep ${unresolvedAvoid.join(" or ")}, so I could not plan around ${unresolvedAvoid.length === 1 ? "it" : "them"}.` : "";
 
+      const since = diff === null ? "" : ` ${changeSummary(diff)}`;
+
       return {
-        structuredContent: { ...plan, meals, unresolved_avoid: unresolvedAvoid },
-        content: [{ type: "text", text: `${lines.join(" ")}${shop}${lost}${gaps}${ignored}` }],
+        structuredContent: {
+          ...plan, meals, unresolved_avoid: unresolvedAvoid,
+          previous_plan_id: previous?.plan_id ?? null,
+          changed_since_previous: diff === null ? null : changeSummary(diff),
+          changes_since_previous: diff === null ? null : movedChanges(diff).length,
+        },
+        content: [{ type: "text", text: `${lines.join(" ")}${shop}${lost}${gaps}${ignored}${since}` }],
+      };
+    },
+  );
+
+  server.registerTool(
+    "plan_diff",
+    {
+      title: "What changed in the plan",
+      description:
+        "Say what is different between the current meal plan and the one before it, and why each meal moved. Use when the customer asks what changed, why a day is different, why they are not making what they thought, or what happened to the plan. Every reason is the one the planner recorded when it built the new week; nothing is invented about why the kitchen changed. Needs a linked account and two plans.",
+      inputSchema: {
+        from_plan_id: z.string().optional().describe("The older plan; the one before the current otherwise"),
+        to_plan_id: z.string().optional().describe("The newer plan; the current one otherwise"),
+      },
+      outputSchema: {
+        identical: z.boolean(),
+        from: z.object({ plan_id: z.string(), plan_hash: z.string(), start_date: z.string(), days: z.number().int(), meals_per_day: z.number().int() }).nullable(),
+        to: z.object({ plan_id: z.string(), plan_hash: z.string(), start_date: z.string(), days: z.number().int(), meals_per_day: z.number().int() }).nullable(),
+        changes: z.array(z.object({ kind: z.enum(["moved", "replaced", "added", "dropped", "unchanged"]), sentence: z.string() })),
+        /** What was asked for differently. Facts about the two requests, not guesses about the kitchen. */
+        input_changes: z.array(z.string()),
+        urgency_changes: z.array(z.object({ ingredient_id: z.string(), days_to_expiry: z.number().int().nullable(), now_urgent: z.boolean() })),
+        shopping_added: z.array(z.string()),
+        shopping_removed: z.array(z.string()),
+      },
+      _meta: { ui: { resourceUri: "ui://mise/week-grid" } },
+    },
+    async (args) => {
+      const userId = deps.userId();
+      if (!userId) return { isError: true, content: [{ type: "text", text: "This needs a linked account. Link Mise in the Alexa app and ask again." }] };
+
+      const recent = await deps.plans.recent(userId, 2);
+      const to = args.to_plan_id ? await deps.plans.get(userId, args.to_plan_id) : recent.at(-1) ?? null;
+      const from = args.from_plan_id ? await deps.plans.get(userId, args.from_plan_id) : recent.length >= 2 ? recent[recent.length - 2] : null;
+      if (!to || !from) {
+        const text = to
+          ? "There is only one plan so far, so there is nothing to compare it to yet."
+          : "There is no plan yet. Ask me to plan the week first.";
+        return {
+          structuredContent: { identical: true, from: null, to: null, changes: [], input_changes: [], urgency_changes: [], shopping_added: [], shopping_removed: [] },
+          content: [{ type: "text", text }],
+        };
+      }
+
+      const diff = diffPlans(from, to);
+      const changes = movedChanges(diff);
+      const asked = diff.input_changes.length ? ` You asked for ${diff.input_changes.join(", and ")}.` : "";
+      const urgent = diff.urgency_changes.filter((u) => u.now_urgent);
+      const gone = diff.urgency_changes.filter((u) => !u.now_urgent);
+      // Two facts, stated as facts. Why the kitchen changed is not something either plan witnessed.
+      const deadlines = [
+        urgent.length ? `${urgent.map((u) => displayName(u.ingredient_id)).join(", ")} ${urgent.length === 1 ? "is" : "are"} on a deadline now and ${urgent.length === 1 ? "was" : "were"} not before.` : "",
+        gone.length ? `${gone.map((u) => displayName(u.ingredient_id)).join(", ")} ${gone.length === 1 ? "is" : "are"} no longer on a deadline.` : "",
+      ].filter(Boolean).map((line) => line.charAt(0).toUpperCase() + line.slice(1)).join(" ");
+      const shopping = diff.shopping.added.length
+        ? ` ${diff.shopping.added.length} new thing${diff.shopping.added.length === 1 ? "" : "s"} on the shopping list: ${diff.shopping.added.slice(0, 6).map((l) => displayName(l.ingredient_id)).join(", ")}.`
+        : "";
+
+      const text = diff.identical
+        ? "Nothing changed. Same meals, same order, same hash."
+        : `${changes.length === 0 ? "The meals are the same; only the shopping list moved." : changes.map(describe).join(" ")}${asked}${deadlines ? ` ${deadlines}` : ""}${shopping}`;
+
+      return {
+        structuredContent: {
+          identical: diff.identical,
+          from: diff.from,
+          to: diff.to,
+          changes: changes.map((c) => ({ kind: c.kind, sentence: describe(c) })),
+          input_changes: diff.input_changes,
+          urgency_changes: diff.urgency_changes,
+          shopping_added: diff.shopping.added.map((l) => l.ingredient_id),
+          shopping_removed: diff.shopping.removed.map((l) => l.ingredient_id),
+        },
+        content: [{ type: "text", text }],
       };
     },
   );

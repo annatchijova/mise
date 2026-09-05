@@ -11,6 +11,8 @@ export type PlanStore = {
   /** The most recent plan for this user, or null. */
   current(userId: string): Promise<PlanResult | null>;
   get(userId: string, planId: string): Promise<PlanResult | null>;
+  /** Newest last, for the diff: the previous plan is the one before the current. */
+  recent(userId: string, limit: number): Promise<PlanResult[]>;
   put(userId: string, plan: PlanResult): Promise<void>;
 };
 
@@ -29,6 +31,11 @@ export class MemoryPlanStore implements PlanStore {
 
   async get(userId: string, planId: string): Promise<PlanResult | null> {
     return (this.byUser.get(userId) ?? []).find((p) => p.plan_id === planId) ?? null;
+  }
+
+  async recent(userId: string, limit: number): Promise<PlanResult[]> {
+    const list = this.byUser.get(userId) ?? [];
+    return list.slice(Math.max(0, list.length - limit));
   }
 
   async put(userId: string, plan: PlanResult): Promise<void> {

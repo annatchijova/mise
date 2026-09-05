@@ -253,16 +253,22 @@ export function scoreRecipe(
   return { recipe, score, have, missing: [...missing].sort(), short: [...short].sort(), expiring_used: expiring };
 }
 
-/** The reason a deadline put a meal where it did. A stated date is quoted; a shelf-life estimate is
- *  hedged, because it is one — and the hedge is the difference between advice and a claim. */
+/**
+ * The reason a deadline put a meal where it did.
+ *
+ * A stated date is quoted; a shelf-life estimate is hedged, because it is one, and the hedge is the
+ * difference between advice and a claim. Every `why` in a plan — this one and the two the fill pass
+ * writes — is a clause that reads correctly after the word "because", so the diff can quote it
+ * without rewriting it. A reason that has to be reworded to be said is a reason somebody else wrote.
+ */
 export function whyExpiring(ingredientId: string, days: number, source: "stated" | "estimated" | "unknown"): string {
   const name = ingredientId.replace(/-/g, " ");
   if (source === "estimated") {
     const when = days === 0 ? "is about done" : days === 1 ? "has about a day left" : `has roughly ${days} days left`;
-    return `uses the ${name}, which ${when} by the shelf-life table — nobody gave it a date`;
+    return `it uses the ${name}, which ${when} by the shelf-life table — nobody gave it a date`;
   }
   const when = days === 0 ? "goes off today" : days === 1 ? "goes off tomorrow" : `has ${days} days left`;
-  return `uses the ${name}, which ${when}`;
+  return `it uses the ${name}, which ${when}`;
 }
 
 // --- the plan -------------------------------------------------------------------------------
