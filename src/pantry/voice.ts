@@ -6,10 +6,11 @@
 // number into milli-units, and stamp the event `voice` / `confirmed`, because the person said it.
 // A name we do not know is reported back, never guessed; Alexa+ can ask.
 import type { Resolver } from "../integrations/aliases.ts";
-import { type EventType, type PantryEvent, type Unit, isIsoDate, toMilli } from "./events.ts";
+import { type EventType, type PantryEvent, type Unit, canonicalAmount, isIsoDate, toMilli } from "./events.ts";
 
 export const UNITS: readonly Unit[] = [
   "g", "kg", "ml", "l", "tsp", "tbsp", "cup", "pc", "clove", "pinch", "slice", "bunch", "can", "sachet", "to_taste",
+  "portion",
 ];
 
 export type VoiceItem = {
@@ -64,13 +65,14 @@ export function voiceEvents(
       expires = item.expires;
     }
 
+    const amount = canonicalAmount(type === "remove" ? null : qtyMilli, unit);
     events.push({
       ts: ctx.now,
       seq: index,
       type,
       ingredient_id: id,
-      qty_milli: type === "remove" ? null : qtyMilli,
-      unit,
+      qty_milli: amount.qty_milli,
+      unit: amount.unit,
       origin: "voice",
       confidence: "confirmed",
       location: typeof item.location === "string" && item.location.trim() ? item.location.trim() : (ctx.defaultLocation ?? "pantry"),

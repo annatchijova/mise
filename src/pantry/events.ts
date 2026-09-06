@@ -10,7 +10,10 @@
 
 export type Unit =
   | "g" | "kg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "pc"
-  | "clove" | "pinch" | "slice" | "bunch" | "can" | "sachet" | "to_taste";
+  | "clove" | "pinch" | "slice" | "bunch" | "can" | "sachet" | "to_taste"
+  /** A serving of something already cooked. The only unit here that measures a dish rather than an
+   *  ingredient, and the reason leftovers can sit in the same ledger as the lentils. */
+  | "portion";
 
 /** Where the event came from. Adding an integration means adding an origin, never a new code path. */
 export type Origin =
@@ -46,6 +49,30 @@ export type PantryEvent = {
 };
 
 export const MILLI = 1000;
+
+/** Units that are exactly a thousand of another unit. Nothing else belongs here: a cup of flour is
+ *  not a number of grams without knowing the flour, and guessing the density is exactly the kind of
+ *  invention the ledger refuses. */
+const EXACT_MULTIPLES: Partial<Record<Unit, { unit: Unit; factor: number }>> = {
+  kg: { unit: "g", factor: 1000 },
+  l: { unit: "ml", factor: 1000 },
+};
+
+/**
+ * Put an amount into the unit the ledger keeps it in.
+ *
+ * The fold keys a line on (ingredient, unit, location) and never converts, because most conversions
+ * would be a guess. Two of them are not: a kilogram is a thousand grams and a litre is a thousand
+ * millilitres, exactly, for every substance there is. Left unconverted, half a kilo of lentils and
+ * the 250 g a recipe takes out are two lines that never meet, and cooking silently stops reducing
+ * the pantry. So the conversion happens once, here, at the boundary where an amount becomes an
+ * event — never inside the fold, which must stay a pure function of what it was given.
+ */
+export function canonicalAmount(qtyMilli: number | null, unit: Unit): { qty_milli: number | null; unit: Unit } {
+  const conv = EXACT_MULTIPLES[unit];
+  if (!conv) return { qty_milli: qtyMilli, unit };
+  return { qty_milli: qtyMilli === null ? null : qtyMilli * conv.factor, unit: conv.unit };
+}
 
 /** Boundary conversion: a human quantity to integer milli-units. Rejects anything that would
  *  silently lose precision, because a pantry that rounds is a pantry that lies. */
@@ -87,6 +114,46 @@ export function isIsoDate(value: unknown): value is string {
 /** Canonical id to a readable English name: "flour-0000" -> "flour 0000". */
 export function displayName(id: string): string {
   return id.replace(/-/g, " ");
+}
+
+/**
+ * An English plural, for the handful of shapes ingredient names actually take.
+ *
+ * "2 onion" is the sort of thing that makes a list sound like it was generated rather than written,
+ * and the corpus's names are plain enough that four rules cover all of them. Anything this gets
+ * wrong is a name worth looking at anyway.
+ */
+export function plural(name: string, n: number): string {
+  if (n === 1) return name;
+  const head = name.slice(0, -1);
+  const last = name.slice(-1);
+  if (/(s|sh|ch|x|z)$/.test(name)) return `${name}es`;
+  if (last === "o" && !/[aeiou]o$/.test(name)) return `${name}es`;
+  if (last === "y" && !/[aeiou]y$/.test(name)) return `${head}ies`;
+  return `${name}s`;
+}
+
+/** Units that count things rather than measure them, and so read as "3 slices of pumpkin". */
+const COUNTED = new Set(["slice", "clove", "can", "bunch", "sachet", "pinch", "portion"]);
+
+/**
+ * An amount as a person would say it.
+ *
+ * `pc` loses its unit entirely — "2 onions", never "2 pc onion" — and a counted unit takes an "of".
+ * Everything else keeps the unit as written, because "330 g broad bean" is already how a kitchen
+ * talks and inflecting it would only make it worse.
+ */
+export function amountParts(qty: number | null, unit: string, id: string): { amount: string; name: string } {
+  const name = displayName(id);
+  if (qty === null) return { amount: "", name };
+  if (unit === "pc") return { amount: String(qty), name: plural(name, qty) };
+  if (COUNTED.has(unit)) return { amount: `${qty} ${plural(unit, qty)} of`, name };
+  return { amount: `${qty} ${unit}`, name };
+}
+
+export function amountText(qty: number | null, unit: string, id: string): string {
+  const { amount, name } = amountParts(qty, unit, id);
+  return amount ? `${amount} ${name}` : name;
 }
 
 const CONFIDENCE_RANK: Record<Confidence, number> = { confirmed: 3, inferred: 2, stale: 1 };

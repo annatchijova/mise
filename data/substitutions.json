@@ -1,0 +1,904 @@
+{
+  "_comment": "The substitution table. Curated by hand, versioned as data, never generated. Alexa+ does not invent a substitution: it reads one from here, with its ratio and its warning. See docs/SUBSTITUTION_SCHEMA.md.",
+  "version": 1,
+  "updated_on": "2026-09-04",
+  "author": "the author's kitchen",
+  "extra_ingredients": {
+    "aquafaba": "aquafaba (the water from a can of chickpeas)",
+    "baking-soda": "baking soda",
+    "tamari": "tamari (gluten-free soy sauce)",
+    "carrot-mayonnaise": "carrot mayonnaise (the recipe in this book)",
+    "tahini": "tahini",
+    "sunflower-seed-butter": "sunflower seed butter"
+  },
+  "entries": [
+    {
+      "ingredient": "vegetable-oil",
+      "role": "fat",
+      "technique": "emulsify",
+      "alternatives": [
+        { "ingredient": "sunflower-oil", "ratio": [1, 1], "note": "The neutral oil this recipe was written for.", "warning": null },
+        { "ingredient": "olive-oil", "ratio": [1, 1], "note": "Emulsifies as well and tastes of itself.", "warning": "Extra virgin turns bitter when it is whipped fast. Use a mild oil, or half olive and half neutral." }
+      ],
+      "if_missing": "An emulsion needs a liquid oil. Without one you get a purée, not a mayonnaise — say so rather than serving it as the same thing."
+    },
+    {
+      "ingredient": "vegetable-oil",
+      "role": "fat",
+      "technique": "fry",
+      "alternatives": [
+        { "ingredient": "sunflower-oil", "ratio": [1, 1], "note": "No flavour of its own; takes the same heat.", "warning": null },
+        { "ingredient": "olive-oil", "ratio": [1, 1], "note": "Adds its own flavour, which most of these dishes welcome.", "warning": null },
+        { "ingredient": "coconut-oil", "ratio": [1, 1], "note": "Solid in the jar, liquid in the pan.", "warning": "Carries coconut into the dish and smokes sooner than a seed oil." }
+      ],
+      "if_missing": "A dry pan browns nothing and the aromatics scorch. Any oil is better than none here."
+    },
+    {
+      "ingredient": "olive-oil",
+      "role": "fat",
+      "technique": "fry",
+      "alternatives": [
+        { "ingredient": "vegetable-oil", "ratio": [1, 1], "note": "Neutral: the dish loses the olive note and nothing else.", "warning": null },
+        { "ingredient": "sunflower-oil", "ratio": [1, 1], "note": "Neutral, higher smoke point.", "warning": null },
+        { "ingredient": "garlic-oil", "ratio": [1, 1], "note": "Brings garlic with it.", "warning": "Count it as one of the garlic cloves the recipe asks for." }
+      ],
+      "if_missing": "Any fat you have. The olive flavour is a bonus in a fried base, not the point of it."
+    },
+    {
+      "ingredient": "olive-oil",
+      "role": "fat",
+      "technique": "bake",
+      "alternatives": [
+        { "ingredient": "vegetable-oil", "ratio": [1, 1], "note": "Neutral; the crumb is identical.", "warning": null },
+        { "ingredient": "margarine", "ratio": [5, 4], "note": "A quarter more, because margarine is part water.", "warning": "The extra water makes a softer, shorter crumb." }
+      ],
+      "if_missing": "Baking without the fat gives a dry, tough result. This one is worth a trip to the shop."
+    },
+    {
+      "ingredient": "coconut-oil",
+      "role": "fat",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "vegetable-oil", "ratio": [1, 1], "note": "Browns the same.", "warning": "The dish loses the coconut sweetness that was doing part of the seasoning." },
+        { "ingredient": "margarine", "ratio": [1, 1], "note": "Solid, like coconut oil, and it browns well.", "warning": "The water in it spits, and it burns before a pure fat does." }
+      ],
+      "if_missing": "Any oil browns. Nothing here replaces what coconut adds to a curry — season a little sweeter at the end."
+    },
+    {
+      "ingredient": "margarine",
+      "role": "fat",
+      "technique": "bake",
+      "alternatives": [
+        { "ingredient": "coconut-oil", "ratio": [4, 5], "note": "Solid at room temperature, so it creams the way margarine does. Use a fifth less: it is pure fat.", "warning": "Refined coconut oil is neutral; virgin is not." },
+        { "ingredient": "vegetable-oil", "ratio": [3, 4], "note": "Three quarters of the weight, because there is no water to lose.", "warning": "A liquid fat makes a denser crumb. Never in a laminated dough — there is nothing to laminate." }
+      ],
+      "if_missing": "Do not bake this one without a fat; it is structure, not richness."
+    },
+    {
+      "ingredient": "cashew-cream",
+      "role": "fat",
+      "technique": "bind-hot",
+      "alternatives": [
+        { "ingredient": "cashew", "ratio": [1, 2], "note": "Soak the nuts, blend with half their volume of water, and you have made the cream.", "warning": "Blend it smooth or the sauce will be gritty." },
+        { "ingredient": "plant-milk", "ratio": [1, 1], "note": "Same volume of liquid.", "warning": "Much thinner: thicken with a teaspoon of cornstarch per cup or the sauce will not coat." }
+      ],
+      "if_missing": "The sauce will not be creamy. Reduce it further instead of pretending it binds."
+    },
+    {
+      "ingredient": "avocado",
+      "role": "fat",
+      "technique": "raw",
+      "alternatives": [
+        { "ingredient": "cashew-cream", "ratio": [1, 1], "note": "Gives the fattiness and the body.", "warning": "None of the avocado flavour, and it is much richer — start with less." }
+      ],
+      "if_missing": "Leave it out and finish the plate with a little olive oil. A wrong fat is more noticeable than a missing one."
+    },
+    {
+      "ingredient": "lemon",
+      "role": "acid",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "vinegar", "ratio": [1, 2], "note": "Half as much: vinegar is sharper than lemon.", "warning": "Vinegar has no perfume. In a dish where the lemon is the point, it is a compromise." },
+        { "ingredient": "white-wine-vinegar", "ratio": [1, 2], "note": "The mildest vinegar here, and the closest to lemon.", "warning": null },
+        { "ingredient": "orange", "ratio": [2, 1], "note": "Twice as much, for a gentler acidity.", "warning": "Sweet. Only in a dish that can take sugar." }
+      ],
+      "if_missing": "Acid is what makes a dish taste finished. Without it the dish is flat rather than wrong — say that, and stop there."
+    },
+    {
+      "ingredient": "lemon",
+      "role": "acid",
+      "technique": "marinate",
+      "alternatives": [
+        { "ingredient": "vinegar", "ratio": [1, 2], "note": "Half as much.", "warning": "Vinegar firms the surface faster than lemon does. Check the marinade five minutes earlier than the recipe says." },
+        { "ingredient": "orange", "ratio": [2, 1], "note": "Gentler; good on hearts of palm and squash.", "warning": "Sweeter, and it will not firm the texture the way lemon does." }
+      ],
+      "if_missing": "A marinade without acid is an oiling. Give it more time and more salt, and expect a different dish."
+    },
+    {
+      "ingredient": "vinegar",
+      "role": "acid",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "lemon", "ratio": [2, 1], "note": "Twice as much: lemon is milder and brings perfume.", "warning": null },
+        { "ingredient": "white-wine-vinegar", "ratio": [1, 1], "note": "One for one.", "warning": null }
+      ],
+      "if_missing": "Salt first, then decide. Half of what tastes like missing acid is missing salt."
+    },
+    {
+      "ingredient": "vinegar",
+      "role": "acid",
+      "technique": "ferment",
+      "alternatives": [],
+      "if_missing": "Do not substitute here. In a brine the acid sets the starting pH, and a swap changes what grows. Use the vinegar the recipe names or do not start the ferment."
+    },
+    {
+      "ingredient": "nutritional-yeast",
+      "role": "umami",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "miso", "ratio": [1, 2], "note": "Half as much, dissolved in a spoon of warm water first.", "warning": "Salty: take the recipe's salt down by about a third." },
+        { "ingredient": "soy-sauce", "ratio": [1, 2], "note": "Half as much.", "warning": "Adds liquid and colour. Not for a pale sauce, and not in a dough." }
+      ],
+      "if_missing": "The dish loses its savoury depth. A well browned onion is the cheapest way back to it."
+    },
+    {
+      "ingredient": "miso",
+      "role": "umami",
+      "technique": "marinate",
+      "alternatives": [
+        { "ingredient": "soy-sauce", "ratio": [3, 2], "note": "Half again as much, because it is thinner.", "warning": "It runs off instead of clinging. Marinate in a bag or a narrow dish." }
+      ],
+      "if_missing": "Salt and a spoon of oil will season the surface, but nothing here ferments it. Expect flavour on the outside only."
+    },
+    {
+      "ingredient": "soy-sauce",
+      "role": "umami",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "tamari", "ratio": [1, 1], "note": "One for one, and gluten free.", "warning": null },
+        { "ingredient": "miso", "ratio": [2, 3], "note": "A third less, dissolved in warm water.", "warning": "Cloudy: it will not give a clear glaze." },
+        { "ingredient": "salt", "ratio": [1, 6], "note": "A sixth as much, as a last resort.", "warning": "Salt alone. None of the fermented depth, and the dish will taste simply salty." }
+      ],
+      "if_missing": "Say what is lost: the savour, not the salt. Salt it properly and leave it there."
+    },
+    {
+      "ingredient": "mushroom",
+      "role": "umami",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "oyster-mushroom", "ratio": [1, 1], "note": "Browns beautifully; tear rather than slice.", "warning": null },
+        { "ingredient": "pine-mushroom", "ratio": [1, 1], "note": "Firmer and more perfumed.", "warning": null },
+        { "ingredient": "dried-mushroom", "ratio": [1, 8], "note": "An eighth by weight, soaked first. Keep the soaking water — it is the best part of the dish.", "warning": "Grit settles at the bottom of the soaking bowl. Pour the water off, do not tip it in." }
+      ],
+      "if_missing": "Nothing else browns into that. Miso or soy sauce brings savour but not texture."
+    },
+    {
+      "ingredient": "oyster-mushroom",
+      "role": "umami",
+      "technique": "fry",
+      "alternatives": [
+        { "ingredient": "mushroom", "ratio": [1, 1], "note": "Slice them thick.", "warning": "Holds more water: fry hotter, in batches, or it stews instead of browning." },
+        { "ingredient": "pine-mushroom", "ratio": [1, 1], "note": "Closest in texture.", "warning": null }
+      ],
+      "if_missing": "In a lomito the mushroom is the filling, not a seasoning. Cook something else rather than substitute it."
+    },
+    {
+      "ingredient": "sun-dried-tomato",
+      "role": "umami",
+      "technique": "raw",
+      "alternatives": [
+        { "ingredient": "olive", "ratio": [1, 1], "note": "Same salty, chewy punctuation.", "warning": "Briny rather than sweet. Cut the added salt." },
+        { "ingredient": "tomato-sauce", "ratio": [1, 2], "note": "For the flavour only.", "warning": "Wet: it will loosen a spread or a paste that was meant to hold." }
+      ],
+      "if_missing": "Leave it out and add a pinch of salt and a drop of vinegar. The dish loses a note, not its shape."
+    },
+    {
+      "ingredient": "tofu",
+      "role": "protein",
+      "technique": "fry",
+      "alternatives": [
+        { "ingredient": "oyster-mushroom", "ratio": [1, 1], "note": "Browns better than tofu and needs no pressing.", "warning": "Far less protein. A meal built on it is a lighter meal." },
+        { "ingredient": "chickpea", "ratio": [1, 1], "note": "Drained well and crushed a little, they fry crisp.", "warning": "Will not hold a slab shape. Use them crumbled and say so." }
+      ],
+      "if_missing": "This is the protein of the dish. Substituting it changes the meal, so let the person choose rather than deciding for them."
+    },
+    {
+      "ingredient": "tofu",
+      "role": "protein",
+      "technique": "marinate",
+      "alternatives": [
+        { "ingredient": "hearts-of-palm", "ratio": [1, 1], "note": "Takes a marinade in minutes.", "warning": "Takes it fast and turns soft: keep the marinade short and skip the pressing." }
+      ],
+      "if_missing": "Nothing here soaks up a marinade like pressed tofu. Marinate the vegetables instead and keep the same dressing."
+    },
+    {
+      "ingredient": "red-lentil",
+      "role": "protein",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "lentil", "ratio": [1, 1], "note": "Same weight.", "warning": "Brown lentils hold their shape: the soup will not thicken by itself, and it needs about fifteen minutes more." },
+        { "ingredient": "split-pea", "ratio": [1, 1], "note": "Collapses like a red lentil and tastes sweeter.", "warning": "Roughly twice the cooking time. Start it before anything else." }
+      ],
+      "if_missing": "The lentils are the body of this soup. Without them it is a broth."
+    },
+    {
+      "ingredient": "lentil",
+      "role": "protein",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "red-lentil", "ratio": [1, 1], "note": "Cooks in about twenty minutes.", "warning": "Collapses completely: the dish becomes a purée. Fine for a stew, wrong for a salad." },
+        { "ingredient": "black-bean", "ratio": [1, 1], "note": "Holds its shape well.", "warning": "Needs soaking, and it colours the whole pot." }
+      ],
+      "if_missing": "This is the protein of the dish; ask before changing it."
+    },
+    {
+      "ingredient": "chickpea",
+      "role": "protein",
+      "technique": "bind-hot",
+      "alternatives": [
+        { "ingredient": "fava-bean", "ratio": [1, 1], "note": "Similar starch, binds the same.", "warning": null },
+        { "ingredient": "black-bean", "ratio": [1, 1], "note": "Binds well.", "warning": "Colours the mixture grey-purple. A cosmetic problem, not a cooking one." }
+      ],
+      "if_missing": "Something starchy has to hold this together. A boiled potato will do it if no pulse is at hand."
+    },
+    {
+      "ingredient": "flour-0000",
+      "role": "starch",
+      "technique": "bind-cold",
+      "alternatives": [
+        { "ingredient": "flour-000", "ratio": [1, 1], "note": "Stronger flour; the dough takes a touch more water.", "warning": "More gluten means a chewier gnocchi. Knead less, not more." },
+        { "ingredient": "gluten-free-premix", "ratio": [1, 1], "note": "Works, and the dough behaves differently from the first minute.", "warning": "No gluten to develop: press the dough together, do not knead it, and expect it to be fragile." },
+        { "ingredient": "oat-flour", "ratio": [4, 5], "note": "A fifth less by weight.", "warning": "Absorbs more liquid and keeps absorbing. Add the water slowly and let it sit five minutes before judging." }
+      ],
+      "if_missing": "There is no dough without a flour. Wait for the shop."
+    },
+    {
+      "ingredient": "flour-000",
+      "role": "starch",
+      "technique": "bake",
+      "alternatives": [
+        { "ingredient": "flour-0000", "ratio": [1, 1], "note": "Finer, weaker flour.", "warning": "Fine for a cake, not for bread: the loaf will not hold its rise." },
+        { "ingredient": "self-rising-flour", "ratio": [1, 1], "note": "Same weight.", "warning": "It already carries leavening and salt: drop the baking powder and halve the salt, or the crumb tastes soapy." }
+      ],
+      "if_missing": "Nothing to do here without a flour."
+    },
+    {
+      "ingredient": "gluten-free-premix",
+      "role": "starch",
+      "technique": "bake",
+      "alternatives": [
+        { "ingredient": "oat-flour", "ratio": [1, 1], "note": "Same weight; softer crumb.", "warning": "Only if the oats are certified gluten free — plain oats are cross-contaminated often enough to matter to someone who cannot eat gluten." },
+        { "ingredient": "flour-0000", "ratio": [1, 1], "note": "Bakes better than any premix.", "warning": "Contains gluten. Never as a silent swap: if the recipe is gluten free, somebody chose it for a reason." }
+      ],
+      "if_missing": "Say what the constraint is before offering anything. A gluten-free recipe is usually a medical fact, not a preference."
+    },
+    {
+      "ingredient": "cornstarch",
+      "role": "thickener",
+      "technique": "thicken",
+      "alternatives": [
+        { "ingredient": "flour-0000", "ratio": [2, 1], "note": "Twice as much.", "warning": "Cook it out for two minutes or the sauce tastes of raw flour, and it will be cloudy where cornstarch is clear." },
+        { "ingredient": "agar-agar", "ratio": [1, 4], "note": "A quarter as much.", "warning": "Agar does not thicken — it sets. The sauce will be liquid hot and sliceable cold. Use it only if that is what you want." }
+      ],
+      "if_missing": "Reduce the sauce instead. A thin sauce reduced is better than a thickener that changes the mouthfeel."
+    },
+    {
+      "ingredient": "agar-agar",
+      "role": "thickener",
+      "technique": "dissolve",
+      "alternatives": [
+        { "ingredient": "cornstarch", "ratio": [4, 1], "note": "Four times as much.", "warning": "Cornstarch does not set. It thickens hot and softens as it cools, so the dessert will not unmould." }
+      ],
+      "if_missing": "Agar has to boil for a minute to work at all. If there is none, serve it as a cream and rename the dish."
+    },
+    {
+      "ingredient": "chia",
+      "role": "binder",
+      "technique": "thicken",
+      "alternatives": [
+        { "ingredient": "flax", "ratio": [1, 1], "note": "Ground, it thickens the same and disappears into the colour.", "warning": "Whole flax passes straight through and thickens nothing. It has to be ground." }
+      ],
+      "if_missing": "A pudding without a binder is a drink. Cornstarch cooked and cooled is the nearest honest alternative."
+    },
+    {
+      "ingredient": "flax",
+      "role": "binder",
+      "technique": "whip",
+      "alternatives": [
+        { "ingredient": "aquafaba", "ratio": [3, 1], "note": "Three tablespoons of aquafaba for one of ground flax; whips to soft peaks in a cold bowl.", "warning": "Aquafaba does not bind when hot — it thins out as soon as it warms. Cold preparations only." },
+        { "ingredient": "chia", "ratio": [1, 1], "note": "Ground, it binds the same.", "warning": "Will not whip. It binds, it does not aerate." }
+      ],
+      "if_missing": "Nothing else here holds air. The dish will be dense; that is a texture, not a failure."
+    },
+    {
+      "ingredient": "bread-crumbs",
+      "role": "binder",
+      "technique": "bind-cold",
+      "alternatives": [
+        { "ingredient": "oat-flour", "ratio": [3, 4], "note": "A quarter less, and let the mixture rest ten minutes to hydrate.", "warning": null },
+        { "ingredient": "corn-chips", "ratio": [1, 1], "note": "Crushed fine; they bind and add crunch.", "warning": "Salty. Take the recipe's salt down by half before tasting." }
+      ],
+      "if_missing": "Chill the mixture for an hour instead. Cold fat binds a burger nearly as well as crumbs do."
+    },
+    {
+      "ingredient": "onion",
+      "role": "aromatic",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "red-onion", "ratio": [1, 1], "note": "Sweeter; browns a shade darker.", "warning": null },
+        { "ingredient": "leek", "ratio": [3, 2], "note": "Half again as much, white part only.", "warning": "Softer and milder. It will not give the sweet depth a browned onion gives." },
+        { "ingredient": "green-onion", "ratio": [2, 1], "note": "Twice as much.", "warning": "Burns in a minute. Add it near the end, not at the start." },
+        { "ingredient": "onion-flakes", "ratio": null, "note": "About a tablespoon of flakes for a medium onion, rehydrated in a little warm water.", "warning": "They will not caramelize. You get onion flavour and none of the sweetness browning creates." }
+      ],
+      "if_missing": "A browned onion is the base of most of these dishes. It is worth waiting for one."
+    },
+    {
+      "ingredient": "garlic",
+      "role": "aromatic",
+      "technique": "raw",
+      "alternatives": [
+        { "ingredient": "garlic-powder", "ratio": [1, 8], "note": "About an eighth of a teaspoon per clove.", "warning": "Powder is not raw garlic: no bite, and it clumps in a cold dressing. Dissolve it in the acid first." },
+        { "ingredient": "garlic-oil", "ratio": null, "note": "A teaspoon per clove, if the dish already carries oil.", "warning": "Counts as part of the recipe's fat, not as an extra." }
+      ],
+      "if_missing": "Raw garlic is a flavour with no stand-in. Leave it out and let the dish be milder."
+    },
+    {
+      "ingredient": "garlic",
+      "role": "aromatic",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "garlic-powder", "ratio": [1, 8], "note": "An eighth of a teaspoon per clove.", "warning": "Add it off the heat: powder scorches in seconds and turns bitter." },
+        { "ingredient": "garlic-parsley-mix", "ratio": [1, 1], "note": "If it is what is in the cupboard, it works.", "warning": "Brings parsley with it. Skip the recipe's parsley." }
+      ],
+      "if_missing": "Brown the onion a little longer. It is not garlic, but it fills the same place in the dish."
+    },
+    {
+      "ingredient": "celery",
+      "role": "aromatic",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "leek", "ratio": [1, 1], "note": "Same soft, savoury base.", "warning": null },
+        { "ingredient": "fennel", "ratio": [1, 1], "note": "Same texture when browned.", "warning": "Brings anise. In a borscht that is a decision, not a detail." },
+        { "ingredient": "celery-powder", "ratio": null, "note": "A quarter teaspoon per stalk, added with the other dry seasonings.", "warning": "Flavour only: none of the body the stalk gives the pot." }
+      ],
+      "if_missing": "Leave it out. Celery is one leg of the base, and the onion and carrot carry it."
+    },
+    {
+      "ingredient": "parsley",
+      "role": "herb",
+      "technique": "raw",
+      "alternatives": [
+        { "ingredient": "cilantro", "ratio": [1, 1], "note": "Same volume.", "warning": "A completely different flavour, and some people taste soap. Ask before serving it to a guest." },
+        { "ingredient": "green-onion", "ratio": [1, 1], "note": "For the colour and the fresh bite.", "warning": "None of the parsley flavour. It is a garnish swap, not a herb swap." }
+      ],
+      "if_missing": "Leave it out. A missing herb is quieter than a wrong one."
+    },
+    {
+      "ingredient": "bay-leaf",
+      "role": "herb",
+      "technique": "simmer",
+      "alternatives": [],
+      "if_missing": "Leave it out. A bay leaf is background, and every other herb here is louder than the gap it leaves."
+    },
+    {
+      "ingredient": "provencal-herbs",
+      "role": "herb",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "italian-seasoning", "ratio": [1, 1], "note": "Same volume.", "warning": "Oregano-forward, and no lavender. Closer than it sounds, but not the same." },
+        { "ingredient": "oregano", "ratio": [1, 2], "note": "Half as much: oregano alone is stronger than the mix.", "warning": null }
+      ],
+      "if_missing": "Leave it out; the recipe already calls it optional."
+    },
+    {
+      "ingredient": "italian-seasoning",
+      "role": "herb",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "provencal-herbs", "ratio": [1, 1], "note": "Same volume.", "warning": "Brings lavender and savory. Noticeable in a tomato sauce." },
+        { "ingredient": "oregano", "ratio": [1, 2], "note": "Half as much.", "warning": null }
+      ],
+      "if_missing": "Salt and a little dried oregano is the whole of it. Without either, leave it."
+    },
+    {
+      "ingredient": "merken",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "smoked-paprika", "ratio": [1, 1], "note": "Same volume, plus a pinch of chili for the heat merkén carries.", "warning": "No coriander seed, which is the third thing in merkén." },
+        { "ingredient": "paprika", "ratio": [1, 1], "note": "Colour and sweetness.", "warning": "Sweet paprika brings neither smoke nor heat. The dish will be mild and red." }
+      ],
+      "if_missing": "Chili and a pinch of salt get you the heat. The smoke is the part you cannot fake."
+    },
+    {
+      "ingredient": "smoked-paprika",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "paprika", "ratio": [1, 1], "note": "Same volume, with two drops of liquid smoke if there is any.", "warning": "Without the liquid smoke this is simply paprika." },
+        { "ingredient": "merken", "ratio": [1, 1], "note": "Smoked and hot.", "warning": "Adds real heat. Halve it if the dish was not meant to be spicy." }
+      ],
+      "if_missing": "Leave it out and say the dish will taste sweeter and less smoky than the recipe intends."
+    },
+    {
+      "ingredient": "white-pepper",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "black-pepper", "ratio": [1, 1], "note": "Same volume.", "warning": "Visible specks. In a white sauce that is a look, not a fault — but it is a look." },
+        { "ingredient": "green-peppercorn", "ratio": [1, 1], "note": "Crushed, same volume.", "warning": "More floral and less hot." }
+      ],
+      "if_missing": "Salt carries further than people expect. Season and taste before deciding you need the pepper."
+    },
+    {
+      "ingredient": "green-peppercorn",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "black-pepper", "ratio": [1, 2], "note": "Half as much.", "warning": "Sharper and much less floral." },
+        { "ingredient": "white-pepper", "ratio": [1, 2], "note": "Half as much.", "warning": "Earthier; it settles into the background instead of sitting on top." }
+      ],
+      "if_missing": "Leave it out. Green peppercorn is a top note, and half a dish's pepper is usually enough anyway."
+    },
+    {
+      "ingredient": "kala-namak",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "salt", "ratio": [1, 1], "note": "Same volume, and the dish is seasoned correctly.", "warning": "You lose the egg note entirely, which is the only reason kala namak is in the recipe." }
+      ],
+      "if_missing": "Season with salt and tell the person the eggy note will not be there. In a tofu scramble that is the whole illusion."
+    },
+    {
+      "ingredient": "nutmeg",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "cardamom", "ratio": [1, 2], "note": "Half as much.", "warning": "Brighter and more perfumed. It reads as a different dish, not as a substitution." }
+      ],
+      "if_missing": "Leave it out. Nutmeg is a whisper in a white sauce; nothing else whispers the same way."
+    },
+    {
+      "ingredient": "cardamom",
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "cinnamon", "ratio": [1, 2], "note": "Half as much.", "warning": "Warmer and much louder. It takes over a delicate dessert." },
+        { "ingredient": "star-anise", "ratio": [1, 4], "note": "A quarter as much, and remove it before serving.", "warning": "Anise, not citrus-pepper. A big change." }
+      ],
+      "if_missing": "Leave it out rather than reaching for another warm spice. They are not interchangeable, only adjacent."
+    },
+    {
+      "ingredient": "sugar",
+      "role": "sweetener",
+      "technique": "sweeten",
+      "alternatives": [
+        { "ingredient": "muscovado-sugar", "ratio": [1, 1], "note": "Same weight.", "warning": "Molasses flavour and a darker colour. Welcome in a stew, obvious in a white cream." },
+        { "ingredient": "glucose-syrup", "ratio": [5, 4], "note": "A quarter more, and take the same amount out of the recipe's liquid.", "warning": "Less sweet than sugar, and it will not caramelize the same." },
+        { "ingredient": "sweetener", "ratio": null, "note": "Follow the packet: sweeteners are not one for one with sugar, and each brand differs.", "warning": "Sugar is also structure. In a baked good, a sweetener leaves you short of bulk and browning." }
+      ],
+      "if_missing": "In a savoury dish, leave it out. In a dessert, do not start without it."
+    },
+    {
+      "ingredient": "icing-sugar",
+      "role": "sweetener",
+      "technique": "bake",
+      "alternatives": [
+        { "ingredient": "sugar", "ratio": [1, 1], "note": "Same weight, blitzed fine in a dry blender.", "warning": "Unground it stays grainy in anything that is not baked or boiled." }
+      ],
+      "if_missing": "Glaze it with a warm fruit purée instead of pretending granulated sugar dissolves cold."
+    },
+    {
+      "ingredient": "fresh-yeast",
+      "role": "leavening",
+      "technique": "leaven",
+      "alternatives": [
+        { "ingredient": "yeast", "ratio": [1, 3], "note": "A third of the weight: one part dry yeast for three parts fresh. Dissolve it in the warm liquid.", "warning": "Instant dry yeast can go straight into the flour; active dry has to be proofed first. Check which one it is." }
+      ],
+      "if_missing": "There is no rise without yeast. Baking powder makes a soda bread, which is a different recipe with a different name."
+    },
+    {
+      "ingredient": "yeast",
+      "role": "leavening",
+      "technique": "leaven",
+      "alternatives": [
+        { "ingredient": "fresh-yeast", "ratio": [3, 1], "note": "Three times the weight, crumbled into the warm liquid.", "warning": "Fresh yeast is alive and dies in a warm kitchen in a week. Check it foams before you commit the flour." }
+      ],
+      "if_missing": "Wait for yeast rather than forcing the dough. An unleavened version of this is a flatbread."
+    },
+    {
+      "ingredient": "baking-powder",
+      "role": "leavening",
+      "technique": "leaven",
+      "alternatives": [
+        { "ingredient": "baking-soda", "ratio": [1, 4], "note": "A quarter as much, plus an acid already in the batter — a teaspoon of vinegar or lemon per quarter teaspoon of soda.", "warning": "Soda without an acid is bitter and soapy, and it browns the crumb yellow. Never a straight swap." }
+      ],
+      "if_missing": "Beat air in instead and accept a flatter, denser result. Do not increase the yeast to compensate: they work on different timescales."
+    },
+    {
+      "ingredient": "vegetable-broth",
+      "role": "liquid",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "water", "ratio": [1, 1], "note": "Same volume, with a spoon of miso or soy sauce stirred in at the end.", "warning": "Plain water makes a thin soup. Season it harder than you think, and late." }
+      ],
+      "if_missing": "Water and a browned onion is a broth. Start it before the rest of the dish."
+    },
+    {
+      "ingredient": "red-wine",
+      "role": "liquid",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "vegetable-broth", "ratio": [1, 1], "note": "Same volume, with a tablespoon of vinegar per cup for the acidity the wine brought.", "warning": "No tannin and no sweetness: the sauce will be flatter and it will not reduce as glossy." }
+      ],
+      "if_missing": "Broth and a splash of vinegar. Say the dish will taste lighter than the recipe intends."
+    },
+    {
+      "ingredient": "beer",
+      "role": "liquid",
+      "technique": "dissolve",
+      "alternatives": [
+        { "ingredient": "vegetable-broth", "ratio": [1, 1], "note": "Same volume.", "warning": "Beer brings liquid, carbonation and yeast flavour. Broth brings one of the three: this loaf will be denser and plainer." }
+      ],
+      "if_missing": "Beer bread without beer is another bread. Use a yeasted recipe instead of forcing this one."
+    },
+    {
+      "ingredient": "soy-milk",
+      "role": "liquid",
+      "technique": "dissolve",
+      "alternatives": [
+        { "ingredient": "plant-milk", "ratio": [1, 1], "note": "Any unsweetened plant milk.", "warning": "A sweetened one will show in a savoury dish. Check the carton." },
+        { "ingredient": "cashew-milk", "ratio": [1, 1], "note": "Richer, and it thickens a sauce slightly.", "warning": null },
+        { "ingredient": "water", "ratio": [1, 1], "note": "Same volume.", "warning": "Thinner and less rich. Soy milk also has protein, which is what sets a custard — water will not set it." }
+      ],
+      "if_missing": "Water works in a dough. It does not work where the milk was there to set or to enrich."
+    },
+    {
+      "ingredient": "potato",
+      "role": "starch",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "andean-potato", "ratio": [1, 1], "note": "The same thing, waxier.", "warning": null },
+        { "ingredient": "sweet-potato", "ratio": [1, 1], "note": "Same weight.", "warning": "Sweeter, and it breaks down about ten minutes sooner. Check it early or the soup turns to purée." }
+      ],
+      "if_missing": "Squash simmers into the same place in a soup, sweeter. In a gnocchi dough there is no substitute."
+    },
+    {
+      "ingredient": "sweet-potato",
+      "role": "starch",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "kabocha-squash", "ratio": [1, 1], "note": "Nearly the same sweetness and texture.", "warning": null },
+        { "ingredient": "potato", "ratio": [1, 1], "note": "Same weight.", "warning": "Not sweet. The dish will need something else for balance — a spoon of sugar or a sweeter spice." }
+      ],
+      "if_missing": "Squash or pumpkin. Both are closer than a white potato."
+    },
+    {
+      "ingredient": "tomato",
+      "role": "vegetable",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "canned-tomato", "ratio": [1, 1], "note": "Drained well.", "warning": "Undrained it will not brown: it stews. Pour the juice off and keep it for the pot." },
+        { "ingredient": "cherry-tomato", "ratio": [1, 1], "note": "Halved; they brown faster and sweeter.", "warning": null }
+      ],
+      "if_missing": "A spoon of tomato sauce fried in the oil gives the colour and the sweetness, and none of the texture."
+    },
+    {
+      "ingredient": "cabbage",
+      "role": "vegetable",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "red-cabbage", "ratio": [1, 1], "note": "Same weight, same cooking.", "warning": "Bleeds purple into everything in the pan. In a borscht nobody notices; in a tart they will." }
+      ],
+      "if_missing": "Leave it out and add another vegetable that browns. Cabbage is bulk and sweetness here, not a flavour nobody can miss."
+    },
+    {
+      "ingredient": "pumpkin",
+      "role": "vegetable",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "squash", "ratio": [1, 1], "note": "Interchangeable in a soup.", "warning": null },
+        { "ingredient": "kabocha-squash", "ratio": [1, 1], "note": "Drier and sweeter; the soup comes out thicker.", "warning": "Thicker: hold back a little of the liquid until you see it." },
+        { "ingredient": "sweet-potato", "ratio": [1, 1], "note": "Sweeter and smoother.", "warning": null }
+      ],
+      "if_missing": "Carrot and a potato together get close enough to be worth doing."
+    },
+    {
+      "ingredient": "vegan-mayonnaise",
+      "role": "fat",
+      "technique": "emulsify",
+      "alternatives": [
+        { "ingredient": "carrot-mayonnaise", "ratio": [1, 1], "note": "The recipe in this book, made from carrot and oil. Fifteen minutes.", "warning": "Sweeter and orange. It changes the colour of anything pale it goes into." },
+        { "ingredient": "cashew-cream", "ratio": [1, 1], "note": "With a spoon of vinegar and a pinch of mustard it does the same job.", "warning": "Not an emulsion: it will loosen if it sits warm." }
+      ],
+      "if_missing": "Olive oil, lemon and salt dresses the same salad honestly. It is not mayonnaise and should not be called one."
+    },
+    {
+      "ingredient": null,
+      "role": "fat",
+      "technique": "fry",
+      "alternatives": [
+        { "ingredient": "vegetable-oil", "ratio": [1, 1], "note": "Neutral and cheap; the default when nothing else is at hand.", "warning": null },
+        { "ingredient": "olive-oil", "ratio": [1, 1], "note": "Brings flavour of its own.", "warning": null }
+      ],
+      "if_missing": "Frying needs a fat. Everything else about the dish can bend; this cannot."
+    },
+    {
+      "ingredient": null,
+      "role": "acid",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "lemon", "ratio": [1, 1], "note": "The mildest acid here, and the one with perfume.", "warning": null },
+        { "ingredient": "vinegar", "ratio": [1, 2], "note": "Half as much as lemon.", "warning": "Sharper, no perfume." }
+      ],
+      "if_missing": "Season with salt first and taste again. Flatness is more often salt than acid."
+    },
+    {
+      "ingredient": null,
+      "role": "umami",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "soy-sauce", "ratio": [1, 1], "note": "Salt and savour together.", "warning": "Adds liquid and colour." },
+        { "ingredient": "miso", "ratio": [1, 2], "note": "Half as much, dissolved first.", "warning": "Salty; cut the recipe's salt." },
+        { "ingredient": "nutritional-yeast", "ratio": [2, 1], "note": "Twice as much; dry, so it changes nothing else.", "warning": null }
+      ],
+      "if_missing": "Brown something. A properly caramelized onion or mushroom is savour you make rather than add."
+    },
+    {
+      "ingredient": null,
+      "role": "aromatic",
+      "technique": "brown",
+      "alternatives": [
+        { "ingredient": "onion", "ratio": [1, 1], "note": "The base of nearly every dish here.", "warning": null },
+        { "ingredient": "leek", "ratio": [3, 2], "note": "Milder and softer.", "warning": null },
+        { "ingredient": "green-onion", "ratio": [2, 1], "note": "Fast; add it late.", "warning": "Burns quickly." }
+      ],
+      "if_missing": "Without an aromatic base the dish tastes of its main ingredient alone. That is a real loss and worth saying."
+    },
+    {
+      "ingredient": null,
+      "role": "binder",
+      "technique": "bind-cold",
+      "alternatives": [
+        { "ingredient": "chia", "ratio": [1, 1], "note": "Ground or whole; give it ten minutes in liquid.", "warning": null },
+        { "ingredient": "flax", "ratio": [1, 1], "note": "Ground only.", "warning": "Whole flax binds nothing." },
+        { "ingredient": "bread-crumbs", "ratio": [3, 1], "note": "Three times the volume of a seed binder.", "warning": "Contains gluten unless they are gluten-free crumbs." }
+      ],
+      "if_missing": "Chill the mixture hard before shaping. Cold does much of what a binder does."
+    },
+    {
+      "ingredient": null,
+      "role": "thickener",
+      "technique": "thicken",
+      "alternatives": [
+        { "ingredient": "cornstarch", "ratio": [1, 1], "note": "Slurried in cold water first.", "warning": "Tipped in dry it lumps and nothing rescues it." },
+        { "ingredient": "flour-0000", "ratio": [2, 1], "note": "Twice as much, cooked out for two minutes.", "warning": "Cloudy where cornstarch is clear, and it tastes of raw flour if it is not cooked." }
+      ],
+      "if_missing": "Reduce it. Time is the thickener that changes nothing else about the dish."
+    },
+    {
+      "ingredient": null,
+      "role": "sweetener",
+      "technique": "sweeten",
+      "alternatives": [
+        { "ingredient": "sugar", "ratio": [1, 1], "note": "The reference.", "warning": null },
+        { "ingredient": "muscovado-sugar", "ratio": [1, 1], "note": "Darker and more interesting.", "warning": "Molasses flavour." }
+      ],
+      "if_missing": "In a savoury dish, skip it. In a sweet one, stop and go shopping."
+    },
+    {
+      "ingredient": null,
+      "role": "herb",
+      "technique": "season",
+      "alternatives": [
+        { "ingredient": "oregano", "ratio": [1, 1], "note": "Dried, the most forgiving of them.", "warning": null },
+        { "ingredient": "italian-seasoning", "ratio": [1, 1], "note": "A mix, so it hides a missing single herb well.", "warning": null }
+      ],
+      "if_missing": "Leave it out. A missing herb is quieter than a wrong one — that is the whole rule for this row."
+    },
+    {
+      "ingredient": null,
+      "role": "spice",
+      "technique": "season",
+      "alternatives": [],
+      "if_missing": "Nothing general substitutes for a specific spice. Salt properly, add acid, and tell the person what the dish will be missing."
+    },
+    {
+      "ingredient": null,
+      "role": "protein",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "lentil", "ratio": [1, 1], "note": "Holds its shape; forty minutes.", "warning": null },
+        { "ingredient": "red-lentil", "ratio": [1, 1], "note": "Collapses; twenty minutes.", "warning": "The dish becomes a purée." },
+        { "ingredient": "chickpea", "ratio": [1, 1], "note": "From a can, added late.", "warning": "Dried chickpeas need soaking overnight — that is tomorrow's dinner, not tonight's." }
+      ],
+      "if_missing": "This is the protein of the meal. Ask the person rather than choosing for them."
+    },
+    {
+      "ingredient": null,
+      "role": "liquid",
+      "technique": "simmer",
+      "alternatives": [
+        { "ingredient": "vegetable-broth", "ratio": [1, 1], "note": "Seasoned liquid.", "warning": null },
+        { "ingredient": "water", "ratio": [1, 1], "note": "Plain liquid.", "warning": "Season harder and later than you would with broth." }
+      ],
+      "if_missing": "Water. There is always water."
+    },
+    {
+      "ingredient": null,
+      "role": "fat",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "olive-oil", "ratio": [1, 1], "note": "The general answer for a fat in these recipes.", "warning": null },
+        { "ingredient": "vegetable-oil", "ratio": [1, 1], "note": "Neutral, and it behaves the same hot or cold.", "warning": null }
+      ],
+      "if_missing": "This is the widest answer the table has. Say what the fat was doing — frying, baking, emulsifying — and there is a better one."
+    },
+    {
+      "ingredient": null,
+      "role": "acid",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "lemon", "ratio": [1, 1], "note": "The default acid here.", "warning": null },
+        { "ingredient": "vinegar", "ratio": [1, 2], "note": "Half as much as lemon.", "warning": "Sharper, and it has no perfume of its own." }
+      ],
+      "if_missing": "Salt and taste before adding acid. What reads as flat is more often under-salted than under-acidified."
+    },
+    {
+      "ingredient": null,
+      "role": "umami",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "soy-sauce", "ratio": [1, 1], "note": "Savour and salt in one spoon.", "warning": "Brings liquid and colour with it." },
+        { "ingredient": "miso", "ratio": [1, 2], "note": "Half as much, dissolved in warm water first.", "warning": "Salty: cut the recipe's salt." },
+        { "ingredient": "nutritional-yeast", "ratio": [2, 1], "note": "Twice as much; dry, so it changes nothing else about the dish.", "warning": null }
+      ],
+      "if_missing": "Brown something properly. Savour you build in the pan needs no ingredient at all."
+    },
+    {
+      "ingredient": null,
+      "role": "aromatic",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "onion", "ratio": [1, 1], "note": "The base of nearly everything here.", "warning": null },
+        { "ingredient": "garlic", "ratio": null, "note": "Two cloves stand in for a small onion's worth of aromatic, roughly.", "warning": "Garlic burns where onion browns. It goes in later." }
+      ],
+      "if_missing": "The dish will taste of its main ingredient alone. That is a real loss and worth saying out loud."
+    },
+    {
+      "ingredient": null,
+      "role": "protein",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "lentil", "ratio": [1, 1], "note": "Holds its shape, forty minutes.", "warning": null },
+        { "ingredient": "chickpea", "ratio": [1, 1], "note": "From a can, added near the end.", "warning": "Dried chickpeas need an overnight soak — that is tomorrow's dinner." },
+        { "ingredient": "tofu", "ratio": [1, 1], "note": "Pressed and browned.", "warning": "Needs pressing, or it steams instead of browning." }
+      ],
+      "if_missing": "This is the protein of the meal. Ask the person before swapping it — it is their dinner, not a detail."
+    },
+    {
+      "ingredient": null,
+      "role": "starch",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "potato", "ratio": [1, 1], "note": "The general-purpose starch here.", "warning": null },
+        { "ingredient": "rice", "ratio": [1, 2], "note": "Half the weight raw, because it swells.", "warning": "Not interchangeable in a dough: rice brings no gluten and no structure." }
+      ],
+      "if_missing": "Say what the starch was doing. In a dough it is structure; in a soup it is body. They take different answers."
+    },
+    {
+      "ingredient": null,
+      "role": "grain",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "rice", "ratio": [1, 1], "note": "The most forgiving of them.", "warning": null },
+        { "ingredient": "buckwheat", "ratio": [1, 1], "note": "Nuttier, cooks in about fifteen minutes.", "warning": "Goes to mush ten minutes past done. Set a timer." },
+        { "ingredient": "red-quinoa", "ratio": [1, 1], "note": "Rinse it first.", "warning": "Unrinsed quinoa is bitter, and no amount of seasoning fixes it." }
+      ],
+      "if_missing": "Any grain you have, cooked its own way. Cooking times are not interchangeable even when the grains are."
+    },
+    {
+      "ingredient": null,
+      "role": "vegetable",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "carrot", "ratio": [1, 1], "note": "Keeps its shape and adds sweetness.", "warning": null },
+        { "ingredient": "zucchini", "ratio": [1, 1], "note": "Fast; add it late.", "warning": "Releases a lot of water. In a tart or a fritter it will loosen the mixture." },
+        { "ingredient": "cabbage", "ratio": [1, 1], "note": "Bulk and sweetness, and it browns well.", "warning": null }
+      ],
+      "if_missing": "Match the cooking time before the flavour. A vegetable that cooks in the same time is a smaller change than one that tastes similar."
+    },
+    {
+      "ingredient": null,
+      "role": "sweetener",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "sugar", "ratio": [1, 1], "note": "The reference every other sweetener is measured against.", "warning": null },
+        { "ingredient": "muscovado-sugar", "ratio": [1, 1], "note": "Darker and more interesting.", "warning": "Molasses flavour, and it colours anything pale." }
+      ],
+      "if_missing": "In a savoury dish, leave it out. In a sweet one, do not start."
+    },
+    {
+      "ingredient": null,
+      "role": "liquid",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "water", "ratio": [1, 1], "note": "There is always water.", "warning": "Season harder and later than the recipe says, since water brings nothing of its own." },
+        { "ingredient": "vegetable-broth", "ratio": [1, 1], "note": "Water that has already been seasoned.", "warning": null }
+      ],
+      "if_missing": "Water. This is the one row that never has a real answer of missing."
+    },
+    {
+      "ingredient": null,
+      "role": "binder",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "chia", "ratio": [1, 1], "note": "Ten minutes in liquid and it holds.", "warning": null },
+        { "ingredient": "flax", "ratio": [1, 1], "note": "Ground.", "warning": "Whole flax binds nothing at all: it has to be ground." },
+        { "ingredient": "cornstarch", "ratio": [1, 2], "note": "Half as much, for a hot preparation.", "warning": "Binds only once it is cooked. Useless cold." }
+      ],
+      "if_missing": "Chill the mixture hard, shape it cold, and handle it once. That is most of what a binder was doing."
+    },
+    {
+      "ingredient": null,
+      "role": "thickener",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "cornstarch", "ratio": [1, 1], "note": "Slurried in cold water before it goes in.", "warning": "Tipped in dry it lumps, and nothing rescues a lumped sauce." },
+        { "ingredient": "flour-0000", "ratio": [2, 1], "note": "Twice as much, cooked out for two minutes.", "warning": "Cloudy, and raw flour tastes of itself." }
+      ],
+      "if_missing": "Reduce it. Time is the one thickener that changes nothing else about the dish."
+    },
+    {
+      "ingredient": null,
+      "role": "leavening",
+      "technique": null,
+      "alternatives": [],
+      "if_missing": "Leavenings are not interchangeable: yeast ferments over hours, baking powder reacts in minutes, and soda needs an acid. Use the one the recipe names or bake a different recipe."
+    },
+    {
+      "ingredient": null,
+      "role": "herb",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "oregano", "ratio": [1, 1], "note": "Dried, the most forgiving of them.", "warning": null },
+        { "ingredient": "italian-seasoning", "ratio": [1, 1], "note": "A mix hides a single missing herb better than another single herb does.", "warning": null }
+      ],
+      "if_missing": "Leave it out. A missing herb is quieter than a wrong one — that is the rule for this whole role."
+    },
+    {
+      "ingredient": null,
+      "role": "spice",
+      "technique": null,
+      "alternatives": [],
+      "if_missing": "Nothing general stands in for a specific spice. Salt properly, add acid, and tell the person which note the dish will be missing."
+    },
+    {
+      "ingredient": null,
+      "role": "garnish",
+      "technique": null,
+      "alternatives": [],
+      "if_missing": "A garnish is optional by definition. Leave it out and say the plate will look plainer, which is all that changes."
+    },
+    {
+      "ingredient": "tahini",
+      "role": "fat",
+      "technique": "emulsify",
+      "alternatives": [
+        { "ingredient": "sunflower-seed-butter", "ratio": [1, 1], "note": "The closest thing there is: a seed paste that loosens with water the same way.", "warning": "Greyer, and it turns a dressing the colour of putty. It tastes right and looks wrong." },
+        { "ingredient": "cashew-cream", "ratio": [1, 1], "note": "Blended smooth, with a squeeze of lemon.", "warning": "Sweet where tahini is bitter. The dressing will need more acid and more salt." }
+      ],
+      "if_missing": "Blend soaked sunflower seeds with water, lemon and salt — that is most of the way to tahini, and it takes ten minutes."
+    },
+    {
+      "ingredient": "tahini",
+      "role": "fat",
+      "technique": null,
+      "alternatives": [
+        { "ingredient": "sunflower-seed-butter", "ratio": [1, 1], "note": "Loosen it with water a spoon at a time, exactly like tahini: it seizes first and then goes smooth.", "warning": "Greyer than tahini and a little sweeter." },
+        { "ingredient": "cashew-cream", "ratio": [1, 1], "note": "For richness and body.", "warning": "None of the sesame bitterness, which is usually why tahini is in the recipe." }
+      ],
+      "if_missing": "Say the dish will be milder and less bitter. Tahini is a flavour, not only a fat, and nothing here has it."
+    }
+  ]
+}

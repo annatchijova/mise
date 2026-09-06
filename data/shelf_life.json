@@ -1,0 +1,953 @@
+{
+  "_comment": "How long food keeps, by ingredient and where it is kept. Every number here is an ESTIMATE from a table, never a date anybody gave, and the fold keeps that distinction all the way to what Alexa+ says. See docs/SHELF_LIFE_SCHEMA.md.",
+  "version": 2,
+  "updated_on": "2026-09-05",
+  "author": "the author's kitchen",
+  "locations": [
+    "fridge",
+    "freezer",
+    "pantry"
+  ],
+  "extra_ingredients": {
+    "leftovers": "cooked leftovers"
+  },
+  "entries": [
+    {
+      "ingredient": "spinach",
+      "location": "fridge",
+      "days": 4,
+      "note": "Wilts from the stems in. Loose leaves go faster than a whole bunch."
+    },
+    {
+      "ingredient": "arugula",
+      "location": "fridge",
+      "days": 4,
+      "note": "Bruises where it was packed; use the pressed leaves first."
+    },
+    {
+      "ingredient": "cilantro",
+      "location": "fridge",
+      "days": 6,
+      "note": "Stems in a glass of water, a bag over the top, and it doubles."
+    },
+    {
+      "ingredient": "parsley",
+      "location": "fridge",
+      "days": 8,
+      "note": "Hardier than cilantro; the same glass of water trick works."
+    },
+    {
+      "ingredient": "basil",
+      "location": "pantry",
+      "days": 4,
+      "note": "The one herb the fridge ruins. On the counter, stems in water."
+    },
+    {
+      "ingredient": "dill",
+      "location": "fridge",
+      "days": 5,
+      "note": null
+    },
+    {
+      "ingredient": "green-onion",
+      "location": "fridge",
+      "days": 10,
+      "note": "The white ends keep long after the green has gone."
+    },
+    {
+      "ingredient": "leek",
+      "location": "fridge",
+      "days": 14,
+      "note": null
+    },
+    {
+      "ingredient": "cabbage",
+      "location": "fridge",
+      "days": 30,
+      "note": "A whole head. Cut, it is a week."
+    },
+    {
+      "ingredient": "red-cabbage",
+      "location": "fridge",
+      "days": 30,
+      "note": "As white cabbage."
+    },
+    {
+      "ingredient": "broccoli",
+      "location": "fridge",
+      "days": 7,
+      "note": "Yellowing florets are the sign, not the smell."
+    },
+    {
+      "ingredient": "carrot",
+      "location": "fridge",
+      "days": 21,
+      "note": "Loose in a bag, not in water."
+    },
+    {
+      "ingredient": "beetroot",
+      "location": "fridge",
+      "days": 21,
+      "note": "Cut the leaves off or they draw the moisture out of the root."
+    },
+    {
+      "ingredient": "cucumber",
+      "location": "fridge",
+      "days": 7,
+      "note": null
+    },
+    {
+      "ingredient": "zucchini",
+      "location": "fridge",
+      "days": 7,
+      "note": null
+    },
+    {
+      "ingredient": "bell-pepper",
+      "location": "fridge",
+      "days": 10,
+      "note": null
+    },
+    {
+      "ingredient": "yellow-bell-pepper",
+      "location": "fridge",
+      "days": 10,
+      "note": null
+    },
+    {
+      "ingredient": "chinese-eggplant",
+      "location": "fridge",
+      "days": 6,
+      "note": "Goes bitter and spongy before it looks wrong."
+    },
+    {
+      "ingredient": "tomato",
+      "location": "pantry",
+      "days": 6,
+      "note": "The fridge kills the flavour. Keep them out and eat them sooner."
+    },
+    {
+      "ingredient": "cherry-tomato",
+      "location": "pantry",
+      "days": 7,
+      "note": null
+    },
+    {
+      "ingredient": "mushroom",
+      "location": "fridge",
+      "days": 6,
+      "note": "In paper, never in plastic — plastic sweats and they slime."
+    },
+    {
+      "ingredient": "oyster-mushroom",
+      "location": "fridge",
+      "days": 4,
+      "note": "More delicate than button mushrooms and it shows first at the edges."
+    },
+    {
+      "ingredient": "pine-mushroom",
+      "location": "fridge",
+      "days": 5,
+      "note": null
+    },
+    {
+      "ingredient": "pumpkin",
+      "location": "pantry",
+      "days": 60,
+      "note": "Whole and uncut, in the dark. Cut, five days in the fridge."
+    },
+    {
+      "ingredient": "squash",
+      "location": "pantry",
+      "days": 60,
+      "note": "As pumpkin."
+    },
+    {
+      "ingredient": "kabocha-squash",
+      "location": "pantry",
+      "days": 60,
+      "note": "As pumpkin."
+    },
+    {
+      "ingredient": "corn-cob",
+      "location": "fridge",
+      "days": 4,
+      "note": "The sugar turns to starch from the hour it is picked."
+    },
+    {
+      "ingredient": "fennel",
+      "location": "fridge",
+      "days": 10,
+      "note": null
+    },
+    {
+      "ingredient": "celery",
+      "location": "fridge",
+      "days": 14,
+      "note": "Wrapped in foil rather than the bag it came in."
+    },
+    {
+      "ingredient": "hearts-of-palm",
+      "location": "fridge",
+      "days": 5,
+      "note": "Once the tin is open. Sealed in the cupboard it is years."
+    },
+    {
+      "ingredient": "potato",
+      "location": "pantry",
+      "days": 45,
+      "note": "Dark and dry. Light makes them green, and green is not a use-by problem, it is a do-not-eat one."
+    },
+    {
+      "ingredient": "andean-potato",
+      "location": "pantry",
+      "days": 30,
+      "note": "Thinner skinned than a white potato; it sprouts sooner."
+    },
+    {
+      "ingredient": "sweet-potato",
+      "location": "pantry",
+      "days": 30,
+      "note": "Never the fridge: cold turns the starch hard and it will not soften however long you cook it."
+    },
+    {
+      "ingredient": "onion",
+      "location": "pantry",
+      "days": 45,
+      "note": "Dry and airy, not in a sealed bag, and away from the potatoes."
+    },
+    {
+      "ingredient": "red-onion",
+      "location": "pantry",
+      "days": 45,
+      "note": null
+    },
+    {
+      "ingredient": "garlic",
+      "location": "pantry",
+      "days": 60,
+      "note": "A whole head. Broken into cloves it is about ten days."
+    },
+    {
+      "ingredient": "ginger",
+      "location": "fridge",
+      "days": 21,
+      "note": "Or the freezer indefinitely; it grates better frozen than fresh."
+    },
+    {
+      "ingredient": "apple",
+      "location": "fridge",
+      "days": 30,
+      "note": null
+    },
+    {
+      "ingredient": "orange",
+      "location": "fridge",
+      "days": 21,
+      "note": null
+    },
+    {
+      "ingredient": "lemon",
+      "location": "fridge",
+      "days": 21,
+      "note": "On the counter it is a week, and it juices better warm."
+    },
+    {
+      "ingredient": "banana",
+      "location": "pantry",
+      "days": 5,
+      "note": "Never the fridge while green; the skin blackens and the fruit stops ripening."
+    },
+    {
+      "ingredient": "peach",
+      "location": "fridge",
+      "days": 5,
+      "note": null
+    },
+    {
+      "ingredient": "blueberry",
+      "location": "fridge",
+      "days": 7,
+      "note": "Do not wash them until the moment you use them."
+    },
+    {
+      "ingredient": "avocado",
+      "location": "pantry",
+      "days": 4,
+      "note": "Ripening on the counter. Ripe, the fridge buys three more days."
+    },
+    {
+      "ingredient": "tofu",
+      "location": "fridge",
+      "days": 4,
+      "note": "Once opened, in water changed daily. Sealed, follow the date on the packet."
+    },
+    {
+      "ingredient": "soy-milk",
+      "location": "fridge",
+      "days": 7,
+      "note": "Once opened. The carton's own date only applies unopened."
+    },
+    {
+      "ingredient": "plant-milk",
+      "location": "fridge",
+      "days": 7,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": "cashew-milk",
+      "location": "fridge",
+      "days": 4,
+      "note": "Homemade separates and sours faster than anything from a carton."
+    },
+    {
+      "ingredient": "cashew-cream",
+      "location": "fridge",
+      "days": 4,
+      "note": "Homemade. It will thicken as it sits; that is not spoilage."
+    },
+    {
+      "ingredient": "cashew-sour-cream",
+      "location": "fridge",
+      "days": 5,
+      "note": "It is already fermented, which buys it a day or two over plain cream."
+    },
+    {
+      "ingredient": "vegan-cheese",
+      "location": "fridge",
+      "days": 10,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": "vegan-mayonnaise",
+      "location": "fridge",
+      "days": 21,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": "margarine",
+      "location": "fridge",
+      "days": 45,
+      "note": null
+    },
+    {
+      "ingredient": "miso",
+      "location": "fridge",
+      "days": 365,
+      "note": "It is a preserve. It darkens and deepens rather than spoiling."
+    },
+    {
+      "ingredient": "vegetable-broth",
+      "location": "fridge",
+      "days": 4,
+      "note": "Once opened, or once made. Freeze what you will not use."
+    },
+    {
+      "ingredient": "sprouted-lentil",
+      "location": "fridge",
+      "days": 4,
+      "note": "Sprouts are the one raw thing in this kitchen that genuinely goes off fast."
+    },
+    {
+      "ingredient": "pea",
+      "location": "fridge",
+      "days": 5,
+      "note": "Fresh in the pod. Frozen, months."
+    },
+    {
+      "ingredient": "tomato-sauce",
+      "location": "fridge",
+      "days": 5,
+      "note": "Once the jar is open."
+    },
+    {
+      "ingredient": "canned-tomato",
+      "location": "fridge",
+      "days": 4,
+      "note": "Once opened, and out of the tin — decant it or it takes on the metal."
+    },
+    {
+      "ingredient": "barbecue-sauce",
+      "location": "fridge",
+      "days": 60,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": "pickled-gherkin",
+      "location": "fridge",
+      "days": 90,
+      "note": "Once opened, under the brine."
+    },
+    {
+      "ingredient": "olive",
+      "location": "fridge",
+      "days": 30,
+      "note": "Once opened, under the brine."
+    },
+    {
+      "ingredient": "black-olive",
+      "location": "fridge",
+      "days": 30,
+      "note": "Once opened, under the brine."
+    },
+    {
+      "ingredient": "sun-dried-tomato",
+      "location": "fridge",
+      "days": 60,
+      "note": "Once opened, under oil."
+    },
+    {
+      "ingredient": "red-curry-paste",
+      "location": "fridge",
+      "days": 60,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": "green-curry",
+      "location": "fridge",
+      "days": 30,
+      "note": "Once opened; fresher and shorter-lived than the red."
+    },
+    {
+      "ingredient": "mustard",
+      "location": "fridge",
+      "days": 180,
+      "note": "Once opened. It loses heat long before it spoils."
+    },
+    {
+      "ingredient": "soy-sauce",
+      "location": "pantry",
+      "days": 365,
+      "note": "Once opened. The fridge keeps the aroma longer if you have the room."
+    },
+    {
+      "ingredient": "bread",
+      "location": "pantry",
+      "days": 4,
+      "note": "Never the fridge: it stales faster there than on the counter. The freezer is the answer."
+    },
+    {
+      "ingredient": "bread-crumbs",
+      "location": "pantry",
+      "days": 90,
+      "note": "Dry ones. Fresh crumbs are bread and keep like bread."
+    },
+    {
+      "ingredient": "walnut",
+      "location": "pantry",
+      "days": 90,
+      "note": "The oil in them goes rancid before anything else does. The fridge doubles it."
+    },
+    {
+      "ingredient": "cashew",
+      "location": "pantry",
+      "days": 120,
+      "note": null
+    },
+    {
+      "ingredient": "almond",
+      "location": "pantry",
+      "days": 180,
+      "note": null
+    },
+    {
+      "ingredient": "sunflower-seed",
+      "location": "pantry",
+      "days": 120,
+      "note": null
+    },
+    {
+      "ingredient": "chia",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "flax",
+      "location": "fridge",
+      "days": 90,
+      "note": "Ground flax goes rancid fast and the smell is the only warning."
+    },
+    {
+      "ingredient": "olive-oil",
+      "location": "pantry",
+      "days": 365,
+      "note": "Dark and cool. Heat and light do more damage than time."
+    },
+    {
+      "ingredient": "vegetable-oil",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "sunflower-oil",
+      "location": "pantry",
+      "days": 270,
+      "note": "Cold-pressed keeps less well than refined."
+    },
+    {
+      "ingredient": "sesame-oil",
+      "location": "pantry",
+      "days": 180,
+      "note": "Toasted oil is the first in the cupboard to turn."
+    },
+    {
+      "ingredient": "coconut-oil",
+      "location": "pantry",
+      "days": 540,
+      "note": null
+    },
+    {
+      "ingredient": "garlic-oil",
+      "location": "fridge",
+      "days": 7,
+      "note": "Garlic under oil at room temperature is a botulism risk. The fridge, and a week, and no exceptions.",
+      "caution": true,
+      "caution_reason": "Garlic under oil is an anaerobic, low-acid environment, which is where botulism comes from. Being wrong here is a safety matter and not a dinner one, so this row goes to the front of any review queue until somebody who knows has signed it off."
+    },
+    {
+      "ingredient": "red-lentil",
+      "location": "pantry",
+      "days": 730,
+      "note": "Dried. Older pulses cook slower rather than going off."
+    },
+    {
+      "ingredient": "lentil",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "split-pea",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "chickpea",
+      "location": "pantry",
+      "days": 730,
+      "note": "Dried. From a tin and opened, four days in the fridge."
+    },
+    {
+      "ingredient": "black-bean",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "broad-bean",
+      "location": "pantry",
+      "days": 730,
+      "note": "Dried. Fresh in the pod, five days in the fridge."
+    },
+    {
+      "ingredient": "fava-bean",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "rice",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "basmati-rice",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "red-quinoa",
+      "location": "pantry",
+      "days": 540,
+      "note": null
+    },
+    {
+      "ingredient": "buckwheat",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "hominy",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "flour-0000",
+      "location": "pantry",
+      "days": 240,
+      "note": "Sealed. Weevils arrive long before the flour itself is wrong."
+    },
+    {
+      "ingredient": "flour-000",
+      "location": "pantry",
+      "days": 240,
+      "note": null
+    },
+    {
+      "ingredient": "oat-flour",
+      "location": "pantry",
+      "days": 120,
+      "note": "Wholegrain flours carry oil, and oil is what goes off."
+    },
+    {
+      "ingredient": "gluten-free-premix",
+      "location": "pantry",
+      "days": 180,
+      "note": null
+    },
+    {
+      "ingredient": "self-rising-flour",
+      "location": "pantry",
+      "days": 180,
+      "note": "The leavening in it dies before the flour does."
+    },
+    {
+      "ingredient": "cornstarch",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "sugar",
+      "location": "pantry",
+      "days": 1095,
+      "note": "Sugar does not spoil. The number is when the packet stops being pleasant to open."
+    },
+    {
+      "ingredient": "muscovado-sugar",
+      "location": "pantry",
+      "days": 540,
+      "note": "It hardens rather than spoiling; a slice of apple in the jar softens it again."
+    },
+    {
+      "ingredient": "yeast",
+      "location": "pantry",
+      "days": 180,
+      "note": "Sealed. Opened, the fridge and about four months — and proof it before you commit the flour."
+    },
+    {
+      "ingredient": "fresh-yeast",
+      "location": "fridge",
+      "days": 12,
+      "note": "It is alive. If it does not foam in warm water it is dead."
+    },
+    {
+      "ingredient": "baking-powder",
+      "location": "pantry",
+      "days": 365,
+      "note": "Test it: a spoonful in hot water should fizz at once."
+    },
+    {
+      "ingredient": "agar-agar",
+      "location": "pantry",
+      "days": 1095,
+      "note": null
+    },
+    {
+      "ingredient": "seaweed",
+      "location": "pantry",
+      "days": 365,
+      "note": "Sealed and dry. Damp nori goes limp and never crisps again."
+    },
+    {
+      "ingredient": "dried-mushroom",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "nutritional-yeast",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": "cocoa",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "dark-chocolate",
+      "location": "pantry",
+      "days": 365,
+      "note": "The bloom on old chocolate is fat, not mould, and it melts fine."
+    },
+    {
+      "ingredient": "cocoa-butter",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": "vanilla",
+      "location": "pantry",
+      "days": 1095,
+      "note": null
+    },
+    {
+      "ingredient": "salt",
+      "location": "pantry",
+      "days": 3650,
+      "note": "Salt is a mineral. This number exists so the pantry has something to say, not because salt expires."
+    },
+    {
+      "ingredient": "kala-namak",
+      "location": "pantry",
+      "days": 730,
+      "note": "It keeps like salt, but the sulphur note fades within a year or so."
+    },
+    {
+      "ingredient": "beer",
+      "location": "pantry",
+      "days": 180,
+      "note": null
+    },
+    {
+      "ingredient": "red-wine",
+      "location": "pantry",
+      "days": 730,
+      "note": "Unopened. Opened, three days for cooking and one for drinking."
+    },
+    {
+      "ingredient": "brandy",
+      "location": "pantry",
+      "days": 3650,
+      "note": null
+    },
+    {
+      "ingredient": "vinegar",
+      "location": "pantry",
+      "days": 1825,
+      "note": null
+    },
+    {
+      "ingredient": "white-wine-vinegar",
+      "location": "pantry",
+      "days": 1825,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "vegetable",
+      "location": "fridge",
+      "days": 7,
+      "note": "The general answer for a vegetable in the fridge. Anything specific is worth its own row."
+    },
+    {
+      "ingredient": null,
+      "role": "vegetable",
+      "location": "pantry",
+      "days": 10,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "herb",
+      "location": "fridge",
+      "days": 5,
+      "note": "Soft herbs. Woody ones — rosemary, bay — keep for weeks."
+    },
+    {
+      "ingredient": null,
+      "role": "aromatic",
+      "location": "pantry",
+      "days": 30,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "aromatic",
+      "location": "fridge",
+      "days": 14,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "protein",
+      "location": "pantry",
+      "days": 730,
+      "note": "Dried pulses and seeds. Anything fresh belongs in the fridge and in its own row."
+    },
+    {
+      "ingredient": null,
+      "role": "protein",
+      "location": "fridge",
+      "days": 5,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "starch",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "grain",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "fat",
+      "location": "pantry",
+      "days": 270,
+      "note": "Oils turn rather than spoil, and the nose is the only test."
+    },
+    {
+      "ingredient": null,
+      "role": "fat",
+      "location": "fridge",
+      "days": 30,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "liquid",
+      "location": "fridge",
+      "days": 5,
+      "note": "Once opened."
+    },
+    {
+      "ingredient": null,
+      "role": "liquid",
+      "location": "pantry",
+      "days": 365,
+      "note": "Sealed. Once it is open it belongs in the fridge and on the fridge row."
+    },
+    {
+      "ingredient": null,
+      "role": "umami",
+      "location": "fridge",
+      "days": 30,
+      "note": "Once opened. Ferments keep far longer and have their own rows."
+    },
+    {
+      "ingredient": null,
+      "role": "umami",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "acid",
+      "location": "fridge",
+      "days": 21,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "acid",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "spice",
+      "location": "pantry",
+      "days": 545,
+      "note": "Ground spices lose their point after a year and a half. They do not become unsafe; they become beige."
+    },
+    {
+      "ingredient": null,
+      "role": "sweetener",
+      "location": "pantry",
+      "days": 1095,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "thickener",
+      "location": "pantry",
+      "days": 730,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "binder",
+      "location": "pantry",
+      "days": 365,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "leavening",
+      "location": "pantry",
+      "days": 180,
+      "note": "Leavening dies quietly. Test it rather than trusting the date."
+    },
+    {
+      "ingredient": null,
+      "role": "garnish",
+      "location": "fridge",
+      "days": 7,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "garnish",
+      "location": "pantry",
+      "days": 90,
+      "note": null
+    },
+    {
+      "ingredient": null,
+      "role": "herb",
+      "location": "pantry",
+      "days": 365,
+      "note": "Dried. A dried herb does not spoil, it fades — and a faded herb is a dish that tastes of nothing in particular."
+    },
+    {
+      "ingredient": null,
+      "role": "spice",
+      "location": "fridge",
+      "days": 545,
+      "note": "The fridge does a spice no good and no harm; the number is the same as the cupboard."
+    },
+    {
+      "ingredient": null,
+      "role": "starch",
+      "location": "fridge",
+      "days": 5,
+      "note": "Cooked. A raw starch in the fridge is unusual enough to deserve its own row."
+    },
+    {
+      "ingredient": null,
+      "role": "sweetener",
+      "location": "fridge",
+      "days": 365,
+      "note": "Syrups, once opened. Dry sugar has no business in a fridge."
+    },
+    {
+      "ingredient": "leftovers",
+      "location": "fridge",
+      "days": 4,
+      "note": "Cooled quickly, in a shallow container, covered. Four days is the ordinary rule and it assumes it went into the fridge within a couple of hours."
+    },
+    {
+      "ingredient": "leftovers",
+      "location": "pantry",
+      "days": 1,
+      "note": "Cooked food left out is not stored, it is waiting. If it has been on the counter overnight, throw it away rather than reasoning about it."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "location": "freezer",
+      "days": 180,
+      "note": "The freezer is a pause, not a preservative: six months is when texture and flavour have gone, not when it becomes unsafe."
+    }
+  ]
+}

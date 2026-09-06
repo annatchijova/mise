@@ -24,13 +24,34 @@ test("the opening line of the video becomes three confirmed events", () => {
   assert.deepEqual(rejected, []);
   assert.deepEqual(events.map((e) => [e.ingredient_id, e.qty_milli, e.unit, e.confidence, e.origin, e.location]), [
     ["onion", 2000, "pc", "confirmed", "voice", "pantry"],
-    ["red-lentil", 500, "kg", "confirmed", "voice", "pantry"],
+    // Half a kilo is kept as 500 g: kilos and litres are exact multiples, so the ledger holds one
+    // line for lentils instead of two that never meet. See canonicalAmount in pantry/events.ts.
+    ["red-lentil", 500_000, "g", "confirmed", "voice", "pantry"],
     ["tofu", null, "pc", "confirmed", "voice", "fridge"],
   ]);
   assert.equal(events[2].expires_on, "2026-09-05");
   const { items } = foldPantry(events, { now: NOW });
   assert.equal(items[0].ingredient_id, "tofu", "what expires first comes first");
   assert.equal(items[0].qty_known, false, "the person did not say how much tofu");
+});
+
+test("kilos and litres are folded into grams and millilitres; nothing else is converted", () => {
+  const { events } = voiceEvents(
+    [
+      { name: "red lentils", qty: 2, unit: "kg" },
+      { name: "soy milk", qty: 1, unit: "l" },
+      { name: "flour", qty: 2, unit: "cup" },
+    ],
+    "add",
+    ctx,
+  );
+  assert.deepEqual(events.map((e) => [e.qty_milli, e.unit]), [
+    [2_000_000, "g"],
+    [1_000_000, "ml"],
+    // A cup of flour is not a number of grams without knowing the flour. Guessing the density is
+    // exactly the invention this ledger refuses, so cups stay cups.
+    [2_000, "cup"],
+  ]);
 });
 
 test("an ingredient we do not know is said back, never guessed", () => {
