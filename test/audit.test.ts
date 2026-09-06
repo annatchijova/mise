@@ -119,3 +119,22 @@ test("every question is a question, and none of them leaks a value", () => {
     assert.ok(!q.question.includes("-"), `"${q.question}" reads out a raw id`);
   }
 });
+
+test("a question names what actually put the line there, and never calls a receipt a device", () => {
+  // The pantry is careful never to tell somebody a device said what they said themselves. The same
+  // care belongs in the question: "did a device say this?" about their own receipt is a small lie,
+  // and it is also the harder question to answer.
+  const asked = (origins: string[]) =>
+    auditQuestions([line({ confidence: "inferred", origins })], { limit: 1 })[0].question;
+
+  assert.match(asked(["receipt"]), /came off a receipt/);
+  assert.match(asked(["receipt"]), /bought but not that it is still there/);
+  assert.match(asked(["simulated"]), /came from the fridge/);
+  assert.match(asked(["barcode"]), /came off a barcode/);
+  assert.match(asked(["recipe_deduction"]), /worked out from your cooking/);
+  assert.match(asked(["checkout"]), /came from an order/);
+
+  for (const origin of ["receipt", "recipe_deduction", "checkout", "barcode"]) {
+    assert.doesNotMatch(asked([origin]), /device/, `a ${origin} is not a device`);
+  }
+});

@@ -92,6 +92,19 @@ const WEIGHTS: Record<AuditReason, number> = {
   inferred: 15,
 };
 
+/** What put a line here, in the person's terms. Asking "did a device say this?" about somebody's own
+ *  receipt, or about their own cooking, is a small lie of the kind the pantry is built to avoid — and
+ *  it is also a worse question, because a person answers "is the shopping put away?" more readily
+ *  than they answer a question about a device they were not thinking about. */
+function cameFrom(origins: string[]): string {
+  if (origins.includes("recipe_deduction")) return "is what I worked out from your cooking rather than something you counted";
+  if (origins.includes("receipt")) return "came off a receipt, so I know it was bought but not that it is still there";
+  if (origins.includes("checkout")) return "came from an order rather than from you";
+  if (origins.includes("barcode")) return "came off a barcode rather than from you";
+  if (origins.includes("simulated") || origins.includes("smartthings")) return "came from the fridge rather than from you";
+  return "is my reckoning rather than yours";
+}
+
 function questionFor(item: PantryItem, reasons: AuditReason[]): string {
   const name = displayName(item.ingredient_id);
   const where = item.location === "pantry" ? "" : ` in the ${item.location}`;
@@ -102,7 +115,7 @@ function questionFor(item: PantryItem, reasons: AuditReason[]): string {
     const amount = item.qty_known ? `${item.qty} ${item.unit === "pc" ? "" : `${item.unit} `}` : "some ";
     return `I still have ${amount}${name}${where} on the list from ${item.age_days} days ago. Is that right?`;
   }
-  return `The ${name}${where} came from a device rather than from you. Is it still there?`;
+  return `The ${name}${where} ${cameFrom(item.origins)}. Is it still there?`;
 }
 
 export type AuditOptions = {
@@ -164,7 +177,7 @@ export function confidenceSentence(c: PantryConfidence): string {
   if (c.total === 0) return "There is nothing on the list yet, so there is nothing to be sure or unsure about.";
   const parts = [
     `${c.score}% of the pantry rests on something you actually said`,
-    c.inferred ? `${c.inferred} line${c.inferred === 1 ? "" : "s"} came from a device or from what you cooked` : "",
+    c.inferred ? `${c.inferred} line${c.inferred === 1 ? "" : "s"} came from a device, a receipt or from what you cooked` : "",
     c.stale ? `${c.stale} nobody has confirmed in a while` : "",
     c.unknown_amount ? `${c.unknown_amount} with an amount nobody counted` : "",
   ].filter(Boolean);

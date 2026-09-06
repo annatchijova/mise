@@ -35,6 +35,7 @@ import { buildResolver, loadAliases } from "./integrations/aliases.ts";
 import { type BarcodePayload, barcodeSource } from "./integrations/barcode.ts";
 import { type ConnectedSource, type IngestDeps, ingest } from "./integrations/ingest.ts";
 import { makeOffLookup } from "./integrations/off_client.ts";
+import { receiptSource } from "./integrations/receipt.ts";
 import { type FridgeStatus, simulatedFridge } from "./integrations/simulated_fridge.ts";
 import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
@@ -142,13 +143,18 @@ const sources: ConnectedSource[] = INGEST_SECRET && DEMO_USER
   ? [
       { id: "sim-fridge", userId: DEMO_USER, kind: "simulated", secret: INGEST_SECRET, label: "Kitchen fridge (simulated)" },
       { id: "scanner", userId: DEMO_USER, kind: "barcode", secret: INGEST_SECRET, label: "Barcode scanner" },
+      { id: "receipt-app", userId: DEMO_USER, kind: "receipt", secret: INGEST_SECRET, label: "Receipts" },
     ]
   : [];
 
 const ingestDeps: IngestDeps = {
   store,
   resolve,
-  adapters: { simulated: simulatedFridge as PantrySource<unknown>, barcode: barcodeSource as PantrySource<unknown> },
+  adapters: {
+    simulated: simulatedFridge as PantrySource<unknown>,
+    barcode: barcodeSource as PantrySource<unknown>,
+    receipt: receiptSource as PantrySource<unknown>,
+  },
   findSource: (id) => sources.find((s) => s.id === id),
   now: () => new Date().toISOString(),
   enrich: {
