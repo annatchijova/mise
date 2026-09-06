@@ -3,12 +3,15 @@
 Suggestions beyond `docs/PLAN.md` and `docs/INTEGRATIONS_PLAN.md`. Nothing here is committed to;
 this is the list to argue with.
 
-> **Eleven of these have since been built**, and are marked **done** below with what actually landed:
-> the plan diff (1.1), the kitchen confidence figure (1.2), the stale-item audit (1.3), per-day time
-> budgets (1.4) with cost per meal and a spending ceiling (1.5), the shelf-life table (2.3), and the
-> cooking post-mortem (2.1), two cooks (2.2), what does not scale (2.4), leftovers (2.5), and the
-> tables and shopping list as open data (3.1, 3.2). Where building one taught something the proposal
-> had wrong, that is written down rather than quietly corrected.
+> **Everything above section 5 has since been built**, and each entry is marked **done** with what
+> actually landed: the plan diff (1.1), the kitchen confidence figure (1.2), the stale-item audit
+> (1.3), per-day time budgets (1.4) with cost per meal and a spending ceiling (1.5), the cooking
+> post-mortem (2.1), two cooks (2.2), the shelf-life table (2.3), what does not scale (2.4),
+> leftovers (2.5), swaps by review (2.6), the tables and shopping list as open data (3.1, 3.2), the
+> receipt as a source (3.3), honest nutrition (3.4), and all five of the small things in section 4.
+> Where building one taught something the proposal had wrong, that is written down rather than
+> quietly corrected — three of them turned out to be a different idea once built, and those are the
+> most useful notes on this page.
 
 Every entry answers the same three questions, because they are the ones that killed the ideas that
 are not on the list:
@@ -169,6 +172,8 @@ bookkeeping rather than subtraction.
 
 ### 2.6 Swaps that grow the table, by review and not by inference
 
+> **Done**, with one thing the proposal missed. A swap goes to `data/imports/swap_candidates.json`, never to the table, and `substitute` never reads it — there is a test for exactly that, because it is the property everything else rests on. What the proposal did not see: a swap the table *already suggests* is different evidence, not the same evidence, so it is counted as a `confirmation` rather than a candidate. And the queue deliberately inverts a pantry rule — a swap only becomes a deduction when both names resolve, but the queue takes it either way and keeps the unresolved name verbatim. That is the most valuable record in the file: a name that keeps turning up is an alias nobody has written yet, which is the cheapest curation there is.
+
 When somebody records a swap with `cook_note` that the substitution table does not have, stage it as
 a candidate row under `data/imports/` — exactly the way an imported recipe is staged for a human to
 finish. The table then grows out of what real people actually did, and never out of what a model
@@ -206,6 +211,8 @@ store, and it costs almost nothing next to `src/recipe_jsonld.ts`.
 
 ### 3.3 A text receipt as an ingest source
 
+> **Done**, and the grammar turned out to rest on one rule worth more than all the alias rows: **a line with no price is not a purchase.** That is not a heuristic about layout, it is what a receipt is, and it disposes of the shop's name, its address and its footer without the "lot of alias rows" the proposal budgeted for. The other lesson was about failing loudly: a shop that prints prices on their own line breaks this, and every line comes back reported as `no_price` rather than quietly missing. A receipt may only ever claim `inferred` — it proves the shop sold it, not that it reached your kitchen — which turned out to be a hook rather than a hedge, since the audit then asks about it and the person's answer is what makes it confirmed.
+
 `Origin` already has a `receipt` member with no adapter behind it. Photographing a receipt is out of
 scope, but pasting the text of an emailed one is not, and supermarket line items are exactly the kind
 of noisy names `data/source_aliases.json` exists to handle.
@@ -216,6 +223,8 @@ unmapped line is reported, never guessed.
 **Holds the line:** yes, as long as it stays a table and not a matcher.
 
 ### 3.4 Nutrition, but only where it is honest
+
+> **Done**, and it is the entry the corpus argued with hardest. 284 of roughly 500 ingredient lines here say `to_taste`, so a total is impossible for almost every recipe: three of 49 clear the bar, and the tool is mostly refusal. But the proposal's "refuses a total when coverage is poor" was the weaker half of the idea. What the gaps make possible is a **floor** — *"at least 284 calories a serving, and I mean at least; the rest can only add to it"* — which is not a hedge but a different and provable claim, since every ingredient contributes a non-negative amount. 32 of 49 recipes get one. Also: coverage is two unrelated failures, not one number. "The recipe never said how much" is a fact about the recipe and "we have no figures" is a fact about our table, and they are fixed by different people.
 
 Open Food Facts carries nutrition for barcoded products. The dishonest version reports calories for a
 dish. The honest version reports what it actually knows — *"this covers eleven of the fourteen
@@ -230,17 +239,29 @@ project is arranged against.
 
 ## 4 · Small things that make the demo better
 
-- **A "check on it" reminder for long timers.** The corpus has a three-day ferment and a
-  twenty-four-hour marinade. A session that survives days already works; nothing tells you to look.
-- **A large-print step mode.** One step, high contrast, no chrome. It is an accessibility win and it
-  films beautifully.
-- **The mise en place as a checklist, not a sentence.** Nine ingredients read aloud is a lot; nine
-  ticked off on the step card is a kitchen.
-- **Say the plan hash out loud once, in the video.** Fifteen seconds explaining that the same pantry
-  gives the same week is worth more than another feature.
-- **A recipe's provenance on the card.** Every recipe here carries the book, the locator and the
-  original Spanish. Showing it costs nothing and answers "where did these come from" before it is
-  asked.
+> **All five done.** Notes on the two that were not what they looked like:
+
+- **A "check on it" reminder for long timers.** — *done, and it is not a reminder.* The corpus turned
+  out to have a **four-to-six week** sauerkraut, and one alarm six weeks out is useless: the skill of
+  a ferment is what you do on the way through. So `data/long_steps.json` carries a curated cadence
+  and, more usefully, **what to look at**, per step, in a person's words — the best lines came
+  straight out of the recipes, which already say things like *do not worry about mould at the edges*.
+  Two refusals shape it: it does not compute a cadence from a duration, and it does not read the
+  step's text to guess what kind of step it is. Half the table is rows saying *there is nothing to
+  check here*, which is a decision worth recording and is not the same as nobody having written one.
+  And it cannot ring — an MCP server has no way to wake Alexa+ up — so the wording says *"next look
+  in about 24 hours"* and a test fails the build if it ever drifts into a promise. `BLOCKED.md` §F.3.
+- **A large-print step mode.** — *done*, as a toggle on the step card rather than a second view: the
+  host picks one view per tool, and a person should be able to have both.
+- **The mise en place as a checklist, not a sentence.** — *done*, and it exposed a defect nothing else
+  had. A checklist is unforgiving where speech is not: *1.333 red onion* reads as a bug on a card.
+  Amounts a person is asked to fetch are now rounded to what a kitchen can produce, and "about" is
+  said only where the number moved. Safe for one reason, which has a test: the pantry does its own
+  arithmetic in whole thousandths and reads neither figure, so the ledger still loses 333.333 g.
+- **Say the plan hash out loud once, in the video.** — *written down* in `docs/DEMO_SCRIPT.md`, since
+  the video itself is blocked on the simulator. It is beat 2, with fifteen seconds budgeted for it.
+- **A recipe's provenance on the card.** — *done*: the book and the locator. The original Spanish is
+  deliberately left off — it belongs on a recipe card, not on a step card in a kitchen.
 
 ---
 
