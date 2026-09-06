@@ -23,6 +23,7 @@ import type { CookStore } from "../cook/store.ts";
 import { postMortem, spanText } from "../cook/postmortem.ts";
 import { type Scaling, scalingWarnings } from "../cook/scaling.ts";
 import { assignmentsByStep, scheduleSteps } from "../cook/schedule.ts";
+import { type SwapStore, recordSwap } from "../cook/swap_log.ts";
 
 export type CookDeps = {
   recipeById: (id: string) => Recipe | undefined;
@@ -36,6 +37,12 @@ export type CookDeps = {
   /** How amounts behave when the servings change. Optional: without it everything multiplies
    *  straight, which is what this did before there was a table. */
   scaling?: Scaling;
+  /** Where swaps people actually made are queued for a curator. Optional; without it they are still
+   *  in the session's own log, which is where they matter to the cook. */
+  swaps?: SwapStore;
+  /** Does the substitution table already suggest this swap? Decides candidate versus confirmation.
+   *  Injected so the cook tools stay independent of the table's shape. */
+  tableSuggests?: (instead_of: string, used: string, role: string | null, technique: string | null) => boolean;
 };
 
 const NEEDS_ACCOUNT = "This needs a linked account, because it has to remember where you were. Link Mise in the Alexa app and ask again.";
@@ -396,6 +403,9 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         deviation: z.object({ at: z.string(), step: z.number().int(), kind: z.string(), what: z.string() }),
         substitution: z.object({ instead_of: z.string(), used: z.string() }).nullable(),
         unresolved: z.array(z.string()),
+        /** Whether this swap went into the curator's queue as something new, or as evidence for a
+         *  row that already exists. Never changes what `substitute` will say. */
+        queued_as: z.enum(["candidate", "confirmation"]).nullable(),
       },
     },
     async (args) => {
@@ -417,6 +427,37 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
 
       const { session, deviation } = note(found.session, found.recipe, { now, note: args.note, used: swap?.used, instead_of: swap?.instead_of, cook: args.cook });
       await deps.sessions.put(session);
+
+      // A swap somebody actually made is evidence a curator would want. It goes into a queue and
+      // never into the table: `substitute` reads data/substitutions.json and nothing else, and the
+      // table grows when a person edits that file and at no other moment.
+      let queued: "candidate" | "confirmation" | null = null;
+      // The queue takes a named swap whether or not the names resolve, which is the opposite of what
+      // the pantry does and is deliberate. A swap we could not resolve is the one a curator most
+      // wants: an ingredient with no id is either an alias nobody wrote or a food the table has
+      // never heard of, and both are answered by a person reading the queue.
+      if (args.used && args.instead_of && deps.swaps) {
+        const verbatim = (t: string) => t.trim().toLowerCase();
+        const insteadKey = insteadOf ?? verbatim(args.instead_of);
+        const usedKey = used ?? verbatim(args.used);
+        const inRecipe = insteadOf ? found.recipe.ingredients.find((i) => i.id === insteadOf) : undefined;
+        const role = inRecipe?.role ?? null;
+        const technique = inRecipe?.technique ?? null;
+        // The table cannot have suggested something we have no id for, so an unresolved swap is a
+        // candidate by construction rather than by a lookup that would always miss.
+        queued =
+          insteadOf && used && deps.tableSuggests?.(insteadOf, used, role, technique) ? "confirmation" : "candidate";
+        try {
+          deps.swaps.write(recordSwap(deps.swaps.read(), {
+            instead_of: insteadKey, used: usedKey, role, technique, unresolved, kind: queued,
+            at: now, session_id: session.id, recipe_id: found.recipe.id, note: args.note,
+          }));
+        } catch (err) {
+          // A note we could not file is not a cooking error. The session already has the swap.
+          console.error("could not queue the swap for review:", err);
+          queued = null;
+        }
+      }
       const v = view(session, found.recipe, now, args.cook ?? 1);
       const said = swap
         ? `Noted: ${displayName(swap.used)} instead of ${displayName(swap.instead_of)}. I will count that against the ${displayName(swap.used)} when you finish, and leave the ${displayName(swap.instead_of)} alone.`
@@ -424,7 +465,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
           ? `Written down. I do not keep ${unresolved.join(" or ")}, so I have left the pantry count as the recipe has it.`
           : "Written down.";
       return {
-        structuredContent: { session: v, deviation, substitution: swap, unresolved },
+        structuredContent: { session: v, deviation, substitution: swap, unresolved, queued_as: queued },
         content: [{ type: "text", text: said }],
       };
     },

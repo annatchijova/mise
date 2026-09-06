@@ -13,11 +13,12 @@
 //   GET  /healthz             liveness
 import { randomBytes } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { join } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 
-import { type Recipe, loadRecipes, searchRecipes } from "./recipes.ts";
+import { type Recipe, dataDir as dataDirPath, loadRecipes, searchRecipes } from "./recipes.ts";
 import { type Unit, displayName } from "./pantry/events.ts";
 import { renderIndexPage, renderRecipePage, toJsonLd } from "./recipe_jsonld.ts";
 import {
@@ -39,6 +40,7 @@ import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
 import { registerCookTools } from "./tools/cook.ts";
 import { buildScaling, loadScaling } from "./cook/scaling.ts";
+import { FileSwapStore, MemorySwapStore } from "./cook/swap_log.ts";
 import { MemoryPlanStore } from "./plan/store.ts";
 import { registerPlanTools } from "./tools/plan.ts";
 import { indexCatalog, loadCatalog } from "./store/catalog.ts";
@@ -71,6 +73,9 @@ const COOK_FILE = process.env.COOK_FILE;
 const PLAN_FILE = process.env.PLAN_FILE;
 /** And for the basket. */
 const CART_FILE = process.env.CART_FILE;
+/** Where swaps people made while cooking are queued for review. Unset: they stay in memory and are
+ *  lost on restart, which costs a curator a queue and costs a cook nothing. */
+const SWAP_LOG_FILE = process.env.SWAP_LOG_FILE ?? join(dataDirPath(), "imports", "swap_candidates.json");
 /** The bearer token the demo store's UCP surface accepts. Unset: checkout is closed, the same way
  *  ingest is closed without INGEST_SECRET. Block B replaces this with the OAuth 2.1 access token,
  *  and until then this is a shared secret, not authentication — see docs/BLOCKED.md. */
@@ -102,6 +107,13 @@ const sessions = new MemoryCookStore(COOK_FILE);
 // What multiplies when the servings change, and what does not.
 const scalingTable = loadScaling();
 const scaling = buildScaling(scalingTable);
+/** Where swaps people made are queued for a curator to look at. A file, because that is what it is:
+ *  something a person opens and either acts on or does not. */
+const swaps = SWAP_LOG_FILE ? new FileSwapStore(SWAP_LOG_FILE) : new MemorySwapStore();
+/** Does the table already suggest this swap? Decides candidate versus confirmation, and nothing else. */
+const tableSuggests = (insteadOf: string, used: string, role: string | null, technique: string | null): boolean =>
+  substitutionsFor(substitutions, substitutionIndex, { ingredient: insteadOf, role, technique })
+    .some((c) => c.alternatives.some((a) => a.ingredient === used));
 const plans = new MemoryPlanStore(PLAN_FILE);
 const carts = new MemoryCartStore(CART_FILE);
 const catalog = loadCatalog();
@@ -523,6 +535,8 @@ function buildServer(): McpServer {
     // Sortable by time and unique without a database sequence: the same shape a ULID gives.
     newId: () => `cook-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`,
     scaling,
+    swaps,
+    tableSuggests,
   });
 
   return server;

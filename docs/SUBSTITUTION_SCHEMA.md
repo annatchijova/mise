@@ -100,3 +100,50 @@ mode of a generated one is confident nonsense.
 `substitute` response, so a recorded demo, a bug report or a transcript can be tied to the exact
 advice that was given. `updated_on` and `author` are there for the same reason: this is somebody's
 professional judgment, and it should be attributable.
+
+## How the table grows: a queue, not a feedback loop
+
+A curated table's one weakness is that it stops growing. It holds what one person thought to write
+down, and nothing that happens in anybody's kitchen ever reaches it. The fix everybody reaches for —
+learn from what people do — is precisely what this project refuses: a table that quietly absorbs what
+somebody did once is no longer a table anybody wrote, and its advice is no longer attributable to a
+person who can be asked why.
+
+So swaps people record while cooking go into a **queue for a curator**, at
+`data/imports/swap_candidates.json` (or wherever `SWAP_LOG_FILE` points; unset it and the queue lives
+in memory and is lost with the process, which costs nothing but the queue). Two rules hold the line:
+
+1. **Nothing in the queue is ever consulted by `substitute`.** The tool reads `data/substitutions.json`
+   and nothing else. The table grows when a person edits that file, and at no other moment. There is
+   a test for exactly this, because it is the property the whole design rests on.
+2. **A swap the table already suggests is a `confirmation`, not a `candidate`.** Somebody following
+   the table's advice is evidence *for* a row, and worth counting separately: a row thirty people
+   have followed is a different thing from a row nobody has tested.
+
+A record is keyed on all four of `(instead_of, used, role, technique)`, so "chickpeas for broad beans,
+simmering" and "chickpeas for broad beans, fried" stay apart — they are different claims, and a
+curator would answer them differently. Each record keeps a count, a first and last sighting, and the
+newest few notes **verbatim**, because what somebody actually said is the most useful thing in the
+file.
+
+### Names we do not keep
+
+A swap only becomes a pantry deduction when both names resolve to ingredients we keep — half a swap
+would deduct the wrong thing. The queue is deliberately the opposite: it takes the swap either way,
+holds the unresolved side as the person said it, and lists it in `unresolved`. That is not a
+degraded record, it is the most valuable one. A name that keeps turning up there is either an alias
+nobody has written yet — one line in `data/source_aliases.json` — or a food the table has never heard
+of, which needs a row. `scripts/review_swaps.py` prints those separately for that reason: it is
+different work from judging whether a substitution is sound.
+
+Because an unresolved name has no id, the table cannot have suggested it, so such a swap is a
+candidate by construction rather than by a lookup that would always miss.
+
+### Reviewing it
+
+    python3 scripts/review_swaps.py [queue] [table]
+
+prints the candidates most-seen-first, what the table says today for that key beside each one, and
+the verbatim notes; then the names we do not keep; then the confirmations as counts. Acting on any of
+it means editing `data/substitutions.json` by hand and bumping its `version`. The queue is generated
+data and is not committed — only the curator's decisions are.
