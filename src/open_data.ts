@@ -66,6 +66,17 @@ export type PublishOptions = { baseUrl: string; repository?: string };
  * repository should see the same rows — with a `_published` block added and the internal `_comment`
  * removed, since it is a note to whoever edits the file rather than to whoever reads it.
  */
+/** Rows carrying a review record, and how many rows there are. Not a claim that the reviews are
+ *  current — see the note at the call site. */
+function reviewCount(table: Record<string, unknown>): { records: number; of: number; verify: string } {
+  const entries = Array.isArray(table.entries) ? (table.entries as Record<string, unknown>[]) : [];
+  return {
+    records: entries.filter((e) => e && typeof e === "object" && e.reviewed).length,
+    of: entries.length,
+    verify: "each record carries a row_digest; a row that has changed since is no longer covered by it",
+  };
+}
+
 export function publish(table: Record<string, unknown>, meta: Published, opts: PublishOptions): unknown {
   const { _comment, ...rest } = table as Record<string, unknown> & { _comment?: string };
   void _comment;
@@ -80,6 +91,12 @@ export function publish(table: Record<string, unknown>, meta: Published, opts: P
       // The warning goes in the payload, because a caveat that lives only in a repository somebody
       // did not clone has not been given to them.
       caveat: meta.caveat,
+      // How much of this table a person has actually read and signed. A count of the review records
+      // present, and described as exactly that: whether each one still applies to what its row says
+      // now is settled by the row's own `row_digest`, which travels with it, and by
+      // `scripts/validate_reviews.py`. Checking those digests here would put a third copy of the
+      // canonical-JSON rule in a third language, which is how a rule stops being one rule.
+      reviewed: reviewCount(table),
       retrieved_at: new Date().toISOString(),
     },
     ...rest,

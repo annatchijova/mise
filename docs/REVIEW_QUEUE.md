@@ -50,6 +50,56 @@ Exactly one row carries it today, the one §H.1 already names by hand. That is a
 corpus, not a sign the field is unnecessary — a table that cannot say *this one is a safety matter*
 loses the distinction the moment a second such row is written.
 
+## Recording that somebody read a row
+
+Until now a row a cook had read and confirmed looked exactly like a row nobody had ever opened. Both
+just sat there being equally authoritative.
+
+    python3 scripts/review_sign.py <table> <row> --verdict confirmed --note "..."
+    python3 scripts/review_sign.py <table> <row> --verdict corrected --set days=7 --note "why"
+    python3 scripts/review_sign.py <table> <row> --verdict unsure --note "what the doubt is"
+    python3 scripts/review_sign.py --status
+
+The row key is the one the queue prints. Three verdicts:
+
+| | |
+|---|---|
+| **confirmed** | right as it stands |
+| **corrected** | it was wrong and has been changed. `--set` changes it in the same act, so the new value and the sign-off cannot disagree. A `corrected` that corrects nothing is refused — that is a `confirmed` with a misleading name |
+| **unsure** | a cook read it and will not sign it off. **Not a failed review.** It is better information than the row had before, it must say what the doubt is, and it ranks the row **up** rather than clearing it |
+
+### A review says what it reviewed
+
+The record carries a `row_digest` — a hash of the row as it stood when it was read.
+
+Without it the mechanism would be worse than nothing: somebody changes 7 days to 14 a year later and
+the row still carries a cook's name against a number they never saw. So the digest is checked rather
+than trusted. A row whose content has moved comes back into the queue and says *why* it came back,
+which is different from looking never-reviewed:
+
+```
+  reviewed by the author's kitchen on 2026-09-06, but the row has changed since:
+  the sign-off no longer covers what it says now
+```
+
+A stale review is not misconduct and not an error — it is the ordinary life of a table.
+`validate_reviews.py` reports it; nothing fails.
+
+### What a review does not do
+
+**It does not bump the table's version.** `version` means the advice changed, and it travels in every
+response so a recorded answer can be tied to the advice that produced it. Reading a row and agreeing
+with it changes no advice; bumping the number for every sign-off would turn it into noise and break
+the one thing it is for. Only `corrected` bumps it.
+
+### In the published data
+
+Rows carry their `reviewed` block through to `/data` untouched, and the `_published` header says how
+many records a table holds — worded as a **count of records**, not as a claim that each still
+applies. Verifying that is what each row's own `row_digest` is for. Checking those digests in
+TypeScript would put a third copy of the canonical-JSON rule in a third language, which is how one
+rule becomes three.
+
 ## The drift guard
 
 Measuring reach honestly means walking the same lookup chains the server walks, and the script is

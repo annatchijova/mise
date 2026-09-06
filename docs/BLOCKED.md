@@ -263,7 +263,13 @@ an order to work in: `python3 scripts/review_queue.py` ranks every curated row a
 by what it would cost if that row were wrong — reach measured by running the real lookups over the
 real corpus, consequence, and a curated `caution` flag for the rows where wrong is a safety matter
 rather than a dinner one. It does not rank by how likely a row is to be wrong, because nobody can
-compute that. The garlic-oil row now carries `caution` and comes first by a distance. See
+compute that. The garlic-oil row now carries `caution` and comes first by a distance.
+
+A row that has been read can now say so: `scripts/review_sign.py` records who checked it, when, and
+whether they confirmed it, corrected it, or would not sign it off — and the record carries a digest
+of the row as it stood, so changing the row afterwards un-signs it rather than letting an old
+sign-off cover a new number. `--status` says how much of each table has actually been read. **0 of
+430 rows so far**, which is the honest state of §H and the reason this section is still open. See
 `docs/REVIEW_QUEUE.md`.
 
 ### H.2 The substitution table's advice — **partial**

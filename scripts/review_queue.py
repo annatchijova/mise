@@ -27,6 +27,9 @@ not a ranking, it is an opinion with a number on it.
 """
 import argparse, json, os, sys, collections
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from reviews import review_state
+
 # --- points ---------------------------------------------------------------------------------------
 #
 # Deliberately coarse and deliberately integer. The gap between "the top ten" and "the rest" is the
@@ -39,6 +42,7 @@ SOLE_ANSWER = 15        # no wider row behind it: if it is wrong there is no fal
 CAUTION = 100           # wrong here is a safety matter. Always first, and by a distance.
 DOMINANT = 20           # this row is most of what an answer is made of
 FLAGGED = 15            # a validator already said something about this row
+UNSURE = 60             # a cook read it and would not sign it off, which is worth more than a guess
 
 
 def load(path, default=None):
@@ -56,6 +60,36 @@ def corpus(recipes_dir):
             with open(os.path.join(recipes_dir, name), encoding="utf-8") as f:
                 out.append(json.load(f))
     return out
+
+
+def apply_review(item, row):
+    """Fold a row's review record into its ranking.
+
+    Three outcomes, and the middle one is why the mechanism is worth having:
+
+      - **current**: a person read this and signed it. It leaves the queue, keeping one line saying
+        who and when, so it reads as done rather than as absent.
+      - **stale**: somebody signed it and then the row changed. The review no longer applies to what
+        is there, so every point comes back and the row says why it returned. A table that let an
+        old sign-off cover a new number would be claiming an approval nobody gave.
+      - **unsure**: a cook read it and would not sign it off. That ranks the row UP. It is not a
+        failed review -- it is better information than the row had before, and it is the strongest
+        signal in the file short of the safety flag.
+    """
+    state = review_state(row)
+    r = row.get("reviewed") or {}
+    if state == "none":
+        return item
+    if state == "stale":
+        return item.add(0, f"reviewed by {r.get('by')} on {r.get('on')}, but the row has changed since: "
+                           "the sign-off no longer covers what it says now")
+    if r.get("verdict") == "unsure":
+        note = r.get("note") or "no reason given"
+        return item.add(UNSURE, f"{r.get('by')} read it on {r.get('on')} and would not sign it off: {note}")
+    # Confirmed or corrected, and still current. Done.
+    item.points = [(0, f"{r.get('verdict')} by {r.get('by')} on {r.get('on')}"
+                       + (f': {r["note"]}' if r.get("note") else ""))]
+    return item
 
 
 class Item:
@@ -131,7 +165,7 @@ def shelf_life_queue(table, recipes):
             item.add(SOLE_AUTHORITY, "the only row for it, so nothing here cross-checks it")
         if e.get("caution"):
             item.add(CAUTION, f"marked a safety matter: {e.get('caution_reason') or 'no reason given'}")
-        items.append(item)
+        items.append(apply_review(item, e))
     return items
 
 
@@ -202,7 +236,7 @@ def substitution_queue(table, recipes):
         # a swap, and a wrong one is harder to notice.
         if not e.get("alternatives"):
             item.add(SOLE_ANSWER, "it says to leave the ingredient out, which is a strong claim")
-        items.append(item)
+        items.append(apply_review(item, e))
     return items
 
 
@@ -260,7 +294,7 @@ def nutrition_queue(table, recipes):
         kcal = e.get("kcal") or 0
         if kcal > 20 and not (implied * 0.55 - 25 <= kcal <= implied * 1.45 + 25):
             item.add(FLAGGED, f"the validator warns: {kcal} kcal against about {implied:.0f} implied")
-        items.append(item)
+        items.append(apply_review(item, e))
     return items
 
 
@@ -284,7 +318,7 @@ def scaling_queue(table, recipes):
         item.add(capped(n, 3, REACH_CAP), f"{n} ingredient line{'' if n == 1 else 's'} match it")
         if den and num != den:
             item.add(SOLE_ANSWER, "it changes an amount, so a wrong figure changes a dish")
-        items.append(item)
+        items.append(apply_review(item, e))
     return items
 
 
@@ -306,7 +340,7 @@ def long_step_queue(table, recipes):
                  if days else "under a day")
         if quiet and days >= 1:
             item.add(SOLE_ANSWER, "a day or more with nobody told to look: worth a second opinion")
-        items.append(item)
+        items.append(apply_review(item, e))
     return items
 
 
