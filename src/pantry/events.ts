@@ -116,6 +116,46 @@ export function displayName(id: string): string {
   return id.replace(/-/g, " ");
 }
 
+/**
+ * An English plural, for the handful of shapes ingredient names actually take.
+ *
+ * "2 onion" is the sort of thing that makes a list sound like it was generated rather than written,
+ * and the corpus's names are plain enough that four rules cover all of them. Anything this gets
+ * wrong is a name worth looking at anyway.
+ */
+export function plural(name: string, n: number): string {
+  if (n === 1) return name;
+  const head = name.slice(0, -1);
+  const last = name.slice(-1);
+  if (/(s|sh|ch|x|z)$/.test(name)) return `${name}es`;
+  if (last === "o" && !/[aeiou]o$/.test(name)) return `${name}es`;
+  if (last === "y" && !/[aeiou]y$/.test(name)) return `${head}ies`;
+  return `${name}s`;
+}
+
+/** Units that count things rather than measure them, and so read as "3 slices of pumpkin". */
+const COUNTED = new Set(["slice", "clove", "can", "bunch", "sachet", "pinch", "portion"]);
+
+/**
+ * An amount as a person would say it.
+ *
+ * `pc` loses its unit entirely — "2 onions", never "2 pc onion" — and a counted unit takes an "of".
+ * Everything else keeps the unit as written, because "330 g broad bean" is already how a kitchen
+ * talks and inflecting it would only make it worse.
+ */
+export function amountParts(qty: number | null, unit: string, id: string): { amount: string; name: string } {
+  const name = displayName(id);
+  if (qty === null) return { amount: "", name };
+  if (unit === "pc") return { amount: String(qty), name: plural(name, qty) };
+  if (COUNTED.has(unit)) return { amount: `${qty} ${plural(unit, qty)} of`, name };
+  return { amount: `${qty} ${unit}`, name };
+}
+
+export function amountText(qty: number | null, unit: string, id: string): string {
+  const { amount, name } = amountParts(qty, unit, id);
+  return amount ? `${amount} ${name}` : name;
+}
+
 const CONFIDENCE_RANK: Record<Confidence, number> = { confirmed: 3, inferred: 2, stale: 1 };
 
 /** The weaker of two confidences. Mixing a confirmed and an inferred event yields inferred:

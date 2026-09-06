@@ -58,6 +58,29 @@ button{font:inherit;font-weight:600;padding:.55rem 1rem;border:1px solid var(--l
 button.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 button[disabled]{opacity:.5;cursor:default}
 ul{margin:.4rem 0;padding-left:1.1rem}li{margin:.15rem 0}
+.src{color:var(--dim);font-size:.78rem;margin-top:.8rem;padding-top:.5rem;border-top:1px solid var(--line)}
+.mise{list-style:none;margin:.6rem 0;padding:0}
+.mise li{display:flex;gap:.6rem;align-items:baseline;padding:.4rem 0;border-bottom:1px solid var(--line);cursor:pointer}
+.mise li:last-child{border-bottom:none}
+.mise .why{display:block;margin-top:.1rem}
+/* The mode button sits over the header line, so the header keeps clear of it. */
+#root>.dim:first-of-type{padding-right:6.5rem}
+body.big #root>.dim:first-of-type{padding-right:8rem}
+.tick{flex:0 0 1.1rem;height:1.1rem;border:2px solid var(--line);border-radius:3px;text-align:center;line-height:.95rem;font-weight:700;color:transparent}
+.mise li.done .tick{border-color:var(--ok);background:var(--ok);color:var(--bg)}
+.mise li.done .what{color:var(--dim);text-decoration:line-through}
+.amt{font-variant-numeric:tabular-nums;font-weight:600}
+/* Large print: one step, high contrast, nothing else. Not a separate view — the same data, and the
+   host only ever picks one view per tool, so a toggle is the only way a person gets both. */
+body.big{padding:1.4rem;font-size:22px;--fg:#000;--bg:#fff;--dim:#333;--line:#999;--card:#fff}
+@media(prefers-color-scheme:dark){body.big{--fg:#fff;--bg:#000;--dim:#ccc;--line:#777;--card:#000}}
+body.big .step{font-size:2.6rem;line-height:1.25}
+body.big .timer{font-size:3.4rem}
+body.big .dim{font-size:1rem}
+body.big .card,body.big .src,body.big .why{border:none}
+body.big .hide-big{display:none}
+body.big button{font-size:1.1rem;padding:.9rem 1.4rem}
+.mode{position:absolute;top:.5rem;right:.6rem;font-size:.72rem;padding:.3rem .5rem;margin:0}
 .grid{display:grid;gap:.5rem}
 .why{color:var(--dim);font-size:.82rem;margin-top:.15rem}
 .empty{color:var(--dim);padding:1.5rem 0;text-align:center}`;
@@ -135,13 +158,19 @@ export function stepCardView(runtime: string | null): string {
   const body = `<div id="root"><div class="empty">Waiting for the step…</div></div>`;
   const script = `
 var ticking = null;
+// Two pieces of state the view is allowed to keep, because neither is a fact about the cooking:
+// whether the person wants large print, and which things they have gathered. The second is not sent
+// to the server on purpose — the mise en place is not a step, ticking a line off is not a claim
+// about a pantry, and nothing here should turn into an event.
+var big = false;
+var gathered = {};
 window.mise.onData(function(data){
   var s = data.session;
   if (!s) { el('root').innerHTML = '<div class="empty">Nothing on the go.</div>'; return; }
   var step = s.step;
   var timers = (s.timers || []).filter(function(t){ return t.state !== 'stopped'; });
-  var html = '';
-  html += '<div class="dim">' + esc(s.recipe_id.replace(/-/g, ' ')) + ' · ' + esc(s.servings) + ' servings · ' + esc(s.state.replace(/_/g, ' ')) +
+  var html = '<button class="mode" id="mode">' + (big ? 'Normal' : 'Large print') + '</button>';
+  html += '<div class="dim">' + esc(s.recipe_title || s.recipe_id.replace(/-/g, ' ')) + ' · ' + esc(s.servings) + ' servings · ' + esc(s.state.replace(/_/g, ' ')) +
           (s.cooks > 1 ? ' · ' + esc(s.cooks) + ' cooks' : '') + '</div>';
   if (!step && (s.waiting_for || []).length) {
     html += '<div class="step">Waiting on step ' + esc(s.waiting_for.join(', ')) + '.</div>';
@@ -152,6 +181,26 @@ window.mise.onData(function(data){
     if (step.dur_source === 'estimated') html += '<div class="why">That duration is the kitchen\\'s estimate, not the book\\'s.</div>';
   } else {
     html += '<div class="step">Mise en place.</div>';
+    // Nine ingredients read aloud is a lot; nine of them to tick off is a kitchen. The amounts are
+    // the ones the server scaled — the view never does arithmetic — and a line the book gave no
+    // amount for says so rather than showing a blank.
+    var mise = s.mise || [];
+    if (mise.length) {
+      html += '<ul class="mise">';
+      mise.forEach(function(m, i){
+        // The words come from the server, which already knows how to say them. The view's job is
+        // where they go on the page, and escaping them where they are written — at the
+        // interpolation, which is the only version a reader or the test that enforces it can check.
+        var amount = m.display_amount;
+        var what = m.display_name;
+        var aside = m.qty === null ? 'the book does not say how much' : (m.note || '');
+        if (m.damped && m.scaling_note) aside = aside ? aside + ' · ' + m.scaling_note : m.scaling_note;
+        html += '<li data-i="' + esc(i) + '"' + (gathered[m.ingredient_id] ? ' class="done"' : '') + '>' +
+                '<span class="tick">✓</span><span class="what"><span class="amt">' + esc(amount) + '</span> ' + esc(what) +
+                (aside ? '<span class="why">' + esc(aside) + '</span>' : '') + '</span></li>';
+      });
+      html += '</ul>';
+    }
   }
   if (s.cooks > 1) {
     html += '<div class="why">' + (s.tracks || []).map(function(t){
@@ -169,9 +218,28 @@ window.mise.onData(function(data){
     html += '</ul></div>';
   }
   html += '<div><button class="primary" id="next">Next step</button><button id="pause">Pause</button></div>';
+  // Where the recipe came from. Every recipe here carries a book and a locator; showing them costs
+  // nothing and answers "where did these come from" before anybody has to ask it.
+  if (s.source && s.source.book) {
+    html += '<div class="src hide-big">From ' + esc(s.source.book) + (s.source.locator ? ', ' + esc(s.source.locator) : '') + '.</div>';
+  }
   el('root').innerHTML = html;
+  document.body.className = big ? 'big' : '';
   el('next').onclick = function(){ el('next').disabled = true; window.mise.call('cook_next'); };
   el('pause').onclick = function(){ el('pause').disabled = true; window.mise.call('cook_pause'); };
+  el('mode').onclick = function(){
+    big = !big;
+    document.body.className = big ? 'big' : '';
+    el('mode').textContent = big ? 'Normal' : 'Large print';
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('.mise li'), function(node){
+    node.onclick = function(){
+      var item = (s.mise || [])[Number(node.getAttribute('data-i'))];
+      if (!item) return;
+      gathered[item.ingredient_id] = !gathered[item.ingredient_id];
+      node.className = gathered[item.ingredient_id] ? 'done' : '';
+    };
+  });
 
   if (ticking) clearInterval(ticking);
   // A second hand for the running timers only. The server's number is the truth; this just keeps

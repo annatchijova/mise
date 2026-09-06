@@ -97,3 +97,26 @@ test("the runtime source asks the host, and never the network, for its data", ()
   assert.ok(!/\bfetch\s*\(|XMLHttpRequest|WebSocket/.test(source), "the runtime must not have a network path");
   assert.match(source, /callServerTool/, "a button asks the server to run a tool, through the host");
 });
+
+test("the step card carries the three things a kitchen needs off a screen", () => {
+  const card = views.find((v) => v.uri === VIEW_URIS.stepCard)!;
+  // Nine ingredients read aloud is a lot; nine to tick off is a kitchen.
+  assert.match(card.html, /class="mise"/, "the mise en place is a checklist, not a sentence");
+  assert.match(card.html, /s\.mise/, "and it comes from the session, not from the view's own reckoning");
+  // One step, high contrast, no chrome. A toggle rather than a second view, because the host picks
+  // one view per tool and a person should be able to have both.
+  assert.match(card.html, /body\.big/);
+  assert.match(card.html, /Large print/);
+  // Every recipe here carries a book and a locator. Showing them answers "where did these come
+  // from" before it is asked, and it costs nothing.
+  assert.match(card.html, /s\.source\.book/);
+});
+
+test("the view never does the arithmetic or the grammar the server already did", () => {
+  const card = views.find((v) => v.uri === VIEW_URIS.stepCard)!;
+  const script = card.html.slice(card.html.lastIndexOf("<script>"));
+  assert.match(script, /m\.display_amount/, "the words come from the server");
+  assert.doesNotMatch(script, /display_qty \* |Math\.round\(m\./, "and none of them are worked out here");
+  // Two copies of a pluraliser is two pluralisers that drift.
+  assert.doesNotMatch(script, /\bslices\b|\bcloves\b/, "the view holds no plural rules of its own");
+});

@@ -123,6 +123,10 @@ const SESSION_SCHEMA = {
     .object({
       session_id: z.string(),
       recipe_id: z.string(),
+      recipe_title: z.string(),
+      /** Where the recipe came from. Showing it costs nothing and answers "where did these come
+       *  from" before it is asked. */
+      source: z.object({ book: z.string(), locator: z.string() }),
       state: z.enum(["mise_en_place", "cooking", "paused", "finished", "abandoned"]),
       servings: z.number().int(),
       cooks: z.number().int(),
@@ -148,6 +152,18 @@ const SESSION_SCHEMA = {
       deviations: z.array(z.object({ at: z.string(), step: z.number().int(), kind: z.string(), what: z.string() })),
       substitutions: z.array(z.object({ at: z.string(), step: z.number().int(), instead_of: z.string(), used: z.string() })),
       started_at: z.string(), updated_at: z.string(), elapsed_s: z.number().int(),
+      /** The mise en place, but only while it is the mise en place. A list to tick off rather than
+       *  nine ingredients read out loud. */
+      mise: z
+        .array(z.object({
+          ingredient_id: z.string(), qty: z.number().nullable(), unit: z.string(),
+          note: z.string().nullable(), qty_source: z.string(), role: z.string(),
+          damped: z.boolean(), scaling_note: z.string().nullable(),
+          /** What to say or put on a card. `qty` stays exact; the pantry reads neither. */
+          display_qty: z.number().nullable(), rounded: z.boolean(),
+          display_amount: z.string(), display_name: z.string(),
+        }))
+        .nullable(),
     })
     .nullable(),
 };
@@ -209,6 +225,9 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
             note: z.string().nullable(), qty_source: z.string(), role: z.string(),
             /** The amount was scaled at less than the full rate. Say so, or it reads as a mistake. */
             damped: z.boolean(), scaling_note: z.string().nullable(),
+            /** What to say or put on a card. `qty` stays exact; the pantry reads neither. */
+            display_qty: z.number().nullable(), rounded: z.boolean(),
+            display_amount: z.string(), display_name: z.string(),
           }),
         ),
         /** What scaling this far up does that no amount can express — the pan, the tin, the bowl. */
@@ -237,7 +256,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
 
       const existing = await deps.sessions.active(userId);
       if (existing && existing.recipe_id === recipe.id) {
-        const v = view(existing, recipe, now);
+        const v = view(existing, recipe, now, 1, deps.scaling);
         return {
           structuredContent: { session: v, started: false, resumed: true, blocked_by: null, mise_en_place: misePlace(recipe, existing.servings, deps.scaling), scaling_warnings: [], schedule: null },
           content: [{ type: "text", text: `You are already cooking this. ${stepSentence(v) || "You are still on the mise en place."}${timerSentence(v.timers)}` }],
@@ -247,7 +266,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         const other = deps.recipeById(existing.recipe_id);
         return {
           structuredContent: {
-            session: view(existing, other ?? recipe, now),
+            session: view(existing, other ?? recipe, now, 1, deps.scaling),
             started: false, resumed: false,
             blocked_by: { session_id: existing.id, recipe_id: existing.recipe_id, step: currentStepFor(existing, other ?? recipe, 1).current_step },
             mise_en_place: [],
@@ -283,10 +302,16 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const warnings = deps.scaling
         ? scalingWarnings(recipe.ingredients.map((i) => ({ id: i.id, role: i.role, technique: i.technique })), session.servings, recipe.serves, deps.scaling)
         : [];
-      const v = view(session, recipe, now);
+      const v = view(session, recipe, now, 1, deps.scaling);
       const first = orderedSteps(recipe)[0];
+      // The cookable amount, not the exact one. Nobody weighs 333.333 g, and reading a number like
+      // that out loud makes the whole list sound like it came from a machine rather than a kitchen.
+      // "About" earns its place: it is only said where the number actually moved.
       const list = mise
-        .map((m) => `${m.qty === null ? "" : `${m.qty}${m.unit === "pc" ? " " : ` ${m.unit} `}`}${displayName(m.ingredient_id)}${m.qty === null ? " (the book does not say how much)" : ""}`)
+        .map((m) => {
+          if (m.qty === null) return `${m.display_name} (the book does not say how much)`;
+          return `${m.display_amount} ${m.display_name}`;
+        })
         .join(", ");
       const dampedItems = mise.filter((m) => m.damped);
       const scaled = session.servings !== recipe.serves
@@ -352,7 +377,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
 
       if (result.finished) {
         const closed = await close(result.session, found.recipe, now);
-        const v = view(closed.session, found.recipe, now);
+        const v = view(closed.session, found.recipe, now, 1, deps.scaling);
         const left = closed.skipped.length ? ` I left ${closed.skipped.map((s) => displayName(s.ingredient_id)).join(", ")} out of the count — measured to taste.` : "";
         return {
           structuredContent: { session: v, finished: true, deviation: result.deviation, unmatched_hint: result.unmatched_hint, deducted: closed.deducted, skipped: closed.skipped },
@@ -360,7 +385,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         };
       }
 
-      const v = view(result.session, found.recipe, now, result.cook);
+      const v = view(result.session, found.recipe, now, result.cook, deps.scaling);
       const aside = result.unmatched_hint
         ? " I could not tell which step you meant, so I have written it down and left the order alone."
         : result.deviation
@@ -400,7 +425,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
         return { structuredContent: { session: null, recipe_title: null }, content: [{ type: "text", text: found }] };
       }
       const now = deps.now();
-      const v = view(found.session, found.recipe, now, args.cook ?? 1);
+      const v = view(found.session, found.recipe, now, args.cook ?? 1, deps.scaling);
       const away = ` It has been ${durationText(v.elapsed_s)} since you started.`;
       const where = v.state === "paused" ? "You paused" : v.state === "mise_en_place" ? "You had not started the steps yet" : "You are";
       const mine = v.step === null && v.waiting_for.length > 0
@@ -492,7 +517,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
           queued = null;
         }
       }
-      const v = view(session, found.recipe, now, args.cook ?? 1);
+      const v = view(session, found.recipe, now, args.cook ?? 1, deps.scaling);
       const said = swap
         ? `Noted: ${displayName(swap.used)} instead of ${displayName(swap.instead_of)}. I will count that against the ${displayName(swap.used)} when you finish, and leave the ${displayName(swap.instead_of)} alone.`
         : unresolved.length
@@ -547,7 +572,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       }
 
       const schedule = scheduleOn(deps, session, found.recipe, step, now);
-      const v = view(session, found.recipe, now, cook);
+      const v = view(session, found.recipe, now, cook, deps.scaling);
       const base = {
         session: v, step: step || null,
         look_for: schedule?.kind === "scheduled" ? schedule.plan.look_for : [],
@@ -593,7 +618,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const now = deps.now();
       const paused = pause(found.session, now);
       await deps.sessions.put(paused);
-      const v = view(paused, found.recipe, now);
+      const v = view(paused, found.recipe, now, 1, deps.scaling);
       const held = v.timers.filter((t) => t.state === "paused");
       const text = `Paused at step ${v.step?.order ?? 0}.${held.length ? ` ${held.length === 1 ? "The timer is" : "The timers are"} holding.` : ""} Ask where you were whenever you come back.`;
       return { structuredContent: { session: v }, content: [{ type: "text", text }] };
@@ -696,7 +721,7 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const now = deps.now();
       const unfinished = orderedSteps(found.recipe).map((s) => s.order).filter((o) => !found.session.completed_steps.includes(o));
       const closed = await close(found.session, found.recipe, now, args.leftover_portions ?? 0);
-      const v = view(closed.session, found.recipe, now);
+      const v = view(closed.session, found.recipe, now, 1, deps.scaling);
 
       const counted = closed.deducted.filter((d) => d.qty !== null).length;
       const unknown = closed.deducted.length - counted;

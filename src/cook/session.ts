@@ -22,7 +22,7 @@
 //      graph. Storing it as well would give the session two answers to the same question, and with
 //      two people cooking there is no single answer to store anyway.
 import type { Recipe, Step } from "../recipes.ts";
-import { type PantryEvent, type Unit, canonicalAmount, toMilli } from "../pantry/events.ts";
+import { type PantryEvent, type Unit, amountParts, canonicalAmount, toMilli } from "../pantry/events.ts";
 import { LINEAR, type Scaling, scaleDamped } from "./scaling.ts";
 
 export type SessionState = "mise_en_place" | "cooking" | "paused" | "finished" | "abandoned";
@@ -526,7 +526,44 @@ export type MiseItem = {
   damped: boolean;
   /** Why, in the scaling table's own words. null when nothing was damped. */
   scaling_note: string | null;
+  /** The amount to say out loud or put on a card. Nobody weighs 333.333 g and nobody owns 1.333
+   *  onions, and a list of amounts like that is a list somebody has to translate before they can
+   *  use it. The exact figure stays in `qty`; the pantry deduction never reads either of these and
+   *  does its own arithmetic in whole thousandths, so rounding here costs the ledger nothing. */
+  display_qty: number | null;
+  /** True when the two differ, so a narrator can say "about" rather than implying precision. */
+  rounded: boolean;
+  /** The amount and the name, already in words: "about 3 slices of" / "pumpkin". Split in two so a
+   *  card can set them differently, and computed here so the view never owns a copy of a rule this
+   *  side already has — two copies of a pluraliser is two pluralisers that drift. */
+  display_amount: string;
+  display_name: string;
 };
+
+/** Round an amount to something a person can act on, by what it is measured in.
+ *
+ *  Deliberately coarse and deliberately unit-aware: whole things are whole, spoons come in halves
+ *  because kitchens have half-spoons, and a weight gets coarser as it gets larger, because the
+ *  difference between 330 and 333 g of beans is not a difference anybody can produce. */
+export function cookableQty(qty: number | null, unit: string): number | null {
+  if (qty === null) return null;
+  const step = (n: number) => Math.round(qty / n) * n;
+  switch (unit) {
+    case "pc": case "clove": case "slice": case "bunch": case "can": case "sachet":
+      // A third of an onion is not a thing to fetch. Never round a real amount away to nothing.
+      return Math.max(1, Math.round(qty));
+    case "tsp": case "tbsp": case "cup":
+      return Math.max(0.25, Math.round(qty * 4) / 4);
+    case "kg": case "l":
+      return Math.round(qty * 10) / 10;
+    case "g": case "ml":
+      if (qty >= 200) return step(10);
+      if (qty >= 20) return step(5);
+      return Math.max(1, Math.round(qty));
+    default:
+      return qty;
+  }
+}
 
 /**
  * The mise en place, scaled to the servings asked for.
@@ -542,15 +579,24 @@ export function misePlace(recipe: Recipe, servings: number, scaling?: Scaling): 
     // Only a number can scale at less than the full rate. Saying "the water did not scale straight"
     // about an amount the book never gave is noise dressed as care.
     const damped = base !== null && rule.damping[0] !== rule.damping[1] && servings !== recipe.serves;
+    const qty = base === null ? null : scaleDamped(base, servings, recipe.serves, rule) / 1000;
+    const display = cookableQty(qty, i.unit);
     return {
       ingredient_id: i.id,
-      qty: base === null ? null : scaleDamped(base, servings, recipe.serves, rule) / 1000,
+      qty,
       unit: i.unit,
       note: i.note,
       qty_source: i.qty_source,
       role: i.role,
       damped,
       scaling_note: damped ? rule.note : null,
+      display_qty: display,
+      rounded: qty !== null && display !== null && Math.abs(display - qty) > 1e-9,
+      ...(() => {
+        const parts = amountParts(display, i.unit, i.id);
+        const about = qty !== null && display !== null && Math.abs(display - qty) > 1e-9 ? "about " : "";
+        return { display_amount: parts.amount ? `${about}${parts.amount}` : "", display_name: parts.name };
+      })(),
     };
   });
 }
@@ -558,6 +604,11 @@ export function misePlace(recipe: Recipe, servings: number, scaling?: Scaling): 
 export type SessionView = {
   session_id: string;
   recipe_id: string;
+  recipe_title: string;
+  /** Where the recipe came from. Every recipe here carries a book and a locator, and showing them
+   *  costs nothing and answers "where did these come from" before anybody has to ask. The original
+   *  Spanish is deliberately not carried: it belongs on a recipe card, not on a step card. */
+  source: { book: string; locator: string };
   state: SessionState;
   servings: number;
   cooks: number;
@@ -577,9 +628,13 @@ export type SessionView = {
   /** Wall-clock seconds since the session started, pauses included. What "how long have I been at
    *  this" means to a person standing in a kitchen. */
   elapsed_s: number;
+  /** The mise en place, but only while it *is* the mise en place. Nine ingredients read aloud is a
+   *  lot; nine of them on a card to tick off is a kitchen. Null once the steps have started, so a
+   *  session view does not carry a list nobody is looking at any more. */
+  mise: MiseItem[] | null;
 };
 
-export function view(s: CookSession, recipe: Recipe, now: string, cook = 1): SessionView {
+export function view(s: CookSession, recipe: Recipe, now: string, cook = 1, scaling?: Scaling): SessionView {
   const steps = orderedSteps(recipe);
   const track = currentStepFor(s, recipe, cook);
   // In the mise en place nothing has begun; showing step one there would be the system getting
@@ -588,6 +643,8 @@ export function view(s: CookSession, recipe: Recipe, now: string, cook = 1): Ses
   return {
     session_id: s.id,
     recipe_id: s.recipe_id,
+    recipe_title: recipe.title,
+    source: { book: recipe.source.book, locator: recipe.source.locator },
     state: s.state,
     servings: s.servings,
     cooks: s.cooks,
@@ -602,6 +659,7 @@ export function view(s: CookSession, recipe: Recipe, now: string, cook = 1): Ses
     started_at: s.started_at,
     updated_at: s.updated_at,
     elapsed_s: Math.max(0, seconds(s.started_at, now)),
+    mise: s.state === "mise_en_place" ? misePlace(recipe, s.servings, scaling) : null,
   };
 }
 
