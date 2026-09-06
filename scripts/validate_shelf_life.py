@@ -86,6 +86,17 @@ def main(argv):
         if any(k not in e for k in ("ingredient", "location", "days", "note")):
             continue
 
+        # A row where being wrong is a safety matter rather than a dinner one. Curated per row and
+        # never detected: a keyword in a note is not a fact about food. It must carry its reason,
+        # because the flag exists so a person reviewing the table knows why to start there, and a
+        # flag with no reason is a flag nobody can act on. `scripts/review_queue.py` ranks on it.
+        if "caution" in e and not isinstance(e["caution"], bool):
+            errors.append(f"{tag}: caution must be true or false")
+        if e.get("caution") and not (e.get("caution_reason") or "").strip():
+            errors.append(f"{tag}: marked a safety matter with no caution_reason saying why")
+        if e.get("caution_reason") and not e.get("caution"):
+            errors.append(f"{tag}: has a caution_reason but is not marked caution")
+
         if ing is not None:
             if not isinstance(ing, str) or not KEBAB.match(ing):
                 errors.append(f"{tag}: ingredient is not kebab-case or null")

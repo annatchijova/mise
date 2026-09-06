@@ -52,7 +52,14 @@ What runs today, all of it deterministic and all of it covered by tests that can
 | **Nutrition** | 150 curated rows, per 100 g, in the state each names — chickpea dried and chickpea cooked differ threefold. A total only when *every* ingredient is accounted for, which three of 49 recipes manage: home cooking does not state its amounts. For the rest, a floor — *"at least 284 calories a serving, and I mean at least; the rest can only add to it"* — which is not a hedge but a provable claim. |
 | **Open data** | The curated tables — substitutions, shelf life, scaling — published at `/data` under Apache-2.0, each carrying its version, its author, its contract and its own reservations *in the payload*. The week's shopping list travels as a `schema.org/ItemList`. |
 
-`npm run check` runs the typecheck, 338 tests and eight data validators.
+`npm run check` runs the typecheck, 344 tests and eight data validators.
+
+`python3 scripts/review_queue.py` answers the question that follows from all those curated tables:
+of 389 rows of somebody's judgment, which should a person read first? It ranks by what it would cost
+if a row were wrong — reach measured by running the real lookups over the real corpus, consequence,
+and a curated flag for the rows where wrong is a safety matter — and never by how likely a row is to
+be wrong, which nobody can compute. Every point is itemised with what produced it. See
+`docs/REVIEW_QUEUE.md`.
 
 No smart-fridge, Instacart or portal integration is claimed as verified: outbound access to those
 services is not available here, so the fridge adapter is honestly named `simulated` and
@@ -125,6 +132,7 @@ data/recipes/<id>.json        recipes as data, one file each (see the contract b
 data/substitutions.json       the substitution table: 90 curated rows, versioned
 data/nutrition.json           nutrition per 100 g: 150 curated rows, integers throughout
 data/long_steps.json          what to look at during a step nobody sits through: 18 curated plans
+scripts/review_queue.py       which curated row to read first, ranked by what being wrong would cost
 data/catalog.json             the demo grocery: 108 SKUs, prices in integer cents, allergens
 data/shelf_life.json          how long each food keeps, and where. Advice, labelled as advice
 data/scaling.json             what does not multiply when the servings change

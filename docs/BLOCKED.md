@@ -258,10 +258,21 @@ short-lived rows — anything under a week — deserve a second opinion. The gar
 particular is there because garlic under oil at room temperature is a real botulism risk; it should
 be checked by somebody who knows, not kept because it sounded right.
 
+"Read it end to end" is the correct instruction and is also the one nobody follows, so there is now
+an order to work in: `python3 scripts/review_queue.py` ranks every curated row across all five tables
+by what it would cost if that row were wrong — reach measured by running the real lookups over the
+real corpus, consequence, and a curated `caution` flag for the rows where wrong is a safety matter
+rather than a dinner one. It does not rank by how likely a row is to be wrong, because nobody can
+compute that. The garlic-oil row now carries `caution` and comes first by a distance. See
+`docs/REVIEW_QUEUE.md`.
+
 ### H.2 The substitution table's advice — **partial**
 
 Same shape, lower stakes: 90 rows of one cook's judgment. The ratios and warnings are the author's
-own and have not been tested by anybody else. Every row is attributable — `author` and `version` at
+own and have not been tested by anybody else. `scripts/review_queue.py` gives them an order too, and
+here it can be exact: it walks the real lookup chain over the corpus and credits the row that
+actually answered, so "this row answers 58 ingredient lines" is a count and not an estimate. Six of
+the 90 rows answer nothing at all. Every row is attributable — `author` and `version` at
 the top of the file, and the version travels in every `substitute` response — which is the
 mechanism for arguing with a row rather than a claim that no row is wrong.
 
