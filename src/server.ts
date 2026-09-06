@@ -42,6 +42,7 @@ import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
 import { registerCookTools } from "./tools/cook.ts";
 import { buildScaling, loadScaling } from "./cook/scaling.ts";
+import { indexLongSteps, keyOf as longStepKey, loadLongSteps } from "./cook/check_ins.ts";
 import { FileSwapStore, MemorySwapStore } from "./cook/swap_log.ts";
 import { MemoryPlanStore } from "./plan/store.ts";
 import { registerPlanTools } from "./tools/plan.ts";
@@ -115,6 +116,12 @@ const swaps = SWAP_LOG_FILE ? new FileSwapStore(SWAP_LOG_FILE) : new MemorySwapS
 
 /** Round reference figures for whole ingredients. Deliberately incomplete: an ingredient with no row
  *  is reported as having no figures, never estimated from one that looks similar. */
+/** What to look at during a step long enough that nobody sits through it. Keyed on the recipe and
+ *  the step, because the steps carry no technique field and reading one out of the text would be a
+ *  guess. A step with no row gets no schedule, and the tool says so. */
+const longSteps = loadLongSteps();
+const longStepIndex = indexLongSteps(longSteps);
+
 const nutrition = loadNutrition();
 const nutritionIndex = indexNutrition(nutrition);
 
@@ -651,6 +658,7 @@ function buildServer(): McpServer {
     scaling,
     swaps,
     tableSuggests,
+    longStep: (recipeId, step) => longStepIndex.get(longStepKey(recipeId, step)),
   });
 
   return server;

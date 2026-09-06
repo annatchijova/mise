@@ -208,6 +208,24 @@ render.
 
 ---
 
+### F.3 Telling somebody a look is due — **blocked, and the tool is written around it**
+
+The corpus has a four-to-six week sauerkraut, a three-day brine and a twenty-four hour marinade.
+`cook_checked` knows when each wants looking at, because a person wrote the plan down in
+`data/long_steps.json` — but **this server cannot ring**. An MCP server answers when it is called; it
+has no way to wake Alexa+ up, and nothing in the MCP transport gives it one. A reminder, on this
+side, is something you have to ask for.
+
+That is a real limitation and the narration is written so as not to paper over it. The sentence says
+*"next look in about 24 hours"* and never *"I will remind you"*, and there is a test asserting exactly
+that — it fails the build if the wording ever drifts into a promise the server cannot keep.
+
+**When unblocked:** Alexa Reminders are the right home for this, set on the customer's side at the
+moment `cook_start` runs, with the schedule this already computes. That needs a skill with the
+Reminders permission and a developer account, which is A.1.
+
+---
+
 ## G · Delivery
 
 ### G.1 Privacy policy and terms at public URLs — **blocked**

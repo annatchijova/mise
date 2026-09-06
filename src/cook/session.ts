@@ -87,6 +87,14 @@ export type Transition = {
 
 export type Track = { cook: number; current_step: number; waiting_for: number[] };
 
+/** Somebody looked in on a long step. */
+export type Check = {
+  at: string;
+  step: number;
+  /** What they saw, when they said. Kept verbatim. */
+  note: string | null;
+};
+
 export type CookSession = {
   id: string;
   user_id: string;
@@ -103,6 +111,10 @@ export type CookSession = {
   timers: Timer[];
   deviations: Deviation[];
   substitutions: Substitution[];
+  /** Times somebody actually looked in on a long step. Stored, because a look is a thing that
+   *  happened; the schedule it answers stays derived from the clock. Absent on a session saved
+   *  before this field existed. */
+  checks?: Check[];
   log: Transition[];
 };
 
@@ -298,6 +310,7 @@ export function startSession({ id, userId, recipe, servings, now, cooks, assignm
     completed_steps: [],
     timers: [],
     deviations: [],
+    checks: [],
     substitutions: [],
     log: [],
   };
@@ -449,6 +462,31 @@ export function note(s: CookSession, recipe: Recipe, input: NoteInput): { sessio
   session.log.push(transition(s, s.state, "cook_note", input.now, input.note, at, null, null, input.cook ?? 1));
   session.updated_at = input.now;
   return { session, deviation };
+}
+
+export type CheckInput = { now: string; step?: number | null; note?: string | null; cook?: number };
+
+/**
+ * Record that somebody looked in on a long step.
+ *
+ * The point of writing it down is to stop asking: the schedule counts everything up to the last look
+ * as answered. It also goes in the log, because "did anybody actually look at this in six weeks" is a
+ * question only the log can settle.
+ */
+export function check(s: CookSession, recipe: Recipe, input: CheckInput): { session: CookSession; check: Check } {
+  const session = clone(s);
+  const step = input.step ?? currentStepFor(s, recipe, input.cook ?? 1).current_step;
+  const entry: Check = { at: input.now, step, note: input.note?.trim() || null };
+  session.checks = [...(session.checks ?? []), entry];
+  session.log.push(transition(s, s.state, "cook_checked", input.now, input.note ?? null, step, null, null, input.cook ?? 1));
+  session.updated_at = input.now;
+  return { session, check: entry };
+}
+
+/** When a step was last looked in on, or null. Derived, and the only thing the schedule needs. */
+export function lastCheckOf(s: CookSession, step: number): string | null {
+  const times = (s.checks ?? []).filter((c) => c.step === step).map((c) => c.at).sort();
+  return times.length ? times[times.length - 1] : null;
 }
 
 export function finish(s: CookSession, recipe: Recipe, now: string): CookSession {

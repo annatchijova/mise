@@ -17,13 +17,19 @@ import type { PantryStore } from "../pantry/store.ts";
 import type { Resolver } from "../integrations/aliases.ts";
 import {
   type CookSession, type SessionView, type TimerView,
-  advance, consumptionEvents, currentStepFor, finish, leftoverEvent, misePlace, note, orderedSteps, pause, startSession, view,
+  advance, check, consumptionEvents, currentStepFor, finish, lastCheckOf, leftoverEvent, misePlace, note, orderedSteps, pause, startSession, view,
 } from "../cook/session.ts";
 import type { CookStore } from "../cook/store.ts";
 import { postMortem, spanText } from "../cook/postmortem.ts";
 import { type Scaling, scalingWarnings } from "../cook/scaling.ts";
 import { assignmentsByStep, scheduleSteps } from "../cook/schedule.ts";
 import { type SwapStore, recordSwap } from "../cook/swap_log.ts";
+import {
+  type CheckSchedule,
+  type LongStepPlan,
+  checkSentence,
+  scheduleFor,
+} from "../cook/check_ins.ts";
 
 export type CookDeps = {
   recipeById: (id: string) => Recipe | undefined;
@@ -43,7 +49,29 @@ export type CookDeps = {
   /** Does the substitution table already suggest this swap? Decides candidate versus confirmation.
    *  Injected so the cook tools stay independent of the table's shape. */
   tableSuggests?: (instead_of: string, used: string, role: string | null, technique: string | null) => boolean;
+  /** The curated plan for looking in on a long step, or undefined when nobody has written one.
+   *  Optional: without it a long step simply gets no check-ins, which is what happened before. */
+  longStep?: (recipeId: string, step: number) => LongStepPlan | undefined;
 };
+
+/** The check-in schedule for a step, when there is a plan and a running timer to hang it on. Null
+ *  when the step is short, has no timer, or nobody has written a plan — three different silences that
+ *  all mean "say nothing", which is why they collapse here and nowhere else. */
+function scheduleOn(
+  deps: CookDeps,
+  session: CookSession,
+  recipe: Recipe,
+  step: number,
+  now: string,
+): CheckSchedule | null {
+  if (!deps.longStep || !step) return null;
+  const plan = deps.longStep(recipe.id, step);
+  if (!plan) return null;
+  const timer = session.timers.find((t) => t.step === step);
+  const s = recipe.steps.find((x) => x.order === step);
+  if (!s?.dur_s) return null;
+  return scheduleFor(plan, timer?.started_at ?? session.started_at, s.dur_s, now, lastCheckOf(session, step));
+}
 
 const NEEDS_ACCOUNT = "This needs a linked account, because it has to remember where you were. Link Mise in the Alexa app and ask again.";
 
@@ -381,7 +409,13 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       const others = v.cooks > 1
         ? ` ${v.tracks.filter((t) => t.cook !== (args.cook ?? 1)).map((t) => `Cook ${t.cook} is ${t.step === 0 ? (t.waiting_for.length ? `waiting on step ${listOf(t.waiting_for)}` : "finished") : `on step ${t.step}`}.`).join(" ")}`
         : "";
-      const text = `${where} on ${found.recipe.title}. ${mine}${timerSentence(v.timers)}${others}${away}`;
+      // A long step is the one case where "where was I" has something to do rather than just report.
+      // It goes here because this is where somebody coming back after a day actually asks.
+      const schedule = scheduleOn(deps, found.session, found.recipe, v.step?.order ?? 0, now);
+      const look = schedule?.kind === "scheduled" && schedule.overdue.length
+        ? ` ${checkSentence(schedule, now)}`
+        : "";
+      const text = `${where} on ${found.recipe.title}. ${mine}${timerSentence(v.timers)}${others}${away}${look}`;
       return { structuredContent: { session: v, recipe_title: found.recipe.title }, content: [{ type: "text", text }] };
     },
   );
@@ -467,6 +501,77 @@ export function registerCookTools(server: McpServer, deps: CookDeps): void {
       return {
         structuredContent: { session: v, deviation, substitution: swap, unresolved, queued_as: queued },
         content: [{ type: "text", text: said }],
+      };
+    },
+  );
+
+  server.registerTool(
+    "cook_checked",
+    {
+      title: "Look in on something that takes days",
+      description:
+        "Say what to look at during a long wait — a ferment, a brine, a long marinade — and record that the customer has looked, so it stops asking. Use when they ask whether they need to do anything to something that is resting, what to check on it, when to look again, or when they tell you they have just looked at it. Every answer comes from a plan a cook wrote for that step; when nobody has written one it says so instead of inventing a schedule. Needs a linked account.",
+      inputSchema: {
+        looked: z.boolean().optional().describe("True when they are telling you they have just looked at it"),
+        note: z.string().optional().describe("What they saw, in their words"),
+        cook: z.number().int().min(1).max(4).optional().describe("Which cook is asking, when more than one is cooking"),
+      },
+      outputSchema: {
+        ...SESSION_SCHEMA,
+        step: z.number().int().nullable(),
+        /** Which of the three silences this is, when there is nothing to say. Never conflated: a
+         *  curated "nothing to check" is a decision, and a missing plan is a gap. */
+        plan: z.enum(["scheduled", "nothing_to_check", "no_plan", "not_a_long_step"]),
+        look_for: z.array(z.string()),
+        overdue: z.number().int(),
+        next_check_at: z.string().nullable(),
+        recorded: z.boolean(),
+      },
+    },
+    async (args) => {
+      const userId = deps.userId();
+      if (!userId) return mcpError(NEEDS_ACCOUNT);
+      const found = await activeWithRecipe(userId);
+      if (typeof found === "string") return mcpError(found);
+      const now = deps.now();
+      const cook = args.cook ?? 1;
+      const step = currentStepFor(found.session, found.recipe, cook).current_step;
+
+      let session = found.session;
+      let recorded = false;
+      if (args.looked) {
+        const done = check(session, found.recipe, { now, step, note: args.note ?? null, cook });
+        session = done.session;
+        await deps.sessions.put(session);
+        recorded = true;
+      }
+
+      const schedule = scheduleOn(deps, session, found.recipe, step, now);
+      const v = view(session, found.recipe, now, cook);
+      const base = {
+        session: v, step: step || null,
+        look_for: schedule?.kind === "scheduled" ? schedule.plan.look_for : [],
+        overdue: schedule?.kind === "scheduled" ? schedule.overdue.length : 0,
+        next_check_at: schedule?.kind === "scheduled" ? (schedule.next?.at ?? null) : null,
+        recorded,
+      };
+
+      if (!schedule) {
+        const text = recorded
+          ? "Noted. That step is not one that wants watching, but I have written it down."
+          : "That step is not a long wait, so there is nothing to look in on. Ask me again when something is resting.";
+        return { structuredContent: { ...base, plan: "not_a_long_step" as const }, content: [{ type: "text", text }] };
+      }
+      if (schedule.kind === "no_plan") {
+        const text = `That step is a long one, but nobody has written down what to look at during it. I would rather tell you that than make up a schedule for your ${found.recipe.title.toLowerCase()}.`;
+        return { structuredContent: { ...base, plan: "no_plan" as const }, content: [{ type: "text", text }] };
+      }
+
+      const said = checkSentence(schedule, now) ?? "";
+      const head = recorded ? "Noted, and I will stop asking. " : "";
+      return {
+        structuredContent: { ...base, plan: schedule.kind },
+        content: [{ type: "text", text: `${head}${said}` }],
       };
     },
   );

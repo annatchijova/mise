@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "updated_on": "2026-09-06",
+  "author": "mise",
+  "note": "What to look at during a step long enough that nobody sits through it. Keyed on the recipe and the step, because the corpus's steps carry no technique field and reading one out of the text would be a guess. A row with no cadence and nothing to look for is a decision somebody made — 'there is nothing to check here' — and is not the same as a step with no row at all, which means nobody has written one yet. See docs/LONG_STEP_SCHEMA.md.",
+  "entries": [
+    {
+      "recipe_id": "barbecue-tofu",
+      "step": 3,
+      "kind": "marinate",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Twenty-four hours in the fridge, sealed. Opening it to look does nothing but warm it up."
+    },
+    {
+      "recipe_id": "beet-borscht",
+      "step": 8,
+      "kind": "simmer",
+      "first_check_s": 1200,
+      "check_every_s": 1200,
+      "look_for": [
+        "Taste it. The recipe says twenty to sixty minutes according to taste, so the clock is not the judge here."
+      ],
+      "note": "A stated range, and the recipe says out loud that the end of it is a preference."
+    },
+    {
+      "recipe_id": "chia-pudding",
+      "step": 2,
+      "kind": "chill",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "An hour to firm up. Nothing can go wrong that looking would catch."
+    },
+    {
+      "recipe_id": "chocolate-soy-mousse",
+      "step": 4,
+      "kind": "chill",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "It sets or it does not, and checking does not help it along."
+    },
+    {
+      "recipe_id": "cucumbers-in-brine",
+      "step": 3,
+      "kind": "ferment",
+      "first_check_s": 86400,
+      "check_every_s": 86400,
+      "look_for": [
+        "Look at the brine. Cloudy is normal for a brine ferment; slimy is not.",
+        "Taste one. 'A few days' is a range, and your kitchen decides where in it you are."
+      ],
+      "note": "The recipe says 'a few days', which is not a number. Checking daily is how a person turns that into an answer, and it is the honest way to handle a duration nobody stated."
+    },
+    {
+      "recipe_id": "firm-nut-cheese",
+      "step": 5,
+      "kind": "chill",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Setting in the fridge. Nothing to see."
+    },
+    {
+      "recipe_id": "gluten-free-pizza",
+      "step": 3,
+      "kind": "prove",
+      "first_check_s": 1800,
+      "check_every_s": 900,
+      "look_for": [
+        "Has it doubled? That is the actual instruction; an hour is a guess at when.",
+        "A cold kitchen makes this take longer. Nothing has gone wrong."
+      ],
+      "note": "The recipe ends this step on the dough doubling, and dough does not read clocks."
+    },
+    {
+      "recipe_id": "hearts-of-palm-ceviche",
+      "step": 3,
+      "kind": "marinate",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Sealed in a bag, lying flat. Opening it is the one thing the step tells you not to do."
+    },
+    {
+      "recipe_id": "homemade-chocolate",
+      "step": 4,
+      "kind": "set",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Chocolate in a mould. Leave it alone."
+    },
+    {
+      "recipe_id": "lemon-pie",
+      "step": 7,
+      "kind": "cool",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Cooling under cling film. Moving it early is the only way to spoil it."
+    },
+    {
+      "recipe_id": "locro-hominy-stew",
+      "step": 1,
+      "kind": "boil",
+      "first_check_s": 1800,
+      "check_every_s": 1800,
+      "look_for": [
+        "Top the water up if the hominy is showing above it.",
+        "Bite one. Hominy takes as long as it takes."
+      ],
+      "note": "An estimated hour for something whose real end is a texture."
+    },
+    {
+      "recipe_id": "locro-hominy-stew",
+      "step": 9,
+      "kind": "simmer",
+      "first_check_s": 1200,
+      "check_every_s": 1200,
+      "look_for": [
+        "Is everything soft yet? The recipe ends this step on the vegetables, not on the clock.",
+        "Taste for salt, which the recipe asks for here."
+      ],
+      "note": "The step says 'cook until everything is soft'. An hour is an estimate of that, not the instruction."
+    },
+    {
+      "recipe_id": "mushroom-pate",
+      "step": 2,
+      "kind": "soak",
+      "first_check_s": 10800,
+      "check_every_s": null,
+      "look_for": [
+        "Push the mushrooms back under if they have floated up."
+      ],
+      "note": "Six hours, stated. One look halfway is enough: soaking goes wrong slowly if at all."
+    },
+    {
+      "recipe_id": "quick-vegan-croissants",
+      "step": 2,
+      "kind": "chill",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "A cold rest to firm the butter up. It wants to be left alone, not looked at."
+    },
+    {
+      "recipe_id": "sauerkraut",
+      "step": 6,
+      "kind": "rest",
+      "first_check_s": 1800,
+      "check_every_s": 1800,
+      "look_for": [
+        "The cabbage should be giving up its liquid. If it is not, press it down harder."
+      ],
+      "note": "An hour, but the point of the hour is what happens during it, and the recipe says so."
+    },
+    {
+      "recipe_id": "sauerkraut",
+      "step": 11,
+      "kind": "ferment",
+      "first_check_s": 86400,
+      "check_every_s": 259200,
+      "look_for": [
+        "The cabbage should still be under its brine. Push it back down if it has risen.",
+        "Take any mould off the edges. The recipe says not to worry about it and that it will not get far.",
+        "From four weeks on, taste it. It is ready when you like it, not when the clock says so."
+      ],
+      "note": "Four to six weeks, and the recipe itself says to taste at four. A single alarm six weeks out would be useless: the whole skill of a ferment is looking at it on the way."
+    },
+    {
+      "recipe_id": "smoked-tomato-ketchup",
+      "step": 2,
+      "kind": "simmer",
+      "first_check_s": 1800,
+      "check_every_s": 1800,
+      "look_for": [
+        "Stir the bottom. Two and a half hours over low heat is long enough to catch.",
+        "If it is thickening faster than the clock, lower the heat rather than shortening the time."
+      ],
+      "note": "Two and a half hours on the stove is not unattended time, whatever the timer implies."
+    },
+    {
+      "recipe_id": "spinach-souffle",
+      "step": 1,
+      "kind": "chill",
+      "first_check_s": null,
+      "check_every_s": null,
+      "look_for": [],
+      "note": "Flax mucilage overnight in the fridge. The work was the fifteen minutes of boiling before it."
+    }
+  ]
+}
