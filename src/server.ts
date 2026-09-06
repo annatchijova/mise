@@ -36,6 +36,7 @@ import { type BarcodePayload, barcodeSource } from "./integrations/barcode.ts";
 import { type ConnectedSource, type IngestDeps, ingest } from "./integrations/ingest.ts";
 import { makeOffLookup } from "./integrations/off_client.ts";
 import { receiptSource } from "./integrations/receipt.ts";
+import { indexNutrition, ingredientSentence, loadNutrition, nutritionOf, nutritionSentence } from "./nutrition.ts";
 import { type FridgeStatus, simulatedFridge } from "./integrations/simulated_fridge.ts";
 import { type PantrySource, runSource } from "./integrations/types.ts";
 import { MemoryCookStore } from "./cook/store.ts";
@@ -111,6 +112,26 @@ const scaling = buildScaling(scalingTable);
 /** Where swaps people made are queued for a curator to look at. A file, because that is what it is:
  *  something a person opens and either acts on or does not. */
 const swaps = SWAP_LOG_FILE ? new FileSwapStore(SWAP_LOG_FILE) : new MemorySwapStore();
+
+/** Round reference figures for whole ingredients. Deliberately incomplete: an ingredient with no row
+ *  is reported as having no figures, never estimated from one that looks similar. */
+const nutrition = loadNutrition();
+const nutritionIndex = indexNutrition(nutrition);
+
+/** The four macronutrients plus energy, as the tool reports them. Centigrams keep the arithmetic in
+ *  integers for the same reason the pantry keeps thousandths: these are summed, and must not drift. */
+const NUTRIENTS = z.object({
+  kcal: z.number().int(),
+  protein_cg: z.number().int(),
+  carb_cg: z.number().int(),
+  fat_cg: z.number().int(),
+  fibre_cg: z.number().int(),
+});
+
+/** A tool answer that is a refusal rather than a result. */
+function mcpError(text: string) {
+  return { isError: true, content: [{ type: "text" as const, text }] };
+}
 /** Does the table already suggest this swap? Decides candidate versus confirmation, and nothing else. */
 const tableSuggests = (insteadOf: string, used: string, role: string | null, technique: string | null): boolean =>
   substitutionsFor(substitutions, substitutionIndex, { ingredient: insteadOf, role, technique })
@@ -347,6 +368,93 @@ function buildServer(): McpServer {
       return {
         structuredContent: { items: out, total: out.length, as_of: now, confidence, invalid_events: fold.invalid },
         content: [{ type: "text", text: spoken }],
+      };
+    },
+  );
+
+  server.registerTool(
+    "recipe_nutrition",
+    {
+      title: "What is in a dish, as far as anybody knows",
+      description:
+        "Say roughly what a recipe comes to, or say honestly why it cannot be said. Use when the customer asks about calories, protein, or how healthy something is. Most recipes here do not state their amounts, so most of the time this gives a floor — 'at least this much, and the rest can only add to it' — together with which ingredients it could not account for and why. Pass an ingredient instead of a recipe to ask what one food is per 100 g. Never guesses a number, and never offers a total with a hole in it. Works without a linked account.",
+      inputSchema: {
+        recipe_id: z.string().optional().describe("The recipe to add up"),
+        ingredient: z.string().optional().describe("A single food to ask about instead, as they said it"),
+        servings: z.number().int().min(1).max(24).optional().describe("How many people, when they say"),
+      },
+      outputSchema: {
+        table_version: z.number().int(),
+        /** The figures for one ingredient, when that is what was asked. */
+        ingredient: z
+          .object({ id: z.string(), name: z.string(), kcal: z.number().int().nullable(), negligible: z.boolean(), note: z.string().nullable() })
+          .nullable(),
+        recipe_id: z.string().nullable(),
+        servings: z.number().int().nullable(),
+        /** Present only when every ingredient is accounted for. Null is the usual answer here. */
+        per_serving: NUTRIENTS.nullable(),
+        /** What the ingredients we could account for come to. Not a smaller guess: a weaker claim
+         *  that is provable, since the ones we could not account for can only add. */
+        at_least: NUTRIENTS.nullable(),
+        counted: z.array(z.object({
+          ingredient_id: z.string(), as: z.string(), grams: z.number().int(),
+          how: z.enum(["weighed", "measured"]),
+        })),
+        gaps: z.array(z.object({
+          ingredient_id: z.string(),
+          reason: z.enum(["no_amount", "no_measure", "no_data"]),
+          stated: z.string().nullable(),
+        })),
+        ignored_as_trace: z.array(z.string()),
+        contribute_nothing: z.array(z.string()),
+        covered: z.number().int(),
+        of: z.number().int(),
+      },
+    },
+    async (args) => {
+      const empty = {
+        table_version: nutrition.version, ingredient: null, recipe_id: null, servings: null,
+        per_serving: null, at_least: null, counted: [], gaps: [], ignored_as_trace: [],
+        contribute_nothing: [], covered: 0, of: 0,
+      };
+
+      if (args.ingredient && !args.recipe_id) {
+        const id = resolve(args.ingredient);
+        const row = id ? nutritionIndex.get(id) : undefined;
+        if (!row) {
+          const text = `I have no figures for ${args.ingredient}. The table is written by hand and it is not complete; I would rather say that than borrow a number from something that looks similar.`;
+          return { structuredContent: empty, content: [{ type: "text", text }] };
+        }
+        return {
+          structuredContent: {
+            ...empty,
+            ingredient: { id: row.id, name: row.name, kcal: row.kcal, negligible: row.negligible, note: row.note },
+          },
+          content: [{ type: "text", text: ingredientSentence(row) }],
+        };
+      }
+
+      const recipe = args.recipe_id ? byId.get(args.recipe_id) : undefined;
+      if (!recipe) {
+        return mcpError("I do not have a recipe with that id. Search first and give me the id it returns.");
+      }
+      const report = nutritionOf(recipe, nutritionIndex, nutrition, args.servings);
+      return {
+        structuredContent: {
+          table_version: report.table_version,
+          ingredient: null,
+          recipe_id: report.recipe_id,
+          servings: report.servings,
+          per_serving: report.per_serving,
+          at_least: report.at_least,
+          counted: report.counted.map((c) => ({ ingredient_id: c.ingredient_id, as: c.as, grams: c.grams, how: c.how })),
+          gaps: report.gaps,
+          ignored_as_trace: report.ignored_as_trace,
+          contribute_nothing: report.contribute_nothing,
+          covered: report.covered,
+          of: report.of,
+        },
+        content: [{ type: "text", text: nutritionSentence(report) }],
       };
     },
   );
