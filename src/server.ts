@@ -18,6 +18,7 @@ import { type Unit, displayName } from "./pantry/events.ts";
 import { renderIndexPage, renderRecipePage, toJsonLd } from "./recipe_jsonld.ts";
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
+import { loadZeroWasteLessons, zeroWaste } from "./zero_waste.ts";
 import { UNITS, voiceEvents } from "./pantry/voice.ts";
 import { MemoryPantryStore } from "./pantry/store.ts";
 import { buildResolver, loadAliases } from "./integrations/aliases.ts";
@@ -48,6 +49,7 @@ const SIM_TOKEN = randomBytes(16).toString("hex");
 const ORIGIN = new URL(BASE_URL).origin;
 
 const recipes: Recipe[] = loadRecipes();
+const zeroWasteLessons = loadZeroWasteLessons();
 const byId = new Map(recipes.map((r) => [r.id, r]));
 const resolve = buildResolver(loadAliases(), new Set(recipes.flatMap((r) => r.ingredients.map((i) => i.id))));
 const store = new MemoryPantryStore(PANTRY_FILE);
@@ -205,6 +207,57 @@ function buildServer(): McpServer {
       const caveat = fold.invalid > 0 ? ` ${fold.invalid} record${fold.invalid === 1 ? "" : "s"} could not be read and ${fold.invalid === 1 ? "was" : "were"} left out.` : "";
       const spoken = (out.length === 0 ? "Nothing on record yet." : `${out.length} item${out.length === 1 ? "" : "s"}: ${out.map(say).join("; ")}.`) + caveat;
       return { structuredContent: { items: out, total: out.length, as_of: now, invalid_events: fold.invalid }, content: [{ type: "text", text: spoken }] };
+    },
+  );
+
+  server.registerTool(
+    "zero_waste",
+    {
+      title: "Zero Waste / Desperdicio Cero",
+      description:
+        "Help the customer creatively use pantry food before wasting it. Use when they ask what to cook with what is about to expire, or how to waste less. Returns existing recipes ranked by urgent ingredients and pantry coverage, plus technique lessons with a plating exercise. Call recipe_search or pantry_update for anything outside this. Needs a linked account.",
+      inputSchema: {
+        locale: z.enum(["en", "es"]).default("en").describe("Language for the lesson text and spoken reason"),
+        limit: z.number().int().min(1).max(10).default(3).describe("Maximum number of recipes to return"),
+        max_minutes: z.number().int().positive().optional().describe("Maximum total cooking time in minutes"),
+      },
+      outputSchema: {
+        lesson_version: z.number().int(),
+        lesson_status: z.string(),
+        candidates: z.array(
+          z.object({
+            recipe_id: z.string(), title: z.string(), minutes: z.number().int(),
+            use_first: z.array(z.string()), on_hand: z.array(z.string()), missing: z.array(z.string()),
+            needs_confirmation: z.array(z.string()),
+            pantry_evidence: z.array(
+              z.object({
+                ingredient_id: z.string(), unit: z.string(), location: z.string(), qty: z.number().nullable(),
+                qty_known: z.boolean(), confidence: z.enum(["confirmed", "inferred", "stale"]),
+                expires_on: z.string().nullable(), days_to_expiry: z.number().int().nullable(),
+                freshness: z.enum(["expired", "urgent", "soon", "fresh", "unknown"]), origins: z.array(z.string()),
+              }),
+            ),
+            coverage_percent: z.number().int(),
+            learning: z.array(z.object({ technique: z.string(), title: z.string(), practice: z.string(), presentation: z.string() })),
+            reason: z.string(),
+          }),
+        ),
+        total: z.number().int(),
+        excluded: z.array(z.object({ ingredient_id: z.string(), unit: z.string(), location: z.string(), reason: z.enum(["expired", "stale"]) })),
+        notes: z.object({ quantity: z.string(), economy: z.string(), ecology: z.string(), safety: z.string() }),
+      },
+    },
+    async (args) => {
+      if (!DEMO_USER) {
+        return { isError: true, content: [{ type: "text", text: args.locale === "es" ? "Vinculá tu cuenta para consultar la despensa." : "Link your account to use the pantry." }] };
+      }
+      const { fold } = await pantryFor(DEMO_USER, new Date().toISOString());
+      const result = zeroWaste(recipes, fold.items, zeroWasteLessons, args);
+      const spoken =
+        result.total === 0
+          ? args.locale === "es" ? "No encontré una receta que aproveche lo que tenés." : "I could not find a recipe that uses what you have."
+          : result.candidates[0]!.reason + (result.candidates[0]!.learning[0] ? ` ${result.candidates[0]!.learning[0]!.title}: ${result.candidates[0]!.learning[0]!.practice}` : "");
+      return { structuredContent: result, content: [{ type: "text", text: spoken }] };
     },
   );
 

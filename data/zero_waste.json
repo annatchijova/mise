@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "status": "draft editorial lessons; not independent culinary validation",
+  "lessons": [
+    {
+      "technique": "brown",
+      "title": { "en": "Build contrast", "es": "Construí contraste" },
+      "practice": {
+        "en": "Follow the recipe’s browning step and compare its texture with the other components.",
+        "es": "Seguí el paso de dorado de la receta y compará su textura con los otros componentes."
+      },
+      "presentation": {
+        "en": "Plate the browned component separately so the contrast is visible.",
+        "es": "Emplatá el componente dorado por separado para destacar el contraste."
+      }
+    },
+    {
+      "technique": "emulsify",
+      "title": { "en": "Design a sauce", "es": "Diseñá una salsa" },
+      "practice": {
+        "en": "Use the recipe’s proportions and method; identify what the sauce contributes to the dish.",
+        "es": "Usá las proporciones y el método de la receta; identificá qué aporta la salsa al plato."
+      },
+      "presentation": {
+        "en": "Try a small, deliberate placement of the sauce rather than covering every component.",
+        "es": "Probá una disposición pequeña y deliberada de la salsa en vez de cubrir todos los componentes."
+      }
+    },
+    {
+      "technique": "bake",
+      "title": { "en": "Give form to what you have", "es": "Dale forma a lo disponible" },
+      "practice": {
+        "en": "Follow this recipe’s baking instructions; notice how portion shape changes the presentation.",
+        "es": "Seguí las instrucciones de horneado de esta receta; observá cómo la forma de la porción cambia la presentación."
+      },
+      "presentation": {
+        "en": "Compare two arrangements of the finished portions before choosing one.",
+        "es": "Compará dos disposiciones de las porciones terminadas antes de elegir una."
+      }
+    },
+    {
+      "technique": "simmer",
+      "title": { "en": "Compose a dish", "es": "Componé un plato" },
+      "practice": {
+        "en": "Read the order of additions in the recipe and identify the role of each ingredient.",
+        "es": "Leé el orden de incorporación de la receta e identificá la función de cada ingrediente."
+      },
+      "presentation": {
+        "en": "Choose a focal component when serving and arrange the others around it.",
+        "es": "Elegí un componente protagonista al servir y distribuí los demás a su alrededor."
+      }
+    },
+    {
+      "technique": "raw",
+      "title": { "en": "Observe before transforming", "es": "Observá antes de transformar" },
+      "practice": {
+        "en": "Use only the ingredients this recipe calls for raw, following its preparation steps.",
+        "es": "Usá en crudo solamente los ingredientes que esta receta indica, siguiendo sus pasos de preparación."
+      },
+      "presentation": {
+        "en": "Explore arrangement and color with the prepared ingredients already in the recipe.",
+        "es": "Explorá disposición y color con los ingredientes preparados que ya incluye la receta."
+      }
+    }
+  ]
+}

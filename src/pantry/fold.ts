@@ -147,6 +147,13 @@ export function foldPantry(events: PantryEvent[], opts: FoldOptions): FoldResult
       continue;
     }
 
+    // A new purchase after a known depletion starts a new batch. Partial consumption and
+    // unknown quantities keep their history: neither proves the old food is gone.
+    if (e.type === "add" && b.present && b.known && b.milli === 0 && b.unit !== "to_taste") {
+      b = reset(e);
+      buckets.set(k, b);
+    }
+
     // add / consume
     b.present = true;
     b.origins.add(e.origin);

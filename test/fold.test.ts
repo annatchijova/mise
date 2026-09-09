@@ -178,3 +178,27 @@ test("negative control: a fold that ignored confidence would pass none of the ab
   const { items } = foldPantry([ev({ confidence: inferredOnly, origin: "simulated" })], { now: NOW });
   assert.notEqual(items[0].confidence, "confirmed");
 });
+
+test("restocking after full depletion starts a new batch: no inherited expiry, origin or confidence", () => {
+  const old = ev({ ts: "2026-09-01T08:00:00.000Z", expires_on: "2026-09-02", confidence: "inferred", origin: "smartthings" });
+  const consume = ev({ ts: "2026-09-02T08:00:00.000Z", type: "consume", qty_milli: toMilli(1) });
+  const restock = ev({ ts: "2026-09-04T08:00:00.000Z", expires_on: "2026-09-10", origin: "voice", confidence: "confirmed" });
+  const { items } = foldPantry([old, consume, restock], { now: NOW });
+  assert.equal(items[0].expires_on, "2026-09-10");
+  assert.equal(items[0].confidence, "confirmed");
+  assert.deepEqual(items[0].origins, ["voice"]);
+});
+
+test("partial depletion and unknown-quantity consumption keep the earlier batch's expiry", () => {
+  for (const qtyMilli of [toMilli(2), null]) {
+    const events = [
+      ev({ ts: "2026-09-01T08:00:00.000Z", qty_milli: qtyMilli, expires_on: "2026-09-05" }),
+      ev({ ts: "2026-09-02T08:00:00.000Z", type: "consume", qty_milli: qtyMilli === null ? null : toMilli(1) }),
+      ev({ ts: "2026-09-03T08:00:00.000Z", type: "add", qty_milli: toMilli(1), expires_on: "2026-09-10" }),
+    ];
+    const { items } = foldPantry(events, { now: NOW });
+    // Still holding some of the original batch (or an unresolved unknown amount): the earlier,
+    // nearer expiry is the honest one to report, not the later date from the top-up.
+    assert.equal(items[0].expires_on, "2026-09-05");
+  }
+});
