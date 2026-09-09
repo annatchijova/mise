@@ -12,6 +12,7 @@ function item(id: string, overrides: Partial<PantryItem> = {}): PantryItem {
   return {
     ingredient_id: id, unit: "g", location: "fridge", qty: 1, qty_known: true,
     confidence: "confirmed", age_days: 0, expires_on: "2026-09-05",
+    expiry_estimated_on: null, expiry_source: "stated", expiry_note: null, expiry_match: null,
     days_to_expiry: 1, freshness: "urgent", origins: ["voice"],
     last_event_ts: "2026-09-04T12:00:00Z", ...overrides,
   };
