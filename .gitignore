@@ -148,3 +148,6 @@ work/
 # python tooling caches (scripts/)
 __pycache__/
 *.pyc
+
+# the swap queue: generated, reviewed by hand, never committed
+data/imports/swap_candidates.json

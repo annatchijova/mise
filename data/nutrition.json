@@ -1,0 +1,2310 @@
+{
+  "version": 3,
+  "updated_on": "2026-09-06",
+  "author": "mise",
+  "basis": "Per 100 g of the ingredient in the state named, as bought and before cooking.",
+  "note": "Round reference figures for whole ingredients, not a laboratory analysis of anybody's dinner. They are here to answer 'roughly what is in this' and are curated by hand: an ingredient with no row is reported as having no data, never estimated from a similar one. Prepared foods whose figures depend entirely on the brand — plant milks in general, vegan cheese, mayonnaise, whipped topping, stock, curry pastes — are deliberately absent for that reason.",
+  "entries": [
+    {
+      "id": "agar-agar",
+      "name": "agar agar",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "almond",
+      "name": "almond",
+      "kcal": 579,
+      "protein_cg": 2120,
+      "carb_cg": 2160,
+      "fat_cg": 4990,
+      "fibre_cg": 1250,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 143
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "apple",
+      "name": "apple",
+      "kcal": 52,
+      "protein_cg": 30,
+      "carb_cg": 1380,
+      "fat_cg": 20,
+      "fibre_cg": 240,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 180
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "arugula",
+      "name": "rocket",
+      "kcal": 25,
+      "protein_cg": 260,
+      "carb_cg": 370,
+      "fat_cg": 70,
+      "fibre_cg": 160,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "avocado",
+      "name": "avocado",
+      "kcal": 160,
+      "protein_cg": 200,
+      "carb_cg": 850,
+      "fat_cg": 1470,
+      "fibre_cg": 670,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 140
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A piece is the flesh of one medium avocado, stone and skin off."
+    },
+    {
+      "id": "baking-powder",
+      "name": "baking powder",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "banana",
+      "name": "banana",
+      "kcal": 89,
+      "protein_cg": 110,
+      "carb_cg": 2280,
+      "fat_cg": 30,
+      "fibre_cg": 260,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 120
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "barbecue-sauce",
+      "name": "barbecue sauce",
+      "kcal": 172,
+      "protein_cg": 80,
+      "carb_cg": 4080,
+      "fat_cg": 60,
+      "fibre_cg": 70,
+      "g_per_100ml": 110,
+      "measures": {
+        "tbsp": 17
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "basil",
+      "name": "basil",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "basmati-rice",
+      "name": "basmati rice",
+      "kcal": 360,
+      "protein_cg": 750,
+      "carb_cg": 7800,
+      "fat_cg": 90,
+      "fibre_cg": 130,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 185
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Raw."
+    },
+    {
+      "id": "bay-leaf",
+      "name": "bay leaf",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "beer",
+      "name": "beer",
+      "kcal": 43,
+      "protein_cg": 50,
+      "carb_cg": 360,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 101,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Energy is mostly from the alcohol, which the macronutrients below do not account for."
+    },
+    {
+      "id": "beetroot",
+      "name": "beetroot",
+      "kcal": 43,
+      "protein_cg": 160,
+      "carb_cg": 960,
+      "fat_cg": 20,
+      "fibre_cg": 280,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 130
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "bell-pepper",
+      "name": "bell pepper",
+      "kcal": 26,
+      "protein_cg": 100,
+      "carb_cg": 600,
+      "fat_cg": 30,
+      "fibre_cg": 210,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 120
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "black-bean",
+      "name": "black bean",
+      "kcal": 341,
+      "protein_cg": 2160,
+      "carb_cg": 6240,
+      "fat_cg": 140,
+      "fibre_cg": 1550,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 194
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought."
+    },
+    {
+      "id": "black-olive",
+      "name": "black olive",
+      "kcal": 145,
+      "protein_cg": 100,
+      "carb_cg": 380,
+      "fat_cg": 1530,
+      "fibre_cg": 320,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "black-pepper",
+      "name": "black pepper",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "blueberry",
+      "name": "blueberry",
+      "kcal": 57,
+      "protein_cg": 70,
+      "carb_cg": 1450,
+      "fat_cg": 30,
+      "fibre_cg": 240,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 148
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "brandy",
+      "name": "brandy",
+      "kcal": 231,
+      "protein_cg": 0,
+      "carb_cg": 10,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 94,
+      "measures": {
+        "tbsp": 14
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Energy is from the alcohol, which the macronutrients below do not account for; the three of them will not add up to the calories."
+    },
+    {
+      "id": "bread",
+      "name": "bread",
+      "kcal": 265,
+      "protein_cg": 900,
+      "carb_cg": 4900,
+      "fat_cg": 320,
+      "fibre_cg": 270,
+      "g_per_100ml": null,
+      "measures": {
+        "slice": 30
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "bread-crumbs",
+      "name": "bread crumbs",
+      "kcal": 395,
+      "protein_cg": 1340,
+      "carb_cg": 7190,
+      "fat_cg": 530,
+      "fibre_cg": 450,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 108,
+        "tbsp": 7
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "broad-bean",
+      "name": "broad bean",
+      "kcal": 341,
+      "protein_cg": 2610,
+      "carb_cg": 5830,
+      "fat_cg": 150,
+      "fibre_cg": 2500,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought."
+    },
+    {
+      "id": "broccoli",
+      "name": "broccoli",
+      "kcal": 34,
+      "protein_cg": 280,
+      "carb_cg": 660,
+      "fat_cg": 40,
+      "fibre_cg": 260,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 400
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "buckwheat",
+      "name": "buckwheat",
+      "kcal": 343,
+      "protein_cg": 1330,
+      "carb_cg": 7150,
+      "fat_cg": 340,
+      "fibre_cg": 1000,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 170
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Raw groats."
+    },
+    {
+      "id": "cabbage",
+      "name": "cabbage",
+      "kcal": 25,
+      "protein_cg": 130,
+      "carb_cg": 580,
+      "fat_cg": 10,
+      "fibre_cg": 250,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 900
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A piece is a whole head."
+    },
+    {
+      "id": "canned-red-pepper",
+      "name": "canned red pepper",
+      "kcal": 26,
+      "protein_cg": 100,
+      "carb_cg": 600,
+      "fat_cg": 30,
+      "fibre_cg": 210,
+      "g_per_100ml": null,
+      "measures": {
+        "can": 400
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Drained weight differs; this is the tin as sold."
+    },
+    {
+      "id": "canned-tomato",
+      "name": "canned tomato",
+      "kcal": 32,
+      "protein_cg": 160,
+      "carb_cg": 730,
+      "fat_cg": 30,
+      "fibre_cg": 190,
+      "g_per_100ml": 103,
+      "measures": {
+        "can": 400
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Tin and all its liquid, which is how recipes use it. A can is the 400 g size these recipes mean."
+    },
+    {
+      "id": "cardamom",
+      "name": "cardamom",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "carrot",
+      "name": "carrot",
+      "kcal": 41,
+      "protein_cg": 90,
+      "carb_cg": 960,
+      "fat_cg": 20,
+      "fibre_cg": 280,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 60
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cashew",
+      "name": "cashew",
+      "kcal": 553,
+      "protein_cg": 1820,
+      "carb_cg": 3020,
+      "fat_cg": 4390,
+      "fibre_cg": 330,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 137
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "celery",
+      "name": "celery",
+      "kcal": 16,
+      "protein_cg": 70,
+      "carb_cg": 300,
+      "fat_cg": 20,
+      "fibre_cg": 160,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 40
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A piece is one stalk."
+    },
+    {
+      "id": "celery-powder",
+      "name": "celery powder",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "cherry-tomato",
+      "name": "cherry tomato",
+      "kcal": 18,
+      "protein_cg": 90,
+      "carb_cg": 390,
+      "fat_cg": 20,
+      "fibre_cg": 120,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 17
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "chia",
+      "name": "chia seed",
+      "kcal": 486,
+      "protein_cg": 1650,
+      "carb_cg": 4210,
+      "fat_cg": 3070,
+      "fibre_cg": 3440,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 12
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "chickpea",
+      "name": "chickpea",
+      "kcal": 364,
+      "protein_cg": 1930,
+      "carb_cg": 6100,
+      "fat_cg": 600,
+      "fibre_cg": 1740,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 200
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought. Cooked chickpeas weigh about three times this for the same food, so a recipe that means cooked is a different number."
+    },
+    {
+      "id": "chili",
+      "name": "chili",
+      "kcal": 40,
+      "protein_cg": 190,
+      "carb_cg": 880,
+      "fat_cg": 40,
+      "fibre_cg": 150,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "chimichurri-seasoning",
+      "name": "chimichurri seasoning",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "chinese-eggplant",
+      "name": "Chinese eggplant",
+      "kcal": 25,
+      "protein_cg": 100,
+      "carb_cg": 590,
+      "fat_cg": 20,
+      "fibre_cg": 300,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 250
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cilantro",
+      "name": "coriander leaf",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "cinnamon",
+      "name": "cinnamon",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "clove",
+      "name": "clove",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "cocoa",
+      "name": "cocoa powder",
+      "kcal": 228,
+      "protein_cg": 1960,
+      "carb_cg": 5790,
+      "fat_cg": 1370,
+      "fibre_cg": 3700,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 5,
+        "cup": 86
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cocoa-butter",
+      "name": "cocoa butter",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "coconut-oil",
+      "name": "coconut oil",
+      "kcal": 862,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cooking-spray",
+      "name": "cooking spray",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "coriander-seed",
+      "name": "coriander seed",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "corn",
+      "name": "sweetcorn",
+      "kcal": 86,
+      "protein_cg": 330,
+      "carb_cg": 1900,
+      "fat_cg": 140,
+      "fibre_cg": 200,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 90
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "corn-chips",
+      "name": "corn chips",
+      "kcal": 489,
+      "protein_cg": 660,
+      "carb_cg": 6300,
+      "fat_cg": 2340,
+      "fibre_cg": 440,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "corn-cob",
+      "name": "corn on the cob",
+      "kcal": 86,
+      "protein_cg": 330,
+      "carb_cg": 1900,
+      "fat_cg": 140,
+      "fibre_cg": 200,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 90
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Per 100 g of kernels; a piece is the kernels off one cob, not the cob."
+    },
+    {
+      "id": "cornstarch",
+      "name": "cornstarch",
+      "kcal": 381,
+      "protein_cg": 30,
+      "carb_cg": 9130,
+      "fat_cg": 10,
+      "fibre_cg": 90,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 128,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cucumber",
+      "name": "cucumber",
+      "kcal": 15,
+      "protein_cg": 70,
+      "carb_cg": 360,
+      "fat_cg": 10,
+      "fibre_cg": 50,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 300
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "cumin",
+      "name": "cumin",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "curry-powder",
+      "name": "curry powder",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "dark-chocolate",
+      "name": "dark chocolate",
+      "kcal": 546,
+      "protein_cg": 490,
+      "carb_cg": 6120,
+      "fat_cg": 3130,
+      "fibre_cg": 700,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "About 70% cocoa. Sweeter chocolate carries more sugar and less fat."
+    },
+    {
+      "id": "dill",
+      "name": "dill",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "dried-mushroom",
+      "name": "dried mushroom",
+      "kcal": 296,
+      "protein_cg": 960,
+      "carb_cg": 7540,
+      "fat_cg": 100,
+      "fibre_cg": 1150,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, before soaking. Soaked, it takes up roughly five times its weight in water."
+    },
+    {
+      "id": "fava-bean",
+      "name": "fava bean",
+      "kcal": 341,
+      "protein_cg": 2610,
+      "carb_cg": 5830,
+      "fat_cg": 150,
+      "fibre_cg": 2500,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought. The same bean as the broad bean under its other name."
+    },
+    {
+      "id": "fennel",
+      "name": "fennel",
+      "kcal": 31,
+      "protein_cg": 120,
+      "carb_cg": 730,
+      "fat_cg": 20,
+      "fibre_cg": 310,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 230
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "flax",
+      "name": "flaxseed",
+      "kcal": 534,
+      "protein_cg": 1830,
+      "carb_cg": 2890,
+      "fat_cg": 4220,
+      "fibre_cg": 2730,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 10
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "flour-000",
+      "name": "wheat flour 000",
+      "kcal": 364,
+      "protein_cg": 1030,
+      "carb_cg": 7630,
+      "fat_cg": 100,
+      "fibre_cg": 270,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 125,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "flour-0000",
+      "name": "wheat flour 0000",
+      "kcal": 364,
+      "protein_cg": 1030,
+      "carb_cg": 7630,
+      "fat_cg": 100,
+      "fibre_cg": 270,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 125,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "food-coloring",
+      "name": "food colouring",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "fresh-yeast",
+      "name": "fresh yeast",
+      "kcal": 105,
+      "protein_cg": 840,
+      "carb_cg": 1810,
+      "fat_cg": 190,
+      "fibre_cg": 810,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "garlic",
+      "name": "garlic",
+      "kcal": 149,
+      "protein_cg": 640,
+      "carb_cg": 3310,
+      "fat_cg": 50,
+      "fibre_cg": 210,
+      "g_per_100ml": null,
+      "measures": {
+        "clove": 3
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A clove is weighed; a 'piece' of garlic is not, because it means a head to some people and a clove to others. A recipe measuring garlic in pieces is reported as unweighable rather than guessed at."
+    },
+    {
+      "id": "garlic-oil",
+      "name": "garlic oil",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "garlic-powder",
+      "name": "garlic powder",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "ginger",
+      "name": "ginger",
+      "kcal": 80,
+      "protein_cg": 180,
+      "carb_cg": 1780,
+      "fat_cg": 80,
+      "fibre_cg": 200,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 6
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "glucose-syrup",
+      "name": "glucose syrup",
+      "kcal": 286,
+      "protein_cg": 0,
+      "carb_cg": 7760,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 140,
+      "measures": {
+        "tbsp": 20
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Figures are for corn syrup, which is what the recipes here mean by it."
+    },
+    {
+      "id": "green-chili",
+      "name": "green chili",
+      "kcal": 29,
+      "protein_cg": 90,
+      "carb_cg": 650,
+      "fat_cg": 40,
+      "fibre_cg": 280,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "green-onion",
+      "name": "spring onion",
+      "kcal": 32,
+      "protein_cg": 180,
+      "carb_cg": 730,
+      "fat_cg": 20,
+      "fibre_cg": 260,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "green-peppercorn",
+      "name": "green peppercorn",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "hearts-of-palm",
+      "name": "hearts of palm",
+      "kcal": 28,
+      "protein_cg": 250,
+      "carb_cg": 460,
+      "fat_cg": 60,
+      "fibre_cg": 260,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Canned. A 'can' is not weighed here because the drained weight is what goes in the dish and tins do not agree on it."
+    },
+    {
+      "id": "hominy",
+      "name": "hominy",
+      "kcal": 72,
+      "protein_cg": 150,
+      "carb_cg": 1430,
+      "fat_cg": 90,
+      "fibre_cg": 250,
+      "g_per_100ml": null,
+      "measures": {
+        "can": 425
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Cooked and canned, which is how it is bought here."
+    },
+    {
+      "id": "hominy-corn",
+      "name": "hominy corn",
+      "kcal": 365,
+      "protein_cg": 870,
+      "carb_cg": 7690,
+      "fat_cg": 390,
+      "fibre_cg": 730,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, before cooking."
+    },
+    {
+      "id": "icing-sugar",
+      "name": "icing sugar",
+      "kcal": 389,
+      "protein_cg": 0,
+      "carb_cg": 9980,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 120,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "italian-seasoning",
+      "name": "Italian seasoning",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "jalapeno",
+      "name": "jalapeno",
+      "kcal": 29,
+      "protein_cg": 90,
+      "carb_cg": 650,
+      "fat_cg": 40,
+      "fibre_cg": 280,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "kabocha-squash",
+      "name": "kabocha squash",
+      "kcal": 34,
+      "protein_cg": 110,
+      "carb_cg": 850,
+      "fat_cg": 10,
+      "fibre_cg": 120,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Raw flesh. A 'piece' is not weighed: they run from one kilo to four."
+    },
+    {
+      "id": "kaffir-lime-leaf",
+      "name": "kaffir lime leaf",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "kala-namak",
+      "name": "kala namak",
+      "kcal": 0,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "tsp": 6,
+        "tbsp": 18
+      },
+      "negligible": false,
+      "source": "a definition, not a measurement",
+      "note": "No energy and none of the four macronutrients, at any amount, so it never stands in the way of adding a dish up. This table does not carry sodium, and nothing here should be read as a statement about how much salt is in anything."
+    },
+    {
+      "id": "leek",
+      "name": "leek",
+      "kcal": 61,
+      "protein_cg": 150,
+      "carb_cg": 1420,
+      "fat_cg": 30,
+      "fibre_cg": 180,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 90
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "lemon",
+      "name": "lemon",
+      "kcal": 29,
+      "protein_cg": 110,
+      "carb_cg": 930,
+      "fat_cg": 30,
+      "fibre_cg": 280,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 100
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "The whole fruit. A recipe measuring lemon in cups or spoons means the juice, which is a different food, so those measures are not weighed here."
+    },
+    {
+      "id": "lentil",
+      "name": "lentil",
+      "kcal": 353,
+      "protein_cg": 2580,
+      "carb_cg": 6010,
+      "fat_cg": 110,
+      "fibre_cg": 3050,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 192
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought."
+    },
+    {
+      "id": "liquid-smoke",
+      "name": "liquid smoke",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "margarine",
+      "name": "margarine",
+      "kcal": 717,
+      "protein_cg": 20,
+      "carb_cg": 70,
+      "fat_cg": 8070,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 14
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "merken",
+      "name": "merken",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "miso",
+      "name": "miso",
+      "kcal": 198,
+      "protein_cg": 1280,
+      "carb_cg": 2540,
+      "fat_cg": 600,
+      "fibre_cg": 540,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 17
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "mixed-seasoning",
+      "name": "mixed seasoning",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "muscovado-sugar",
+      "name": "muscovado sugar",
+      "kcal": 380,
+      "protein_cg": 10,
+      "carb_cg": 9810,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 200,
+        "tbsp": 12
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "mushroom",
+      "name": "mushroom",
+      "kcal": 22,
+      "protein_cg": 310,
+      "carb_cg": 330,
+      "fat_cg": 30,
+      "fibre_cg": 100,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 20
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "White mushroom, raw."
+    },
+    {
+      "id": "mustard",
+      "name": "mustard",
+      "kcal": 66,
+      "protein_cg": 440,
+      "carb_cg": 580,
+      "fat_cg": 330,
+      "fibre_cg": 330,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "mustard-seed",
+      "name": "mustard seed",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "nutmeg",
+      "name": "nutmeg",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "nutritional-yeast",
+      "name": "nutritional yeast",
+      "kcal": 385,
+      "protein_cg": 5000,
+      "carb_cg": 3600,
+      "fat_cg": 500,
+      "fibre_cg": 2000,
+      "g_per_100ml": null,
+      "measures": {
+        "tbsp": 5
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "oat-flour",
+      "name": "oat flour",
+      "kcal": 389,
+      "protein_cg": 1690,
+      "carb_cg": 6630,
+      "fat_cg": 690,
+      "fibre_cg": 1060,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 120,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "olive",
+      "name": "olive",
+      "kcal": 145,
+      "protein_cg": 100,
+      "carb_cg": 380,
+      "fat_cg": 1530,
+      "fibre_cg": 320,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "olive-oil",
+      "name": "olive oil",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14,
+        "cup": 216
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "onion",
+      "name": "onion",
+      "kcal": 40,
+      "protein_cg": 110,
+      "carb_cg": 930,
+      "fat_cg": 10,
+      "fibre_cg": 170,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A piece is a medium onion, trimmed."
+    },
+    {
+      "id": "onion-flakes",
+      "name": "onion flakes",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "onion-powder",
+      "name": "onion powder",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "orange",
+      "name": "orange",
+      "kcal": 47,
+      "protein_cg": 90,
+      "carb_cg": 1180,
+      "fat_cg": 10,
+      "fibre_cg": 240,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 130
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "orange-blossom-water",
+      "name": "orange blossom water",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "oregano",
+      "name": "oregano",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "oyster-mushroom",
+      "name": "oyster mushroom",
+      "kcal": 33,
+      "protein_cg": 330,
+      "carb_cg": 610,
+      "fat_cg": 40,
+      "fibre_cg": 230,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 15
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "paprika",
+      "name": "paprika",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "parsley",
+      "name": "parsley",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "pea",
+      "name": "green pea",
+      "kcal": 81,
+      "protein_cg": 540,
+      "carb_cg": 1450,
+      "fat_cg": 40,
+      "fibre_cg": 570,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Fresh or frozen, raw."
+    },
+    {
+      "id": "peach",
+      "name": "peach",
+      "kcal": 39,
+      "protein_cg": 90,
+      "carb_cg": 950,
+      "fat_cg": 30,
+      "fibre_cg": 150,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "pickled-gherkin",
+      "name": "pickled gherkin",
+      "kcal": 11,
+      "protein_cg": 30,
+      "carb_cg": 230,
+      "fat_cg": 20,
+      "fibre_cg": 120,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "potato",
+      "name": "potato",
+      "kcal": 77,
+      "protein_cg": 200,
+      "carb_cg": 1750,
+      "fat_cg": 10,
+      "fibre_cg": 220,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 170
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "provencal-herbs",
+      "name": "herbes de Provence",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "pumpkin",
+      "name": "pumpkin",
+      "kcal": 26,
+      "protein_cg": 100,
+      "carb_cg": 650,
+      "fat_cg": 10,
+      "fibre_cg": 50,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 116
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "A 'slice' of pumpkin is not weighed here: the recipes that measure it that way mean a wedge off a squash of unknown size, and a number for that would be invented."
+    },
+    {
+      "id": "red-cabbage",
+      "name": "red cabbage",
+      "kcal": 31,
+      "protein_cg": 140,
+      "carb_cg": 740,
+      "fat_cg": 20,
+      "fibre_cg": 210,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 900
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "red-lentil",
+      "name": "red lentil",
+      "kcal": 358,
+      "protein_cg": 2400,
+      "carb_cg": 6300,
+      "fat_cg": 110,
+      "fibre_cg": 1100,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 192
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried and split, as bought."
+    },
+    {
+      "id": "red-onion",
+      "name": "red onion",
+      "kcal": 40,
+      "protein_cg": 110,
+      "carb_cg": 930,
+      "fat_cg": 10,
+      "fibre_cg": 170,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "red-quinoa",
+      "name": "red quinoa",
+      "kcal": 368,
+      "protein_cg": 1410,
+      "carb_cg": 6420,
+      "fat_cg": 610,
+      "fibre_cg": 700,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 170
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Raw."
+    },
+    {
+      "id": "red-wine",
+      "name": "red wine",
+      "kcal": 85,
+      "protein_cg": 10,
+      "carb_cg": 260,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 99,
+      "measures": {
+        "cup": 235
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Energy is mostly from the alcohol, which the macronutrients below do not account for."
+    },
+    {
+      "id": "rice",
+      "name": "white rice",
+      "kcal": 365,
+      "protein_cg": 710,
+      "carb_cg": 8000,
+      "fat_cg": 70,
+      "fibre_cg": 130,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 185
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Raw. Cooked rice is roughly a third of this by weight."
+    },
+    {
+      "id": "rosemary",
+      "name": "rosemary",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "salt",
+      "name": "salt",
+      "kcal": 0,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "tsp": 6,
+        "tbsp": 18
+      },
+      "negligible": false,
+      "source": "a definition, not a measurement",
+      "note": "No energy and none of the four macronutrients, at any amount, so it never stands in the way of adding a dish up. This table does not carry sodium, and nothing here should be read as a statement about how much salt is in anything."
+    },
+    {
+      "id": "seaweed",
+      "name": "seaweed",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "self-rising-flour",
+      "name": "self-rising flour",
+      "kcal": 354,
+      "protein_cg": 990,
+      "carb_cg": 7420,
+      "fat_cg": 100,
+      "fibre_cg": 270,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 125,
+        "tbsp": 8
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "sesame-oil",
+      "name": "sesame oil",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14,
+        "cup": 216
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "smoked-paprika",
+      "name": "smoked paprika",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "soy-milk",
+      "name": "soy milk",
+      "kcal": 33,
+      "protein_cg": 330,
+      "carb_cg": 180,
+      "fat_cg": 180,
+      "fibre_cg": 50,
+      "g_per_100ml": 103,
+      "measures": {
+        "cup": 245
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Unsweetened. Sweetened soy milk carries roughly twice the carbohydrate."
+    },
+    {
+      "id": "soy-sauce",
+      "name": "soy sauce",
+      "kcal": 53,
+      "protein_cg": 810,
+      "carb_cg": 490,
+      "fat_cg": 60,
+      "fibre_cg": 80,
+      "g_per_100ml": 115,
+      "measures": {
+        "tbsp": 18
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "spinach",
+      "name": "spinach",
+      "kcal": 23,
+      "protein_cg": 290,
+      "carb_cg": 360,
+      "fat_cg": 40,
+      "fibre_cg": 220,
+      "g_per_100ml": null,
+      "measures": {
+        "bunch": 200
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "split-pea",
+      "name": "split pea",
+      "kcal": 341,
+      "protein_cg": 2460,
+      "carb_cg": 6040,
+      "fat_cg": 120,
+      "fibre_cg": 2550,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 196
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, as bought."
+    },
+    {
+      "id": "sprouted-lentil",
+      "name": "sprouted lentil",
+      "kcal": 106,
+      "protein_cg": 900,
+      "carb_cg": 2210,
+      "fat_cg": 50,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Sprouted and raw. Fibre is not stated in the sources used, so it is left out rather than guessed."
+    },
+    {
+      "id": "squash",
+      "name": "squash",
+      "kcal": 26,
+      "protein_cg": 100,
+      "carb_cg": 650,
+      "fat_cg": 10,
+      "fibre_cg": 50,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 116
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Winter squash, raw flesh."
+    },
+    {
+      "id": "star-anise",
+      "name": "star anise",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "sugar",
+      "name": "sugar",
+      "kcal": 387,
+      "protein_cg": 0,
+      "carb_cg": 10000,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 200,
+        "tbsp": 12
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "sun-dried-tomato",
+      "name": "sun-dried tomato",
+      "kcal": 258,
+      "protein_cg": 1410,
+      "carb_cg": 5580,
+      "fat_cg": 300,
+      "fibre_cg": 1230,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Dried, not packed in oil. In oil is a different food."
+    },
+    {
+      "id": "sunflower-oil",
+      "name": "sunflower oil",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14,
+        "cup": 216
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "sunflower-seed",
+      "name": "sunflower seed",
+      "kcal": 584,
+      "protein_cg": 2080,
+      "carb_cg": 2000,
+      "fat_cg": 5150,
+      "fibre_cg": 860,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 140
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "sweet-potato",
+      "name": "sweet potato",
+      "kcal": 86,
+      "protein_cg": 160,
+      "carb_cg": 2010,
+      "fat_cg": 10,
+      "fibre_cg": 300,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 150
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "tofu",
+      "name": "tofu",
+      "kcal": 76,
+      "protein_cg": 810,
+      "carb_cg": 190,
+      "fat_cg": 480,
+      "fibre_cg": 30,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": "Firm, drained. A 'piece' of tofu is not weighed: blocks are sold at anything from 200 to 500 g."
+    },
+    {
+      "id": "tomato",
+      "name": "tomato",
+      "kcal": 18,
+      "protein_cg": 90,
+      "carb_cg": 390,
+      "fat_cg": 20,
+      "fibre_cg": 120,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 120
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "tomato-sauce",
+      "name": "tomato sauce",
+      "kcal": 29,
+      "protein_cg": 130,
+      "carb_cg": 640,
+      "fat_cg": 20,
+      "fibre_cg": 150,
+      "g_per_100ml": 103,
+      "measures": {},
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "turmeric",
+      "name": "turmeric",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "vanilla",
+      "name": "vanilla",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "vegetable-oil",
+      "name": "vegetable oil",
+      "kcal": 884,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 10000,
+      "fibre_cg": 0,
+      "g_per_100ml": 92,
+      "measures": {
+        "tbsp": 14,
+        "cup": 216
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "vinegar",
+      "name": "vinegar",
+      "kcal": 21,
+      "protein_cg": 0,
+      "carb_cg": 90,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 101,
+      "measures": {
+        "tbsp": 15,
+        "cup": 239
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "walnut",
+      "name": "walnut",
+      "kcal": 654,
+      "protein_cg": 1520,
+      "carb_cg": 1370,
+      "fat_cg": 6520,
+      "fibre_cg": 670,
+      "g_per_100ml": null,
+      "measures": {
+        "cup": 117
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "water",
+      "name": "water",
+      "kcal": 0,
+      "protein_cg": 0,
+      "carb_cg": 0,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 100,
+      "measures": {
+        "cup": 237,
+        "tbsp": 15
+      },
+      "negligible": false,
+      "source": "a definition, not a measurement",
+      "note": "Weighed exactly, and contributes nothing. Here so that a recipe is not reported as uncovered because of its water."
+    },
+    {
+      "id": "white-pepper",
+      "name": "white pepper",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "white-wine-vinegar",
+      "name": "white wine vinegar",
+      "kcal": 19,
+      "protein_cg": 0,
+      "carb_cg": 30,
+      "fat_cg": 0,
+      "fibre_cg": 0,
+      "g_per_100ml": 101,
+      "measures": {
+        "tbsp": 15,
+        "cup": 239
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "yeast",
+      "name": "yeast",
+      "kcal": null,
+      "protein_cg": null,
+      "carb_cg": null,
+      "fat_cg": null,
+      "fibre_cg": null,
+      "g_per_100ml": null,
+      "measures": {},
+      "negligible": true,
+      "source": "judgment, not a measurement",
+      "note": "Used in trace amounts. Counted as contributing nothing, which is a judgment about the amount and not a claim that it has no nutrition."
+    },
+    {
+      "id": "yellow-bell-pepper",
+      "name": "yellow bell pepper",
+      "kcal": 27,
+      "protein_cg": 100,
+      "carb_cg": 630,
+      "fat_cg": 20,
+      "fibre_cg": 90,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 120
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    },
+    {
+      "id": "zucchini",
+      "name": "zucchini",
+      "kcal": 17,
+      "protein_cg": 120,
+      "carb_cg": 310,
+      "fat_cg": 30,
+      "fibre_cg": 100,
+      "g_per_100ml": null,
+      "measures": {
+        "pc": 200
+      },
+      "negligible": false,
+      "source": "reference tables for raw ingredients",
+      "note": null
+    }
+  ]
+}

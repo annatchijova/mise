@@ -1,0 +1,199 @@
+{
+  "_comment": "What happens to an amount when the servings change. Most things multiply; seasoning does not, leavening does not, and some techniques are limited by the pan rather than by the recipe. Damping is a pair of integers, never a float. See docs/SCALING_SCHEMA.md.",
+  "version": 1,
+  "updated_on": "2026-09-05",
+  "author": "the author's kitchen",
+  "entries": [
+    {
+      "ingredient": "salt",
+      "role": null,
+      "technique": null,
+      "damping": [1, 2],
+      "note": "Salt scales at about half the rate. Double the stew and you want roughly one and a half times the salt, then you taste.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "kala-namak",
+      "role": null,
+      "technique": null,
+      "damping": [1, 2],
+      "note": "As salt. It is one.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "chili",
+      "role": null,
+      "technique": null,
+      "damping": [1, 2],
+      "note": "Heat builds on itself. Scale it at half and add more at the end if the pot can take it.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "merken",
+      "role": null,
+      "technique": null,
+      "damping": [1, 2],
+      "note": "Smoke and heat both compound. Half rate, then taste.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "bay-leaf",
+      "role": null,
+      "technique": null,
+      "damping": [1, 3],
+      "note": "One leaf does a big pot. Two do a very big one. Three make it medicinal.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "vanilla",
+      "role": null,
+      "technique": null,
+      "damping": [3, 4],
+      "note": "Close to linear, but vanilla is expensive and forgiving. Three quarters of the rate is plenty.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "liquid-smoke",
+      "role": null,
+      "technique": null,
+      "damping": [1, 3],
+      "note": "A drop is a decision. Doubling it is a different dish.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": "water",
+      "role": null,
+      "technique": null,
+      "damping": [3, 4],
+      "note": "A bigger pot loses proportionally less to evaporation, so it needs slightly less liquid than the multiplication says.",
+      "warn_above": null,
+      "warning": null
+    },
+
+    {
+      "ingredient": null,
+      "role": "spice",
+      "technique": "season",
+      "damping": [1, 2],
+      "note": "Seasoning scales at about half the rate, and then you taste. A doubled pot with doubled spice is a pot nobody can eat.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": null,
+      "role": "herb",
+      "technique": "season",
+      "damping": [3, 4],
+      "note": "Dried herbs compound less sharply than spices, but they still do.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": null,
+      "role": "acid",
+      "technique": "season",
+      "damping": [3, 4],
+      "note": "Acid is a finishing decision. Scale it at three quarters and correct at the end.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": null,
+      "role": "umami",
+      "technique": "season",
+      "damping": [3, 4],
+      "note": "Miso and soy sauce bring salt with them, and salt does not scale straight.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": null,
+      "role": "leavening",
+      "technique": "leaven",
+      "damping": [3, 4],
+      "note": "A bigger dough ferments faster than its size suggests, because the mass keeps itself warm. Three quarters of the yeast, and watch the dough rather than the clock.",
+      "warn_above": 2,
+      "warning": "Past double, do not scale the yeast at all — make two doughs. One enormous rise is uneven, and it is not something the recipe's times describe any more."
+    },
+    {
+      "ingredient": null,
+      "role": "fat",
+      "technique": "fry",
+      "damping": [3, 4],
+      "note": "The oil coats the pan, not the food. A wider pan needs a little more; twice the food does not need twice the oil.",
+      "warn_above": null,
+      "warning": null
+    },
+    {
+      "ingredient": null,
+      "role": "thickener",
+      "technique": "thicken",
+      "damping": [1, 1],
+      "note": "Thickener tracks the liquid it is thickening, so it scales straight.",
+      "warn_above": null,
+      "warning": null
+    },
+
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "brown",
+      "damping": [1, 1],
+      "note": "The amount scales; the pan does not.",
+      "warn_above": 2,
+      "warning": "Browning is limited by the surface of the pan, not by the recipe. Past double, cook it in batches or it will steam instead of browning, and the step will take far longer than the recipe says."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "fry",
+      "damping": [1, 1],
+      "note": "The amount scales; the pan does not.",
+      "warn_above": 2,
+      "warning": "Past double, fry in batches. A crowded pan drops its heat and everything goes soft."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "bake",
+      "damping": [1, 1],
+      "note": "Ingredients scale. Time and temperature do not.",
+      "warn_above": 2,
+      "warning": "Past double you need a second tin, not a deeper one. A deeper tin bakes the outside before the middle sets, and the recipe's time stops describing it."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "emulsify",
+      "damping": [1, 1],
+      "note": "Emulsions scale by volume without complaint.",
+      "warn_above": 4,
+      "warning": "A very large emulsion is harder to start and easier to split. Make it in two batches and fold them together."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "ferment",
+      "damping": [1, 1],
+      "note": "Brine and vegetable scale together, which is the whole point of a ratio.",
+      "warn_above": 3,
+      "warning": "A much bigger ferment is slower to cool and quicker to go wrong at the top. Keep everything under the brine and check it a day earlier than the recipe says."
+    },
+    {
+      "ingredient": null,
+      "role": null,
+      "technique": "whip",
+      "damping": [1, 1],
+      "note": "The volume scales; the bowl does not.",
+      "warn_above": 2,
+      "warning": "Past double, whip in two batches. An overfull bowl throws the mixture out before it holds air."
+    }
+  ]
+}

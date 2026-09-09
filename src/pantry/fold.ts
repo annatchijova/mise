@@ -8,10 +8,16 @@
 //      `qty: null, qty_known: false`. It is never rendered as zero and never guessed.
 //   2. A total is only as certain as its least certain part (see `weaker`).
 //   3. `stale` is derived from the clock, not stored. An item nobody has confirmed in N days says so.
+//   4. An expiry date somebody stated and an expiry date a table estimated are never the same thing.
+//      `expires_on` holds only what a source actually said. When a shelf-life table is supplied, the
+//      fold also derives `expiry_estimated_on` from the day the food entered the pantry, and
+//      `expiry_source` says which of the two the freshness was computed from. The estimate is derived
+//      at read time, exactly like `stale`, and is never written back into an event.
 import {
   type Confidence, type Location, type PantryEvent, type Unit,
   dayOf, daysBetween, fromMilli, isIsoDate, isIsoTimestamp, weaker,
 } from "./events.ts";
+import type { ShelfLife, ShelfLifeMatch } from "./shelf_life.ts";
 
 export type Freshness = "expired" | "urgent" | "soon" | "fresh" | "unknown";
 
@@ -25,7 +31,16 @@ export type PantryItem = {
   confidence: Confidence;
   /** Days since the newest event that still contributes to this line. */
   age_days: number;
+  /** Only what a source actually stated. Never a table's number. */
   expires_on: string | null;
+  /** What the shelf-life table works out from the day this food arrived, when there is a table and
+   *  no stated date. Advice, and labelled as such everywhere it travels. */
+  expiry_estimated_on: string | null;
+  /** Which of the two `days_to_expiry` and `freshness` were computed from. */
+  expiry_source: "stated" | "estimated" | "unknown";
+  /** Why the estimate is what it is: "spinach in the fridge", or the wider row that answered. */
+  expiry_note: string | null;
+  expiry_match: ShelfLifeMatch | null;
   days_to_expiry: number | null;
   freshness: Freshness;
   origins: string[];
@@ -40,6 +55,8 @@ export type FoldOptions = {
   /** Expiry buckets, in days. Defaults: urgent within 1, soon within 3. */
   urgentWithinDays?: number;
   soonWithinDays?: number;
+  /** Optional. Without it the fold behaves exactly as before: no dates but the ones stated. */
+  shelfLife?: ShelfLife;
 };
 
 export type FoldResult = {
@@ -63,12 +80,20 @@ type Bucket = {
   expires_on: string | null;
   origins: Set<string>;
   last_ts: string;
+  /** When this food arrived. A shelf life counts from there, not from the last time somebody used
+   *  a little of it — cooking with the spinach does not make the spinach younger. */
+  first_ts: string;
 };
 
 /** One line of the pantry is one (ingredient, unit, location). Units are never converted into each
  *  other: 2 cups of flour and 500 g of flour are two honest lines, not one invented sum. */
 function key(e: { ingredient_id: string; unit: Unit; location: Location }): string {
   return [e.ingredient_id, e.unit, e.location].join("|");
+}
+
+/** A YYYY-MM-DD date, n days on. */
+function addDays(date: string, n: number): string {
+  return new Date(Date.parse(`${date}T00:00:00Z`) + n * 86_400_000).toISOString().slice(0, 10);
 }
 
 function freshnessOf(days: number | null, urgent: number, soon: number): Freshness {
@@ -85,7 +110,7 @@ function reset(e: PantryEvent): Bucket {
     ingredient_id: e.ingredient_id, unit: e.unit, location: e.location,
     milli: 0, known: true, present: false,
     confidence: e.confidence,
-    expires_on: null, origins: new Set<string>(), last_ts: e.ts,
+    expires_on: null, origins: new Set<string>(), last_ts: e.ts, first_ts: e.ts,
   };
 }
 
@@ -178,7 +203,14 @@ export function foldPantry(events: PantryEvent[], opts: FoldOptions): FoldResult
     if (b.known && b.milli === 0 && b.unit !== "to_taste") continue; // used up
     const age = daysBetween(dayOf(b.last_ts), today);
     const confidence: Confidence = age >= staleAfter ? "stale" : b.confidence;
-    const daysToExpiry = b.expires_on === null ? null : daysBetween(today, b.expires_on);
+
+    // A stated date always wins. The table is only consulted where there is nothing better, and what
+    // it produces is kept in its own field under its own label.
+    const guess = b.expires_on === null && opts.shelfLife ? opts.shelfLife(b.ingredient_id, b.location) : null;
+    const estimated = guess === null ? null : addDays(dayOf(b.first_ts), guess.days);
+    const effective = b.expires_on ?? estimated;
+    const daysToExpiry = effective === null ? null : daysBetween(today, effective);
+
     items.push({
       ingredient_id: b.ingredient_id,
       unit: b.unit,
@@ -188,6 +220,10 @@ export function foldPantry(events: PantryEvent[], opts: FoldOptions): FoldResult
       confidence,
       age_days: age,
       expires_on: b.expires_on,
+      expiry_estimated_on: estimated,
+      expiry_source: b.expires_on !== null ? "stated" : estimated !== null ? "estimated" : "unknown",
+      expiry_note: guess?.note ?? null,
+      expiry_match: guess?.match ?? null,
       days_to_expiry: daysToExpiry,
       freshness: freshnessOf(daysToExpiry, urgent, soon),
       origins: [...b.origins].sort(),

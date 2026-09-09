@@ -5,6 +5,7 @@
 // connects a source, drives the simulated fridge for the demo, and looks at the pantry with every
 // badge the data carries. They are server-rendered, inline-styled, and read the same fold the tools
 // read — there is no second model of the pantry.
+import type { PantryConfidence } from "./pantry/audit.ts";
 import { displayName } from "./pantry/events.ts";
 import type { Freshness, PantryItem } from "./pantry/fold.ts";
 import { esc } from "./recipe_jsonld.ts";
@@ -67,16 +68,28 @@ function qtyCell(i: PantryItem): string {
   return `${i.qty} ${esc(i.unit)}`;
 }
 
+/** A date somebody gave is printed. A date the shelf-life table worked out is printed too, and
+ *  marked, with the row that produced it as the tooltip — advice should be legible as advice. */
 function expiryCell(i: PantryItem): string {
   const [cls, label] = FRESH[i.freshness];
-  const when = i.expires_on ? ` <span style="color:var(--dim)">${esc(i.expires_on)}</span>` : "";
-  return `<span class="dot ${cls}" style="background:currentColor"></span>${label}${when}`;
+  const light = `<span class="dot ${cls}" style="background:currentColor"></span>${label}`;
+  if (i.expires_on) return `${light} <span style="color:var(--dim)">${esc(i.expires_on)}</span>`;
+  if (i.expiry_source === "estimated" && i.expiry_estimated_on) {
+    const why = i.expiry_note ? ` title="${esc(i.expiry_note)}"` : "";
+    return `${light} <span style="color:var(--dim)"${why}>~${esc(i.expiry_estimated_on)}</span> <span class="badge mute">estimate</span>`;
+  }
+  return light;
 }
 
 export type SourceLine = { label: string; kind: string; synced_at: string | null };
 
 /** The pantry, exactly as the fold sees it. Every reservation the data carries is on the page. */
-export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now: string, opts: { location?: string; invalid?: number } = {}): string {
+export function renderPantryPage(
+  items: PantryItem[],
+  sources: SourceLine[],
+  now: string,
+  opts: { location?: string; invalid?: number; confidence?: PantryConfidence } = {},
+): string {
   const invalid = opts.invalid ?? 0;
   const warning = invalid > 0
     ? `<div class="card" style="border-color:var(--bad)"><span class="badge bad">warning</span> ${invalid} ledger record${invalid === 1 ? "" : "s"} could not be read (bad timestamp or date) and ${invalid === 1 ? "is" : "are"} not shown. The pantry below is what the rest of the ledger says.</div>`
@@ -101,13 +114,23 @@ export function renderPantryPage(items: PantryItem[], sources: SourceLine[], now
     : `<table><thead><tr><th>Item</th><th class="num">Amount</th><th>Confidence</th><th>Expiry</th><th>Reported by</th></tr></thead><tbody>
 ${rows}
 </tbody></table>
-<p class="legend"><span><span class="badge ok">confirmed</span> you said it, or scanned it</span><span><span class="badge warn">inferred</span> a device or a recipe deduced it</span><span><span class="badge mute">stale</span> nobody has confirmed it in a while</span></p>`;
+<p class="legend"><span><span class="badge ok">confirmed</span> you said it, or scanned it</span><span><span class="badge warn">inferred</span> a device or a recipe deduced it</span><span><span class="badge mute">stale</span> nobody has confirmed it in a while</span><span><span class="badge mute">estimate</span> no date was given; the shelf-life table worked one out</span></p>`;
 
   const sourceLines = sources.length === 0
     ? `<p class="sub">No connected sources. Voice only.</p>`
     : `<p class="sub">${sources.map((s) => `${esc(s.label)} <span style="color:var(--dim)">(${esc(s.kind)}${s.synced_at ? `, last report ${esc(s.synced_at.slice(0, 16).replace("T", " "))}` : ", never reported"})</span>`).join(" · ")}</p>`;
 
-  return shell("Pantry", `${warning}${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
+  // One figure for the whole kitchen. The per-row badges are a disclaimer; this is the fact.
+  const c = opts.confidence;
+  const bar = c === undefined || c.total === 0 ? "" : `<div class="card">
+<p style="margin:0 0 .5rem"><strong style="font-size:1.6rem">${c.score}%</strong> <span style="color:var(--dim)">of the pantry rests on something you said — ${esc(c.score_basis)}.</span></p>
+<div style="display:flex;height:.5rem;border-radius:3px;overflow:hidden;background:var(--mutebg)">
+<div style="width:${c.confirmed_pct}%;background:var(--ok)"></div><div style="width:${c.inferred_pct}%;background:var(--warn)"></div><div style="width:${c.stale_pct}%;background:var(--mute)"></div>
+</div>
+<p class="legend" style="margin-top:.5rem"><span>${c.confirmed} confirmed</span><span>${c.inferred} inferred</span><span>${c.stale} unconfirmed</span><span>${c.unknown_amount} with no amount</span><span>${c.estimated_dates} dated by the shelf-life table</span></p>
+</div>`;
+
+  return shell("Pantry", `${warning}${bar}${filter}${table}<h2>Sources</h2>${sourceLines}<p class="legend">As of ${esc(now.slice(0, 16).replace("T", " "))} UTC. Amounts never convert between units, and an unknown amount is never shown as zero.</p>`,
     `${items.length} line${items.length === 1 ? "" : "s"}, ordered by what goes off first.`);
 }
 
@@ -163,4 +186,88 @@ SmartThings device status; its capability id is unverified against a real Family
 })();
 </script>`;
   return shell("Simulated fridge", body, "Drive the demo's fridge by hand. Then look at the pantry.");
+}
+
+/** The index of what this server publishes as data. Its job is to make the caveats as easy to read
+ *  as the download link, which is the opposite of how most open data is presented. */
+export function renderDataIndexPage(
+  entries: { path: string; title: string; summary: string; schema_doc: string; caveat: string | null; rows: number; version: number; updated_on: string }[],
+  license: string,
+): string {
+  const cards = entries.map((e) => `<div class="card">
+<h3 style="margin:0 0 .3rem;font:600 1rem/1.3 ui-serif,Georgia,serif"><a href="${esc(e.path)}">${esc(e.title)}</a></h3>
+<p style="margin:0 0 .5rem">${esc(e.summary)}</p>
+<p class="legend" style="margin:0"><span>${e.rows} rows</span><span>version ${e.version}</span><span>updated ${esc(e.updated_on)}</span><span><code>${esc(e.schema_doc)}</code></span></p>
+${e.caveat ? `<p style="margin:.6rem 0 0"><span class="badge warn">read this first</span> ${esc(e.caveat)}</p>` : ""}
+</div>`).join("\n");
+
+  const body = `<p>Three tables of a cook's judgment, and the recipes they describe. All of it under
+${esc(license)}, all of it versioned, and every file carries its own provenance and its own caveats
+in the payload — a warning that lives only in a repository somebody did not clone has not been given
+to them.</p>
+${cards}
+<h2>The recipes</h2>
+<div class="card"><p><a href="/recipes">Every recipe</a> is served as a page whose
+<code>schema.org/Recipe</code> JSON-LD any recipe app can import, with the book's original Spanish
+kept verbatim beside the English. <code>docs/RECIPE_SCHEMA.md</code> is the contract.</p></div>
+<h2>What is not here</h2>
+<div class="card"><p>The pantry, the plans and the baskets are somebody's kitchen and are not
+published. The week's shopping list travels as a <code>schema.org/ItemList</code> inside the
+<code>cart_from_plan</code> response, so it goes to the person who asked for it and to nobody
+else.</p></div>`;
+  return shell("Open data", body, "The tables, with their provenance and their reservations.");
+}
+
+// --- the demo store ---------------------------------------------------------------------------
+
+/** The refund policy the UCP profile links to. A demo store still has to have one: the checkout
+ *  reference asks for the link, and a link that 404s is worse than no link. */
+export function renderRefundPolicyPage(storeName: string): string {
+  const body = `<div class="card">
+<p><strong>${esc(storeName)} is a demonstration store.</strong> It exists so that an add-on can be shown
+buying groceries end to end. Nothing is dispatched, no card is charged, and the payment instruments
+it offers are fictional.</p>
+<p>If it were a real shop, this page would carry the refund terms the checkout reference requires:
+the window, what a refund covers, how to start one, and how long it takes. It does not, because
+promising terms nobody will honour is worse than saying so.</p>
+</div>
+<h2>What is real about it</h2>
+<div class="card">
+<p>The prices, the stock counts and the allergen declarations are real data in
+<code>data/catalog.json</code>, and they are the only source the checkout uses — a request cannot
+tell this store what something costs. Completing a checkout writes what you bought into the pantry
+ledger, which is the point of the whole exercise.</p>
+</div>`;
+  return shell("Refund policy", body, "Demonstration store — nothing here ships.");
+}
+
+/** A receipt, reachable by its order id. The id is the capability: unguessable, and enough on its
+ *  own, the way a receipt link normally works. */
+export function renderReceiptPage(order: {
+  order_id: string;
+  placed_at: string;
+  currency: string;
+  lines: { title: string; quantity: number; total_cents: number }[];
+  totals: { subtotal_cents: number; tax_cents: number; shipping_cents: number; total_cents: number };
+  disclosures: string[];
+}): string {
+  const cents = (c: number) => `${order.currency === "USD" ? "$" : `${order.currency} `}${Math.floor(c / 100)}.${String(c % 100).padStart(2, "0")}`;
+  const rows = order.lines
+    .map((l) => `<tr><td>${esc(l.title)}</td><td class="num">${l.quantity}</td><td class="num">${esc(cents(l.total_cents))}</td></tr>`)
+    .join("");
+  const body = `<div class="card">
+<table>
+<thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Total</th></tr></thead>
+<tbody>${rows}</tbody>
+<tfoot>
+<tr><td>Subtotal</td><td></td><td class="num">${esc(cents(order.totals.subtotal_cents))}</td></tr>
+<tr><td>Tax</td><td></td><td class="num">${esc(cents(order.totals.tax_cents))}</td></tr>
+<tr><td>Delivery</td><td></td><td class="num">${esc(cents(order.totals.shipping_cents))}</td></tr>
+<tr><td><strong>Paid</strong></td><td></td><td class="num"><strong>${esc(cents(order.totals.total_cents))}</strong></td></tr>
+</tfoot>
+</table>
+</div>
+${order.disclosures.length ? `<h2>Disclosures</h2><div class="card">${order.disclosures.map((d) => `<p>${esc(d)}</p>`).join("")}</div>` : ""}
+<p class="legend">Order ${esc(order.order_id)} · ${esc(order.placed_at)} · demonstration store, nothing was dispatched and no card was charged.</p>`;
+  return shell("Receipt", body, "");
 }

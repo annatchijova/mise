@@ -44,11 +44,15 @@ export type Recipe = {
   review: { needs_review?: boolean; reasons?: string[] };
 };
 
-/** The data directory. Resolved one level up from this module, which holds both for src/*.ts under
- *  the type-stripping test runner and for the esbuild bundle in dist/ — every data loader goes
- *  through here so the two never disagree. */
+/** The project root. One level up from this module, which resolves the same way for src/*.ts under
+ *  the type-stripping test runner and for the esbuild bundle in dist/ — every loader goes through
+ *  here so the two never disagree. */
+export function rootDir(): string {
+  return fileURLToPath(new URL("..", import.meta.url));
+}
+
 export function dataDir(): string {
-  return process.env.DATA_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "data");
+  return process.env.DATA_DIR ?? join(rootDir(), "data");
 }
 
 export function recipesDir(): string {

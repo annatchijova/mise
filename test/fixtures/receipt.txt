@@ -1,0 +1,23 @@
+        SUPERMERCADO LA ESQUINA
+        Av. Rivadavia 4820, CABA
+        CUIT 30-71234567-8
+        TICKET 000123-00045678
+        2026-09-04  18:42
+-----------------------------------
+2 X ONION                      1.98
+CHICKPEAS 400G                 1.29
+RED LENTILS 500 G              2.15
+BANANAS 0.842 kg @ 2.19/kg     1.84
+OLIVE OIL 1 L                  8.99
+TOMATOES                       3.40
+1234567890123                  0.99
+CARROT 1KG                     1.75
+KIMCHI 300G                    4.50
+-----------------------------------
+SUBTOTAL                      26.89
+VAT 21%                        5.65
+TOTAL                         32.54
+CASH                          40.00
+CHANGE                         7.46
+        THANK YOU
+        www.laesquina.com.ar
