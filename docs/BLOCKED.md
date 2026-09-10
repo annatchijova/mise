@@ -288,7 +288,7 @@ Kept here so the two lists can be read together. Every item below runs, has test
 is exercised end to end by `npm run check`:
 
 - the pantry ledger, its fold, and the confidence levels;
-- `recipe_search`, `pantry_update`, `pantry_list`;
+- `recipe_search`, `pantry_update`, `pantry_list`, `zero_waste`;
 - the signed ingest door, the simulated fridge, the barcode adapter, the account web;
 - recipe exchange by JSON-LD in both directions;
 - the substitution table and `substitute`, with its fallback chain and its coverage report;

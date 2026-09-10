@@ -56,7 +56,16 @@ Three beats, in this order:
    and the swap goes into a queue for a curator rather than into the table. Say that out loud: the
    table grows when a person edits it, and at no other moment.
 
-## 4 · The thing nobody else shows (2:20 – 2:50)
+## 3.5 · What is left over, with a name (2:20 – 2:35)
+
+> *"The tofu expires tomorrow and the lettuce looks rough. What can I do?"*
+
+`zero_waste` does not search for "a tofu recipe" — it searches the recipes already known, ranks by
+what expires soonest, and returns one paired with a specific technique lesson: not "cook better," but
+*"build contrast,"* with a concrete plating exercise. **Zero waste does not mean zero honesty**: it
+never says how much money was saved or how much was not emitted, because it never measured either.
+
+## 4 · The thing nobody else shows (2:35 – 3:05)
 
 > *"How many calories is that?"*
 
@@ -69,7 +78,7 @@ explains that the recipe does not state its amounts — most home cooking does n
 claim that is actually provable instead. **A floor is not a hedge. It is a different and stronger
 kind of statement**, and it is available precisely because nothing here is willing to guess.
 
-## 5 · Six weeks later (2:50 – 3:10)
+## 5 · Six weeks later (3:05 – 3:25)
 
 > *"How's the sauerkraut?"*
 
@@ -80,7 +89,7 @@ plan a person wrote for that step.
 Say what it cannot do, in the video: it cannot ring you. It answers when asked. Naming a limitation
 on camera costs eight seconds and buys the credibility of everything else in the three minutes.
 
-## 6 · The shop (3:10 – 3:30)
+## 6 · The shop (3:25 – 3:45)
 
 Cart from the plan, allergens disclosed, checkout, and the pantry already knows. Keep it brisk — it
 is the least surprising part of the demo, and its job is to close the loop rather than to impress.
