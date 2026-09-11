@@ -285,3 +285,50 @@ Kept here because each one will be suggested by somebody, and the answer should 
 - **A second recipe corpus scraped from the web.** The recipes here come from the author's own books,
   with the original text kept verbatim beside every translation. That provenance is the reason the
   data can be published at all.
+
+---
+
+## 6 · Content backlog: written, real, not yet modeled
+
+The author's own vegan-cooking notes, received 2026-09-10 and kept verbatim in
+`docs/content-drafts/`, deliberately not rushed into `data/recipes/` under hackathon time pressure —
+modeling a recipe correctly (id, role, technique per ingredient, timed and dependent steps, source) is
+real work per recipe, and this content deserves it done carefully rather than fast. Two pieces of it *were* pulled in immediately because they slotted
+into the existing zero-waste mechanism without inventing a new one: a `ferment` technique lesson
+(`data/zero_waste.json`, from the tepache/scrap-soda notes) and `data/regrow_tips.json` (from the
+"regrowing in water" section of the first scrap compendium). The rest, in the order it arrived:
+
+- **Two scrap-reuse compendiums** (~200 tips organized by ingredient/part — citrus peel, banana peel,
+  pineapple skin, potato skin, stems, cooking water, seeds, and non-cooking uses: cleaning, beauty,
+  garden). **What it buys:** a much bigger, real source for zero-waste content beyond technique
+  lessons. **What it costs:** a genuinely new data shape — keyed by ingredient/part, not by cooking
+  technique, closer in kind to `regrow_tips.json` than to `zero_waste.json`'s lessons — plus deciding
+  which of ~200 tips are in scope for a cooking assistant versus a general household-tips app.
+  **Holds the line:** yes, same discipline as everything else here, just a table this project does
+  not have yet.
+- **Ten soup/stew recipes, base + "premium" upgrade** and a second pass with **real professional
+  technique** (roux, deglazing, clarification with a raft, a proper dark gumbo roux, mole built in
+  layers). **What it buys:** recipes with far more technique depth than most of the current corpus —
+  several map directly onto the `learning` mechanism's existing `technique` field (`emulsify`,
+  `simmer`, `brown` are already used; this content would justify lessons for `thicken` and others
+  still without one). **What it costs:** ~15-20 recipes structured to `docs/RECIPE_SCHEMA.md`,
+  reviewed like every other curated row.
+- **Tofu → ricotta → okara-milanesas**, a chain where each recipe's byproduct (whey, okara) feeds the
+  next. **What it buys:** the clearest possible demonstration of the zero-waste thesis inside the
+  recipe corpus itself, not bolted on — a byproduct becoming the next dish's main ingredient, with the
+  same author-attributed rigor as the rest of the data. **What it costs:** the schema has no concept
+  of "this recipe's output is that recipe's input" yet; modeling the chain honestly, not just as three
+  independent recipes that happen to share an ingredient, is new design, not data entry.
+- **A full plant-milk and horchata guide** (21 milks, 3 horchata traditions, with attribution per
+  tradition). **What it buys:** reference material, and pulp-reuse notes for milks not already in
+  `data/zero_waste.json`'s orbit. **What it costs:** this is closer to a `docs/` reference document
+  than a recipe — it is a method with variants, not a single dish.
+- **Microwave desserts with real technique** (why a microwave cooks differently from an oven,
+  headspace, residual cooking, staged power/time) and **budget milanesas/burgers that do not fall
+  apart** (moisture/binder/cold as three variables, not one trick). **What it buys:** two more places
+  where the "explain the why, not just the steps" discipline the soup notes already model could
+  strengthen `Step.text` beyond what is there today. **What it costs:** same as the soup recipes —
+  proper modeling, no shortcuts.
+
+None of this is a commitment or a queue order — it is what exists, written down once so a later
+session does not have to ask the author to resend it.

@@ -61,6 +61,18 @@
         "en": "Explore arrangement and color with the prepared ingredients already in the recipe.",
         "es": "Explorá disposición y color con los ingredientes preparados que ya incluye la receta."
       }
+    },
+    {
+      "technique": "ferment",
+      "title": { "en": "Let the scraps do the work", "es": "Dejá que los restos trabajen solos" },
+      "practice": {
+        "en": "Follow the recipe's fermentation step and time; look for gentle bubbling as the sign it is active, not a fixed clock.",
+        "es": "Seguí el paso y el tiempo de fermentación de la receta; el burbujeo suave es la señal de que está activo, no un reloj fijo."
+      },
+      "presentation": {
+        "en": "Serve chilled, in a small glass, with a thin peel of citrus on the rim rather than mixed in.",
+        "es": "Serví bien frío, en un vaso chico, con una tira fina de cáscara cítrica en el borde en vez de mezclada adentro."
+      }
     }
   ]
 }

@@ -17,6 +17,18 @@ export function loadZeroWasteLessons(): Lessons {
   return table;
 }
 
+const regrowTipSchema = z.object({ ingredient_id: z.string().min(1), en: z.string().min(1), es: z.string().min(1) });
+const regrowTableSchema = z.object({ version: z.number().int().positive(), status: z.string().min(1), tips: z.array(regrowTipSchema) });
+export type RegrowTips = z.infer<typeof regrowTableSchema>;
+
+/** Regrowing is not a recipe technique — it is a tip about the scrap itself, offered alongside a
+ *  matched recipe rather than gated by one. Keyed by ingredient, not by what the recipe does with it. */
+export function loadRegrowTips(): RegrowTips {
+  const table = regrowTableSchema.parse(JSON.parse(readFileSync(join(dataDir(), "regrow_tips.json"), "utf8")));
+  if (new Set(table.tips.map((t) => t.ingredient_id)).size !== table.tips.length) throw new Error("Duplicate regrow tip ingredient");
+  return table;
+}
+
 /** True for a pantry line no suggestion should ever be built on. */
 function usable(i: PantryItem): boolean {
   return i.freshness !== "expired" && i.confidence !== "stale" && (!i.qty_known || (i.qty ?? 0) > 0);
@@ -26,6 +38,7 @@ export function zeroWaste(
   recipes: Recipe[],
   items: PantryItem[],
   lessons: Lessons,
+  regrowTips: RegrowTips,
   input: { locale?: "en" | "es"; limit?: number; max_minutes?: number } = {},
 ) {
   const locale = input.locale ?? "en";
@@ -46,6 +59,11 @@ export function zeroWaste(
         .filter((l) => techniques.has(l.technique))
         .sort((a, b) => compare(a.technique, b.technique))
         .map((l) => ({ technique: l.technique, title: l.title[locale], practice: l.practice[locale], presentation: l.presentation[locale] }));
+      // Offered alongside the recipe, not gated by it: a regrow tip is about the scrap, not the dish.
+      const regrow = regrowTips.tips
+        .filter((t) => urgent.includes(t.ingredient_id))
+        .sort((a, b) => compare(a.ingredient_id, b.ingredient_id))
+        .map((t) => ({ ingredient_id: t.ingredient_id, tip: t[locale] }));
       return {
         recipe_id: r.id,
         title: locale === "es" ? r.title_es : r.title,
@@ -60,6 +78,7 @@ export function zeroWaste(
           .sort((a, b) => compare(`${a.ingredient_id}|${a.unit}|${a.location}`, `${b.ingredient_id}|${b.unit}|${b.location}`)),
         coverage_percent: ids.length ? Math.floor((100 * used.length) / ids.length) : 0,
         learning,
+        regrow,
         reason:
           locale === "es"
             ? `${urgent.length} ingredientes próximos a vencer; ${used.length} de ${ids.length} ingredientes presentes.`
@@ -87,6 +106,7 @@ export function zeroWaste(
   return {
     lesson_version: lessons.version,
     lesson_status: lessons.status,
+    regrow_tip_version: regrowTips.version,
     candidates: candidates.slice(0, Math.max(1, Math.min(10, input.limit ?? 3))),
     total: candidates.length,
     excluded: items

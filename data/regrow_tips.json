@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "status": "curated home-kitchen regrow tips; not horticultural or food-safety advice",
+  "tips": [
+    {
+      "ingredient_id": "green-onion",
+      "en": "Leave 2-3 cm of the white base in shallow water; it regrows in 3-7 days and can be cut again several times.",
+      "es": "Dejá 2-3 cm de la base blanca en agua a media altura; rebrota en 3-7 días y se puede repetir varias veces."
+    },
+    {
+      "ingredient_id": "celery",
+      "en": "Stand the 2-3 cm base in shallow water, misting the top; new leaves grow from the center within days, then it can move to soil.",
+      "es": "Base de 2-3 cm en agua poco profunda, rociando la parte superior; en días salen hojas nuevas del centro, luego se puede pasar a tierra."
+    },
+    {
+      "ingredient_id": "garlic",
+      "en": "A clove in water or soil sprouts into garlic scapes — milder flavor, good in a saute.",
+      "es": "Un diente en agua o tierra brota en ajetes, de sabor suave, ideales para salteados."
+    },
+    {
+      "ingredient_id": "ginger",
+      "en": "A piece with visible 'eyes' regrows slowly (weeks to months) in moist soil.",
+      "es": "Un trozo con 'ojos' en tierra húmeda rebrota lentamente (semanas o meses)."
+    },
+    {
+      "ingredient_id": "sweet-potato",
+      "en": "Half-submerged in water it sprouts slips that can be transplanted.",
+      "es": "Sumergida a la mitad en agua saca brotes ('slips') que se pueden trasplantar."
+    },
+    {
+      "ingredient_id": "basil",
+      "en": "A stem cutting roots in water within days and can be moved to a pot.",
+      "es": "Un esqueje en agua enraíza en días y se puede pasar a maceta."
+    },
+    {
+      "ingredient_id": "potato",
+      "en": "A piece with one eye, cut and planted in soil, can grow a new plant.",
+      "es": "Cortar con un ojo cada trozo y plantar en tierra."
+    },
+    {
+      "ingredient_id": "carrot",
+      "en": "The cut top in water grows edible greens, though not a new root.",
+      "es": "La parte superior en agua da hojas verdes comestibles, aunque no vuelve a crecer la raíz."
+    },
+    {
+      "ingredient_id": "beetroot",
+      "en": "Same as carrot: the top in water grows edible greens, not a new root.",
+      "es": "Igual que la zanahoria: la parte superior en agua da hojas verdes comestibles, no una raíz nueva."
+    }
+  ]
+}

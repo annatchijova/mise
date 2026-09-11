@@ -27,7 +27,7 @@ import {
 } from "./substitutions.ts";
 import { renderLinkAccountPage, renderPantryPage, renderSimFridgePage, type SourceLine } from "./pages.ts";
 import { foldPantry } from "./pantry/fold.ts";
-import { loadZeroWasteLessons, zeroWaste } from "./zero_waste.ts";
+import { loadRegrowTips, loadZeroWasteLessons, zeroWaste } from "./zero_waste.ts";
 import { buildShelfLife, loadShelfLife, rolesFromRecipes } from "./pantry/shelf_life.ts";
 import { type AuditReason, auditQuestions, confidenceOf, confidenceSentence } from "./pantry/audit.ts";
 import { UNITS, voiceEvents } from "./pantry/voice.ts";
@@ -93,6 +93,7 @@ const ORIGIN = new URL(BASE_URL).origin;
 
 const recipes: Recipe[] = loadRecipes();
 const zeroWasteLessons = loadZeroWasteLessons();
+const regrowTips = loadRegrowTips();
 const byId = new Map(recipes.map((r) => [r.id, r]));
 const substitutions = loadSubstitutions();
 const substitutionIndex = indexSubstitutions(substitutions);
@@ -395,6 +396,7 @@ function buildServer(): McpServer {
       outputSchema: {
         lesson_version: z.number().int(),
         lesson_status: z.string(),
+        regrow_tip_version: z.number().int(),
         candidates: z.array(
           z.object({
             recipe_id: z.string(), title: z.string(), minutes: z.number().int(),
@@ -410,6 +412,7 @@ function buildServer(): McpServer {
             ),
             coverage_percent: z.number().int(),
             learning: z.array(z.object({ technique: z.string(), title: z.string(), practice: z.string(), presentation: z.string() })),
+            regrow: z.array(z.object({ ingredient_id: z.string(), tip: z.string() })),
             reason: z.string(),
           }),
         ),
@@ -423,7 +426,7 @@ function buildServer(): McpServer {
         return { isError: true, content: [{ type: "text", text: args.locale === "es" ? "Vinculá tu cuenta para consultar la despensa." : "Link your account to use the pantry." }] };
       }
       const { fold } = await pantryFor(DEMO_USER, new Date().toISOString());
-      const result = zeroWaste(recipes, fold.items, zeroWasteLessons, args);
+      const result = zeroWaste(recipes, fold.items, zeroWasteLessons, regrowTips, args);
       const spoken =
         result.total === 0
           ? args.locale === "es" ? "No encontré una receta que aproveche lo que tenés." : "I could not find a recipe that uses what you have."
