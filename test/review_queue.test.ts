@@ -8,10 +8,29 @@
 // by a rule the server no longer uses.
 import { strict as assert } from "node:assert";
 import { execFileSync } from "node:child_process";
+import { copyFileSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
 
 import { loadRecipes } from "../src/recipes.ts";
 import { indexSubstitutions, loadSubstitutions, substitutionsFor } from "../src/substitutions.ts";
+
+const SHELF = "data/shelf_life.json";
+
+/** Run something with the shelf-life table restored afterwards, whatever happens. Same idiom as
+ *  test/reviews.test.ts -- duplicated rather than imported, because there is no shared test-helper
+ *  module in this project and one file's private fixture is not worth inventing one for. */
+function withShelf<T>(fn: () => T): T {
+  const backup = mkdtempSync(join(tmpdir(), "shelf-"));
+  const saved = join(backup, "shelf_life.json");
+  copyFileSync(SHELF, saved);
+  try {
+    return fn();
+  } finally {
+    copyFileSync(saved, SHELF);
+  }
+}
 
 type QueueItem = {
   table: string;
@@ -117,16 +136,41 @@ test("a row nothing reaches scores nothing, and says that rather than saying not
   }
 });
 
-test("a safety row outranks everything, and carries the reason it is one", () => {
-  // docs/BLOCKED.md §H.1 names the garlic-oil row by hand. The queue must not bury it under a row
-  // that is merely popular, and the flag must be curated rather than sniffed out of a note.
-  const all = queue();
-  const top = all[0];
-  assert.match(top.row, /garlic-oil/);
-  const care = top.because.find((b) => /safety matter/.test(b.why));
-  assert.ok(care, "the top row is top for a stated reason");
-  assert.ok(care.points >= 100, "and by a distance, so popularity cannot overtake it");
-  assert.match(care.why, /botulism/, "the reason is the row's own, not the script's");
+test("a safety row outranks everything while unreviewed, and leaves the queue once it is not", () => {
+  // docs/BLOCKED.md §H.1 names the garlic-oil row by hand, and it carries `caution: true` for
+  // exactly this reason. Asserting that THIS row is always item [0] would make the test depend on
+  // nobody ever reviewing it -- which is backwards: reviewing it is the point of the whole mechanism,
+  // and the day somebody does their job and signs it off, the row is *supposed* to drop out of the
+  // top spot (see test/reviews.test.ts: "a signed row leaves the queue"). So this tests the
+  // *property* the row is the live example of, not the row's permanent rank.
+  //
+  // Un-reviewing garlic-oil temporarily (restored after) re-exercises the real caution mechanism —
+  // its real curated `caution_reason`, mentioning botulism -- without freezing the corpus in a state
+  // where the row can never legitimately be reviewed again.
+  withShelf(() => {
+    const shelf = JSON.parse(readFileSync(SHELF, "utf8")) as { entries: Record<string, unknown>[] };
+    const row = shelf.entries.find((e) => e.ingredient === "garlic-oil" && e.location === "fridge")!;
+    assert.ok(row.caution, "the fixture for this test is the corpus's one caution row");
+    delete row.reviewed;
+    writeFileSync(SHELF, JSON.stringify(shelf, null, 2));
+
+    const top = queue()[0];
+    assert.match(top.row, /garlic-oil/, "an unreviewed caution row outranks everything, popularity included");
+    const care = top.because.find((b) => /safety matter/.test(b.why));
+    assert.ok(care, "the top row is top for a stated reason");
+    assert.ok(care.points >= 100, "and by a distance, so popularity cannot overtake it");
+    assert.match(care.why, /botulism/, "the reason is the row's own, not the script's");
+  });
+});
+
+test("...and once reviewed, that same row leaves the queue rather than staying frozen at the top", () => {
+  // The complement of the test above, run against the real, currently-signed row -- so the two
+  // together cover both states of the one mechanism, instead of only ever exercising one of them.
+  const item = queue("shelf_life").find((i) => i.row === "garlic-oil / fridge")!;
+  assert.ok(item, "the row still exists and still answers under its real key");
+  assert.equal(item.score, 0, "a reviewed row is not open work any more");
+  assert.equal(item.because.length, 1, "but it reads as done, not as absent");
+  assert.match(item.because[0].why, /corrected by/, "this row's real history: 7 days was corrected to 4");
 });
 
 test("the queue ranks by what being wrong would cost, never by how likely it is", () => {

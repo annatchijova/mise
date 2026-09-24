@@ -1,6 +1,6 @@
 {
   "_comment": "How long food keeps, by ingredient and where it is kept. Every number here is an ESTIMATE from a table, never a date anybody gave, and the fold keeps that distinction all the way to what Alexa+ says. See docs/SHELF_LIFE_SCHEMA.md.",
-  "version": 2,
+  "version": 4,
   "updated_on": "2026-09-05",
   "author": "the author's kitchen",
   "locations": [
@@ -501,10 +501,17 @@
     {
       "ingredient": "garlic-oil",
       "location": "fridge",
-      "days": 7,
-      "note": "Garlic under oil at room temperature is a botulism risk. The fridge, and a week, and no exceptions.",
+      "days": 4,
+      "note": "Garlic under oil at room temperature is a botulism risk. The fridge, and 4 days, and no exceptions.",
       "caution": true,
-      "caution_reason": "Garlic under oil is an anaerobic, low-acid environment, which is where botulism comes from. Being wrong here is a safety matter and not a dinner one, so this row goes to the front of any review queue until somebody who knows has signed it off."
+      "caution_reason": "Garlic under oil is an anaerobic, low-acid environment, which is where botulism comes from. Being wrong here is a safety matter and not a dinner one, so this row goes to the front of any review queue until somebody who knows has signed it off.",
+      "reviewed": {
+        "by": "Anna Tchijova",
+        "on": "2026-09-24",
+        "verdict": "corrected",
+        "note": "Follow-up to the days=4 correction: the note text still said 'a week', contradicting the corrected days value. Fixed the wording to match.",
+        "row_digest": "0728bc1ccc04"
+      }
     },
     {
       "ingredient": "red-lentil",

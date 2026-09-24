@@ -151,3 +151,7 @@ __pycache__/
 
 # the swap queue: generated, reviewed by hand, never committed
 data/imports/swap_candidates.json
+
+# personal planning notes, not part of the hackathon deliverable
+docs/ROADMAP.local.md
+*.local.md
