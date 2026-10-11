@@ -1,7 +1,7 @@
 {
   "_comment": "How long food keeps, by ingredient and where it is kept. Every number here is an ESTIMATE from a table, never a date anybody gave, and the fold keeps that distinction all the way to what Alexa+ says. See docs/SHELF_LIFE_SCHEMA.md.",
-  "version": 4,
-  "updated_on": "2026-09-05",
+  "version": 5,
+  "updated_on": "2026-09-24",
   "author": "the author's kitchen",
   "locations": [
     "fridge",
@@ -346,7 +346,16 @@
       "ingredient": "sprouted-lentil",
       "location": "fridge",
       "days": 4,
-      "note": "Sprouts are the one raw thing in this kitchen that genuinely goes off fast."
+      "note": "Sprouts are the one raw thing in this kitchen that genuinely goes off fast — and the one where fresh does not mean safe. Salmonella and E. coli can be in the seed itself, survive washing, and multiply in the same warm, damp conditions the sprout needs to grow. Cook them if you are pregnant, elderly, a child, or immunocompromised; everyone else, cooking still cuts the risk.",
+      "caution": true,
+      "caution_reason": "Raw sprouts carry a documented, recurring outbreak history (CDC: 53 outbreaks 2000-2020, about 1,498 illnesses, 5 deaths, mostly Salmonella and E. coli) that washing does not remove. Being wrong here is a safety matter and not a freshness one, so this row goes to the front of any review queue until somebody who knows has signed it off.",
+      "reviewed": {
+        "by": "Anna Tchijova",
+        "on": "2026-09-24",
+        "verdict": "corrected",
+        "note": "Added a caution flag based on Colorado State University's Food Source Information summary of CDC NORS data (https://www.chhs.colostate.edu/fsi/food-articles/produce/sprouts/): 53 sprout-associated outbreaks from 2000-2020, 1,498 illnesses and 5 deaths, mostly Salmonella and E. coli. The source also describes seed contamination and the warm, humid growth conditions. This was a freshness-only row before; the days figure (4) is unchanged.",
+        "row_digest": "86e41b3b8795"
+      }
     },
     {
       "ingredient": "pea",

@@ -138,7 +138,8 @@ test("a row nothing reaches scores nothing, and says that rather than saying not
 
 test("a safety row outranks everything while unreviewed, and leaves the queue once it is not", () => {
   // docs/BLOCKED.md §H.1 names the garlic-oil row by hand, and it carries `caution: true` for
-  // exactly this reason. Asserting that THIS row is always item [0] would make the test depend on
+  // exactly this reason. Other curated safety rows may exist and be signed off; asserting that
+  // THIS row is always item [0] would make the test depend on
   // nobody ever reviewing it -- which is backwards: reviewing it is the point of the whole mechanism,
   // and the day somebody does their job and signs it off, the row is *supposed* to drop out of the
   // top spot (see test/reviews.test.ts: "a signed row leaves the queue"). So this tests the
@@ -150,7 +151,7 @@ test("a safety row outranks everything while unreviewed, and leaves the queue on
   withShelf(() => {
     const shelf = JSON.parse(readFileSync(SHELF, "utf8")) as { entries: Record<string, unknown>[] };
     const row = shelf.entries.find((e) => e.ingredient === "garlic-oil" && e.location === "fridge")!;
-    assert.ok(row.caution, "the fixture for this test is the corpus's one caution row");
+    assert.ok(row.caution, "the fixture for this test is the garlic-oil caution row");
     delete row.reviewed;
     writeFileSync(SHELF, JSON.stringify(shelf, null, 2));
 

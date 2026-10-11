@@ -169,6 +169,7 @@ scripts/validate_catalog.py   the same for the catalog: integer money, real ingr
 scripts/validate_shelf_life.py  the same for the shelf-life table, with a coverage report
 scripts/validate_scaling.py   the same for the scaling table: no damping above 1, no orphan warnings
 scripts/consolidate_recipes.py merges per-book extractions into data/ (dry-run unless --apply)
+scripts/extract_dulces.py  extracts verbatim, review-required drafts from the Dulces book's pdftotext output
 docs/PLAN.md                  the architecture and work plan (English; Spanish original in PLAN.es.md / .html)
 docs/INTEGRATIONS_PLAN.md     IoT, barcode, Instacart and recipe-portal integration plan (block I; Spanish in PLAN_INTEGRACIONES.es.md)
 docs/IMPORT_SOURCES.md        what each recipe portal actually gives us, and how to verify one
