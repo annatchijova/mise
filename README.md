@@ -4,6 +4,23 @@
 
 Amazon Developer Hackathon 2026 — track Alexa+. Mini-challenges: AWS Builder, Open Source.
 
+## Alexa+ skills
+
+These Agent Skills travel with the MCP server and guide Alexa+ in using its deterministic tools.
+
+| Skill | English | Español | Technical |
+|---|---|---|---|
+| [`pantry`](skills/pantry/SKILL.md) | Track pantry events and confidence. | Registra eventos y confianza de la despensa. | Append-only ledger; `confirmed`, `inferred`, `stale`. |
+| [`cooking`](skills/cooking/SKILL.md) | Guide and resume cooking sessions. | Guía y retoma sesiones de cocina. | Server-owned state machine, timers, deviations, and review. |
+| [`plan-week`](skills/plan-week/SKILL.md) | Explain the weekly meal plan. | Explica el plan semanal de comidas. | Deterministic planner; narrate its order and reasons. |
+| [`buying`](skills/buying/SKILL.md) | Build a cart and confirm checkout. | Prepara el carrito y confirma la compra. | UCP-shaped checkout; explicit confirmation before purchase. |
+| [`zero-waste`](skills/zero-waste/SKILL.md) | Use urgent ingredients and learn a technique. | Aprovecha ingredientes urgentes y aprende una técnica. | Curated recipe ranking, bilingual lessons, and regrow tips. |
+| [`nutrition`](skills/nutrition/SKILL.md) | Report recipe nutrition without filling gaps. | Informa nutrición sin completar datos faltantes. | Curated per-100 g values; totals or explicitly bounded floors. |
+| [`substitute`](skills/substitute/SKILL.md) | Find a curated ingredient substitution. | Busca una sustitución curada de ingredientes. | Lookup by ingredient, role, and technique; preserve warnings. |
+| [`pantry-by-voice`](skills/pantry-by-voice/SKILL.md) | Turn spoken pantry updates into events. | Convierte actualizaciones habladas en eventos. | Selects add, consume, correct, or remove operations. |
+| [`cook-from-the-pantry`](skills/cook-from-the-pantry/SKILL.md) | Find recipes using available ingredients. | Busca recetas con lo que hay en la despensa. | Reads pantry state and reports missing ingredients. |
+| [`pantry-confidence`](skills/pantry-confidence/SKILL.md) | Explain pantry and expiry confidence. | Explica la confianza y el vencimiento. | Voices confidence labels and expiry bands from tool data. |
+
 ## What it does
 
 - **Pantry by voice.** "I've got two onions, half a kilo of red lentils, and the tofu expires Friday." The pantry is an append-only ledger, not an inventory: every item carries a confidence level — `confirmed` (you said it), `inferred` (a cooked recipe deducted it), `stale` (unconfirmed for N days). The system never presents an inferred quantity as certainty.
