@@ -1,0 +1,61 @@
+{
+  "_comment": "Draft for addon-package/addon.json, prepared ahead of `alexa-ai new mcp` so the web-gated step is a paste-and-fill rather than a cold start. Schema per https://developer.amazon.com/docs/alexaplus/add-ons/category-sdk-create-mcp-addon.html. Remove this _comment key before using — addon.json itself does not allow unknown keys.",
+  "manifestVersion": "1.0",
+  "storeListing": {
+    "distributionCountries": ["US"],
+    "locales": {
+      "en-US": {
+        "default": "DEFAULT",
+        "name": {
+          "value": "Mise"
+        },
+        "shortDescription": "A pantry and cooking companion that never guesses — plans your week, walks a recipe, and says when it doesn't know.",
+        "fullDescription": "Mise tracks what's at home, plans meals around what's already on hand and what's about to turn, and walks a recipe step by step with a session that remembers where you left off. Every answer keeps what you reported, what a device sensed, and what was only worked out, visibly distinct — an estimate is never presented as a fact, and a gap in the data is answered honestly instead of filled in. When something is out, Mise substitutes from a chef-curated table or says plainly that it has nothing curated for that. When something is about to turn, Zero Waste pairs a recipe already in your kitchen with a short technique lesson, without claiming a measured amount of money or waste saved. The weekly plan carries its own hash, so the same pantry and the same week produce the same plan every time — ask it to explain a change and it tells you exactly what moved and why.",
+        "examplePhrases": [
+          "What have I got?",
+          "Plan my dinners for the week",
+          "Let's make the lentil stew, for four",
+          "The tofu expires tomorrow, what can I do with it?"
+        ],
+        "privacyAndCompliance": {
+          "privacyPolicyUrl": "https://annatchijova.github.io/mise/privacy.html",
+          "termsOfUseUrl": "https://annatchijova.github.io/mise/terms.html"
+        },
+        "mediaAssets": {
+          "icons": {
+            "light": [
+              { "size": "72x72", "url": "https://annatchijova.github.io/mise/icons/light-72.png" },
+              { "size": "64x64", "url": "https://annatchijova.github.io/mise/icons/light-64.png" },
+              { "size": "88x88", "url": "https://annatchijova.github.io/mise/icons/light-88.png" },
+              { "size": "126x126", "url": "https://annatchijova.github.io/mise/icons/light-126.png" },
+              { "size": "180x180", "url": "https://annatchijova.github.io/mise/icons/light-180.png" },
+              { "size": "241x241", "url": "https://annatchijova.github.io/mise/icons/light-241.png" }
+            ],
+            "dark": [
+              { "size": "72x72", "url": "https://annatchijova.github.io/mise/icons/dark-72.png" },
+              { "size": "64x64", "url": "https://annatchijova.github.io/mise/icons/dark-64.png" },
+              { "size": "88x88", "url": "https://annatchijova.github.io/mise/icons/dark-88.png" },
+              { "size": "126x126", "url": "https://annatchijova.github.io/mise/icons/dark-126.png" },
+              { "size": "180x180", "url": "https://annatchijova.github.io/mise/icons/dark-180.png" },
+              { "size": "241x241", "url": "https://annatchijova.github.io/mise/icons/dark-241.png" }
+            ],
+            "carouselImages": "TODO — needs at least one real 600x900 image. Prefer an actual Web Simulator screenshot over a designed mockup once A.2 unblocks (docs/BLOCKED.md); a fabricated UI screenshot would be exactly the kind of overstatement this project's own README argues against."
+          }
+        }
+      }
+    }
+  },
+  "integrations": [
+    {
+      "type": "MCP",
+      "config": {
+        "endpoints": {
+          "default": {
+            "type": "HTTPS",
+            "uri": "TODO — the public MCP server URL. Needs App Runner deploy (docs/BLOCKED.md C.1) or a cloudflared tunnel for the first local test, per docs/PLAN.md §10 block A."
+          }
+        }
+      }
+    }
+  ]
+}

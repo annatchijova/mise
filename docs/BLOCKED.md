@@ -228,11 +228,18 @@ Reminders permission and a developer account, which is A.1.
 
 ## G · Delivery
 
-### G.1 Privacy policy and terms at public URLs — **blocked**
+### G.1 Privacy policy and terms at public URLs — **done**
 
-Certification requires them at real URLs. `addon.json` needs them and the demo store's refund policy
-page (`/store/refund-policy`) is the pattern to follow: say plainly that it is a demonstration rather
-than promising terms nobody will honour.
+Live at [annatchijova.github.io/mise/privacy.html](https://annatchijova.github.io/mise/privacy.html)
+and [.../terms.html](https://annatchijova.github.io/mise/terms.html) (source: the `gh-pages` branch
+of this repo). Follow the demo store's refund policy page (`/store/refund-policy`): say plainly that
+it is a demonstration rather than promising terms nobody will honour.
+
+The six required `addon.json` icon sizes, light and dark theme, are hosted alongside them at
+`.../mise/icons/{light,dark}-{72,64,88,126,180,241}.png`. A draft `addon.json` with these filled in
+is at [`docs/addon.draft.json`](addon.draft.json) — the only fields still open are the MCP server
+URL (needs C.1) and a real carousel screenshot (needs A.2, the Web Simulator; a designed mockup
+passed off as a product screenshot would be exactly the overstatement this project argues against).
 
 ### G.2 The video — **blocked on A.2**
 
