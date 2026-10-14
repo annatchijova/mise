@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mise — Privacy Policy</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+  :root {
+    color-scheme: light dark;
+    --counter: #e7ece9; --counter-raised: #f4f7f4; --counter-deep: #dde4e0;
+    --ink: #141b17; --ink-soft: #49564d; --ink-faint: #76847a;
+    --rule: rgba(20,27,23,.16); --rule-strong: rgba(20,27,23,.32);
+    --confirmed: #1e7a5b; --estimated: #9c6a1e;
+    --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --font-body: "Source Serif 4", Georgia, serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --counter:#10140f; --counter-raised:#171c16; --counter-deep:#0a0d0a;
+      --ink:#e8ece6; --ink-soft:#a9b3a4; --ink-faint:#78857a;
+      --rule:rgba(232,236,230,.16); --rule-strong:rgba(232,236,230,.32);
+      --confirmed:#45c192; --estimated:#dba44f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--counter); color:var(--ink); font-family:var(--font-body); line-height:1.6; }
+  .sheet { max-width: 660px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  .ticket-head { background: var(--counter-deep); border-bottom: 1px solid var(--rule-strong);
+    padding: .7rem 1.5rem; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ink-faint); }
+  .ticket-head a { color: var(--ink-faint); }
+  h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 7vw, 2.6rem);
+    letter-spacing: -0.01em; margin: 0 0 .3rem; }
+  .asof { font-family: var(--font-mono); font-size: .78rem; color: var(--ink-faint); margin: 0 0 2rem; }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; margin: 2.2rem 0 .7rem; }
+  p { margin: 0 0 1rem; max-width: 60ch; }
+  .notice { background: var(--counter-raised); border-left: 2px solid var(--estimated); border-radius: 3px;
+    padding: 1rem 1.2rem; font-size: .95rem; color: var(--ink-soft); margin-bottom: 2rem; }
+  code { font-family: var(--font-mono); font-size: .9em; background: var(--counter-deep); padding: .1em .3em; border-radius: 2px; }
+  a { color: var(--confirmed); }
+  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule-strong);
+    font-family: var(--font-mono); font-size: .8rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="ticket-head"><a href="./">&larr; Mise</a> — Privacy Policy</div>
+<div class="sheet">
+  <h1>Privacy Policy</h1>
+  <p class="asof">Last updated 2026-10-14 · applies to the Mise hackathon build submitted to Build,
+    Ship, Shape 2026</p>
+
+  <div class="notice">
+    <strong>This is a hackathon demonstration, not a production service.</strong> It exists to show
+    an Alexa+ add-on working end to end. Read this page as a plain account of what the current build
+    actually does with data — not as a commitment about a shipped product.
+  </div>
+
+  <h2>What Mise handles</h2>
+  <p>Whatever you tell it through Alexa+: what's in your pantry, what you cooked, substitutions you
+    made, and recipe or shopping preferences. If you use the simulated fridge or barcode-scan demo,
+    it also handles a simulated device reading or a scanned barcode. If you use the demo checkout,
+    it handles the items in a cart and a fictional stored payment instrument — <strong>never a real
+    card number or real payment credential; the demo does not accept or process either.</strong></p>
+
+  <h2>Where it's stored</h2>
+  <p>On the demo server, in memory, behind the interfaces that a real deployment would back with a
+    database. It does not currently persist to a database — a server restart clears it. There is no
+    account linking yet: a single shared demonstration account (<code>DEMO_USER</code>) owns
+    everything behind account-bound surfaces. That account is a configuration flag, not a
+    verified identity, so this build should not be pointed at anything you consider sensitive.</p>
+
+  <h2>What it doesn't do</h2>
+  <p>It doesn't sell or share what you tell it with any third party. The one outbound lookup it can
+    make — checking a barcode against Open Food Facts — sends only the scanned barcode, nothing that
+    identifies you. It doesn't use anything you report to train a model; the server has no model of
+    its own, and the only language model involved is Alexa+ itself, carrying on the conversation.</p>
+
+  <h2>What changes when this becomes more than a demo</h2>
+  <p>Real account linking (OAuth with PKCE), persistent storage, and a real connected fridge or
+    barcode scanner are planned but not yet built — see
+    <a href="https://github.com/annatchijova/mise/blob/main/docs/BLOCKED.md">BLOCKED.md</a> in the
+    repository for exactly what's missing and why. This policy will be rewritten, not quietly
+    extended, before any of that handles a real person's data outside a demo.</p>
+
+  <h2>Questions</h2>
+  <p>Open an issue on the <a href="https://github.com/annatchijova/mise">GitHub repository</a>.</p>
+
+  <footer>Mise · Apache-2.0 · <a href="./terms.html">Terms</a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mise — Terms of Use</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+  :root {
+    color-scheme: light dark;
+    --counter: #e7ece9; --counter-raised: #f4f7f4; --counter-deep: #dde4e0;
+    --ink: #141b17; --ink-soft: #49564d; --ink-faint: #76847a;
+    --rule: rgba(20,27,23,.16); --rule-strong: rgba(20,27,23,.32);
+    --confirmed: #1e7a5b; --estimated: #9c6a1e;
+    --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --font-body: "Source Serif 4", Georgia, serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --counter:#10140f; --counter-raised:#171c16; --counter-deep:#0a0d0a;
+      --ink:#e8ece6; --ink-soft:#a9b3a4; --ink-faint:#78857a;
+      --rule:rgba(232,236,230,.16); --rule-strong:rgba(232,236,230,.32);
+      --confirmed:#45c192; --estimated:#dba44f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--counter); color:var(--ink); font-family:var(--font-body); line-height:1.6; }
+  .sheet { max-width: 660px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  .ticket-head { background: var(--counter-deep); border-bottom: 1px solid var(--rule-strong);
+    padding: .7rem 1.5rem; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ink-faint); }
+  .ticket-head a { color: var(--ink-faint); }
+  h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 7vw, 2.6rem);
+    letter-spacing: -0.01em; margin: 0 0 .3rem; }
+  .asof { font-family: var(--font-mono); font-size: .78rem; color: var(--ink-faint); margin: 0 0 2rem; }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; margin: 2.2rem 0 .7rem; }
+  p { margin: 0 0 1rem; max-width: 60ch; }
+  .notice { background: var(--counter-raised); border-left: 2px solid var(--estimated); border-radius: 3px;
+    padding: 1rem 1.2rem; font-size: .95rem; color: var(--ink-soft); margin-bottom: 2rem; }
+  code { font-family: var(--font-mono); font-size: .9em; background: var(--counter-deep); padding: .1em .3em; border-radius: 2px; }
+  a { color: var(--confirmed); }
+  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule-strong);
+    font-family: var(--font-mono); font-size: .8rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="ticket-head"><a href="./">&larr; Mise</a> — Terms of Use</div>
+<div class="sheet">
+  <h1>Terms of Use</h1>
+  <p class="asof">Last updated 2026-10-14 · applies to the Mise hackathon build submitted to Build,
+    Ship, Shape 2026</p>
+
+  <div class="notice">
+    <strong>This is a hackathon demonstration, offered as-is, with no warranty of any kind.</strong>
+    It is not a commercial product and nothing here is a promise about a future one.
+  </div>
+
+  <h2>What this build is for</h2>
+  <p>Showing an Alexa+ add-on that plans meals, tracks a pantry, and walks a cooking session, built
+    for the Build, Ship, Shape 2026 hackathon. Use it to evaluate the demo, not to run your actual
+    kitchen on.</p>
+
+  <h2>The shelf-life and nutrition figures are estimates, not food-safety advice</h2>
+  <p>Shelf-life and nutrition numbers come from curated reference tables, labelled as estimates
+    everywhere they're shown. They have not all been independently verified — see
+    <a href="https://github.com/annatchijova/mise/blob/main/docs/BLOCKED.md">BLOCKED.md</a> §H for
+    exactly which rows have and haven't. <strong>Do not rely on this build to decide whether food is
+    safe to eat.</strong> Use your own judgment, or a source meant to carry that responsibility.</p>
+
+  <h2>The checkout is a demonstration</h2>
+  <p>Nothing bought through the demo store is real. No order ships, no card is charged, and the
+    payment instruments it offers are fictional. The receipt it produces is for demonstrating the
+    flow, not a record of an actual purchase.</p>
+
+  <h2>No account linking yet</h2>
+  <p>Account-bound features run behind a single shared demonstration account, not your own verified
+    identity. Do not use this build for anything you'd consider private.</p>
+
+  <h2>Availability and changes</h2>
+  <p>This is hackathon-stage software. It may change, break, or be taken down without notice, and no
+    uptime or support commitment applies.</p>
+
+  <h2>Questions</h2>
+  <p>Open an issue on the <a href="https://github.com/annatchijova/mise">GitHub repository</a>.</p>
+
+  <footer>Mise · Apache-2.0 · <a href="./privacy.html">Privacy Policy</a></footer>
+</div>
+</body>
+</html>
