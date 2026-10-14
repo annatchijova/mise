@@ -1,0 +1,421 @@
+<title>Mise</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+  :root {
+    --counter: #e7ece9;
+    --counter-raised: #f4f7f4;
+    --counter-deep: #dde4e0;
+    --ink: #141b17;
+    --ink-soft: #49564d;
+    --ink-faint: #76847a;
+    --rule: rgba(20, 27, 23, 0.16);
+    --rule-strong: rgba(20, 27, 23, 0.32);
+    --confirmed: #1e7a5b;
+    --confirmed-soft: rgba(30, 122, 91, 0.13);
+    --estimated: #9c6a1e;
+    --estimated-soft: rgba(156, 106, 30, 0.14);
+    --unknown: #655c78;
+    --unknown-soft: rgba(101, 92, 120, 0.13);
+    --accent: var(--confirmed);
+    --shadow: 0 1px 0 rgba(20, 27, 23, 0.06);
+    --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --counter: #10140f;
+      --counter-raised: #171c16;
+      --counter-deep: #0a0d0a;
+      --ink: #e8ece6;
+      --ink-soft: #a9b3a4;
+      --ink-faint: #78857a;
+      --rule: rgba(232, 236, 230, 0.16);
+      --rule-strong: rgba(232, 236, 230, 0.32);
+      --confirmed: #45c192;
+      --confirmed-soft: rgba(69, 193, 146, 0.14);
+      --estimated: #dba44f;
+      --estimated-soft: rgba(219, 164, 79, 0.15);
+      --unknown: #a79bc4;
+      --unknown-soft: rgba(167, 155, 196, 0.14);
+      --shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --counter: #10140f;
+    --counter-raised: #171c16;
+    --counter-deep: #0a0d0a;
+    --ink: #e8ece6;
+    --ink-soft: #a9b3a4;
+    --ink-faint: #78857a;
+    --rule: rgba(232, 236, 230, 0.16);
+    --rule-strong: rgba(232, 236, 230, 0.32);
+    --confirmed: #45c192;
+    --confirmed-soft: rgba(69, 193, 146, 0.14);
+    --estimated: #dba44f;
+    --estimated-soft: rgba(219, 164, 79, 0.15);
+    --unknown: #a79bc4;
+    --unknown-soft: rgba(167, 155, 196, 0.14);
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--counter);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--confirmed); text-decoration-thickness: 1px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--confirmed); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: var(--confirmed-soft); }
+
+  .sheet { max-width: 740px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+  .ticket-head {
+    background: var(--counter-deep);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .ticket-head strong { color: var(--ink-soft); font-weight: 600; }
+
+  header.hero {
+    padding: 3.2rem 0 1.6rem;
+    position: relative;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--confirmed);
+    margin: 0 0 0.9rem;
+  }
+  h1.wordmark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(3.4rem, 13vw, 5.4rem);
+    letter-spacing: -0.01em;
+    line-height: 0.86;
+    margin: 0 0 0.3rem;
+    text-wrap: balance;
+  }
+  .thesis {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4.4vw, 2.05rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 1.1rem 0 1rem;
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  section { padding: 2.6rem 0; border-top: 1px solid var(--rule); }
+  section:first-of-type { border-top: none; }
+
+  .line-no {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    letter-spacing: -0.005em;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+  }
+  h2 .dim { color: var(--ink-faint); font-weight: 700; }
+  p { margin: 0 0 1rem; max-width: 60ch; }
+  p.tight { max-width: 56ch; }
+
+  .receipt {
+    background: var(--counter-raised);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    padding: 1.4rem 1.5rem 1.3rem;
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+  }
+  .receipt::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -7px;
+    height: 14px;
+    background: repeating-linear-gradient(115deg, var(--counter) 0 7px, transparent 7px 14px);
+    background-size: 14px 14px;
+    mix-blend-mode: normal;
+  }
+  .receipt .q { color: var(--ink-faint); font-style: normal; margin-bottom: 0.7rem; }
+  .receipt .a { color: var(--ink); font-size: 1rem; line-height: 1.7; }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 0.08rem 0.5rem;
+    border-radius: 2px;
+  }
+  .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+  .tag.confirmed { color: var(--confirmed); background: var(--confirmed-soft); }
+  .tag.confirmed::before { background: var(--confirmed); }
+  .tag.estimated { color: var(--estimated); background: var(--estimated-soft); }
+  .tag.estimated::before { background: var(--estimated); }
+  .tag.unknown { color: var(--unknown); background: var(--unknown-soft); }
+  .tag.unknown::before { background: var(--unknown); }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .compare-head {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    background: var(--counter-deep);
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--rule);
+  }
+  .compare-row { display: contents; }
+  .compare-row > div {
+    padding: 0.85rem 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.92rem;
+  }
+  .compare-row > div:first-child { border-right: 1px solid var(--rule); color: var(--ink-faint); }
+  .compare-row > div:last-child { color: var(--ink); background: var(--counter-raised); }
+
+  .hash-block {
+    background: var(--counter-deep);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.3rem 1.4rem;
+  }
+  .hash-value {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    word-break: break-all;
+    color: var(--confirmed);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+  }
+  .hash-run { display: flex; gap: 0.7rem; align-items: baseline; margin-bottom: 0.5rem; }
+  .hash-run .n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); min-width: 3.2em; }
+  .hash-note { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); margin: 0.9rem 0 0; }
+
+  .tray { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  .tray > div { background: var(--counter-raised); padding: 1.1rem 1.2rem; }
+  .tray h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; margin: 0.5rem 0 0.4rem; }
+  .tray p { font-size: 0.88rem; color: var(--ink-soft); margin: 0; max-width: none; }
+
+  .stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  .stat-strip > div { background: var(--counter-raised); padding: 1.1rem 1.2rem; }
+  .stat-num { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); display: block; }
+  .stat-label { font-size: 0.8rem; color: var(--ink-faint); }
+
+  .caveat {
+    border-left: 2px solid var(--estimated);
+    padding-left: 0.95rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
+
+  footer {
+    margin-top: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin-bottom: 1rem; }
+  .links a { color: var(--ink); border-bottom: 1px solid var(--rule-strong); padding-bottom: 1px; }
+  .links a:hover { color: var(--confirmed); border-color: var(--confirmed); }
+  .pending { color: var(--ink-faint); }
+  .fineprint { color: var(--ink-faint); font-size: 0.78rem; }
+
+  @media (max-width: 560px) {
+    .compare { grid-template-columns: 1fr; }
+    .compare-row > div:first-child { border-right: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="ticket-head">
+  <span>Build, Ship, Shape · Amazon Developer Hackathon 2026</span>
+  <span><strong>Track:</strong> Alexa+ · MCP server</span>
+</div>
+
+<div class="sheet">
+  <header class="hero">
+    <p class="kicker">mise en place, kept honest</p>
+    <h1 class="wordmark">Mise</h1>
+    <p class="thesis">Alexa+ is the model.<br>This server never guesses.</p>
+    <p class="lede">A pantry and cooking companion for Alexa+. It plans the week, walks a recipe, and
+      tracks what is running low — and it keeps what you reported, what a device sensed, and what it
+      only worked out, visibly distinct in every answer.</p>
+  </header>
+
+  <section>
+    <span class="line-no">01 — what "what have I got" actually gets you</span>
+    <h2>Three kinds of true, never merged into one</h2>
+    <p class="tight">Ask the pantry what it holds. Nothing is rounded up into a tidy, uniform list —
+      a stated date, a worked-out estimate, and a genuine gap all stay labelled as what they are.</p>
+    <div class="receipt">
+      <div class="q">&gt; "What have I got?"</div>
+      <div class="a">
+        Spinach — <span class="tag estimated">roughly 4 days</span> by my reckoning.<br>
+        Milk — <span class="tag confirmed">expiring tomorrow</span>, you told me.<br>
+        Tomato — <span class="tag unknown">amount unknown</span>.
+      </div>
+    </div>
+    <p class="tight" style="margin-top:0.9rem; font-size:0.92rem; color:var(--ink-soft);">
+      <code style="font-family:var(--font-mono)">null</code> is a real answer here. A pantry that
+      fills it in with a plausible number is a pantry that lies — in exactly the way nobody could
+      catch.
+    </p>
+  </section>
+
+  <section>
+    <span class="line-no">02 — the alternative, and why we didn't</span>
+    <h2>Three places a model would normally guess</h2>
+    <div class="compare">
+      <div class="compare-head">Typical assistant</div>
+      <div class="compare-head">Mise</div>
+      <div class="compare-row">
+        <div>Lets a model improvise meals, substitutions, expiry advice.</div>
+        <div>Reads curated tables; when the data has no answer, it says so.</div>
+      </div>
+      <div class="compare-row">
+        <div>Overwrites a pantry quantity the moment a new report arrives.</div>
+        <div>Keeps an event history, so stated, inferred, and unconfirmed stay distinguishable.</div>
+      </div>
+      <div class="compare-row">
+        <div>Tells you how much money or waste a suggestion saved.</div>
+        <div>Offers a recipe or a scrap-tip — never a figure nobody measured.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="line-no">03 — the shortest proof available</span>
+    <h2>Same pantry, same week, same plan — <span class="dim">byte for byte</span></h2>
+    <p class="tight">The weekly planner is a pure function over what's in the pantry. Run it twice on
+      the same input and it doesn't just agree — it hands back the same hash.</p>
+    <div class="hash-block">
+      <div class="hash-run"><span class="n">run 1</span><span class="hash-value">eace9ae29e3e7237948d7086156fc42f623443e4d42347df16ea5ddf002b2057</span></div>
+      <div class="hash-run"><span class="n">run 2</span><span class="hash-value">eace9ae29e3e7237948d7086156fc42f623443e4d42347df16ea5ddf002b2057</span></div>
+      <p class="hash-note">SHA-256 over an illustrative plan payload, computed twice for this page —
+        not a captured plan_week run. Same discipline either way: a model that plans your week gives
+        a different one each time and can't tell you why either happened. This can hand you a hash.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="line-no">04 — what the pantry knows about itself</span>
+    <h2>Three shelf tags, not one blended guess</h2>
+    <div class="tray">
+      <div>
+        <span class="tag confirmed">confirmed</span>
+        <h3>You said so</h3>
+        <p>Reported by voice or written in through the add-on, with an amount somebody actually counted.</p>
+      </div>
+      <div>
+        <span class="tag estimated">inferred</span>
+        <h3>Worked out</h3>
+        <p>Derived from the shelf-life table and how long ago an item was last confirmed — labelled as an estimate everywhere it travels.</p>
+      </div>
+      <div>
+        <span class="tag unknown">stale / unknown</span>
+        <h3>Due for a check</h3>
+        <p>Not recently confirmed, or never given an amount. <code style="font-family:var(--font-mono)">pantry_audit</code> asks about these — it never assumes them.</p>
+      </div>
+    </div>
+    <p style="margin-top:1rem; font-size:0.92rem; color:var(--ink-soft);">The demo pantry's kitchen-confidence figure: <strong style="color:var(--ink)">33%</strong> confirmed with an amount someone counted. That number is deliberately strict — a flattering one would be no use to anybody deciding what to trust.</p>
+  </section>
+
+  <section>
+    <span class="line-no">05 — a floor is not a hedge</span>
+    <h2>"At least 284, and I mean <em>at least</em>"</h2>
+    <p class="tight">Most home recipes don't state every amount. Instead of filling the gap with a
+      plausible number, the nutrition answer names exactly which ingredients it could account for and
+      stops there.</p>
+    <div class="receipt">
+      <div class="q">&gt; "How many calories is that?"</div>
+      <div class="a">At least 284 a serving — that's five of six ingredients I can account for, and
+        the rest can only add to it. I have no figures for the plant milk powder, so I stop short of
+        a total.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="line-no">06 — what's actually been checked</span>
+    <h2>Evidence, not adjectives</h2>
+    <div class="stat-strip">
+      <div><span class="stat-num">363 / 363</span><span class="stat-label">automated tests passing</span></div>
+      <div><span class="stat-num">0</span><span class="stat-label">data-validation errors across 6 curated tables</span></div>
+      <div><span class="stat-num">151</span><span class="stat-label">shelf-life rows, 100% of lookups answered</span></div>
+      <div><span class="stat-num">2 / 430</span><span class="stat-label">curated rows formally signed off so far</span></div>
+    </div>
+    <p class="caveat" style="margin-top:1.2rem;">That last number is the honest one: most of the
+      curated cooking advice hasn't been read end-to-end by a second person yet. The review queue
+      ranks what to check first by what it would cost if a row were wrong — the garlic-under-oil row
+      is first, by a distance, because that one is a safety question and not a dinner one.</p>
+  </section>
+
+  <section>
+    <span class="line-no">07 — where this stands, nine days out</span>
+    <h2>Built, tested, and run locally end to end</h2>
+    <p class="tight">The pantry ledger, the planner, six cooking tools, substitutions, zero-waste
+      pairing, the UCP checkout, and four MCP Apps views all run today and are held up by the test
+      suite above. The one thing not yet watched working is the Alexa+ Web Simulator round trip — the
+      server speaks the MCP protocol; what we're verifying next is the client on the other end of it.</p>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="https://github.com/annatchijova/mise" target="_blank" rel="noopener">GitHub repository</a>
+      <a href="https://github.com/annatchijova/mise/blob/main/README.md" target="_blank" rel="noopener">README</a>
+      <a href="https://github.com/annatchijova/mise/blob/main/README_TECHNICAL.md" target="_blank" rel="noopener">Technical README</a>
+      <a href="https://github.com/annatchijova/mise/blob/main/docs/BLOCKED.md" target="_blank" rel="noopener">What's blocked, and why</a>
+      <span class="pending">Demo video — in progress</span>
+    </div>
+    <p class="fineprint">Mise · Apache-2.0 · Alexa+ handles conversation and chooses tools; the server owns the pantry, planner, cooking state, and every number on this page.</p>
+  </footer>
+</div>
