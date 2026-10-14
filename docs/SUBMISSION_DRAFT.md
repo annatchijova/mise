@@ -16,16 +16,33 @@ Alexa+ developer account or an AWS account and are listed in [BLOCKED.md](BLOCKE
   keeps every decision out of a model's hands (`README_TECHNICAL.md`, "LLM out of the decision
   path") — bolting on a Bedrock call with no real job to do would contradict the thing the project
   argues for. Decided not to chase this one.
-- **Open Source — in progress.** `docs/PLAN.md` §09 assumed the main repo being public and
-  Apache-2.0 satisfies this mini-challenge. **It does not** — the current rule asks for a
-  *separate, additional* open-source project or contribution (a branch, fork, or PR to a public
-  repo) made during the hackathon window, with its own URL, repo URL, GitHub username, and
-  description. Decided to pursue it for real: see the PR candidates being evaluated below rather
-  than in `BLOCKED.md`, since this one does not depend on the Alexa+ or AWS accounts.
+- **Open Source — done.** `docs/PLAN.md` §09 assumed the main repo being public and Apache-2.0
+  satisfies this mini-challenge. **It does not** — the current rule asks for a *separate,
+  additional* open-source project or contribution made during the hackathon window. See below for
+  the one actually opened.
 
-## Open Source mini-challenge — PR candidates
+## Open Source mini-challenge — the PR
 
-(filled in as candidates are found and attempted)
+- **Contribution URL:** https://github.com/modelcontextprotocol/ext-apps/pull/807
+- **Repo URL:** https://github.com/annatchijova/ext-apps (fork of `modelcontextprotocol/ext-apps`,
+  branch `fix/quickstart-host-qualified-tool-names`)
+- **GitHub username:** annatchijova
+- **What it does and why it matters:** `examples/quickstart`'s `callServerTool` call hardcoded the
+  literal tool name `"get-time"` instead of recovering it from `getHostContext().toolInfo`. That
+  works 1:1 against a single server but breaks under any host that qualifies tool names across
+  aggregated servers (e.g. `pdf-server-get-time`) — the widget renders, but every follow-up
+  `callServerTool` it makes fails to resolve. `ext-apps` is one of Mise's own two direct
+  dependencies (it powers Mise's four MCP Apps views), so this came out of reading the SDK Mise
+  actually ships against, not from mining the issue tracker cold. @jcollas had already diagnosed
+  the root cause and the fix pattern in issue #753 for the `pdf-server` example; this PR applies
+  that same pattern to `quickstart` specifically, since it's the example most third-party app
+  authors fork first, and credits #753 directly rather than re-deriving or re-claiming the
+  diagnosis. The other 14 examples #753 lists share the same shape and are left for a follow-up.
+- **How it was verified before opening:** cloned `ext-apps` fresh, confirmed #753 had no existing
+  PR against it (nor did the four other shortlisted SDK-repo issues — all of those turned out to
+  already have 1–6 open duplicate PRs, which is why this one ended up being the actual
+  contribution), ran `tsc --noEmit`, the example's real `vite`/`npm run build`, and `prettier
+  --check` against the patched files before pushing anything.
 
 ## Project page
 
