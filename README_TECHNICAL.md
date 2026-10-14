@@ -92,6 +92,21 @@ See [`docs/IDEAS.md`](docs/IDEAS.md) for decisions already made and deliberate n
 These are product boundaries, not temporary fallbacks. The complete list and the rationale for
 deferred ideas are in [`docs/IDEAS.md`](docs/IDEAS.md).
 
+### Alternatives evaluated
+
+| Decision | Alternative | Current choice and status |
+|---|---|---|
+| Where language reasoning runs | Add another model call inside the server. | Keep Alexa+ as the only model; tool results and curated data remain the authority. |
+| Ingredient resolution | Fuzzy string matching. | Resolve through explicit aliases; an unresolved name remains visible instead of becoming a possibly wrong ingredient id. |
+| Waste-prevention advice | Generate generic recipes or claim an avoided-waste result. | Rank the existing recipe corpus and report a suggestion, not a measured outcome. |
+| Regrowing advice | Treat regrowth as a cooking technique attached to a recipe. | Keep `regrow_tips.json` ingredient-keyed and independent from technique lessons; regrowth describes the scrap, not the dish. |
+| Hosting for the planned MCP deployment | Lambda or an always-warm container. | The plan favors App Runner to avoid cold-start and transport uncertainty; the Alexa+ client behavior that would settle Lambda's fit has not been tested. |
+| Account linking | Cognito or a small OAuth server. | Still open. First verify Cognito's handling of PKCE, `resource`, and PRM; the fallback is a minimal server. |
+
+The hosting and account-linking decision records are in [`docs/PLAN.md`](docs/PLAN.md) and
+[`docs/BLOCKED.md`](docs/BLOCKED.md). The zero-waste content roadmap, including a separate possible
+scrap-reuse table, is in [`docs/IDEAS.md`](docs/IDEAS.md).
+
 ### Planner scoring and ordering
 
 `planWeek` places existing leftovers first, then handles dated ingredients in increasing urgency and
@@ -143,6 +158,23 @@ them. Duplicate non-null external ids are skipped. `correct` replaces the line's
 `remove` clears presence; and an `add` after a known zero starts a new batch. If any contributing
 quantity is unknown, the folded quantity remains unknown. Shelf-life advice is derived at read time
 and never converted into a stated expiry date. See [`src/pantry/fold.ts`](src/pantry/fold.ts).
+
+### Zero-waste ranking
+
+`zeroWaste` excludes pantry lines that are expired, stale, or known to have zero quantity. For each
+recipe within the requested time limit it calculates:
+
+- `on_hand`: unique recipe ingredient ids found in the usable pantry;
+- `use_first`: the subset whose pantry freshness is `urgent` or `soon`;
+- `coverage_percent = floor(100 × on_hand_count / unique_recipe_ingredient_count)`.
+
+Recipes with no pantry match are excluded. Results sort by descending `use_first` count, descending
+coverage, ascending recipe minutes, then recipe id. Lessons are included only for techniques present
+on matched ingredients and are loaded from the bilingual `data/zero_waste.json` table. Scrap-growing
+tips come separately from `data/regrow_tips.json`, keyed to urgent ingredient ids rather than recipe
+techniques. The response names uncertain quantities and warns that presence does not guarantee a
+sufficient amount. Its economy/ecology notes explicitly say no monetary saving, avoided waste, or
+emissions reduction was measured. Implementation: [`src/zero_waste.ts`](src/zero_waste.ts).
 
 ## State transitions and concurrency
 

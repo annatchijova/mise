@@ -18,6 +18,11 @@ eligió cada comida, incluso si conviene usar pronto algún ingrediente. Al empe
 recuerda el paso, los temporizadores y los cambios que informaste. Si la tabla de sustituciones no
 tiene una respuesta, Mise lo dice en vez de inventarla.
 
+Si algo está por vencer, **Desperdicio Cero** busca recetas que Mise ya conoce y que usan ese
+ingrediente, y acompaña una opción con una breve lección de técnica. También puede mostrar un consejo
+aparte para volver a cultivar ciertos restos. Son ideas para aprovechar lo disponible; Mise no afirma
+haber medido dinero ahorrado, desperdicio evitado ni emisiones reducidas.
+
 El [guion de demostración](docs/DEMO_SCRIPT.md) describe el flujo previsto. Todavía no se verificó el
 ciclo completo en el simulador de Alexa+; consultá [lo que está bloqueado](docs/BLOCKED.md).
 
@@ -34,6 +39,17 @@ Alexa+ mantiene la conversación y elige las herramientas. El servidor controla 
 planificador, el estado de cocción, las consultas a tablas y los cálculos de la tienda. El modelo no
 puede cambiar esas decisiones. La arquitectura, los contratos de datos y los límites de confianza
 están en el **[Technical README](README_TECHNICAL.md)**.
+
+## Por qué elegimos este enfoque
+
+| Alternativa considerada | Elección de Mise |
+|---|---|
+| Dejar que un modelo improvise comidas, sustituciones o consejos de vencimiento. | Usar recetas y recomendaciones de tablas curadas; si los datos no tienen respuesta, decirlo. |
+| Reemplazar la cantidad de la despensa cada vez que llega un dato nuevo. | Conservar un historial para distinguir lo informado, lo inferido y lo que falta confirmar. |
+| Presentar una sugerencia como desperdicio o dinero ahorrado. | Proponer recetas existentes y consejos para cultivar restos, sin afirmar resultados que no medimos. |
+
+El **[Technical README](README_TECHNICAL.md)** desarrolla otras decisiones, como el hosting y el
+vínculo de cuentas, e indica cuáles siguen abiertas.
 
 ## Probarlo en local
 

@@ -16,6 +16,11 @@ including when an ingredient is due to be used. Start cooking and the session re
 timers, and any changes you reported. If a substitution table has no answer, Mise says so rather than
 making one up.
 
+When something is nearing its date, **Zero Waste** looks for recipes already in Mise that use it,
+then pairs a match with a short technique lesson. It can also surface a separate tip for scraps that
+can regrow. These are ways to make use of what is on hand; Mise does not claim a measured amount of
+money saved, waste avoided, or emissions reduced.
+
 The written [demo script](docs/DEMO_SCRIPT.md) shows the intended flow. The Alexa+ Web Simulator
 round trip has not yet been verified; see [what is blocked](docs/BLOCKED.md).
 
@@ -31,6 +36,17 @@ round trip has not yet been verified; see [what is blocked](docs/BLOCKED.md).
 Alexa+ handles conversation and chooses tools. The server owns the pantry, planner, cooking state,
 curated lookups, and store calculations. A model cannot change those decisions. The technical design,
 data contracts, and trust boundaries are in the **[Technical README](README_TECHNICAL.md)**.
+
+## Why this approach
+
+| Alternative considered | Mise's choice |
+|---|---|
+| Let a model improvise meals, substitutions, or expiry advice. | Use recipes and advice written into curated tables; when the data has no answer, say so. |
+| Replace a pantry quantity whenever a new report arrives. | Keep an event history so a person can tell what was stated, inferred, or left unconfirmed. |
+| Describe a suggestion as waste or money saved. | Offer existing recipes and scrap-growing tips, without claiming an outcome that was not measured. |
+
+The **[Technical README](README_TECHNICAL.md)** covers other choices, including hosting and account
+linking, with the decisions that remain unresolved.
 
 ## Try it locally
 
