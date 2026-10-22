@@ -1,8 +1,10 @@
 # The demo, in order
 
-The video is blocked on the Web Simulator (`docs/BLOCKED.md` §A.2 and §G.2), so this is the script
-written down while it is still fresh — a running order, what to say over each beat, and why that beat
-is in and not another one.
+The recording target is the simulated Alexa+ experience in `simulator/` (`docs/BLOCKED.md` §A.0): a
+two-column web app where Gemini plays Alexa+'s role — narrating real tool calls over Streamable HTTP,
+never deciding anything — and the right-hand column renders the real MCP Apps `ui://` resource each
+tool returns through a genuine `AppBridge` handshake. This is the script written down while the beats
+are still fresh — a running order, what to say over each one, and why that beat is in and not another.
 
 The whole thing is arranged around a single claim: **Alexa+ is the LLM, and this server never
 guesses.** Every beat is chosen because it is a moment where guessing would have been easier and the

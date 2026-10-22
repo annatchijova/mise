@@ -21,12 +21,16 @@ then pairs a match with a short technique lesson. It can also surface a separate
 can regrow. These are ways to make use of what is on hand; Mise does not claim a measured amount of
 money saved, waste avoided, or emissions reduced.
 
-The written [demo script](docs/DEMO_SCRIPT.md) shows the intended flow. The round trip is verified
-against a real MCP client over Streamable HTTP — tool listing, guest tools, account-gated rejection,
-and the four `ui://` views all confirmed against the running server, reproducible with
-`scripts/verify_mcp_roundtrip.mjs`. What that does **not** cover: Alexa+'s own Web Simulator and NLU,
-which need Alexa+ Preview developer access this environment does not have. See
-[what is blocked](docs/BLOCKED.md) for the exact line between the two.
+The written [demo script](docs/DEMO_SCRIPT.md) shows the intended flow, recorded against
+[`simulator/`](simulator/) — a web app that plays Alexa+'s own role (an LLM that narrates, never
+decides) over a real MCP connection to this server, the hackathon's own documented alternative to
+Alexa+'s region-blocked Web Simulator. The round trip is verified against a real MCP client over
+Streamable HTTP — tool listing, guest tools, account-gated rejection, and the four `ui://` views all
+confirmed against the running server with live `structuredContent`, reproducible with
+`scripts/verify_mcp_roundtrip.mjs` and, for the views specifically, by running `simulator/`. What that
+does **not** cover: Alexa+'s own hosted Web Simulator and NLU, which need Alexa+ Preview developer
+access this environment does not have. See [what is blocked](docs/BLOCKED.md) for the exact line
+between the two.
 
 ## What makes the answers dependable
 
@@ -66,13 +70,24 @@ The server listens on `http://localhost:8080` by default. Open `/pantry`, `/reci
 check `/healthz`. The demo store is available when `UCP_TOKEN` is set. Run the full local checks with
 `npm run check`.
 
+With the server running (its MCP endpoint is `/mcp` on the same port, `8080` unless `PORT` says
+otherwise), start the simulated Alexa+ experience (`simulator/`) in a second terminal:
+
+```bash
+GEMINI_API_KEY=<your key> MISE_URL=http://localhost:8080/mcp node simulator/server.mjs
+```
+
+It listens on `http://localhost:8095` by default (`SIMULATOR_PORT` to change it). Match `MISE_URL`'s
+port to whatever the main server actually bound to.
+
 ## Project status
 
 Mise is a hackathon build. Local behavior is covered by automated tests and data validators, and the
 MCP round trip itself (tool calls, account gating, the four UI resources) is now verified against a
-real MCP client over Streamable HTTP. Alexa+'s own Web Simulator, live AWS services, real fridge and
-barcode integrations, and a real UCP client have not been exercised end to end. See
-[BLOCKED.md](docs/BLOCKED.md) for the exact status and the evidence needed to change it.
+real MCP client over Streamable HTTP, including the MCP Apps host handshake (`simulator/`), where the
+real `AppBridge` renders live server data in each view. Alexa+'s own hosted Web Simulator, live AWS
+services, real fridge and barcode integrations, and a real UCP client have not been exercised end to
+end. See [BLOCKED.md](docs/BLOCKED.md) for the exact status and the evidence needed to change it.
 
 ## Where to go next
 

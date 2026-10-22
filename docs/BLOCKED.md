@@ -248,17 +248,26 @@ runs the importer against a real page.
 
 ## F · The MCP Apps views
 
-### F.1 The host handshake — **unverified**
+### F.1 The host handshake — **verified against our own host, not against Alexa+'s**
 
-The four views use the real `@modelcontextprotocol/ext-apps` App, bundled inline, rather than a
-hand-rolled postMessage bridge, precisely because this is the part that cannot be checked by running
-it here. What is tested is everything else: that each view is one self-contained document with no
-network of its own, that nothing untrusted reaches the page unescaped, and that no view recomputes a
-number the server decided.
+The views use the real `@modelcontextprotocol/ext-apps` App, bundled inline, rather than a
+hand-rolled postMessage bridge, precisely because the handshake is the part that cannot be checked by
+reading code. `simulator/bridge-src.mjs` is the other half of that pair: the real `AppBridge`, run in
+the browser against the real views, with no guessed protocol on either side. Verified end to end
+(2026-10-22) against the live Mise server: `pantry_list`, `plan_week`, and `cook_start` all render
+their real `ui://` resource with live `structuredContent`, not placeholder state — see
+`docs/DEMO_SCRIPT.md` and §A.0.
 
-**When unblocked:** open each view in the simulator and check three things — that it renders at all,
-that the "next step" button's tool call reaches the server, and that the iframe resizes. The
-`autoResize` option is on; nobody has seen it work.
+A real bug surfaced and was fixed in that process, worth recording because it is the kind of thing a
+spec reading alone would not catch: the view's `app.connect()` sends its first message the instant its
+inline script runs, during iframe parsing — before an iframe `"load"` event ever fires. Mounting the
+host bridge after `onload` silently lost that first message; the view sat there with no data and no
+error. The fix is to attach the bridge's message listener before the iframe's `srcdoc` is set, not
+after.
+
+**What remains open:** this is our own host, not Alexa+'s. The host-side implementation inside Alexa+
+itself — whether it resizes on `autoResize`, how it times out a slow view, what its own `hostContext`
+looks like — is still unverified and depends on A.1/A.2.
 
 ### F.2 The 300 KB inline runtime — **a known cost, not a bug**
 
@@ -297,16 +306,20 @@ it is a demonstration rather than promising terms nobody will honour.
 
 The six required `addon.json` icon sizes, light and dark theme, are hosted alongside them at
 `.../mise/icons/{light,dark}-{72,64,88,126,180,241}.png`. A draft `addon.json` with these filled in
-is at [`docs/addon.draft.json`](addon.draft.json) — the only fields still open are the MCP server
-URL (needs C.1) and a real carousel screenshot (needs A.2, the Web Simulator; a designed mockup
-passed off as a product screenshot would be exactly the overstatement this project argues against).
+is at [`docs/addon.draft.json`](addon.draft.json) — the only field still open is the MCP server URL
+(needs C.1). The carousel screenshot can now be captured from `simulator/` (§F.1, §A.0) instead of
+waiting on A.2: a designed mockup passed off as a product screenshot would be exactly the
+overstatement this project argues against, but a real screenshot of the real views rendering real
+server data is not a mockup merely because the host around it is a stand-in for Alexa+ itself.
 
-### G.2 The video — **blocked on A.2**
+### G.2 The video — **unblocked: recording target is `simulator/`, not A.2**
 
-The script is in `docs/PLAN.md` §11. Every line of it is now backed by a tool that runs: the opening
+The script is in `docs/DEMO_SCRIPT.md`. Every line of it is backed by a tool that runs: the opening
 pantry line, the weekly grid with its reasons, the step card with a timer, "where was I?" a day
-later, and the checkout with an allergen disclosure writing back to the pantry. What is missing is a
-simulator to record it in.
+later, and the checkout with an allergen disclosure writing back to the pantry. The hackathon's own
+resources page names a web-app simulator, using the entrant's own agentic tooling, as the accepted
+substitute for the Alexa+ platform's own (region-blocked, §A.2) Web Simulator — that is what
+`simulator/` is, and it is what the video is recorded against.
 
 ---
 
