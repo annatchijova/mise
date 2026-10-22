@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Mise — simulated Alexa+ experience</title>
+<style>
+  :root {
+    --bg: #17243b; --fg: #f7f8fc; --card: #1f2d4a; --line: #33415f;
+    --accent: #6655e8; --dim: #9aa2bd;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.5 system-ui, sans-serif; display: flex; height: 100vh;
+  }
+  .chat-col {
+    flex: 1; display: flex; flex-direction: column; padding: 1.5rem;
+    max-width: 640px; border-right: 1px solid var(--line);
+  }
+  .view-col { flex: 1; display: flex; flex-direction: column; padding: 1.5rem; }
+  h1 { font-size: 1.3rem; margin: 0 0 0.2rem; }
+  .subtitle { color: var(--dim); font-size: 0.9rem; margin: 0 0 1rem; }
+  .messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
+  .msg { padding: 0.7rem 1rem; border-radius: 10px; max-width: 85%; white-space: pre-wrap; }
+  .msg.user { background: var(--accent); align-self: flex-end; }
+  .msg.assistant { background: var(--card); align-self: flex-start; }
+  .msg.tool { background: transparent; border: 1px dashed var(--line); color: var(--dim); font-size: 0.85rem; align-self: flex-start; }
+  form { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  input[type="text"] { flex: 1; padding: 0.7rem; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); font-size: 1rem; }
+  button { padding: 0.7rem 1.2rem; border-radius: 8px; border: none; background: var(--accent); color: white; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .examples { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+  .examples button { background: var(--card); border: 1px solid var(--line); font-weight: 400; font-size: 0.85rem; padding: 0.4rem 0.7rem; }
+  iframe { flex: 1; width: 100%; border: 1px solid var(--line); border-radius: 10px; background: white; }
+  .view-empty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--dim); border: 1px dashed var(--line); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<div class="chat-col">
+  <h1>Mise — simulated Alexa+ experience</h1>
+  <p class="subtitle">You are talking to Gemini, playing Alexa+'s role: it only extracts intent and
+  narrates. Every fact comes from Mise's real, deterministic MCP server.</p>
+
+  <div class="examples">
+    <button type="button" data-ex="What have I got?">What have I got?</button>
+    <button type="button" data-ex="Plan my dinners through Thursday, forty minutes max.">Plan my week</button>
+    <button type="button" data-ex="Let's cook the lentil and chocolate stew.">Cook the stew</button>
+    <button type="button" data-ex="I'm out of tahini, what can I use instead?">Substitute tahini</button>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <form id="form">
+    <input type="text" id="input" placeholder="Say something to Mise…" autocomplete="off" />
+    <button type="submit" id="send">Send</button>
+  </form>
+</div>
+
+<div class="view-col">
+  <h1>What's on screen</h1>
+  <p class="subtitle">The real MCP Apps resource the tool call returned, rendered as Alexa+ would.</p>
+  <div id="view-holder"><div class="view-empty">Nothing on screen yet</div></div>
+</div>
+
+<script>
+  const messagesEl = document.getElementById("messages");
+  const formEl = document.getElementById("form");
+  const inputEl = document.getElementById("input");
+  const sendEl = document.getElementById("send");
+  const viewHolder = document.getElementById("view-holder");
+
+  let history = [];
+
+  function addMessage(role, text) {
+    const div = document.createElement("div");
+    div.className = "msg " + role;
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function addToolNote(name, isError) {
+    const div = document.createElement("div");
+    div.className = "msg tool";
+    div.textContent = (isError ? "⚠ " : "→ ") + "called " + name;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  async function showView(uiResource) {
+    viewHolder.innerHTML = "";
+    if (!uiResource || !uiResource.html) {
+      viewHolder.innerHTML = '<div class="view-empty">Nothing on screen yet</div>';
+      return;
+    }
+    const iframe = document.createElement("iframe");
+    iframe.sandbox = "allow-scripts";
+    viewHolder.appendChild(iframe);
+
+    // Attach the host bridge's message listener BEFORE the view's document
+    // loads. The view sends its ui/initialize request the instant its inline
+    // script runs, which happens during iframe parsing — well before an
+    // iframe "load" event fires. Mounting the bridge after onload loses that
+    // first message: the listener was not there yet to catch it.
+    const { mountView } = await import("/bridge.js");
+    await mountView(iframe, uiResource.toolCall);
+    iframe.srcdoc = uiResource.html;
+  }
+
+  async function send(text) {
+    addMessage("user", text);
+    history.push({ role: "user", parts: [{ text }] });
+    sendEl.disabled = true;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ history }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      for (const call of data.toolCallLog) {
+        addToolNote(call.name, call.isError);
+      }
+      addMessage("assistant", data.text);
+      history.push({ role: "model", parts: [{ text: data.text }] });
+      showView(data.uiResource);
+    } catch (err) {
+      addMessage("assistant", "Something went wrong: " + err.message);
+    } finally {
+      sendEl.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = inputEl.value.trim();
+    if (!text) return;
+    inputEl.value = "";
+    send(text);
+  });
+
+  document.querySelectorAll(".examples button").forEach((btn) => {
+    btn.addEventListener("click", () => send(btn.dataset.ex));
+  });
+</script>
+
+</body>
+</html>
