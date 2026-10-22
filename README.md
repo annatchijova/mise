@@ -21,8 +21,12 @@ then pairs a match with a short technique lesson. It can also surface a separate
 can regrow. These are ways to make use of what is on hand; Mise does not claim a measured amount of
 money saved, waste avoided, or emissions reduced.
 
-The written [demo script](docs/DEMO_SCRIPT.md) shows the intended flow. The Alexa+ Web Simulator
-round trip has not yet been verified; see [what is blocked](docs/BLOCKED.md).
+The written [demo script](docs/DEMO_SCRIPT.md) shows the intended flow. The round trip is verified
+against a real MCP client over Streamable HTTP — tool listing, guest tools, account-gated rejection,
+and the four `ui://` views all confirmed against the running server, reproducible with
+`scripts/verify_mcp_roundtrip.mjs`. What that does **not** cover: Alexa+'s own Web Simulator and NLU,
+which need Alexa+ Preview developer access this environment does not have. See
+[what is blocked](docs/BLOCKED.md) for the exact line between the two.
 
 ## What makes the answers dependable
 
@@ -64,10 +68,11 @@ check `/healthz`. The demo store is available when `UCP_TOKEN` is set. Run the f
 
 ## Project status
 
-Mise is a hackathon build. Local behavior is covered by automated tests and data validators. The
-Alexa+ simulator, live AWS services, real fridge and barcode integrations, and a real UCP client have
-not been exercised end to end. See [BLOCKED.md](docs/BLOCKED.md) for the exact status and the evidence
-needed to change it.
+Mise is a hackathon build. Local behavior is covered by automated tests and data validators, and the
+MCP round trip itself (tool calls, account gating, the four UI resources) is now verified against a
+real MCP client over Streamable HTTP. Alexa+'s own Web Simulator, live AWS services, real fridge and
+barcode integrations, and a real UCP client have not been exercised end to end. See
+[BLOCKED.md](docs/BLOCKED.md) for the exact status and the evidence needed to change it.
 
 ## Where to go next
 

@@ -24,12 +24,65 @@ records what was reviewed and what is still unverified in block I.
 
 ---
 
-## A · The platform round trip
+## What the hackathon actually requires here (2026-10-22)
+
+`docs/PLAN.md` was written against the full certification pipeline — the Alexa AI CLI, App Runner,
+Cognito. The hackathon's own Devpost resources page (`amazonappdev2026.devpost.com/resources`, Alexa+
+section) asks for something narrower: *"Build a working MCP (Model Context Protocol) integration on
+the open standards for Agent Skills and Streamable HTTP transports. You can simulate an Alexa+
+experience using your preferred agentic tools via a web app."* Its two linked references are the
+public MCP Apps extension spec and the public MCP Streamable HTTP transport spec — not the gated
+`alexa-ai` toolkit. Block A below (the real Alexa+ Web Simulator / CLI round trip) stays accurately
+**blocked** — it is still unverified and still worth closing before a real certification submission —
+but it is not what this hackathon entry's round-trip evidence rests on. That evidence is immediately
+below, verified against the real server over the real protocol, with no Amazon account needed.
+
+## A.0 · Verified: a real MCP client against the real server — **done, reproducible**
+
+Run `npm run build && DEMO_USER= INGEST_SECRET=dev-secret UCP_TOKEN=dev-token PORT=8090 node
+dist/server.js`, then `node scripts/verify_mcp_roundtrip.mjs` (official `@modelcontextprotocol/sdk`
+client, `StreamableHTTPClientTransport`, real HTTP to `/mcp` — not an in-process call). Verified
+2026-10-22:
+
+- `tools/list` returns all 19 tools with their descriptions.
+- `recipe_search` and `substitute` (guest tools) return real structured results with no account.
+- With `DEMO_USER` left at its friendly local-dev default (`"demo"`, see the correction in block B.1
+  below), `cook_start` and `pantry_list` executed instead of rejecting — the gating logic was not
+  being exercised. With `DEMO_USER=` set explicitly empty, both correctly returned `isError: true`
+  with *"This needs a linked account... Link Mise in the Alexa app and ask again."* — the design in
+  `docs/PLAN.md` §07 holds under a real call, not just in the tests.
+- `resources/list` returns all 4 `ui://mise/*` MCP Apps resources; `resources/read` on
+  `ui://mise/step-card` returns a 319 KB self-contained HTML document starting with a valid
+  `<!doctype html>`.
+
+**What this does not verify:** Alexa+'s own NLU extracting the right tool and arguments from speech,
+the Web Simulator's rendering of the `ui://` resources inside a device frame, and OAuth/Cognito
+account linking (still block B.1, still blocked). A standards-compliant MCP client completing the
+full round trip is real evidence that the server is correct; it is not evidence about Alexa+'s client
+behavior specifically, and the README and the demo video should not blur that line.
+
+**Friction log candidate:** `docs/PLAN.md` §01 specified Cognito/App Runner/the `alexa-ai` CLI as the
+path to a working round trip. Following the official "Set Up Your Development Environment" doc
+verbatim — IAM user, the two AWS profiles, `aws sts get-caller-identity --profile alexa-ai` — produced
+a clean `AccessDenied` on `sts:AssumeRole` against Amazon's own
+`arn:aws:iam::372468808636:role/AddOn3PDeveloperToolsRead`, with no documentation found (on that page,
+the CLI reference, or the MCP Toolkit Overview) of what grants that trust. The resources page's
+"simulate via a web app" framing for the Alexa+ track is the first place that reads as consistent with
+this: the full toolkit may be gated behind Alexa+ Preview partner access that isn't meant to be this
+hackathon's path at all. Worth a line in the submission's product-feedback field either way.
+
+## A · The real Alexa+ platform round trip (certification path, not required for this entry)
 
 ### A.1 The Alexa AI CLI and a developer account — **blocked**
 
-`alexa-ai configure` needs Login with Amazon and an Amazon developer account. Neither exists in this
-environment, and creating one is a human's decision, not a script's.
+`alexa-ai configure` needs Login with Amazon and an Amazon developer account. The Amazon developer
+account exists (Anna is already logged into `developer.amazon.com`, classic ASK console, 0 skills).
+What is blocked is the AWS side: see the friction log note above — `sts:AssumeRole` against Amazon's
+shared `AddOn3PDeveloperToolsRead` role fails for a freshly-created IAM user with an explicit
+`sts:AssumeRole` allow policy attached, which on AWS's side reads identically whether the failure is a
+missing permission on our side or a trust policy that does not yet include this account. No
+self-service field for this was found in Settings (`Skill Access Management`, `User Management`,
+`My IDs`) on the classic console.
 
 **What it blocks:** everything downstream — `alexa-ai new mcp`, `addon.json`, `alexa-ai deploy`, the
 Web Simulator, the Local Inspector, certification.
@@ -79,9 +132,16 @@ Needs either Cognito (an AWS account) or a public HTTPS origin to run our own au
 against. `docs/PLAN.md` §02 sets a half-hour timebox on the Cognito test and a fallback if it fails.
 
 **What stands in for it today:** `DEMO_USER`, one account that owns everything, and `UCP_TOKEN`, a
-shared secret checked against the bearer on the store surface. **Neither is authentication.** Both
-are off by default: with `DEMO_USER` empty every account-bound surface answers "link your account",
-and without `UCP_TOKEN` the checkout answers 503.
+shared secret checked against the bearer on the store surface. **Neither is authentication.**
+**Correction (2026-10-22, caught by a live round-trip test, not a reading of the code):** this
+section previously said both were off by default. Verified against the running server:
+`DEMO_USER` defaults to the literal string `"demo"` when the environment variable is unset
+(`src/server.ts`) — deliberately, so the README's `npm start` quickstart has a usable pantry out of
+the box, not an empty "link your account" wall. Set `DEMO_USER=` (empty) explicitly to see the real
+guest-rejection path. `UCP_TOKEN` has no such default — unset, the checkout correctly answers 503.
+Confirmed by running the server and calling `cook_start` and `pantry_list` over the real MCP
+transport with no bearer token and `DEMO_USER` unset: both executed as the demo account instead of
+rejecting, exactly as the default predicts.
 
 **The specific thing to verify first:** whether Cognito accepts the `resource` parameter and whether
 a PRM document served from our domain can point at its metadata. That answer decides Cognito versus
