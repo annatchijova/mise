@@ -51,12 +51,14 @@ Three beats, in this order:
 1. **The card.** The mise en place is a checklist, not a list read aloud, and every amount is one a
    person can actually fetch — *about 330 g*, not 333.333 g. Show the large-print toggle here: one
    step, high contrast, nothing else. It is an accessibility win and it films beautifully.
-2. **"I'm out of broad beans."** The substitution comes from a table a cook wrote, with a ratio and
-   what changes. Then ask for something the table does not cover and let it say so: *"I have nothing
-   curated for that."* **The silence is the demo.**
-3. **"I used butter beans instead."** It records the swap, deducts against what was really used —
-   and the swap goes into a queue for a curator rather than into the table. Say that out loud: the
-   table grows when a person edits it, and at no other moment.
+2. **"I'm out of tahini, what can I use instead?"** The substitution comes from a table a cook wrote
+   — sunflower seed butter or cashew cream, each with a ratio and a warning about what changes.
+3. **"I'm out of broad beans too."** Verified live against the real tool (2026-10-22): broad bean is
+   a recognized ingredient with zero curated substitution contexts, and the server says exactly that
+   — *"I have nothing curated for broad bean. Tell me what it was doing in the dish — the fat, the
+   acid, what binds it — and I can answer."* **The silence is the demo.** (An earlier version of this
+   script had this beat backwards — claiming broad bean as the successful case — written before
+   anyone had run it against the live server. Caught by running it, not by reading the table.)
 
 ## 3.5 · What is left over, with a name (2:20 – 2:35)
 
