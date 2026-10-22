@@ -290,6 +290,12 @@
     <p class="lede">A pantry and cooking companion for Alexa+. It plans the week, walks a recipe, and
       tracks what is running low — and it keeps what you reported, what a device sensed, and what it
       only worked out, visibly distinct in every answer.</p>
+    <p class="lede" style="color:var(--ink-soft); font-style:italic;">Built by a cook. Creative
+      reuse — what's about to turn, what two things in the fridge have never met but should — is most
+      of what cooking actually is, and even a chef runs out of ideas some nights. Mise is that
+      instinct, held to a rule a human running a kitchen can't always keep: never once make something
+      up to sound helpful. (For how that rule is enforced in code — tested, versioned, with the gaps
+      named rather than hidden — read on, or jump straight to the <a href="https://github.com/annatchijova/mise/blob/main/README.md" target="_blank" rel="noopener">README</a>.)</p>
   </header>
 
   <section>
@@ -400,12 +406,17 @@
   </section>
 
   <section>
-    <span class="line-no">07 — where this stands, nine days out</span>
-    <h2>Built, tested, and run locally end to end</h2>
+    <span class="line-no">07 — where this stands</span>
+    <h2>Built, tested, and run end to end against a real MCP client</h2>
     <p class="tight">The pantry ledger, the planner, six cooking tools, substitutions, zero-waste
-      pairing, the UCP checkout, and four MCP Apps views all run today and are held up by the test
-      suite above. The one thing not yet watched working is the Alexa+ Web Simulator round trip — the
-      server speaks the MCP protocol; what we're verifying next is the client on the other end of it.</p>
+      pairing, the UCP checkout, and the four MCP Apps views all run today and are held up by the
+      test suite above. The MCP round trip — tool listing, guest tools, account-gated rejection, and
+      all four <code style="font-family:var(--font-mono)">ui://</code> views — is verified against a
+      real MCP client over Streamable HTTP, including the MCP Apps host handshake itself: a small
+      simulated Alexa+ experience plays Alexa+'s own role (narrate, never decide) against the real
+      server, and renders each view's live data through the genuine host bridge, not a guess at the
+      protocol. What's still unverified is Alexa+'s own hosted Web Simulator specifically — region-
+      blocked from here — which is exactly the gap the simulator exists to cross for this submission.</p>
   </section>
 
   <footer>
@@ -414,7 +425,7 @@
       <a href="https://github.com/annatchijova/mise/blob/main/README.md" target="_blank" rel="noopener">README</a>
       <a href="https://github.com/annatchijova/mise/blob/main/README_TECHNICAL.md" target="_blank" rel="noopener">Technical README</a>
       <a href="https://github.com/annatchijova/mise/blob/main/docs/BLOCKED.md" target="_blank" rel="noopener">What's blocked, and why</a>
-      <span class="pending">Demo video — in progress</span>
+      <span class="pending">Demo video — recording in progress</span>
     </div>
     <div class="links">
       <a href="privacy.html">Privacy policy</a>
