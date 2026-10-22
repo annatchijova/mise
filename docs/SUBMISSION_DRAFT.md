@@ -53,23 +53,36 @@ the latter exists.
 
 ## Project text description
 
-**What it does.** Mise is a pantry and cooking companion for Alexa+. It tracks what is at home
-across voice reports, a simulated connected fridge, and barcode scans; plans a week of meals around
-what is already on hand and what is about to turn; walks a recipe step by step with a resumable
-cooking session; substitutes an ingredient from a chef-curated table when something runs out; and
-prepares a grocery cart with checkout for what is missing.
+**The story.** I cook. Creative reuse — what's about to turn, what two things in the fridge have
+never met but should — is most of what cooking actually is, and even a chef runs out of ideas some
+nights. Mise started from that instinct and from a rule I don't always manage to keep in my own
+kitchen: never make something up to sound helpful. So I built a pantry and cooking companion for
+Alexa+ that is structurally incapable of guessing — not because it's cautious, but because the part
+that decides anything and the part that talks were kept as two different pieces of code on purpose.
 
-**How it works.** Alexa+ is the only model in the system — it holds the conversation and chooses
-which tool to call. Every decision that matters (what is in the pantry, what to cook, what a
-substitution costs, what a recipe's nutrition floor is) is computed by deterministic server logic
-and curated data tables before Alexa+ ever sees it; the model narrates a result, it never produces
-one. `plan_week` returns a hash so the same pantry and the same week reproduce the same plan,
-byte for byte. When the data has no answer — an unmapped ingredient, an uncounted amount, a missing
-nutrition figure — the server says so instead of filling the gap with something plausible.
+**What it does.** Mise tracks what's at home across voice reports, a simulated connected fridge, and
+barcode scans; plans a week of meals around what's already on hand and what's about to turn; walks a
+recipe step by step with a resumable cooking session; substitutes an ingredient from a chef-curated
+table when something runs out, and says plainly when it has nothing curated for that one; and
+prepares a grocery cart with checkout for what's missing.
 
-**What's genuinely new this window vs. pre-existing.** TODO — fill in once the submission window's
-exact start date is confirmed against the repo's commit history (`git log`), per the "pre-existing
-project" disclosure requirement.
+**How it works, briefly.** Alexa+ is the only model in the system — it holds the conversation and
+chooses which tool to call. Every decision that matters (what's in the pantry, what to cook, what a
+substitution costs, what a recipe's nutrition floor is) is computed by deterministic server logic and
+curated data tables before Alexa+ ever sees it; the model narrates a result, it never produces one.
+`plan_week` returns a hash so the same pantry and the same week reproduce the same plan, byte for
+byte. When the data has no answer, the server says so instead of filling the gap with something
+plausible. This paragraph is the short version on purpose — the full technical case (how the
+separation is enforced, what's tested, what's still open and honestly marked as such) is in the
+[README](https://github.com/annatchijova/mise/blob/main/README.md) and the
+[Technical README](https://github.com/annatchijova/mise/blob/main/README_TECHNICAL.md), not repeated
+here.
+
+**What's genuinely new this window vs. pre-existing.** The hackathon's submission window runs
+2026-08-31 to 2026-10-23. The repo's first commit is 2026-09-03 (`git log --reverse`) — the entire
+project, pantry engine, planner, cooking state machine, substitution and zero-waste tables, UCP
+checkout, four MCP Apps views, and the simulator, was built inside the window. Nothing here predates
+it.
 
 ## Product feedback (required — one entry per tool/API/SDK used)
 
