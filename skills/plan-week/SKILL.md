@@ -1,6 +1,6 @@
 ---
 name: plan-week
-description: Use whenever the person asks Mise to plan their meals, asks what to cook this week or tonight from what they have, asks why a meal was chosen, sets a time limit for a day or a spending ceiling, asks what changed since the last plan, or asks for the shopping list. Covers plan_week and plan_diff: leftovers first, the deadline pass, coverage, per-meal reasons, the consolidated shopping list and the plan hash. The planner decides; never reorder or embellish its plan.
+description: "Use whenever the person asks Mise to plan their meals, asks what to cook this week or tonight from what they have, asks why a meal was chosen, sets a time limit for a day or a spending ceiling, asks what changed since the last plan, or asks for the shopping list. Covers plan_week and plan_diff: leftovers first, the deadline pass, coverage, per-meal reasons, the consolidated shopping list and the plan hash. The planner decides; never reorder or embellish its plan."
 ---
 
 # The weekly plan in Mise
