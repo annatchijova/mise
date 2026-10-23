@@ -2,18 +2,42 @@
 
 A literal, copy-paste script for the ≤3:00 Devpost video (`docs/PLAN.md` §10 sets the 3-minute cap;
 `docs/DEMO_SCRIPT.md` has the full beat-by-beat reasoning and is the source this was compressed from —
-read that first if a beat here needs more context on *why* it's in). This file is meant to be read
-straight into the recording, line by line. Two kinds of line:
+read that first if a beat here needs more context on *why* it's in). Three kinds of line, and the
+language of each is intentional — operator instructions in Spanish, everything you say or type stays
+in English because the video is in English:
 
-- **SAY (to Mise):** — speak this into the simulator, exactly as written. These are what Alexa+ hears.
-- **NARRATE:** — your own voice, over the screen, explaining nothing technical. Say it like you're
-  telling a friend what just happened in your kitchen, not presenting a feature.
+- **HACÉ:** *(español)* — la acción concreta: en qué hacer click, o qué escribir y dónde.
+- **SAY (to Mise):** *(English)* — type or paste this exact text into the simulator's chat input, then
+  send it. Also speak it out loud as you type, if you're narrating live instead of dubbing later.
+- **NARRATE:** *(English)* — your own voice, over the screen, explaining nothing technical. Say it
+  like you're telling a friend what just happened in your kitchen, not presenting a feature.
 
 Timestamps are targets, not a metronome — if a beat runs long, cut from the closing, not the middle.
 
 ---
 
+## Antes de grabar — checklist de 3 minutos
+
+1. **Sembrá el pantry para el beat 4.** Verificado en vivo (2026-10-22): el pantry actual no tiene
+   tofu ni lechuga por vencer — `zero_waste` sin eso devuelve paté de hongos, no la pareja que este
+   beat necesita. Con `pantry_update`, poné tofu cerca de su fecha de vencimiento y lechuga marcada
+   como confirmada y cerca del límite de su vida útil. Después corré `zero_waste` sin argumentos y
+   confirmá que ahora sí aparece esa pareja, antes de prender la cámara.
+2. **Hacé un ensayo completo de la secuencia, una vez, sin grabar.** Dos líneas de este guion nunca se
+   probaron exactamente como están escritas (solo se probó el comportamiento subyacente por otro
+   camino): la línea "I'm out of broad beans too" del beat 3, y "How many calories is that?" del
+   beat 5 (depende de que Gemini resuelva "that" contra el guiso que ya se está cocinando en la
+   conversación). Si alguna de las dos no da la respuesta esperada al ensayar, avisame y la
+   ajustamos antes de grabar — no lo sueltes así en la toma final sin haberlo visto andar una vez.
+3. **Abrí el simulador** (`http://localhost:8095`, o el puerto que hayas usado) **y dejalo en la
+   pantalla de inicio**, con el chat vacío, antes de empezar a grabar.
+
+---
+
 ## 0:00 – 0:20 — Open on the kitchen, not the code
+
+**HACÉ:** nada todavía en el simulador — esto se graba hablando a cámara o sobre un plano del
+logo/presentación, antes de tocar la app.
 
 **NARRATE:**
 > I cook. Creative reuse is most of what I do in a kitchen — what's about to turn, what's left in the
@@ -22,6 +46,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 > something up to sound helpful.
 
 ## 0:20 – 0:45 — The pantry, and the word "roughly"
+
+**HACÉ:** hacé click en el botón **"What have I got?"** (el primero de los cuatro botones de ejemplo
+arriba del chat). No hace falta tipear nada — el botón ya manda el texto exacto.
 
 **SAY:** "What have I got?"
 
@@ -32,6 +59,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 
 ## 0:45 – 1:25 — The week, and the hash
 
+**HACÉ:** hacé click en el botón **"Plan my week"** (segundo botón). Manda el texto de abajo
+automáticamente.
+
 **SAY:** "Plan my dinners through Thursday, forty minutes max."
 
 **NARRATE:**
@@ -40,6 +70,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 > exact same plan, byte for byte. Say the hash out loud if there's room. A model that plans your week
 > gives you a different week every time and can't tell you why. This can hand you a receipt.
 
+**HACÉ:** esta vez no hay botón — escribí el texto de abajo en el campo de texto ("Say something to
+Mise…") y mandalo con el botón **Send** o Enter.
+
 **SAY:** "We're out on Thursday."
 
 **NARRATE:**
@@ -47,16 +80,25 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 
 ## 1:25 – 2:05 — Cooking, and the two refusals
 
-**SAY:** "Let's make the lentil stew, for four."
+**HACÉ:** click en el botón **"Cook the stew"** (tercer botón). El texto real que manda este botón es
+el de abajo — usalo tal cual, no lo cambies por otra frase, porque es la que ya está probada contra el
+servidor real.
+
+**SAY:** "Let's cook the lentil and chocolate stew."
 
 **NARRATE:**
 > The card is a checklist a person can actually shop from — *about 330 grams*, not 333.333.
+
+**HACÉ:** click en el botón **"Substitute tahini"** (cuarto botón).
 
 **SAY:** "I'm out of tahini, what can I use instead?"
 
 **NARRATE:**
 > It swaps from a table a cook actually wrote — sunflower seed butter, a ratio, a warning about what
 > changes in the flavor. Now ask it about something that table doesn't cover.
+
+**HACÉ:** sin botón — escribí esto en el campo de texto y mandalo. (Esta es una de las dos líneas del
+punto 2 del checklist — ensayala antes de grabar.)
 
 **SAY:** "I'm out of broad beans too."
 
@@ -67,6 +109,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 
 ## 2:05 – 2:25 — Leftovers, with a name
 
+**HACÉ:** sin botón — escribí esto en el campo de texto y mandalo. Requiere que ya hayas sembrado el
+pantry (punto 1 del checklist) antes de grabar.
+
 **SAY:** "The tofu expires tomorrow and the lettuce looks rough. What can I do?"
 
 **NARRATE:**
@@ -76,6 +121,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 
 ## 2:25 – 2:45 — The floor, not the hedge
 
+**HACÉ:** sin botón — escribí esto en el campo de texto y mandalo. (La segunda línea sin ensayar del
+punto 2 del checklist.)
+
 **SAY:** "How many calories is that?"
 
 **NARRATE:**
@@ -84,6 +132,9 @@ Timestamps are targets, not a metronome — if a beat runs long, cut from the cl
 > This one tells you exactly where its knowledge runs out, and stands behind the part that's real.
 
 ## 2:45 – 3:00 — Close
+
+**HACÉ:** nada en la app — volvé a cámara, o a un plano de la página de GitHub Pages / el logo, para
+cerrar.
 
 **NARRATE:**
 > Alexa+ is the only thing in this system that talks. Everything it says comes from a deterministic
@@ -104,12 +155,3 @@ Cut, in this order, before touching the opener or the closer:
 
 Do not cut the opener or the closer. The opener is the only place the human story lives; the closer is
 the only place that points a judge who wants the technical depth at where it actually is.
-
-## Before recording, not after — pantry state to seed
-
-Checked live against the running server (2026-10-22): the current pantry's top `zero_waste` candidate
-is mushroom pate, not the tofu/lettuce pairing beat 4 depends on — there's no tofu or lettuce in the
-pantry right now that's actually about to turn. Seed it with `pantry_update` (tofu near its expiry
-date, lettuce marked confirmed and close to its shelf-life limit) before recording, and re-run
-`zero_waste` with no arguments to confirm it actually surfaces that pairing before this beat goes on
-camera — don't assume the gh-pages page's example state still matches the live server.
