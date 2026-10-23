@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mise</title>
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
@@ -114,6 +116,29 @@
     margin: 0 0 0.3rem;
     text-wrap: balance;
   }
+  h1.wordmark img {
+    display: block;
+    height: clamp(2.6rem, 9vw, 4rem);
+    width: auto;
+  }
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    margin: 0 0 1.6rem;
+  }
+  .quick-links a {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    background: var(--counter-raised);
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    text-decoration: none;
+  }
+  .quick-links a:hover { color: var(--confirmed); border-color: var(--confirmed); }
   .thesis {
     font-family: var(--font-display);
     font-weight: 700;
@@ -285,7 +310,11 @@
 <div class="sheet">
   <header class="hero">
     <p class="kicker">mise en place, kept honest</p>
-    <h1 class="wordmark">Mise</h1>
+    <h1 class="wordmark"><img src="logo.png" alt="Mise"></h1>
+    <div class="quick-links">
+      <a href="presentation.pdf" target="_blank" rel="noopener">View the presentation →</a>
+      <a href="https://github.com/annatchijova/mise" target="_blank" rel="noopener">GitHub repository →</a>
+    </div>
     <p class="thesis">Alexa+ is the model.<br>This server never guesses.</p>
     <p class="lede">A pantry and cooking companion for Alexa+. It plans the week, walks a recipe, and
       tracks what is running low — and it keeps what you reported, what a device sensed, and what it
