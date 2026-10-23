@@ -34,6 +34,17 @@ does **not** cover: Alexa+'s own hosted Web Simulator and NLU, which need Alexa+
 access this environment does not have. See [what is blocked](docs/BLOCKED.md) for the exact line
 between the two.
 
+## Screenshots
+
+All from a real run against the live MCP server, through [`simulator/`](simulator/) — no mockups.
+
+| | |
+|---|---|
+| ![The pantry, seeded with tofu and spinach](visual/screenshot-pantry.png) The pantry: what was said, by whom, and how sure Mise is about each line. | ![The weekly plan with RESCUE tags](visual/screenshot-plan.png) The weekly plan — tofu and spinach get used before they turn, and the plan says why. |
+| ![Mise en place checklist](visual/screenshot-mise-en-place.png) Mise en place: a shoppable checklist, not a paragraph read aloud. | ![Checklist with items ticked off, live](visual/screenshot-checklist.png) The same checklist mid-cook — real interaction through the MCP Apps bridge, not a static image. |
+| ![A cooking step in large print](visual/screenshot-large-print.png) One step, high contrast — the large-print toggle, built for the counter, not the couch. | ![A cooking step with a live countdown timer](visual/screenshot-timer.png) A step with its own timer, counting down in real time. |
+| ![A substitution with ratio and warning](visual/screenshot-substitution.png) Out of tahini — a real substitution from the chef-curated table, ratio and warning included. | |
+
 ## What makes the answers dependable
 
 | When you ask… | Mise responds from… |
