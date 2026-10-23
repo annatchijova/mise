@@ -1,5 +1,7 @@
 [English](README.md) · [Español](README_ES.md) · **[Technical README](README_TECHNICAL.md)**
 
+![Mise](visual/logo.png)
+
 # Mise
 
 Keeping track of what is at home, what needs using soon, and where you left off while cooking takes

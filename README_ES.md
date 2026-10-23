@@ -1,5 +1,7 @@
 [English](README.md) · **[Español](README_ES.md)** · [Technical README](README_TECHNICAL.md)
 
+![Mise](visual/logo.png)
+
 # Mise
 
 Llevar la cuenta de lo que hay en casa, lo que conviene usar pronto y el punto en que quedó una
