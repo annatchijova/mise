@@ -73,9 +73,15 @@ export function zeroWaste(
         missing: ids.filter((id) => !byId.has(id)),
         // Presence by canonical id is not sufficient quantity, nor a unit conversion.
         needs_confirmation: used.filter((id) => byId.get(id)!.some((i) => i.confidence !== "confirmed" || !i.qty_known || i.freshness === "unknown")),
+        // Picked, not spread: the output contract (src/server.ts's zero_waste outputSchema) is
+        // narrower than PantryItem — age_days, expiry_match, and last_event_ts are internal. A raw
+        // spread here passed MCP's own strict output validation (`additionalProperties: false`) on
+        // every call that had any evidence to show, which is every call that matters.
         pantry_evidence: used
           .flatMap((id) => byId.get(id)!)
-          .sort((a, b) => compare(`${a.ingredient_id}|${a.unit}|${a.location}`, `${b.ingredient_id}|${b.unit}|${b.location}`)),
+          .sort((a, b) => compare(`${a.ingredient_id}|${a.unit}|${a.location}`, `${b.ingredient_id}|${b.unit}|${b.location}`))
+          .map(({ ingredient_id, unit, location, qty, qty_known, confidence, expires_on, days_to_expiry, freshness, origins }) =>
+            ({ ingredient_id, unit, location, qty, qty_known, confidence, expires_on, days_to_expiry, freshness, origins })),
         coverage_percent: ids.length ? Math.floor((100 * used.length) / ids.length) : 0,
         learning,
         regrow,
